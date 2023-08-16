@@ -4,3 +4,8 @@ Needed Things
 - Recipe tags for categorizing recipes
 - Helper class for managing recipe tags
 - Custom controller ui integration
+- Modify font sizes
+
+Bugs
+- Click drag does not use resized slots
+- Block rendering is not resized
