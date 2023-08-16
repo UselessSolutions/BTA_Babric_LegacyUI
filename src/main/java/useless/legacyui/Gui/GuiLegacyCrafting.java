@@ -3,6 +3,7 @@ package useless.legacyui.Gui;
 import net.minecraft.client.gui.GuiContainer;
 import net.minecraft.client.render.TextureFX;
 import net.minecraft.core.player.inventory.InventoryPlayer;
+import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.world.World;
 import org.lwjgl.opengl.GL11;
 
@@ -34,11 +35,14 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.mc.renderEngine.bindTexture(i);
         int j = (this.width - this.xSize) / 2;
         int k = (this.height - this.ySize) / 2;
+
+        // Draws base gui background
         this.drawTexturedModalRect(j, k, 0, 0, 256, this.ySize);
         this.drawTexturedModalRect(j + 256, k+this.ySize-81, 205, 175, 17, 81);
         this.drawTexturedModalRect(j + 256, k+this.ySize-81-81 , 222, 175, 17, 81);
         this.drawTexturedModalRect(j + 256, k+this.ySize-81-81-13, 239, 175, 17, 13);
 
+        // Category icons TODO Make icons render based of pages selected
         int item = 0;
         this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
         this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
