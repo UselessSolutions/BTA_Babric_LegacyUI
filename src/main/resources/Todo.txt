@@ -5,6 +5,10 @@ Needed Things
 - Helper class for managing recipe tags
 - Custom controller ui integration
 - Modify font sizes
+- Comment and refactor code to be more readable
+- Configuration options (for whatever needs it)
+- texture pack support
+- translucent block/item rendering
 
 Bugs
 - Click drag does not use resized slots
