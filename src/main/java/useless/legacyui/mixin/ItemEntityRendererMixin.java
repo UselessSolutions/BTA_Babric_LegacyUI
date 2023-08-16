@@ -9,6 +9,7 @@ import net.minecraft.core.Global;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.entity.EntityItem;
 import net.minecraft.core.item.Item;
+import net.minecraft.core.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -98,4 +99,53 @@ public class ItemEntityRendererMixin extends EntityRenderer<EntityItem> {
         tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0), 0.0, (double)((float)(tileX + 0) * f1), (double)((float)(tileY + 0) * f2));
         tessellator.draw();
     }
+    /**
+     * @author
+     * @reason
+     */
+    @Overwrite
+    private void renderQuad(Tessellator tessellator, int i, int j, int k, int l, int i1) {
+        tessellator.startDrawingQuads();
+        tessellator.setColorOpaque_I(i1);
+        tessellator.addVertex(i + 0, j + 0, 0.0);
+        tessellator.addVertex(i + 0, j + l, 0.0);
+        tessellator.addVertex(i + k, j + l, 0.0);
+        tessellator.addVertex(i + k, j + 0, 0.0);
+        tessellator.draw();
+    }
+    @Shadow
+    public void renderItemOverlayIntoGUI(FontRenderer fontrenderer, RenderEngine renderengine, ItemStack itemstack, int i, int j, String override) {
+        if (itemstack == null) {
+            return;
+        }
+        if (itemstack.stackSize != 1 || override != null) {
+            String s = "" + itemstack.stackSize;
+            if (override != null) {
+                s = override;
+            }
+            GL11.glDisable(2896);
+            GL11.glDisable(2929);
+            fontrenderer.drawStringWithShadow(s, i + 19 - 2 - fontrenderer.getStringWidth(s), j + 6 + 3, 0xFFFFFF);
+            GL11.glEnable(2896);
+            GL11.glEnable(2929);
+        }
+        if (itemstack.isItemDamaged() || itemstack.getItem().showFullDurability()) {
+            int k = (int)Math.round(13.0 - (double)itemstack.getItemDamageForDisplay() * 13.0 / (double)itemstack.getMaxDamage());
+            int l = (int)Math.round(255.0 - (double)itemstack.getItemDamageForDisplay() * 255.0 / (double)itemstack.getMaxDamage());
+            GL11.glDisable(2896);
+            GL11.glDisable(2929);
+            GL11.glDisable(3553);
+            Tessellator tessellator = Tessellator.instance;
+            int i1 = 255 - l << 16 | l << 8;
+            int j1 = (255 - l) / 4 << 16 | 0x3F00;
+            this.renderQuad(tessellator, i + 2, j + 13, 13, 2, 0);
+            this.renderQuad(tessellator, i + 2, j + 13, 12, 1, j1);
+            this.renderQuad(tessellator, i + 2, j + 13, k, 1, i1);
+            GL11.glEnable(3553);
+            GL11.glEnable(2896);
+            GL11.glEnable(2929);
+            GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+    }
+
 }

@@ -30,11 +30,11 @@ public class GuiRenderItemMixin extends Gui {
     public void render(ItemStack itemStack, int x, int y, boolean isSelected, Slot slot) {
         boolean hasDrawnSlotBackground = false;
         boolean discovered = true;
-        int slotSize = 16;
+        int slotSize = 18;
         float renderScale = 1f;
         if (slot instanceof SlotResizable){
             slotSize = ((SlotResizable) slot).width;
-            renderScale = slotSize/16f;
+            renderScale = (slotSize)/18f;
         }
         GL11.glPushMatrix();
         GL11.glRotatef(120.0F, 1.0F, 0.0F, 0.0F);
@@ -69,7 +69,7 @@ public class GuiRenderItemMixin extends Gui {
         if (isSelected) {
             GL11.glDisable(2896);
             GL11.glDisable(2929);
-            this.drawRect(x, y, x + slotSize, y + slotSize, -2130706433);
+            this.drawRect(x, y, x + slotSize-2, y + slotSize-2, -2130706433);
             GL11.glEnable(2896);
             GL11.glEnable(2929);
         }

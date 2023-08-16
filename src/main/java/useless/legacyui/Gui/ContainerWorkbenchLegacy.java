@@ -39,13 +39,13 @@ public class ContainerWorkbenchLegacy extends Container {
         // 3x9 inventory
         for(j1 = 0; j1 < 3; ++j1) {
             for(l1 = 0; l1 < 9; ++l1) {
-                this.addSlot(new SlotResizable(inventoryplayer, l1 + j1 * 9 + 9, 152 + l1 * 12, 111 + j1 * 12, 12));
+                this.addSlot(new SlotResizable(inventoryplayer, l1 + j1 * 9 + 9, 153 + l1 * 12, 112 + j1 * 12, 12));
             }
         }
 
         // 1x9 hotbar
         for(j1 = 0; j1 < 9; ++j1) {
-            this.addSlot(new SlotResizable(inventoryplayer, j1, 152 + j1 * 12, 153, 12));
+            this.addSlot(new SlotResizable(inventoryplayer, j1, 153 + j1 * 12, 154, 12));
         }
 
         this.onCraftMatrixChanged(this.craftMatrix);

@@ -1,6 +1,7 @@
 package useless.legacyui.Gui;
 
 import net.minecraft.client.gui.GuiContainer;
+import net.minecraft.client.render.TextureFX;
 import net.minecraft.core.player.inventory.InventoryPlayer;
 import net.minecraft.core.world.World;
 import org.lwjgl.opengl.GL11;
@@ -24,6 +25,7 @@ public class GuiLegacyCrafting extends GuiContainer {
     public void drawGuiContainerForegroundLayer() {
         this.fontRenderer.drawCenteredString("Inventory", 205, this.ySize - 78, 0XFFFFFF);
         this.fontRenderer.drawCenteredString("Crafting", 72, this.ySize - 78, 0XFFFFFF);
+
     }
 
     public void drawGuiContainerBackgroundLayer(float f) {
@@ -36,5 +38,15 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.drawTexturedModalRect(j + 256, k+this.ySize-81, 205, 175, 17, 81);
         this.drawTexturedModalRect(j + 256, k+this.ySize-81-81 , 222, 175, 17, 81);
         this.drawTexturedModalRect(j + 256, k+this.ySize-81-81-13, 239, 175, 17, 13);
+
+        int item = 0;
+        this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
+        this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
+        this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
+        this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
+        this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
+        this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
+        this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
+        this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
     }
 }
