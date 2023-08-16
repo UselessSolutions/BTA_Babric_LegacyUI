@@ -1,0 +1,6 @@
+Needed Things
+- Variable to adjust inventory render size
+- Integrate Slot width variable throughout
+- Recipe tags for categorizing recipes
+- Helper class for managing recipe tags
+- Custom controller ui integration
