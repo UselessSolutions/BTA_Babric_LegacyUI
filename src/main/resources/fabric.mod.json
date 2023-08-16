@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
+  "id": "legacyui",
   "version": "${version}",
 
-  "name": "Example Mod",
+  "name": "LegacyUI",
   "description": "This mod aims to help new BTA modders.",
   "authors": [
     "Useless"
@@ -19,11 +19,11 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-        "useless.examplemod.ExampleMod"
+        "useless.legacyui.LegacyUI"
     ]
   },
   "mixins": [
-      "examplemod.mixins.json"
+      "legacyui.mixins.json"
   ],
 
   "depends": {
