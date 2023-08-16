@@ -20,12 +20,11 @@ public class PlayerSPMixin extends EntityPlayer {
 
     @Shadow
     public void func_6420_o() {
-
     }
 
     /**
      * @author Useless
-     * @reason Custom Legacy UI
+     * @reason Redirect crafting table to use legacy mod UI
      */
     @Overwrite
     public void displayGUIWorkbench(int i, int j, int k) {

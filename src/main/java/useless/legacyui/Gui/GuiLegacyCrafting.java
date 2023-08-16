@@ -1,7 +1,7 @@
 package useless.legacyui.Gui;
 
 import net.minecraft.client.gui.GuiContainer;
-import net.minecraft.client.render.TextureFX;
+import net.minecraft.client.render.FontRenderer;
 import net.minecraft.core.player.inventory.InventoryPlayer;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.world.World;
@@ -14,8 +14,8 @@ public class GuiLegacyCrafting extends GuiContainer {
 
     public void initGui() {
         super.initGui();
-        this.xSize = 256+17;
-        this.ySize = 175;
+        this.xSize = 256+17; // width of texture plus the 17px strip that was cut off
+        this.ySize = 175; // height of gui window
     }
 
     public void onGuiClosed() {
