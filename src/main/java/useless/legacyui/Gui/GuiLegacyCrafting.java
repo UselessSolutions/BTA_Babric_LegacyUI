@@ -1,4 +1,4 @@
-package useless.legacyui;
+package useless.legacyui.Gui;
 
 import net.minecraft.client.gui.GuiContainer;
 import net.minecraft.core.player.inventory.InventoryPlayer;
@@ -22,8 +22,8 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     public void drawGuiContainerForegroundLayer() {
-        this.fontRenderer.drawCenteredString("Inventory", 200, 6, 0XFFFFFF);
-        this.fontRenderer.drawCenteredString("Crafting", 100, this.ySize - 96 + 2, 0XFFFFFF);
+        this.fontRenderer.drawCenteredString("Inventory", 205, this.ySize - 78, 0XFFFFFF);
+        this.fontRenderer.drawCenteredString("Crafting", 72, this.ySize - 78, 0XFFFFFF);
     }
 
     public void drawGuiContainerBackgroundLayer(float f) {

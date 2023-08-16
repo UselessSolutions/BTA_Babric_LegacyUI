@@ -1,4 +1,4 @@
-package useless.legacyui;
+package useless.legacyui.Gui;
 
 import net.minecraft.core.InventoryAction;
 import net.minecraft.core.block.Block;
@@ -16,33 +16,36 @@ public class ContainerWorkbenchLegacy extends Container {
     public InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
     public IInventory craftResult = new InventoryCraftResult();
     private World field_20133_c;
-    private int field_20132_h;
-    private int field_20131_i;
-    private int field_20130_j;
+    private int x;
+    private int y;
+    private int z;
 
     public ContainerWorkbenchLegacy(InventoryPlayer inventoryplayer, World world, int i, int j, int k) {
         this.field_20133_c = world;
-        this.field_20132_h = i;
-        this.field_20131_i = j;
-        this.field_20130_j = k;
-        this.addSlot(new SlotCrafting(inventoryplayer.player, this.craftMatrix, this.craftResult, 0, 124, 35));
+        this.x = i;
+        this.y = j;
+        this.z = k;
+        this.addSlot(new SlotCrafting(inventoryplayer.player, this.craftMatrix, this.craftResult, 0, 107, 127));
 
         int j1;
         int l1;
+        // 3x3 Crafting
         for(j1 = 0; j1 < 3; ++j1) {
             for(l1 = 0; l1 < 3; ++l1) {
-                this.addSlot(new Slot(this.craftMatrix, l1 + j1 * 3, 30 + l1 * 18, 17 + j1 * 18));
+                this.addSlot(new Slot(this.craftMatrix, l1 + j1 * 3, 20 + l1 * 18, 109 + j1 * 18));
             }
         }
 
+        // 3x9 inventory
         for(j1 = 0; j1 < 3; ++j1) {
             for(l1 = 0; l1 < 9; ++l1) {
-                this.addSlot(new Slot(inventoryplayer, l1 + j1 * 9 + 9, 8 + l1 * 18, 84 + j1 * 18));
+                this.addSlot(new SlotResizable(inventoryplayer, l1 + j1 * 9 + 9, 152 + l1 * 12, 111 + j1 * 12, 12));
             }
         }
 
+        // 1x9 hotbar
         for(j1 = 0; j1 < 9; ++j1) {
-            this.addSlot(new Slot(inventoryplayer, j1, 8 + j1 * 18, 142));
+            this.addSlot(new SlotResizable(inventoryplayer, j1, 152 + j1 * 12, 153, 12));
         }
 
         this.onCraftMatrixChanged(this.craftMatrix);
@@ -71,10 +74,10 @@ public class ContainerWorkbenchLegacy extends Container {
     }
 
     public boolean isUsableByPlayer(EntityPlayer entityplayer) {
-        if (this.field_20133_c.getBlockId(this.field_20132_h, this.field_20131_i, this.field_20130_j) != Block.workbench.id) {
+        if (this.field_20133_c.getBlockId(this.x, this.y, this.z) != Block.workbench.id) {
             return false;
         } else {
-            return entityplayer.distanceToSqr((double)this.field_20132_h + 0.5, (double)this.field_20131_i + 0.5, (double)this.field_20130_j + 0.5) <= 64.0;
+            return entityplayer.distanceToSqr((double)this.x + 0.5, (double)this.y + 0.5, (double)this.z + 0.5) <= 64.0;
         }
     }
 
