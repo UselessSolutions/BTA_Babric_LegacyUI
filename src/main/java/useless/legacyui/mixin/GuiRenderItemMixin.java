@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import useless.legacyui.Gui.SlotResizable;
+import useless.legacyui.LegacyUI;
 
 @Mixin(value = GuiRenderItem.class, remap = false)
 public class GuiRenderItemMixin extends Gui {
@@ -29,6 +30,12 @@ public class GuiRenderItemMixin extends Gui {
     public void render(ItemStack itemStack, int x, int y, boolean isSelected, Slot slot) {
         boolean hasDrawnSlotBackground = false;
         boolean discovered = true;
+        int slotSize = 16;
+        float renderScale = 1f;
+        if (slot instanceof SlotResizable){
+            slotSize = ((SlotResizable) slot).width;
+            renderScale = slotSize/16f;
+        }
         GL11.glPushMatrix();
         GL11.glRotatef(120.0F, 1.0F, 0.0F, 0.0F);
         Lighting.turnOff();
@@ -50,15 +57,14 @@ public class GuiRenderItemMixin extends Gui {
         if (!hasDrawnSlotBackground) {
             GL11.glEnable(2929);
 
+            LegacyUI.currentRenderScale = renderScale;
             itemRenderer.renderItemIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, itemStack, x, y, discovered ? 1.0F : 0.0F, 1.0F);
             itemRenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, itemStack, x, y, discovered ? null : "?");
+            LegacyUI.currentRenderScale = 1f;
             GL11.glDisable(2929);
         }
 
-        int slotSize = 16;
-        if (slot instanceof SlotResizable){
-            slotSize = ((SlotResizable) slot).width;
-        }
+
 
         if (isSelected) {
             GL11.glDisable(2896);

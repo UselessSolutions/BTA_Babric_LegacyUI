@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 public class LegacyUI implements ModInitializer {
     public static final String MOD_ID = "legacyui";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static float currentRenderScale = 1f;
 
     @Override
     public void onInitialize() {
