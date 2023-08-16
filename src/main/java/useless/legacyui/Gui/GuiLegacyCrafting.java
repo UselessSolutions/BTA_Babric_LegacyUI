@@ -53,4 +53,16 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
         this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
     }
+
+    public boolean getIsMouseOverSlot(Slot slot, int i, int j) {
+        int k = (this.width - this.xSize) / 2;
+        int l = (this.height - this.ySize) / 2;
+        i -= k;
+        j -= l;
+        int slotSize = 16;
+        if (slot instanceof SlotResizable){
+            slotSize = ((SlotResizable) slot).width;
+        }
+        return i >= slot.xDisplayPosition - 1 && i < slot.xDisplayPosition + slotSize -2 + 1 && j >= slot.yDisplayPosition - 1 && j < slot.yDisplayPosition + slotSize -2 + 1;
+    }
 }

@@ -4,7 +4,6 @@
   "package": "useless.legacyui.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "GuiContainerMixin",
     "GuiRenderItemMixin",
     "ItemEntityRendererMixin",
     "MinecraftMixin",
