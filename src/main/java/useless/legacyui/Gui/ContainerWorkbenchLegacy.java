@@ -84,23 +84,25 @@ public class ContainerWorkbenchLegacy extends Container {
 
             // Recipe preview
             if (i == currentSlotId){
-                this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 107, 127, slot.item, discovered));
+                this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 107, 127, slot.item, discovered, true, 0xFF0000));
                 for (int index = 1; index < container.inventorySlots.size(); index++){
 
                     // If item has been discovered
                     discovered = false;
+                    boolean highlight = true;
                     slot = (SlotGuidebook)container.inventorySlots.get(index);
                     if (slot.item == null) {
                         discovered = false;
+                        highlight = false;
                     } else {
-                        boolean bl = discovered = statWriter.readStat(StatList.pickUpItemStats[slot.item.itemID]) > 0;
+                        discovered = statWriter.readStat(StatList.pickUpItemStats[slot.item.itemID]) > 0;
                     }
                     if (player.getGamemode() == Gamemode.creative) {
                         discovered = true;
                     }
 
                     // Render to crafting grid
-                    this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 20 + 18 * ((index-1)%3) , 109 + 18 * ((index - 1)/3), slot.item, discovered));
+                    this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 20 + 18 * ((index-1)%3) , 109 + 18 * ((index - 1)/3), slot.item, discovered, highlight, 0xFF0000));
                 }
 
             }

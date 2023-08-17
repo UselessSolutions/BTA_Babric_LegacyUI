@@ -9,11 +9,13 @@ import net.minecraft.client.render.entity.ItemEntityRenderer;
 import net.minecraft.core.Global;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.slot.Slot;
+import net.minecraft.core.player.inventory.slot.SlotGuidebook;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import useless.legacyui.Gui.SlotCraftingDisplay;
 import useless.legacyui.Gui.SlotResizable;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Rendering.LegacyItemEntityRenderer;
@@ -44,6 +46,17 @@ public class GuiRenderItemMixin extends Gui {
         GL11.glPopMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(32826);
+
+        // Render Crafting fadeout
+        if(slot instanceof SlotCraftingDisplay && ((SlotCraftingDisplay)slot).highlight){
+            GL11.glDisable(2896);
+            GL11.glDisable(2929);
+            this.drawRect(x, y, x + slotSize-2, y + slotSize-2, 0x80000000 + ((SlotCraftingDisplay)slot).color);
+            GL11.glEnable(2896);
+            GL11.glEnable(2929);
+            isSelected = false;
+        }
+
         if (slot != null) {
             discovered = slot.discovered;
             int iconIndex = slot.getBackgroundIconIndex();
@@ -69,6 +82,7 @@ public class GuiRenderItemMixin extends Gui {
 
             GL11.glDisable(2929);
         }
+
 
 
 
