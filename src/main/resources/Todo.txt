@@ -14,6 +14,7 @@ Needed Things
 - Icon helper class for adding additional icons
 - Config for if undiscovered items should be blocked out
 - Invisible buttons for tab selection
+- Old Gui Sounds
 
 - Guide books tabs for recipe types
 - Guide book recipe groups
