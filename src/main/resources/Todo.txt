@@ -18,6 +18,9 @@ Needed Things
 - Guide books tabs for recipe types
 - Guide book recipe groups
 
+- 512x512 gui textures
+- controller action wheel binds
+
 Bugs
 - Click drag does not use resized slots
 - Font scale does not keep centered text
