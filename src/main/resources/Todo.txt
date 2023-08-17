@@ -10,6 +10,8 @@ Needed Things
 - texture pack support
 - translucent block/item rendering
 - xbox popup style achievements
+- Seperate tab icon texture
+- Icon helper class for adding additional icons
 
 Bugs
 - Click drag does not use resized slots
