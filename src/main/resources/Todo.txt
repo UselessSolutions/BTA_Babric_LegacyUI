@@ -16,6 +16,8 @@ Needed Things
 - Invisible buttons for tab selection
 - Old Gui Sounds
 
+- Highlight avalible items appriopriately
+
 - Guide books tabs for recipe types
 - Guide book recipe groups
 
