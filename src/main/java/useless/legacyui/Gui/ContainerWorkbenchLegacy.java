@@ -4,10 +4,12 @@ import net.minecraft.core.InventoryAction;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.crafting.CraftingManager;
 import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.*;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotCrafting;
+import net.minecraft.core.player.inventory.slot.SlotGuidebook;
 import net.minecraft.core.world.World;
 
 import java.util.List;
@@ -27,25 +29,29 @@ public class ContainerWorkbenchLegacy extends Container {
         this.z = k;
         this.addSlot(new SlotCrafting(inventoryplayer.player, this.craftMatrix, this.craftResult, 0, 107, 127));
 
-        int j1;
-        int l1;
+        int baseIterator;
+        int subIterator;
         // 3x3 Crafting
-        for(j1 = 0; j1 < 3; ++j1) {
-            for(l1 = 0; l1 < 3; ++l1) {
-                this.addSlot(new Slot(this.craftMatrix, l1 + j1 * 3, 20 + l1 * 18, 109 + j1 * 18));
+        for(baseIterator = 0; baseIterator < 3; ++baseIterator) {
+            for(subIterator = 0; subIterator < 3; ++subIterator) {
+                this.addSlot(new Slot(this.craftMatrix, subIterator + baseIterator * 3, 20 + subIterator * 18, 109 + baseIterator * 18));
             }
         }
 
         // 3x9 inventory
-        for(j1 = 0; j1 < 3; ++j1) {
-            for(l1 = 0; l1 < 9; ++l1) {
-                this.addSlot(new SlotResizable(inventoryplayer, l1 + j1 * 9 + 9, 153 + l1 * 12, 112 + j1 * 12, 12));
+        for(baseIterator = 0; baseIterator < 3; ++baseIterator) {
+            for(subIterator = 0; subIterator < 9; ++subIterator) {
+                this.addSlot(new SlotResizable(inventoryplayer, subIterator + baseIterator * 9 + 9, 153 + subIterator * 12, 112 + baseIterator * 12, 12));
             }
         }
 
         // 1x9 hotbar
-        for(j1 = 0; j1 < 9; ++j1) {
-            this.addSlot(new SlotResizable(inventoryplayer, j1, 153 + j1 * 12, 154, 12));
+        for(baseIterator = 0; baseIterator < 9; ++baseIterator) {
+            this.addSlot(new SlotResizable(inventoryplayer, baseIterator, 153 + baseIterator * 12, 154, 12));
+        }
+
+        for(baseIterator = 0; baseIterator < 15; ++baseIterator){
+            //this.addSlot(new SlotGuidebook(baseIterator + (9 * 4), 11, 56, ItemStack(Item.diamond), true));
         }
 
         this.onCraftMatrixChanged(this.craftMatrix);

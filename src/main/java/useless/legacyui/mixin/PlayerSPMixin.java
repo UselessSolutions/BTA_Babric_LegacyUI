@@ -28,6 +28,6 @@ public class PlayerSPMixin extends EntityPlayer {
      */
     @Overwrite
     public void displayGUIWorkbench(int i, int j, int k) {
-        this.mc.displayGuiScreen(new GuiLegacyCrafting(this.inventory, this.world, i, j, k));
+        this.mc.displayGuiScreen(new GuiLegacyCrafting(this, i, j, k));
     }
 }
