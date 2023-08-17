@@ -1,25 +1,19 @@
 package useless.legacyui.Rendering;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.model.BlockModel;
 import net.minecraft.client.render.block.model.BlockModelDispatcher;
-import net.minecraft.client.render.block.model.BlockModelRenderBlocks;
 import net.minecraft.client.render.entity.ItemEntityRenderer;
 import net.minecraft.core.Global;
 import net.minecraft.core.block.Block;
-import net.minecraft.core.entity.EntityItem;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
-import net.minecraft.core.item.tag.ItemTags;
-import net.minecraft.core.util.helper.MathHelper;
 import org.lwjgl.opengl.GL11;
-import useless.legacyui.LegacyUI;
 
 import java.util.Random;
 
 public class LegacyItemEntityRenderer extends ItemEntityRenderer {
-    private final RenderBlocks renderBlocks = new RenderBlocks();
+    private final LegacyRenderBlocks renderBlocks = new LegacyRenderBlocks();
     private final Random random = new Random();
     public boolean field_27004_a = true;
     public LegacyItemEntityRenderer() {
@@ -55,7 +49,7 @@ public class LegacyItemEntityRenderer extends ItemEntityRenderer {
             }
             GL11.glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
             this.renderBlocks.useInventoryTint = this.field_27004_a;
-            this.renderBlocks.renderBlockOnInventory(block, j, brightness);
+            this.renderBlocks.renderBlockOnInventory(block, j, brightness, scale); // Renders blocks
             this.renderBlocks.useInventoryTint = true;
             GL11.glPopMatrix();
             GL11.glDisable(3042);
