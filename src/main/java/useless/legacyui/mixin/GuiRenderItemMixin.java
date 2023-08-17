@@ -61,7 +61,7 @@ public class GuiRenderItemMixin extends Gui {
 
             int fontHeight = mc.fontRenderer.fontHeight;
             if (slot instanceof SlotResizable){
-                fontHeight = 5;
+                fontHeight = (int)(9*((((SlotResizable) slot).width)/18f)); // Smaller font
             }
 
             itemRenderer.renderItemIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, itemStack, x, y, discovered ? 1.0F : 0.0F, 1.0F, renderScale);
