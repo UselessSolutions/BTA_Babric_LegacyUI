@@ -80,6 +80,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         }
         currentSlot = slotIndex;
         slotString = "" + (currentSlot+1) + "/" + (totalDisplaySlots);
+        updatePages();
     }
     public void lastPage() {
         --tab;
@@ -136,7 +137,7 @@ public class GuiLegacyCrafting extends GuiContainer {
             }
             System.out.println("Unknown guidebook recipe!");
         }
-        ((ContainerWorkbenchLegacy)this.inventorySlots).setRecipes(this.mc.thePlayer, this.recipes, this.mc.statFileWriter);
+        ((ContainerWorkbenchLegacy)this.inventorySlots).setRecipes(this.mc.thePlayer, this.recipes, this.mc.statFileWriter, currentSlot);
     }
 
 

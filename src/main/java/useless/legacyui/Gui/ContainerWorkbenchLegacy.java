@@ -61,13 +61,50 @@ public class ContainerWorkbenchLegacy extends Container {
         this.onCraftMatrixChanged(this.craftMatrix);
     }
 
-    public void setRecipes(EntityPlayer player, ContainerGuidebookRecipeBase[] recipes, StatFileWriter statWriter) {
+    public void setRecipes(EntityPlayer player, ContainerGuidebookRecipeBase[] recipes, StatFileWriter statWriter, int currentSlotId) {
         this.inventorySlots.clear();
         craftingSlots();
+
         int i = 0;
         for (ContainerGuidebookRecipeBase container : recipes){
             SlotGuidebook slot = (SlotGuidebook)container.inventorySlots.get(0);
-            this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18*i, 56, slot.item, true));
+
+            // If item has been discovered
+            boolean discovered = false;
+            if (slot.item == null) {
+                discovered = false;
+            } else {
+                discovered = statWriter.readStat(StatList.pickUpItemStats[slot.item.itemID]) > 0;
+            }
+            if (player.getGamemode() == Gamemode.creative) {
+                discovered = true;
+            }
+
+            this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18*i, 56, slot.item, discovered));
+
+            // Recipe preview
+            if (i == currentSlotId){
+                this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 107, 127, slot.item, discovered));
+                for (int index = 1; index < container.inventorySlots.size(); index++){
+
+                    // If item has been discovered
+                    discovered = false;
+                    slot = (SlotGuidebook)container.inventorySlots.get(index);
+                    if (slot.item == null) {
+                        discovered = false;
+                    } else {
+                        boolean bl = discovered = statWriter.readStat(StatList.pickUpItemStats[slot.item.itemID]) > 0;
+                    }
+                    if (player.getGamemode() == Gamemode.creative) {
+                        discovered = true;
+                    }
+
+                    // Render to crafting grid
+                    this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 20 + 18 * ((index-1)%3) , 109 + 18 * ((index - 1)/3), slot.item, discovered));
+                }
+
+            }
+
             i++;
         }
 
