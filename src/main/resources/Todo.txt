@@ -19,5 +19,10 @@ Needed Things
 
 Bugs
 - Click drag does not use resized slots
-- Block rendering is not centered when resized
 - Fontscale does not keep centered text
+- Durability rendered at incorrect scale
+- String shadows offset incorrectly at different scales
+
+
+Fixed
+- Block rendering is not centered when resized
