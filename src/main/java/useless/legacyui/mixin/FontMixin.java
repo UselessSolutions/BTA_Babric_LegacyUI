@@ -22,16 +22,16 @@ public class FontMixin {
     private static final Pattern FORMATTING_CODE_REGEX = Pattern.compile("(?i)\\u00A7[0-9A-FK-OR]");
     @Final
     @Shadow
-    private final byte[] charWidth = new byte[200];
+    private final byte[] charWidth = new byte[65536];
     @Final
     @Shadow
-    private final int[] fontTextureNames = new int[200];
+    private final int[] fontTextureNames = new int[256];
     @Final
     @Shadow
-    private final byte[] glyphWidth = new byte[200];
+    private final byte[] glyphWidth = new byte[65536];
     @Final
     @Shadow
-    private final int[] glyphTextureNames = new int[200];
+    private final int[] glyphTextureNames = new int[256];
     @Shadow
     private int boundTextureName;
 
