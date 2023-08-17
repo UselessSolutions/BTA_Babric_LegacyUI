@@ -13,3 +13,4 @@ Needed Things
 Bugs
 - Click drag does not use resized slots
 - Block rendering is not resized
+- Fontscale does not keep centered text
