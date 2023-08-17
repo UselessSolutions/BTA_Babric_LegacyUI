@@ -26,7 +26,6 @@ public class GuiLegacyCrafting extends GuiContainer {
     public void drawGuiContainerForegroundLayer() {
         this.fontRenderer.drawCenteredString("Inventory", 205, this.ySize - 78, 0XFFFFFF);
         this.fontRenderer.drawCenteredString("Crafting", 72, this.ySize - 78, 0XFFFFFF);
-
     }
 
     public void drawGuiContainerBackgroundLayer(float f) {
