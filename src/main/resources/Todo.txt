@@ -1,17 +1,18 @@
 Needed Things
-- Variable to adjust inventory render size
-- Integrate Slot width variable throughout
+| Variable to adjust inventory render size
+| Integrate Slot width variable throughout
 - Recipe tags for categorizing recipes
 - Helper class for managing recipe tags
 - Custom controller ui integration
-- Modify font sizes
+| Modify font sizes
 - Comment and refactor code to be more readable
 - Configuration options (for whatever needs it)
 - texture pack support
 - translucent block/item rendering
-- xbox popup style achievements
+- xbox popup style achievements (Config option)
 - Seperate tab icon texture
 - Icon helper class for adding additional icons
+- Config for if undiscovered items should be blocked out
 
 Bugs
 - Click drag does not use resized slots
