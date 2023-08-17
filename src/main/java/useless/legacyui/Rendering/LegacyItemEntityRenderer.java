@@ -14,6 +14,7 @@ import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.item.tag.ItemTags;
 import net.minecraft.core.util.helper.MathHelper;
 import org.lwjgl.opengl.GL11;
+import useless.legacyui.LegacyUI;
 
 import java.util.Random;
 
@@ -77,7 +78,7 @@ public class LegacyItemEntityRenderer extends ItemEntityRenderer {
             } else {
                 GL11.glColor4f(brightness, brightness, brightness, alpha);
             }
-            this.renderTexturedQuad(l, i1, k % Global.TEXTURE_ATLAS_WIDTH_TILES * tileWidth, k / Global.TEXTURE_ATLAS_WIDTH_TILES * tileWidth, tileWidth, tileWidth);
+            this.renderTexturedQuad(l, i1, k % Global.TEXTURE_ATLAS_WIDTH_TILES * tileWidth, k / Global.TEXTURE_ATLAS_WIDTH_TILES * tileWidth, tileWidth, tileWidth, scale);
             GL11.glEnable(2896);
         }
         GL11.glEnable(2884);
@@ -101,5 +102,64 @@ public class LegacyItemEntityRenderer extends ItemEntityRenderer {
             return;
         }
         this.drawItemIntoGui(fontrenderer, renderengine, itemstack.itemID, itemstack.getMetadata(), itemstack.getIconIndex(), i, j, brightness, alpha, scale);
+    }
+
+    // Scaled Rendering of items
+    public void renderTexturedQuad(int x, int y, int tileX, int tileY, int tileWidth, int tileHeight, float scale) {
+        float f = 0.0F;
+        float f1 = 1.0F / (float)(Global.TEXTURE_ATLAS_WIDTH_TILES * tileWidth);
+        float f2 = 1.0F / (float)(Global.TEXTURE_ATLAS_WIDTH_TILES * tileHeight);
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV((double)(x + 0), (double)(y + 16 * scale), 0.0, (double)((float)(tileX + 0) * f1), (double)((float)(tileY + tileHeight) * f2));
+        tessellator.addVertexWithUV((double)(x + 16 * scale), (double)(y + 16 * scale), 0.0, (double)((float)(tileX + tileWidth) * f1), (double)((float)(tileY + tileHeight) * f2));
+        tessellator.addVertexWithUV((double)(x + 16 * scale), (double)(y + 0), 0.0, (double)((float)(tileX + tileWidth) * f1), (double)((float)(tileY + 0) * f2));
+        tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0), 0.0, (double)((float)(tileX + 0) * f1), (double)((float)(tileY + 0) * f2));
+        tessellator.draw();
+    }
+    public void renderItemOverlayIntoGUI(FontRenderer fontrenderer, RenderEngine renderengine, ItemStack itemstack, int i, int j, String override, int fontHeight) {
+        if (itemstack == null) {
+            return;
+        }
+        if (itemstack.stackSize != 1 || override != null) {
+            String s = "" + itemstack.stackSize;
+            if (override != null) {
+                s = override;
+            }
+            GL11.glDisable(2896);
+            GL11.glDisable(2929);
+            int previousHeight = fontrenderer.fontHeight;
+            fontrenderer.fontHeight = fontHeight;
+            fontrenderer.drawStringWithShadow(s, i + (int)((19-2- fontrenderer.getStringWidth(s)) * fontHeight/9f), j + (int) ((6  + 3)* fontHeight/9f), 0xFFFFFF);
+            fontrenderer.fontHeight = previousHeight;
+            GL11.glEnable(2896);
+            GL11.glEnable(2929);
+        }
+        if (itemstack.isItemDamaged() || itemstack.getItem().showFullDurability()) {
+            int k = (int)Math.round(13.0 - (double)itemstack.getItemDamageForDisplay() * 13.0 / (double)itemstack.getMaxDamage());
+            int l = (int)Math.round(255.0 - (double)itemstack.getItemDamageForDisplay() * 255.0 / (double)itemstack.getMaxDamage());
+            GL11.glDisable(2896);
+            GL11.glDisable(2929);
+            GL11.glDisable(3553);
+            Tessellator tessellator = Tessellator.instance;
+            int i1 = 255 - l << 16 | l << 8;
+            int j1 = (255 - l) / 4 << 16 | 0x3F00;
+            this.renderQuad(tessellator, i + 2, j + 13, 13, 2, 0);
+            this.renderQuad(tessellator, i + 2, j + 13, 12, 1, j1);
+            this.renderQuad(tessellator, i + 2, j + 13, k, 1, i1);
+            GL11.glEnable(3553);
+            GL11.glEnable(2896);
+            GL11.glEnable(2929);
+            GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+    }
+    private void renderQuad(Tessellator tessellator, int i, int j, int k, int l, int i1) {
+        tessellator.startDrawingQuads();
+        tessellator.setColorOpaque_I(i1);
+        tessellator.addVertex(i + 0, j + 0, 0.0);
+        tessellator.addVertex(i + 0, j + l, 0.0);
+        tessellator.addVertex(i + k, j + l, 0.0);
+        tessellator.addVertex(i + k, j + 0, 0.0);
+        tessellator.draw();
     }
 }

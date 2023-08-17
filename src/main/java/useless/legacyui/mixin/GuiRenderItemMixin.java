@@ -59,8 +59,14 @@ public class GuiRenderItemMixin extends Gui {
         if (!hasDrawnSlotBackground) {
             GL11.glEnable(2929);
 
+            int fontHeight = mc.fontRenderer.fontHeight;
+            if (slot instanceof SlotResizable){
+                fontHeight = 5;
+            }
+
             itemRenderer.renderItemIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, itemStack, x, y, discovered ? 1.0F : 0.0F, 1.0F, renderScale);
-            itemRenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, itemStack, x, y, discovered ? null : "?");
+            itemRenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, itemStack, x, y, discovered ? null : "?", fontHeight);
+
             GL11.glDisable(2929);
         }
 
