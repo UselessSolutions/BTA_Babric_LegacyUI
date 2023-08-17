@@ -96,9 +96,10 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     public void updateRecipesByPage(int page) {
-        int startIndex = page * 6;
-        this.recipes = new ContainerGuidebookRecipeBase[6];
-        for (int i = 0; i < 6 && startIndex + i < totalRecipes; ++i) {
+        int displaySlot = 14;
+        int startIndex = page * displaySlot;
+        this.recipes = new ContainerGuidebookRecipeBase[displaySlot];
+        for (int i = 0; i < displaySlot && startIndex + i < totalRecipes; ++i) {
             if (storedRecipes[startIndex + i] instanceof IRecipe) {
                 this.recipes[i] = new ContainerGuidebookRecipeCrafting((IRecipe)storedRecipes[startIndex + i]);
                 continue;
@@ -177,7 +178,6 @@ public class GuiLegacyCrafting extends GuiContainer {
             if (!(recipes.get(i2) instanceof RecipeShaped) && !(recipes.get(i2) instanceof RecipeShapeless)) continue;
             ++totalRecipes;
         }
-        totalRecipes += RecipesFurnace.smelting().getSmeltingList().size();
         //maxPage = (totalRecipes += RecipesBlastFurnace.smelting().getSmeltingList().size()) / 6 - 1;
         int index = 0;
         storedRecipes = new Object[totalRecipes];
