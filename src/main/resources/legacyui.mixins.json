@@ -6,7 +6,6 @@
   "mixins": [
     "FontMixin",
     "GuiRenderItemMixin",
-    "ItemEntityRendererMixin",
     "MinecraftMixin",
     "PlayerSPMixin"
   ],

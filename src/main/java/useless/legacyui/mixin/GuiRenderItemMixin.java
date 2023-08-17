@@ -13,13 +13,15 @@ import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import useless.legacyui.Gui.SlotResizable;
 import useless.legacyui.LegacyUI;
+import useless.legacyui.Rendering.LegacyItemEntityRenderer;
 
 @Mixin(value = GuiRenderItem.class, remap = false)
 public class GuiRenderItemMixin extends Gui {
-    @Shadow
-    static ItemEntityRenderer itemRenderer = new ItemEntityRenderer();
+    @Unique
+    private static final LegacyItemEntityRenderer itemRenderer = new LegacyItemEntityRenderer();
     @Shadow
     Minecraft mc;
     /**
@@ -57,10 +59,8 @@ public class GuiRenderItemMixin extends Gui {
         if (!hasDrawnSlotBackground) {
             GL11.glEnable(2929);
 
-            LegacyUI.currentRenderScale = renderScale;
-            itemRenderer.renderItemIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, itemStack, x, y, discovered ? 1.0F : 0.0F, 1.0F);
+            itemRenderer.renderItemIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, itemStack, x, y, discovered ? 1.0F : 0.0F, 1.0F, renderScale);
             itemRenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, itemStack, x, y, discovered ? null : "?");
-            LegacyUI.currentRenderScale = 1f;
             GL11.glDisable(2929);
         }
 
