@@ -9,6 +9,7 @@ Needed Things
 - Configuration options (for whatever needs it)
 - texture pack support
 - translucent block/item rendering
+- xbox popup style achievements
 
 Bugs
 - Click drag does not use resized slots
