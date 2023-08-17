@@ -31,16 +31,11 @@ public class ContainerWorkbenchLegacy extends Container {
         this.x = i;
         this.y = j;
         this.z = k;
-        this.addSlot(new SlotCrafting(inventoryplayer.player, this.craftMatrix, this.craftResult, 0, 107, 127));
         this.inventoryPlayer = inventoryplayer;
-
-
-
-
-        this.onCraftMatrixChanged(this.craftMatrix);
     }
 
     public void craftingSlots(){
+        this.addSlot(new SlotCrafting(this.inventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 107, 127));
         int baseIterator;
         int subIterator;
         // 3x3 Crafting
@@ -61,6 +56,8 @@ public class ContainerWorkbenchLegacy extends Container {
         for(baseIterator = 0; baseIterator < 9; ++baseIterator) {
             this.addSlot(new SlotResizable(this.inventoryPlayer, baseIterator, 153 + baseIterator * 12, 154, 12));
         }
+
+        this.onCraftMatrixChanged(this.craftMatrix);
     }
 
     public void setRecipes(EntityPlayer player, ContainerGuidebookRecipeBase[] recipes, StatFileWriter statWriter) {
