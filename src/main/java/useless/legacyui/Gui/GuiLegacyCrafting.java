@@ -16,6 +16,7 @@ import net.minecraft.core.player.inventory.slot.Slot;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import useless.legacyui.LegacyUI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,13 @@ import java.util.List;
 public class GuiLegacyCrafting extends GuiContainer {
     protected static int tab; // Current page of tabs
     protected static int maxTab; // Total amount of tab pages, zero index
+    protected static int currentSlot;
+    protected static int totalDisplaySlots;
     protected GuiButton lastTabButton;
     protected GuiButton nextTabButton;
+    protected String slotString = "1/1";
+    protected GuiButton lastSlotButton;
+    protected GuiButton nextSlotButton;
     protected String tabString = "1/1"; // Indicator of what tab page you are on
     protected ContainerGuidebookRecipeBase[] recipes;
     private static Object[] storedRecipes;
@@ -38,10 +44,15 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.xSize = 256+17; // width of texture plus the 17px strip that was cut off
         this.ySize = 175; // height of gui window
         this.lastTabButton = new GuiButton(0, (this.width - this.xSize)/2  + this.xSize - 20 - 20 - 5 - 6, (this.height - this.ySize) / 2 + 28, 20, 20, "<");
-        this.controlList.add(this.lastTabButton);
         this.nextTabButton = new GuiButton(1, (this.width - this.xSize)/2  + this.xSize - 20 - 6, (this.height - this.ySize) / 2 + 28, 20, 20, ">");
+        this.lastSlotButton = new GuiButton(0, (this.width - this.xSize)/2  + 6, (this.height - this.ySize) / 2 + 28, 20, 20, "<");
+        this.nextSlotButton = new GuiButton(1, (this.width - this.xSize)/2  + 20 + 5 + 6, (this.height - this.ySize) / 2 + 28, 20, 20, ">");
+        this.controlList.add(this.lastTabButton);
         this.controlList.add(this.nextTabButton);
+        this.controlList.add(this.lastSlotButton);
+        this.controlList.add(this.nextSlotButton);
         this.updatePages();
+        this.selectDisplaySlot(currentSlot);
     }
     protected void buttonPressed(GuiButton guibutton) {
         if (!guibutton.enabled) {
@@ -53,6 +64,22 @@ public class GuiLegacyCrafting extends GuiContainer {
         if (guibutton == this.nextTabButton) {
             this.scroll(-1);
         }
+        if (guibutton == this.lastSlotButton){
+            selectDisplaySlot(currentSlot-1);
+        }
+        if (guibutton == this.nextSlotButton){
+            selectDisplaySlot(currentSlot+1);
+        }
+    }
+
+    public void selectDisplaySlot(int slotIndex){
+        if (slotIndex < 0){
+            slotIndex = 0;
+        } else if (slotIndex > totalDisplaySlots-1) {
+            slotIndex = totalDisplaySlots-1;
+        }
+        currentSlot = slotIndex;
+        slotString = "" + (currentSlot+1) + "/" + (totalDisplaySlots);
     }
     public void lastPage() {
         --tab;
@@ -96,10 +123,9 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     public void updateRecipesByPage(int page) {
-        int displaySlot = 14;
-        int startIndex = page * displaySlot;
-        this.recipes = new ContainerGuidebookRecipeBase[displaySlot];
-        for (int i = 0; i < displaySlot && startIndex + i < totalRecipes; ++i) {
+        int startIndex = page * totalDisplaySlots;
+        this.recipes = new ContainerGuidebookRecipeBase[totalDisplaySlots];
+        for (int i = 0; i < totalDisplaySlots && startIndex + i < totalRecipes; ++i) {
             if (storedRecipes[startIndex + i] instanceof IRecipe) {
                 this.recipes[i] = new ContainerGuidebookRecipeCrafting((IRecipe)storedRecipes[startIndex + i]);
                 continue;
@@ -123,6 +149,14 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.fontRenderer.drawCenteredString("Inventory", 205, this.ySize - 78, 0XFFFFFF);
         this.fontRenderer.drawCenteredString("Crafting", 72, this.ySize - 78, 0XFFFFFF);
         this.drawStringNoShadow(this.fontRenderer, this.tabString, this.xSize - this.fontRenderer.getStringWidth(this.tabString) - 52, 36, 0x404040);
+        this.drawStringNoShadow(this.fontRenderer, this.slotString,+ 52, 36, 0x404040);
+
+        int i = this.mc.renderEngine.getTexture("assets/gui/legacycrafting.png");
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.mc.renderEngine.bindTexture(i);
+
+        // Render Selection texture ontop of currently selected slot, does not require offset like bg layer
+        this.drawTexturedModalRect(7 + 18 * currentSlot,52,35,175, 26, 24);
     }
 
     public void drawGuiContainerBackgroundLayer(float f) {
@@ -142,6 +176,8 @@ public class GuiLegacyCrafting extends GuiContainer {
         // Renders selected bookmark
         int bookMarkWidth = 34;
         this.drawTexturedModalRect(j + bookMarkWidth * tab, k - 2, 0, 175, bookMarkWidth, 30);
+
+
 
 
 
@@ -172,6 +208,8 @@ public class GuiLegacyCrafting extends GuiContainer {
         int i;
         tab = 0;
         maxTab = 7;
+        currentSlot = 0;
+        totalDisplaySlots = 14;
         totalRecipes = 0;
         List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
         for (int i2 = 0; i2 < recipes.size(); ++i2) {
