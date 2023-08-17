@@ -135,8 +135,11 @@ public class ContainerWorkbenchLegacy extends Container {
             } else {
                 return slot.id >= 37 && slot.id <= 45 ? this.getSlots(10, 27, false) : null;
             }
-        } else {
+        } else if (slot.id < 10){
             return slot.id == 0 ? this.getSlots(10, 36, true) : this.getSlots(10, 36, false);
+        } else {
+            return null;
         }
     }
+
 }
