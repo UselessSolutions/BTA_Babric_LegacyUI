@@ -14,6 +14,7 @@ import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotCrafting;
 import net.minecraft.core.player.inventory.slot.SlotGuidebook;
 import net.minecraft.core.world.World;
+import useless.legacyui.LegacyUI;
 
 import java.util.List;
 
@@ -140,6 +141,46 @@ public class ContainerWorkbenchLegacy extends Container {
         } else {
             return null;
         }
+    }
+    public void handleHotbarSwap(int[] args, EntityPlayer player) {
+        // Dont hotbar swap the crafting guide!
+        if (args[0] > 45){
+            return;
+        }
+
+        if (args.length < 2) {
+            return;
+        }
+        int hotbarSlotNumber = args[1];
+        if (hotbarSlotNumber < 1 || hotbarSlotNumber > 9) {
+            return;
+        }
+        Slot slot = this.getSlot(args[0]);
+        Slot hotbarSlot = this.getSlot(this.getHotbarSlotId(hotbarSlotNumber));
+        if (hotbarSlot == null || slot == hotbarSlot) {
+            return;
+        }
+        ItemStack slotStack = slot.getStack();
+        ItemStack hotbarStack = hotbarSlot.getStack();
+        if (slotStack != null) {
+            slot.putStack(null);
+            slot.onPickupFromSlot(slotStack);
+        }
+        if (hotbarStack != null) {
+            hotbarSlot.putStack(null);
+            hotbarSlot.onPickupFromSlot(hotbarStack);
+        }
+        this.mergeItems(slotStack, hotbarSlot.id);
+        this.storeOrDropItem(player, slotStack);
+        this.mergeItems(hotbarStack, slot.id);
+        this.storeOrDropItem(player, hotbarStack);
+        slot.onSlotChanged();
+        hotbarSlot.onSlotChanged();
+    }
+
+    public int getHotbarSlotId(int number) {
+        // - 14 to account for the 14 display items
+        return this.inventorySlots.size() - 10 - 14 + number;
     }
 
 }
