@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.Random;
 
 public class LegacyItemEntityRenderer extends ItemEntityRenderer {
-    private final LegacyRenderBlocks renderBlocks = new LegacyRenderBlocks();
+    private final RenderBlocks renderBlocks = new RenderBlocks();
     private final Random random = new Random();
     public boolean field_27004_a = true;
     public LegacyItemEntityRenderer() {
