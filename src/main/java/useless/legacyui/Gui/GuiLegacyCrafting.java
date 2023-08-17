@@ -23,18 +23,21 @@ import java.util.List;
 
 public class GuiLegacyCrafting extends GuiContainer {
     protected static int tab; // Current page of tabs
-    protected static int maxTab; // Total amount of tab pages, zero index
+    protected final int maxTab = 8; // Total amount of tab pages, zero index
     protected static int currentSlot;
-    protected static int totalDisplaySlots;
-    protected GuiButton lastTabButton;
-    protected GuiButton nextTabButton;
+    protected final int totalDisplaySlots = 14;
     protected String slotString = "1/1";
-    protected GuiButton lastSlotButton;
-    protected GuiButton nextSlotButton;
     protected String tabString = "1/1"; // Indicator of what tab page you are on
     protected ContainerGuidebookRecipeBase[] recipes;
     private static Object[] storedRecipes;
     private static int totalRecipes;
+
+    // Button Hell
+    protected GuiButtonTransparent[] slotButtons = new GuiButtonTransparent[totalDisplaySlots];
+    protected GuiButtonTransparent[] tabButtons = new GuiButtonTransparent[maxTab];
+
+
+
     public GuiLegacyCrafting(EntityPlayer player, int i, int j, int k) {
         super(new ContainerWorkbenchLegacy(player.inventory, player.world, i, j, k));
     }
@@ -43,14 +46,17 @@ public class GuiLegacyCrafting extends GuiContainer {
         super.initGui();
         this.xSize = 256+17; // width of texture plus the 17px strip that was cut off
         this.ySize = 175; // height of gui window
-        this.lastTabButton = new GuiButton(0, (this.width - this.xSize)/2  + this.xSize - 20 - 20 - 5 - 6, (this.height - this.ySize) / 2 + 28, 20, 20, "<");
-        this.nextTabButton = new GuiButton(1, (this.width - this.xSize)/2  + this.xSize - 20 - 6, (this.height - this.ySize) / 2 + 28, 20, 20, ">");
-        this.lastSlotButton = new GuiButton(0, (this.width - this.xSize)/2  + 6, (this.height - this.ySize) / 2 + 28, 20, 20, "<");
-        this.nextSlotButton = new GuiButton(1, (this.width - this.xSize)/2  + 20 + 5 + 6, (this.height - this.ySize) / 2 + 28, 20, 20, ">");
-        this.controlList.add(this.lastTabButton);
-        this.controlList.add(this.nextTabButton);
-        this.controlList.add(this.lastSlotButton);
-        this.controlList.add(this.nextSlotButton);
+
+        // Setup Invisible buttons
+        for (int i = 0; i < slotButtons.length; i++){
+            slotButtons[i] = new GuiButtonTransparent(i + 4, (this.width - this.xSize)/2 + 11 + 18*i, (this.height - this.ySize) / 2 + 55, 18,18, "");
+            this.controlList.add(slotButtons[i]);
+        }
+        for (int i = 0; i < tabButtons.length; i++){
+            tabButtons[i] = new GuiButtonTransparent(i + 4, (this.width - this.xSize)/2 + 34 * i, (this.height - this.ySize)/2, 34,24, "");
+            this.controlList.add(tabButtons[i]);
+        }
+
         this.updatePages();
         this.selectDisplaySlot(currentSlot);
     }
@@ -58,17 +64,20 @@ public class GuiLegacyCrafting extends GuiContainer {
         if (!guibutton.enabled) {
             return;
         }
-        if (guibutton == this.lastTabButton) {
-            this.scroll(1);
+        int i = 0;
+        for (GuiButtonTransparent button : slotButtons){
+            if (guibutton == button){
+                selectDisplaySlot(i);
+            }
+            i++;
         }
-        if (guibutton == this.nextTabButton) {
-            this.scroll(-1);
-        }
-        if (guibutton == this.lastSlotButton){
-            selectDisplaySlot(currentSlot-1);
-        }
-        if (guibutton == this.nextSlotButton){
-            selectDisplaySlot(currentSlot+1);
+
+        i = 0;
+        for (GuiButtonTransparent button : tabButtons){
+            if (guibutton == button){
+                selectTab(i);
+            }
+            i++;
         }
     }
 
@@ -80,6 +89,16 @@ public class GuiLegacyCrafting extends GuiContainer {
         }
         currentSlot = slotIndex;
         slotString = "" + (currentSlot+1) + "/" + (totalDisplaySlots);
+        updatePages();
+    }
+    public void selectTab(int tabIndex){
+        if (tabIndex < 0){
+            tabIndex = 0;
+        } else if (tabIndex > maxTab-1) {
+            tabIndex = maxTab-1;
+        }
+        tab = tabIndex;
+        tabString = "" + (tab+1) + "/" + (maxTab);
         updatePages();
     }
     public void lastPage() {
@@ -94,34 +113,8 @@ public class GuiLegacyCrafting extends GuiContainer {
 
     protected void updatePages() {
         this.updateRecipesByPage(tab);
-        this.updatePageSwitcher();
     }
 
-    protected void updatePageSwitcher() {
-        this.lastTabButton.enabled = tab != 0;
-        this.nextTabButton.enabled = tab != maxTab;
-        this.tabString = "" + (tab + 1) + "/" + (maxTab + 1);
-    }
-
-    public void scroll(int direction) {
-        int count = 1;
-        if (Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157)) {
-            count = 10;
-            if (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54)) {
-                count = 100;
-            }
-        }
-        while (this.lastTabButton.enabled && direction > 0 && count > 0) {
-            this.lastPage();
-            this.updatePageSwitcher();
-            --count;
-        }
-        while (this.nextTabButton.enabled && direction < 0 && count > 0) {
-            this.nextPage();
-            this.updatePageSwitcher();
-            --count;
-        }
-    }
 
     public void updateRecipesByPage(int page) {
         int startIndex = page * totalDisplaySlots;
@@ -149,8 +142,8 @@ public class GuiLegacyCrafting extends GuiContainer {
     public void drawGuiContainerForegroundLayer() {
         this.fontRenderer.drawCenteredString("Inventory", 205, this.ySize - 78, 0XFFFFFF);
         this.fontRenderer.drawCenteredString("Crafting", 72, this.ySize - 78, 0XFFFFFF);
-        this.drawStringNoShadow(this.fontRenderer, this.tabString, this.xSize - this.fontRenderer.getStringWidth(this.tabString) - 52, 36, 0x404040);
-        this.drawStringNoShadow(this.fontRenderer, this.slotString,+ 52, 36, 0x404040);
+        //this.drawStringNoShadow(this.fontRenderer, this.tabString, this.xSize - this.fontRenderer.getStringWidth(this.tabString) - 52, 36, 0x404040);
+        //this.drawStringNoShadow(this.fontRenderer, this.slotString,+ 52, 36, 0x404040);
 
         int i = this.mc.renderEngine.getTexture("assets/gui/legacycrafting.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -161,7 +154,7 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     public void drawGuiContainerBackgroundLayer(float f) {
-        this.scroll(Mouse.getDWheel()); // Scroll through tabs
+        //this.scroll(Mouse.getDWheel()); // Scroll through tabs
         int i = this.mc.renderEngine.getTexture("assets/gui/legacycrafting.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(i);
@@ -208,9 +201,7 @@ public class GuiLegacyCrafting extends GuiContainer {
     static {
         int i;
         tab = 0;
-        maxTab = 7;
         currentSlot = 0;
-        totalDisplaySlots = 14;
         totalRecipes = 0;
         List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
         for (int i2 = 0; i2 < recipes.size(); ++i2) {
