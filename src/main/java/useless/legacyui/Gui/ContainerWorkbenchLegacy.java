@@ -1,11 +1,14 @@
 package useless.legacyui.Gui;
 
 import net.minecraft.core.InventoryAction;
+import net.minecraft.core.achievement.stat.StatFileWriter;
+import net.minecraft.core.achievement.stat.StatList;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.crafting.CraftingManager;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
+import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.core.player.inventory.*;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotCrafting;
@@ -21,6 +24,7 @@ public class ContainerWorkbenchLegacy extends Container {
     private int x;
     private int y;
     private int z;
+    private InventoryPlayer inventoryPlayer;
 
     public ContainerWorkbenchLegacy(InventoryPlayer inventoryplayer, World world, int i, int j, int k) {
         this.field_20133_c = world;
@@ -28,7 +32,15 @@ public class ContainerWorkbenchLegacy extends Container {
         this.y = j;
         this.z = k;
         this.addSlot(new SlotCrafting(inventoryplayer.player, this.craftMatrix, this.craftResult, 0, 107, 127));
+        this.inventoryPlayer = inventoryplayer;
 
+
+
+
+        this.onCraftMatrixChanged(this.craftMatrix);
+    }
+
+    public void craftingSlots(){
         int baseIterator;
         int subIterator;
         // 3x3 Crafting
@@ -41,20 +53,26 @@ public class ContainerWorkbenchLegacy extends Container {
         // 3x9 inventory
         for(baseIterator = 0; baseIterator < 3; ++baseIterator) {
             for(subIterator = 0; subIterator < 9; ++subIterator) {
-                this.addSlot(new SlotResizable(inventoryplayer, subIterator + baseIterator * 9 + 9, 153 + subIterator * 12, 112 + baseIterator * 12, 12));
+                this.addSlot(new SlotResizable(this.inventoryPlayer, subIterator + baseIterator * 9 + 9, 153 + subIterator * 12, 112 + baseIterator * 12, 12));
             }
         }
 
         // 1x9 hotbar
         for(baseIterator = 0; baseIterator < 9; ++baseIterator) {
-            this.addSlot(new SlotResizable(inventoryplayer, baseIterator, 153 + baseIterator * 12, 154, 12));
+            this.addSlot(new SlotResizable(this.inventoryPlayer, baseIterator, 153 + baseIterator * 12, 154, 12));
+        }
+    }
+
+    public void setRecipes(EntityPlayer player, ContainerGuidebookRecipeBase[] recipes, StatFileWriter statWriter) {
+        this.inventorySlots.clear();
+        craftingSlots();
+        int i = 0;
+        for (ContainerGuidebookRecipeBase container : recipes){
+            SlotGuidebook slot = (SlotGuidebook)container.inventorySlots.get(0);
+            this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18*i, 56, slot.item, true));
+            i++;
         }
 
-        for(baseIterator = 0; baseIterator < 15; ++baseIterator){
-            //this.addSlot(new SlotGuidebook(baseIterator + (9 * 4), 11, 56, ItemStack(Item.diamond), true));
-        }
-
-        this.onCraftMatrixChanged(this.craftMatrix);
     }
 
     public void onCraftMatrixChanged(IInventory iinventory) {
