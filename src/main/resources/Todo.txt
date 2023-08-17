@@ -10,16 +10,17 @@ Needed Things
 - texture pack support
 - translucent block/item rendering
 - xbox popup style achievements (Config option)
-- Seperate tab icon texture
+- Separate tab icon texture
 - Icon helper class for adding additional icons
 - Config for if undiscovered items should be blocked out
+- Invisible buttons for tab selection
 
 - Guide books tabs for recipe types
 - Guide book recipe groups
 
 Bugs
 - Click drag does not use resized slots
-- Fontscale does not keep centered text
+- Font scale does not keep centered text
 - Durability rendered at incorrect scale
 - String shadows offset incorrectly at different scales
 
