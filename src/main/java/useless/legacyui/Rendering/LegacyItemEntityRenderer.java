@@ -32,7 +32,8 @@ public class LegacyItemEntityRenderer extends ItemEntityRenderer {
             renderengine.bindTexture(renderengine.getTexture("/terrain.png"));
             Block block = Block.blocksList[j1];
             GL11.glPushMatrix();
-            GL11.glTranslatef(l - 2, i1 + 3, -3.0f);
+            float offset = (9 * (scale -1)); // Offset to place block at right location in slot
+            GL11.glTranslatef(l - 2  + offset, i1 + 3 + offset, -3.0f);
             GL11.glScalef(10.0f, 10.0f, 10.0f);
             GL11.glTranslatef(1.0f, 0.5f, 1.0f);
             GL11.glScalef(1.0f, 1.0f, -1.0f);
@@ -49,7 +50,8 @@ public class LegacyItemEntityRenderer extends ItemEntityRenderer {
             }
             GL11.glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
             this.renderBlocks.useInventoryTint = this.field_27004_a;
-            this.renderBlocks.renderBlockOnInventory(block, j, brightness, scale); // Renders blocks
+            GL11.glScaled(scale, scale, scale); // Scales item
+            this.renderBlocks.renderBlockOnInventory(block, j, brightness); // Renders blocks
             this.renderBlocks.useInventoryTint = true;
             GL11.glPopMatrix();
             GL11.glDisable(3042);
