@@ -5,6 +5,7 @@ import net.minecraft.core.achievement.stat.StatFileWriter;
 import net.minecraft.core.achievement.stat.StatList;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.crafting.CraftingManager;
+import net.minecraft.core.crafting.recipe.IRecipe;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
@@ -15,6 +16,7 @@ import net.minecraft.core.player.inventory.slot.SlotCrafting;
 import net.minecraft.core.player.inventory.slot.SlotGuidebook;
 import net.minecraft.core.world.World;
 import useless.legacyui.LegacyUI;
+import useless.legacyui.Sorting.SortingCategory;
 
 import java.util.List;
 
@@ -61,9 +63,15 @@ public class ContainerWorkbenchLegacy extends Container {
         this.onCraftMatrixChanged(this.craftMatrix);
     }
 
-    public void setRecipes(EntityPlayer player, ContainerGuidebookRecipeBase[] recipes, StatFileWriter statWriter, int currentSlotId) {
+    public void setRecipes(EntityPlayer player, SortingCategory category, StatFileWriter statWriter, int currentSlotId, int currentScrollAmount) {
         this.inventorySlots.clear();
         craftingSlots();
+
+        ContainerGuidebookRecipeBase[] recipes = new ContainerGuidebookRecipeBase[category.recipeGroups.length];
+        for (int i = 0; i < recipes.length; i++){
+            recipes[i] = new ContainerGuidebookRecipeCrafting((IRecipe)(category.recipeGroups[i].recipes[0]));
+        }
+
 
         int i = 0;
         for (ContainerGuidebookRecipeBase container : recipes){
@@ -84,6 +92,27 @@ public class ContainerWorkbenchLegacy extends Container {
 
             // Recipe preview
             if (i == currentSlotId){
+                // Scrollbar view
+                if (category.recipeGroups[i].recipes.length > 0){
+                    int maxVal = category.recipeGroups[i].recipes.length;
+                    int idUpper = currentScrollAmount + 1;
+                    while (idUpper > maxVal){
+                        idUpper -= maxVal;
+                    }
+
+                    int idLower = currentScrollAmount -1;
+                    while (idLower < 0){
+                        idLower += maxVal;
+                    }
+
+                    // TODO Make not terrible
+                    this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18*i, 56+21, new ContainerGuidebookRecipeCrafting((IRecipe)category.recipeGroups[i].recipes[idUpper]).inventorySlots.get(0).getStack(), discovered));
+                    this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18*i, 56-21, new ContainerGuidebookRecipeCrafting((IRecipe)category.recipeGroups[i].recipes[idLower]).inventorySlots.get(0).getStack(), discovered));
+
+                }
+
+
+
                 this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 107, 127, slot.item, discovered, true, 0xFF0000));
                 for (int index = 1; index < container.inventorySlots.size(); index++){
 

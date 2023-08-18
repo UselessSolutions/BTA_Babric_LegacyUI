@@ -2,39 +2,35 @@ package useless.legacyui.Gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiContainer;
-import net.minecraft.client.gui.GuiGuidebook;
-import net.minecraft.core.block.Block;
 import net.minecraft.core.crafting.CraftingManager;
 import net.minecraft.core.crafting.recipe.*;
 import net.minecraft.core.entity.player.EntityPlayer;
-import net.minecraft.core.item.ItemStack;
-import net.minecraft.core.player.inventory.ContainerGuidebook;
 import net.minecraft.core.player.inventory.ContainerGuidebookRecipeBase;
 import net.minecraft.core.player.inventory.ContainerGuidebookRecipeCrafting;
-import net.minecraft.core.player.inventory.ContainerGuidebookRecipeFurnace;
 import net.minecraft.core.player.inventory.slot.Slot;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import useless.legacyui.LegacyUI;
+import useless.legacyui.Sorting.CraftingCategories;
+import useless.legacyui.Sorting.SortingCategory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GuiLegacyCrafting extends GuiContainer {
     protected static int tab; // Current page of tabs
-    protected final int maxTab = 8; // Total amount of tab pages, zero index
+    protected final int maxDisplayedTabs = 8; // Total amount of tab pages, zero index
     protected static int currentSlot;
     protected final int totalDisplaySlots = 14;
     protected String slotString = "1/1";
     protected String tabString = "1/1"; // Indicator of what tab page you are on
-    protected ContainerGuidebookRecipeBase[] recipes;
-    private static Object[] storedRecipes;
-    private static int totalRecipes;
 
     // Button Hell
     protected GuiButtonTransparent[] slotButtons = new GuiButtonTransparent[totalDisplaySlots];
-    protected GuiButtonTransparent[] tabButtons = new GuiButtonTransparent[maxTab];
+    protected GuiButtonTransparent[] tabButtons = new GuiButtonTransparent[maxDisplayedTabs];
+
+    protected SortingCategory[] categories;
+    protected static int currentScroll = 0;
+    protected static int currentCategory = 0;
+
+    protected static Object[] storedCategories;
 
 
 
@@ -46,6 +42,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         super.initGui();
         this.xSize = 256+17; // width of texture plus the 17px strip that was cut off
         this.ySize = 175; // height of gui window
+
 
         // Setup Invisible buttons
         for (int i = 0; i < slotButtons.length; i++){
@@ -64,6 +61,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         if (!guibutton.enabled) {
             return;
         }
+        currentScroll = 0;
         int i = 0;
         for (GuiButtonTransparent button : slotButtons){
             if (guibutton == button){
@@ -92,13 +90,14 @@ public class GuiLegacyCrafting extends GuiContainer {
         updatePages();
     }
     public void selectTab(int tabIndex){
+        currentSlot = 0; //Reset to start on tab change
         if (tabIndex < 0){
             tabIndex = 0;
-        } else if (tabIndex > maxTab-1) {
-            tabIndex = maxTab-1;
+        } else if (tabIndex > maxDisplayedTabs -1) {
+            tabIndex = maxDisplayedTabs -1;
         }
         tab = tabIndex;
-        tabString = "" + (tab+1) + "/" + (maxTab);
+        tabString = "" + (tab+1) + "/" + (maxDisplayedTabs);
         updatePages();
     }
     public void lastPage() {
@@ -118,19 +117,20 @@ public class GuiLegacyCrafting extends GuiContainer {
 
     public void updateRecipesByPage(int page) {
         int startIndex = page * totalDisplaySlots;
-        this.recipes = new ContainerGuidebookRecipeBase[totalDisplaySlots];
+        this.categories = new SortingCategory[storedCategories.length];
+        for (int i = 0; i < categories.length; ++i) {
+            categories[i] = (SortingCategory) storedCategories[i];
+        }
+        ((ContainerWorkbenchLegacy)this.inventorySlots).setRecipes(this.mc.thePlayer, categories[tab], this.mc.statFileWriter, currentSlot, currentScroll);
+        /*this.recipes = new ContainerGuidebookRecipeBase[totalDisplaySlots];
         for (int i = 0; i < totalDisplaySlots && startIndex + i < totalRecipes; ++i) {
             if (storedRecipes[startIndex + i] instanceof IRecipe) {
                 this.recipes[i] = new ContainerGuidebookRecipeCrafting((IRecipe)storedRecipes[startIndex + i]);
                 continue;
             }
-            if (storedRecipes[startIndex + i] instanceof ItemStack[]) {
-                this.recipes[i] = new ContainerGuidebookRecipeFurnace(((ItemStack[])storedRecipes[startIndex + i])[0], ((ItemStack[])storedRecipes[startIndex + i])[1], ((ItemStack[])storedRecipes[startIndex + i])[2]);
-                continue;
-            }
             System.out.println("Unknown guidebook recipe!");
         }
-        ((ContainerWorkbenchLegacy)this.inventorySlots).setRecipes(this.mc.thePlayer, this.recipes, this.mc.statFileWriter, currentSlot);
+        ((ContainerWorkbenchLegacy)this.inventorySlots).setRecipes(this.mc.thePlayer, this.recipes, this.mc.statFileWriter, currentSlot);*/
     }
 
 
@@ -151,6 +151,12 @@ public class GuiLegacyCrafting extends GuiContainer {
 
         // Render Selection texture ontop of currently selected slot, does not require offset like bg layer
         this.drawTexturedModalRect(7 + 18 * currentSlot,52,35,175, 26, 24);
+
+        // Render Selector Scrollbar when applicable
+        if (categories[tab].recipeGroups[currentSlot].recipes.length > 0){
+            this.drawTexturedModalRect(7 + 18 * currentSlot,21,115,175, 26, 31);
+            this.drawTexturedModalRect(7 + 18 * currentSlot,76,141,175, 26, 31);
+        }
     }
 
     public void drawGuiContainerBackgroundLayer(float f) {
@@ -171,6 +177,11 @@ public class GuiLegacyCrafting extends GuiContainer {
         int bookMarkWidth = 34;
         this.drawTexturedModalRect(j + bookMarkWidth * tab, k - 2, 0, 175, bookMarkWidth, 30);
 
+        // Render Selector Scrollbar background when applicable
+        if (categories[tab].recipeGroups[currentSlot].recipes.length > 0){
+            this.drawTexturedModalRect(j + 12 + 18 * currentSlot,k + 34,168,175, 18, 18);
+            this.drawTexturedModalRect(j + 12 + 18 * currentSlot,k + 76,168,175, 18, 18);
+        }
 
 
 
@@ -202,18 +213,14 @@ public class GuiLegacyCrafting extends GuiContainer {
         int i;
         tab = 0;
         currentSlot = 0;
-        totalRecipes = 0;
+        currentScroll = 0;
+        currentCategory = 0;
+
+
+        List<SortingCategory> categories = CraftingCategories.getInstance().getCategories();
         List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-        for (int i2 = 0; i2 < recipes.size(); ++i2) {
-            if (!(recipes.get(i2) instanceof RecipeShaped) && !(recipes.get(i2) instanceof RecipeShapeless)) continue;
-            ++totalRecipes;
-        }
-        //maxPage = (totalRecipes += RecipesBlastFurnace.smelting().getSmeltingList().size()) / 6 - 1;
-        int index = 0;
-        storedRecipes = new Object[totalRecipes];
-        for (int i3 = 0; i3 < recipes.size(); ++i3) {
-            if (!(recipes.get(i3) instanceof RecipeShaped) && !(recipes.get(i3) instanceof RecipeShapeless)) continue;
-            GuiLegacyCrafting.storedRecipes[index++] = recipes.get(i3);
-        }
+
+        GuiLegacyCrafting.storedCategories = categories.toArray();
+
     }
 }
