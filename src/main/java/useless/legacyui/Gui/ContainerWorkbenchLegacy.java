@@ -67,6 +67,7 @@ public class ContainerWorkbenchLegacy extends Container {
         this.inventorySlots.clear();
         craftingSlots();
 
+
         ContainerGuidebookRecipeBase[] recipes = new ContainerGuidebookRecipeBase[category.recipeGroups.length];
         for (int i = 0; i < recipes.length; i++){
             recipes[i] = new ContainerGuidebookRecipeCrafting((IRecipe)(category.recipeGroups[i].recipes[0]));
@@ -75,6 +76,7 @@ public class ContainerWorkbenchLegacy extends Container {
 
         int i = 0;
         for (ContainerGuidebookRecipeBase container : recipes){
+            int categoryLength = category.recipeGroups[i].recipes.length;
             SlotGuidebook slot = (SlotGuidebook)container.inventorySlots.get(0);
 
             // If item has been discovered
@@ -88,22 +90,21 @@ public class ContainerWorkbenchLegacy extends Container {
                 discovered = true;
             }
 
-            this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18*i, 56, slot.item, discovered));
+            // Renders scroll zero of all other options
+            if (i != currentSlotId){
+                this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18*i, 56, slot.item, discovered));
+            }
+            else {
+                this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18*i, 56, new ContainerGuidebookRecipeCrafting((IRecipe)category.recipeGroups[i].recipes[wrapAroundIndex(currentScrollAmount, categoryLength)]).inventorySlots.get(0).getStack(), discovered));
+            }
 
             // Recipe preview
             if (i == currentSlotId){
                 // Scrollbar view
                 if (category.recipeGroups[i].recipes.length > 0){
-                    int maxVal = category.recipeGroups[i].recipes.length;
-                    int idUpper = currentScrollAmount + 1;
-                    while (idUpper > maxVal){
-                        idUpper -= maxVal;
-                    }
-
-                    int idLower = currentScrollAmount -1;
-                    while (idLower < 0){
-                        idLower += maxVal;
-                    }
+                    int idUpper = wrapAroundIndex(currentScrollAmount + 1, categoryLength);
+                    int idLower = wrapAroundIndex(currentScrollAmount - 1, categoryLength);
+                    LegacyUI.LOGGER.info("Idlower: " + idLower + " IdUpper: " + idUpper + " CurrentScroll: " + currentScrollAmount);
 
                     // TODO Make not terrible
                     this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18*i, 56+21, new ContainerGuidebookRecipeCrafting((IRecipe)category.recipeGroups[i].recipes[idUpper]).inventorySlots.get(0).getStack(), discovered));
@@ -113,7 +114,7 @@ public class ContainerWorkbenchLegacy extends Container {
 
 
 
-                this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 107, 127, slot.item, discovered, true, 0xFF0000));
+                this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 107, 127, new ContainerGuidebookRecipeCrafting((IRecipe)category.recipeGroups[i].recipes[wrapAroundIndex(currentScrollAmount, categoryLength)]).inventorySlots.get(0).getStack(), discovered, true, 0xFF0000));
                 for (int index = 1; index < container.inventorySlots.size(); index++){
 
                     // If item has been discovered
@@ -131,7 +132,7 @@ public class ContainerWorkbenchLegacy extends Container {
                     }
 
                     // Render to crafting grid
-                    this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 20 + 18 * ((index-1)%3) , 109 + 18 * ((index - 1)/3), slot.item, discovered, highlight, 0xFF0000));
+                    this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 20 + 18 * ((index-1)%3) , 109 + 18 * ((index - 1)/3),  new ContainerGuidebookRecipeCrafting((IRecipe)category.recipeGroups[i].recipes[wrapAroundIndex(currentScrollAmount, categoryLength)]).inventorySlots.get(index).getStack(), discovered, highlight, 0xFF0000));
                 }
 
             }
@@ -139,6 +140,16 @@ public class ContainerWorkbenchLegacy extends Container {
             i++;
         }
 
+    }
+
+    private int wrapAroundIndex(int index, int arrayLength){
+        while (index > arrayLength - 1){
+            index -= arrayLength;
+        }
+        while (index < 0){
+            index += arrayLength;
+        }
+        return index;
     }
 
     public void onCraftMatrixChanged(IInventory iinventory) {

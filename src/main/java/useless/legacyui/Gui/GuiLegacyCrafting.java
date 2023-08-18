@@ -8,7 +8,9 @@ import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.player.inventory.ContainerGuidebookRecipeBase;
 import net.minecraft.core.player.inventory.ContainerGuidebookRecipeCrafting;
 import net.minecraft.core.player.inventory.slot.Slot;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.CraftingCategories;
 import useless.legacyui.Sorting.SortingCategory;
 
@@ -26,6 +28,8 @@ public class GuiLegacyCrafting extends GuiContainer {
     protected GuiButtonTransparent[] slotButtons = new GuiButtonTransparent[totalDisplaySlots];
     protected GuiButtonTransparent[] tabButtons = new GuiButtonTransparent[maxDisplayedTabs];
 
+    protected GuiButtonTransparent scrollUp;
+    protected GuiButtonTransparent scrollDown;
     protected SortingCategory[] categories;
     protected static int currentScroll = 0;
     protected static int currentCategory = 0;
@@ -50,22 +54,28 @@ public class GuiLegacyCrafting extends GuiContainer {
             this.controlList.add(slotButtons[i]);
         }
         for (int i = 0; i < tabButtons.length; i++){
-            tabButtons[i] = new GuiButtonTransparent(i + 4, (this.width - this.xSize)/2 + 34 * i, (this.height - this.ySize)/2, 34,24, "");
+            tabButtons[i] = new GuiButtonTransparent(i + 4 + slotButtons.length, (this.width - this.xSize)/2 + 34 * i, (this.height - this.ySize)/2, 34,24, "");
             this.controlList.add(tabButtons[i]);
         }
+
+        scrollUp = new GuiButtonTransparent(4 + slotButtons.length + tabButtons.length + 1, (this.width - this.xSize)/2 + 11, (this.height - this.ySize) / 2 + 26, 18, 26,"");
+        scrollDown = new GuiButtonTransparent(4 + slotButtons.length + tabButtons.length + 2, (this.width - this.xSize)/2 + 11, (this.height - this.ySize) / 2 + 76, 18, 26,"");
+        this.controlList.add(scrollUp);
+        this.controlList.add(scrollDown);
 
         this.updatePages();
         this.selectDisplaySlot(currentSlot);
     }
     protected void buttonPressed(GuiButton guibutton) {
+        LegacyUI.LOGGER.info("" + currentScroll);
         if (!guibutton.enabled) {
             return;
         }
-        currentScroll = 0;
         int i = 0;
         for (GuiButtonTransparent button : slotButtons){
             if (guibutton == button){
                 selectDisplaySlot(i);
+                currentScroll = 0;
             }
             i++;
         }
@@ -74,9 +84,30 @@ public class GuiLegacyCrafting extends GuiContainer {
         for (GuiButtonTransparent button : tabButtons){
             if (guibutton == button){
                 selectTab(i);
+                currentScroll = 0;
             }
             i++;
         }
+        if (guibutton == scrollUp){
+            scroll(-1);
+        }
+        if (guibutton == scrollDown){
+            scroll(1);
+        }
+
+    }
+
+    public void scroll(int direction) {
+        int count = 1;
+        while (this.scrollUp.enabled && direction > 0 && count > 0) {
+            currentScroll += 1;
+            --count;
+        }
+        while (this.scrollDown.enabled && direction < 0 && count > 0) {
+            currentScroll -= 1;
+            --count;
+        }
+        updatePages();
     }
 
     public void selectDisplaySlot(int slotIndex){
@@ -95,6 +126,8 @@ public class GuiLegacyCrafting extends GuiContainer {
             tabIndex = 0;
         } else if (tabIndex > maxDisplayedTabs -1) {
             tabIndex = maxDisplayedTabs -1;
+        } else if (tabIndex > categories.length - 1){ // Prevents crashing if trying to move to tab which does not exist
+            tabIndex = categories.length - 1;
         }
         tab = tabIndex;
         tabString = "" + (tab+1) + "/" + (maxDisplayedTabs);
@@ -111,6 +144,10 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     protected void updatePages() {
+        // update scrollbar position
+        scrollUp.xPosition = (this.width - this.xSize)/2 + 11 + 18 * currentSlot;
+        scrollDown.xPosition = (this.width - this.xSize)/2 + 11 + 18 * currentSlot;
+
         this.updateRecipesByPage(tab);
     }
 
@@ -122,15 +159,6 @@ public class GuiLegacyCrafting extends GuiContainer {
             categories[i] = (SortingCategory) storedCategories[i];
         }
         ((ContainerWorkbenchLegacy)this.inventorySlots).setRecipes(this.mc.thePlayer, categories[tab], this.mc.statFileWriter, currentSlot, currentScroll);
-        /*this.recipes = new ContainerGuidebookRecipeBase[totalDisplaySlots];
-        for (int i = 0; i < totalDisplaySlots && startIndex + i < totalRecipes; ++i) {
-            if (storedRecipes[startIndex + i] instanceof IRecipe) {
-                this.recipes[i] = new ContainerGuidebookRecipeCrafting((IRecipe)storedRecipes[startIndex + i]);
-                continue;
-            }
-            System.out.println("Unknown guidebook recipe!");
-        }
-        ((ContainerWorkbenchLegacy)this.inventorySlots).setRecipes(this.mc.thePlayer, this.recipes, this.mc.statFileWriter, currentSlot);*/
     }
 
 
@@ -149,14 +177,22 @@ public class GuiLegacyCrafting extends GuiContainer {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(i);
 
-        // Render Selection texture ontop of currently selected slot, does not require offset like bg layer
-        this.drawTexturedModalRect(7 + 18 * currentSlot,52,35,175, 26, 24);
+
+
 
         // Render Selector Scrollbar when applicable
         if (categories[tab].recipeGroups[currentSlot].recipes.length > 0){
             this.drawTexturedModalRect(7 + 18 * currentSlot,21,115,175, 26, 31);
             this.drawTexturedModalRect(7 + 18 * currentSlot,76,141,175, 26, 31);
+
+            // Draw slightly wider marker
+            this.drawTexturedModalRect(7 + 18 * currentSlot,52,35,175, 26, 24);
         }
+        else {
+            // Render Selection texture ontop of currently selected slot, does not require offset like bg layer
+            this.drawTexturedModalRect(8 + 18 * currentSlot,52,36,175, 24, 24);
+        }
+
     }
 
     public void drawGuiContainerBackgroundLayer(float f) {
@@ -168,7 +204,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         int k = (this.height - this.ySize) / 2;
 
         // Draws base gui background
-        this.drawTexturedModalRect(j, k, 0, 0, 256, this.ySize); // TODO make gui texture 512x512
+        this.drawTexturedModalRect(j, k, 0, 0, this.xSize, this.ySize); // TODO make gui texture 512x512
         this.drawTexturedModalRect(j + 256, k+this.ySize-81, 205, 175, 17, 81);
         this.drawTexturedModalRect(j + 256, k+this.ySize-81-81 , 222, 175, 17, 81);
         this.drawTexturedModalRect(j + 256, k+this.ySize-81-81-13, 239, 175, 17, 13);

@@ -2,6 +2,8 @@ package useless.legacyui.Sorting;
 
 import net.minecraft.core.crafting.CraftingManager;
 import net.minecraft.core.crafting.recipe.IRecipe;
+import net.minecraft.core.crafting.recipe.RecipeShaped;
+import net.minecraft.core.crafting.recipe.RecipeShapeless;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemDye;
 import net.minecraft.core.item.tool.ItemTool;
@@ -25,16 +27,18 @@ public class CraftingCategories {
         List<Object> _tools = new ArrayList<Object>();
         List<Object> _others = new ArrayList<Object>();
         for (IRecipe recipe: manager.getRecipeList()){
-            LegacyUI.LOGGER.info("" + j + " | " + recipe.getRecipeOutput().getItemName());
-            Item recipeItem = recipe.getRecipeOutput().getItem();
-            if (recipeItem instanceof ItemDye){
-                _dyes.add(recipe);
-            } else if (recipeItem instanceof ItemTool) {
-                _tools.add(recipe);
-            } else{
-                _others.add(recipe);
+            if (recipe instanceof RecipeShaped || recipe instanceof RecipeShapeless){
+                LegacyUI.LOGGER.debug("" + j + " | " + recipe.getRecipeOutput().getItemName());
+                Item recipeItem = recipe.getRecipeOutput().getItem();
+                if (recipeItem instanceof ItemDye){
+                    _dyes.add(recipe);
+                } else if (recipeItem instanceof ItemTool) {
+                    _tools.add(recipe);
+                } else{
+                    _others.add(recipe);
+                }
+                j++;
             }
-            j++;
         }
 
         // Misc
