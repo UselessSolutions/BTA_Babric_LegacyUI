@@ -16,6 +16,7 @@ import net.minecraft.core.player.inventory.slot.SlotCrafting;
 import net.minecraft.core.player.inventory.slot.SlotGuidebook;
 import net.minecraft.core.world.World;
 import useless.legacyui.LegacyUI;
+import useless.legacyui.Sorting.RecipeGroup;
 import useless.legacyui.Sorting.SortingCategory;
 
 import java.util.List;
@@ -37,26 +38,26 @@ public class ContainerWorkbenchLegacy extends Container {
         this.inventoryPlayer = inventoryplayer;
     }
 
-    public void craftingSlots(){
+    public void craftingSlots() {
         this.addSlot(new SlotCrafting(this.inventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 107, 127));
         int baseIterator;
         int subIterator;
         // 3x3 Crafting
-        for(baseIterator = 0; baseIterator < 3; ++baseIterator) {
-            for(subIterator = 0; subIterator < 3; ++subIterator) {
+        for (baseIterator = 0; baseIterator < 3; ++baseIterator) {
+            for (subIterator = 0; subIterator < 3; ++subIterator) {
                 this.addSlot(new Slot(this.craftMatrix, subIterator + baseIterator * 3, 20 + subIterator * 18, 109 + baseIterator * 18));
             }
         }
 
         // 3x9 inventory
-        for(baseIterator = 0; baseIterator < 3; ++baseIterator) {
-            for(subIterator = 0; subIterator < 9; ++subIterator) {
+        for (baseIterator = 0; baseIterator < 3; ++baseIterator) {
+            for (subIterator = 0; subIterator < 9; ++subIterator) {
                 this.addSlot(new SlotResizable(this.inventoryPlayer, subIterator + baseIterator * 9 + 9, 153 + subIterator * 12, 112 + baseIterator * 12, 12));
             }
         }
 
         // 1x9 hotbar
-        for(baseIterator = 0; baseIterator < 9; ++baseIterator) {
+        for (baseIterator = 0; baseIterator < 9; ++baseIterator) {
             this.addSlot(new SlotResizable(this.inventoryPlayer, baseIterator, 153 + baseIterator * 12, 154, 12));
         }
 
@@ -67,86 +68,84 @@ public class ContainerWorkbenchLegacy extends Container {
         this.inventorySlots.clear();
         craftingSlots();
 
+        RecipeGroup[] craftingGroups = category.recipeGroups;
+        boolean discovered;
+        boolean highlighted;
+        ItemStack item;
 
-        ContainerGuidebookRecipeBase[] recipes = new ContainerGuidebookRecipeBase[category.recipeGroups.length];
-        for (int i = 0; i < recipes.length; i++){
-            recipes[i] = new ContainerGuidebookRecipeCrafting((IRecipe)(category.recipeGroups[i].recipes[0]));
-        }
+        int index = 0;
+        for (RecipeGroup group : craftingGroups){
 
+            if (index == currentSlotId){ // special rendering for scrolling and recipe preview
+                ContainerGuidebookRecipeCrafting currentContainer = group.getContainer(wrapAroundIndex(currentScrollAmount, group.recipes.length));
 
-        int i = 0;
-        for (ContainerGuidebookRecipeBase container : recipes){
-            int categoryLength = category.recipeGroups[i].recipes.length;
-            SlotGuidebook slot = (SlotGuidebook)container.inventorySlots.get(0);
+                // Recipebar preview
+                item = currentContainer.inventorySlots.get(0).getStack();
+                discovered = isDicovered(item, statWriter, player);
+                this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56, currentContainer.inventorySlots.get(0).getStack(), discovered));
 
-            // If item has been discovered
-            boolean discovered = false;
-            if (slot.item == null) {
-                discovered = false;
-            } else {
-                discovered = statWriter.readStat(StatList.pickUpItemStats[slot.item.itemID]) > 0;
-            }
-            if (player.getGamemode() == Gamemode.creative) {
-                discovered = true;
-            }
+                if (group.recipes.length > 1) { // If multiple items in recipe group
+                    int idUpper = wrapAroundIndex(currentScrollAmount + 1, group.recipes.length); // Next item in grouo
+                    int idLower = wrapAroundIndex(currentScrollAmount - 1, group.recipes.length); // Last item in group
 
-            // Renders scroll zero of all other options
-            if (i != currentSlotId){
-                this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18*i, 56, slot.item, discovered));
-            }
-            else {
-                this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18*i, 56, new ContainerGuidebookRecipeCrafting((IRecipe)category.recipeGroups[i].recipes[wrapAroundIndex(currentScrollAmount, categoryLength)]).inventorySlots.get(0).getStack(), discovered));
-            }
+                    // Next item preview
+                    item = group.getContainer(idUpper).inventorySlots.get(0).getStack();
+                    discovered = isDicovered(item, statWriter, player);
+                    this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56 + 21, item, discovered));
 
-            // Recipe preview
-            if (i == currentSlotId){
-                // Scrollbar view
-                if (category.recipeGroups[i].recipes.length > 0){
-                    int idUpper = wrapAroundIndex(currentScrollAmount + 1, categoryLength);
-                    int idLower = wrapAroundIndex(currentScrollAmount - 1, categoryLength);
-                    LegacyUI.LOGGER.info("Idlower: " + idLower + " IdUpper: " + idUpper + " CurrentScroll: " + currentScrollAmount);
-
-                    // TODO Make not terrible
-                    this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18*i, 56+21, new ContainerGuidebookRecipeCrafting((IRecipe)category.recipeGroups[i].recipes[idUpper]).inventorySlots.get(0).getStack(), discovered));
-                    this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18*i, 56-21, new ContainerGuidebookRecipeCrafting((IRecipe)category.recipeGroups[i].recipes[idLower]).inventorySlots.get(0).getStack(), discovered));
+                    // Previous item preview
+                    item = group.getContainer(idLower).inventorySlots.get(0).getStack();
+                    discovered = isDicovered(item, statWriter, player);
+                    this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56 - 21, item, discovered));
 
                 }
 
+                // Crafting table result preview
+                item = currentContainer.inventorySlots.get(0).getStack();
+                discovered = isDicovered(item, statWriter, player);
+                this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 103, 123, item, discovered,isHighlighted(item, player), 0xFF0000, 26));
 
-
-                this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 107, 127, new ContainerGuidebookRecipeCrafting((IRecipe)category.recipeGroups[i].recipes[wrapAroundIndex(currentScrollAmount, categoryLength)]).inventorySlots.get(0).getStack(), discovered, true, 0xFF0000));
-                for (int index = 1; index < container.inventorySlots.size(); index++){
-
-                    // If item has been discovered
-                    discovered = false;
-                    boolean highlight = true;
-                    slot = (SlotGuidebook)container.inventorySlots.get(index);
-                    if (slot.item == null) {
-                        discovered = false;
-                        highlight = false;
-                    } else {
-                        discovered = statWriter.readStat(StatList.pickUpItemStats[slot.item.itemID]) > 0;
-                    }
-                    if (player.getGamemode() == Gamemode.creative) {
-                        discovered = true;
-                    }
+                for (int j = 1; j < currentContainer.inventorySlots.size(); j++) {
 
                     // Render to crafting grid
-                    this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 20 + 18 * ((index-1)%3) , 109 + 18 * ((index - 1)/3),  new ContainerGuidebookRecipeCrafting((IRecipe)category.recipeGroups[i].recipes[wrapAroundIndex(currentScrollAmount, categoryLength)]).inventorySlots.get(index).getStack(), discovered, highlight, 0xFF0000));
+                    item = currentContainer.inventorySlots.get(j).getStack();
+                    discovered = isDicovered(item, statWriter, player);
+                    this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 20 + 18 * ((j - 1) % 3), 109 + 18 * ((j - 1) / 3), item, discovered, isHighlighted(item, player), 0xFF0000));
                 }
-
+            }
+            else { // Renders first slot of none selected groups
+                LegacyUI.LOGGER.info("" + index);
+                item = group.getContainer(0).inventorySlots.get(0).getStack();
+                discovered = isDicovered(item, statWriter, player);
+                this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56, item, discovered));
             }
 
-            i++;
+            index++;
         }
 
     }
 
-    private int wrapAroundIndex(int index, int arrayLength){
-        while (index > arrayLength - 1){
+    private boolean isDicovered(ItemStack item, StatFileWriter statWriter, EntityPlayer player){
+        if (player.getGamemode() == Gamemode.creative) {
+            return true;
+        }
+        if (item == null) {
+            return false;
+        } else {
+            return statWriter.readStat(StatList.pickUpItemStats[item.itemID]) > 0;
+        }
+    }
+
+    private boolean isHighlighted(ItemStack item, EntityPlayer player){
+        return item != null;
+    }
+
+
+    private int wrapAroundIndex(int index, int arrayLength) {
+        while (index > arrayLength - 1) {
             index -= arrayLength;
         }
-        while (index < 0){
+        while (index < 0) {
             index += arrayLength;
         }
         return index;
@@ -160,7 +159,7 @@ public class ContainerWorkbenchLegacy extends Container {
         super.onCraftGuiClosed(player);
         boolean insert = false;
 
-        for(int i = 0; i < 9; ++i) {
+        for (int i = 0; i < 9; ++i) {
             ItemStack itemstack = this.craftMatrix.getStackInSlot(i);
             if (itemstack != null) {
                 this.storeOrDropItem(player, itemstack);
@@ -178,7 +177,7 @@ public class ContainerWorkbenchLegacy extends Container {
         if (this.field_20133_c.getBlockId(this.x, this.y, this.z) != Block.workbench.id) {
             return false;
         } else {
-            return entityplayer.distanceToSqr((double)this.x + 0.5, (double)this.y + 0.5, (double)this.z + 0.5) <= 64.0;
+            return entityplayer.distanceToSqr((double) this.x + 0.5, (double) this.y + 0.5, (double) this.z + 0.5) <= 64.0;
         }
     }
 
@@ -215,15 +214,16 @@ public class ContainerWorkbenchLegacy extends Container {
             } else {
                 return slot.id >= 37 && slot.id <= 45 ? this.getSlots(10, 27, false) : null;
             }
-        } else if (slot.id < 10){
+        } else if (slot.id < 10) {
             return slot.id == 0 ? this.getSlots(10, 36, true) : this.getSlots(10, 36, false);
         } else {
             return null;
         }
     }
+
     public void handleHotbarSwap(int[] args, EntityPlayer player) {
         // Dont hotbar swap the crafting guide!
-        if (args[0] > 45){
+        if (args[0] > 45) {
             return;
         }
 
