@@ -111,10 +111,13 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     public void selectDisplaySlot(int slotIndex){
+        currentScroll = 0; // reset scroll
         if (slotIndex < 0){
             slotIndex = 0;
         } else if (slotIndex > totalDisplaySlots-1) {
             slotIndex = totalDisplaySlots-1;
+        } else if (slotIndex > categories[tab].recipeGroups.length - 1) {
+            slotIndex = categories[tab].recipeGroups.length - 1;
         }
         currentSlot = slotIndex;
         slotString = "" + (currentSlot+1) + "/" + (totalDisplaySlots);
@@ -181,7 +184,7 @@ public class GuiLegacyCrafting extends GuiContainer {
 
 
         // Render Selector Scrollbar when applicable
-        if (categories[tab].recipeGroups[currentSlot].recipes.length > 0){
+        if (categories[tab].recipeGroups[currentSlot].recipes.length > 1){
             this.drawTexturedModalRect(7 + 18 * currentSlot,21,115,175, 26, 31);
             this.drawTexturedModalRect(7 + 18 * currentSlot,76,141,175, 26, 31);
 
@@ -204,7 +207,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         int k = (this.height - this.ySize) / 2;
 
         // Draws base gui background
-        this.drawTexturedModalRect(j, k, 0, 0, this.xSize, this.ySize); // TODO make gui texture 512x512
+        this.drawTexturedModalRect(j, k, 0, 0, 256, this.ySize); // TODO make gui texture 512x512
         this.drawTexturedModalRect(j + 256, k+this.ySize-81, 205, 175, 17, 81);
         this.drawTexturedModalRect(j + 256, k+this.ySize-81-81 , 222, 175, 17, 81);
         this.drawTexturedModalRect(j + 256, k+this.ySize-81-81-13, 239, 175, 17, 13);
@@ -214,7 +217,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.drawTexturedModalRect(j + bookMarkWidth * tab, k - 2, 0, 175, bookMarkWidth, 30);
 
         // Render Selector Scrollbar background when applicable
-        if (categories[tab].recipeGroups[currentSlot].recipes.length > 0){
+        if (categories[tab].recipeGroups[currentSlot].recipes.length > 1){
             this.drawTexturedModalRect(j + 12 + 18 * currentSlot,k + 34,168,175, 18, 18);
             this.drawTexturedModalRect(j + 12 + 18 * currentSlot,k + 76,168,175, 18, 18);
         }

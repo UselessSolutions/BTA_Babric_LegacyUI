@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import useless.legacyui.Gui.IResizable;
 import useless.legacyui.Gui.SlotCraftingDisplay;
 import useless.legacyui.Gui.SlotResizable;
 import useless.legacyui.LegacyUI;
@@ -36,8 +37,8 @@ public class GuiRenderItemMixin extends Gui {
         boolean discovered = true;
         int slotSize = 18;
         float renderScale = 1f;
-        if (slot instanceof SlotResizable){
-            slotSize = ((SlotResizable) slot).width;
+        if (slot instanceof IResizable){
+            slotSize = ((IResizable) slot).getWidth();
             renderScale = (slotSize)/18f;
         }
         GL11.glPushMatrix();
@@ -73,8 +74,8 @@ public class GuiRenderItemMixin extends Gui {
             GL11.glEnable(2929);
 
             int fontHeight = mc.fontRenderer.fontHeight;
-            if (slot instanceof SlotResizable){
-                fontHeight = (int)(9*((((SlotResizable) slot).width)/18f)); // Smaller font
+            if (slot instanceof IResizable){
+                fontHeight = (int)(9*(((slotSize)/18f))); // Smaller font
             }
 
             itemRenderer.renderItemIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, itemStack, x, y, discovered ? 1.0F : 0.0F, 1.0F, renderScale);
