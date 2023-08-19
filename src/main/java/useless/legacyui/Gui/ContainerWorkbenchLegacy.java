@@ -18,6 +18,7 @@ import net.minecraft.core.world.World;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.RecipeGroup;
 import useless.legacyui.Sorting.SortingCategory;
+import useless.legacyui.utils.arrayUtil;
 
 import java.util.List;
 
@@ -77,7 +78,7 @@ public class ContainerWorkbenchLegacy extends Container {
         for (RecipeGroup group : craftingGroups){
 
             if (index == currentSlotId){ // special rendering for scrolling and recipe preview
-                ContainerGuidebookRecipeCrafting currentContainer = group.getContainer(wrapAroundIndex(currentScrollAmount, group.recipes.length));
+                ContainerGuidebookRecipeCrafting currentContainer = group.getContainer(arrayUtil.wrapAroundIndex(currentScrollAmount, group.recipes.length));
 
                 // Recipebar preview
                 item = currentContainer.inventorySlots.get(0).getStack();
@@ -85,8 +86,8 @@ public class ContainerWorkbenchLegacy extends Container {
                 this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56, currentContainer.inventorySlots.get(0).getStack(), discovered));
 
                 if (group.recipes.length > 1) { // If multiple items in recipe group
-                    int idUpper = wrapAroundIndex(currentScrollAmount + 1, group.recipes.length); // Next item in grouo
-                    int idLower = wrapAroundIndex(currentScrollAmount - 1, group.recipes.length); // Last item in group
+                    int idUpper = arrayUtil.wrapAroundIndex(currentScrollAmount + 1, group.recipes.length); // Next item in grouo
+                    int idLower = arrayUtil.wrapAroundIndex(currentScrollAmount - 1, group.recipes.length); // Last item in group
 
                     // Next item preview
                     item = group.getContainer(idUpper).inventorySlots.get(0).getStack();
@@ -106,11 +107,19 @@ public class ContainerWorkbenchLegacy extends Container {
                 this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 103, 123, item, discovered,isHighlighted(item, player), 0xFF0000, 26));
 
                 for (int j = 1; j < currentContainer.inventorySlots.size(); j++) {
-
-                    // Render to crafting grid
                     item = currentContainer.inventorySlots.get(j).getStack();
                     discovered = isDicovered(item, statWriter, player);
-                    this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 20 + 18 * ((j - 1) % 3), 109 + 18 * ((j - 1) / 3), item, discovered, isHighlighted(item, player), 0xFF0000));
+
+                    if (currentContainer.inventorySlots.size() > 5){
+                        // Render 3x3 crafting grid
+                        this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 20 + 18 * ((j - 1) % 3), 109 + 18 * ((j - 1) / 3), item, discovered, isHighlighted(item, player), 0xFF0000));
+                    }
+                    else {
+                        // Render 2x2 crafting gird
+                        this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 29 + 18 * ((j - 1) % 2), 118 + 18 * ((j - 1) / 2), item, discovered, isHighlighted(item, player), 0xFF0000));
+                    }
+
+
                 }
             }
             else { // Renders first slot of none selected groups
@@ -141,15 +150,7 @@ public class ContainerWorkbenchLegacy extends Container {
     }
 
 
-    private int wrapAroundIndex(int index, int arrayLength) {
-        while (index > arrayLength - 1) {
-            index -= arrayLength;
-        }
-        while (index < 0) {
-            index += arrayLength;
-        }
-        return index;
-    }
+
 
     public void onCraftMatrixChanged(IInventory iinventory) {
         this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix));

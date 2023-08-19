@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.CraftingCategories;
 import useless.legacyui.Sorting.SortingCategory;
+import useless.legacyui.utils.arrayUtil;
 
 import java.util.List;
 
@@ -215,6 +216,11 @@ public class GuiLegacyCrafting extends GuiContainer {
         // Renders selected bookmark
         int bookMarkWidth = 34;
         this.drawTexturedModalRect(j + bookMarkWidth * tab, k - 2, 0, 175, bookMarkWidth, 30);
+
+        // If 2x2
+        if (categories[tab].recipeGroups[currentSlot].getContainer(arrayUtil.wrapAroundIndex(currentScroll, categories[tab].recipeGroups[currentSlot].recipes.length)).inventorySlots.size() < 6){
+            this.drawTexturedModalRect(j + 19,k + 108,61,175, 54, 54);
+        }
 
         // Render Selector Scrollbar background when applicable
         if (categories[tab].recipeGroups[currentSlot].recipes.length > 1){
