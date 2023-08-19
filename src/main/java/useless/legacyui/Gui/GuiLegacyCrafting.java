@@ -67,7 +67,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.selectDisplaySlot(currentSlot);
     }
     protected void buttonPressed(GuiButton guibutton) {
-        LegacyUI.LOGGER.info("" + currentScroll);
+        //LegacyUI.LOGGER.info("" + currentScroll);
         if (!guibutton.enabled) {
             return;
         }

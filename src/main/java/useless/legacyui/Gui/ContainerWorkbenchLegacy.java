@@ -114,7 +114,7 @@ public class ContainerWorkbenchLegacy extends Container {
                 }
             }
             else { // Renders first slot of none selected groups
-                LegacyUI.LOGGER.info("" + index);
+                //LegacyUI.LOGGER.info("" + index);
                 item = group.getContainer(0).inventorySlots.get(0).getStack();
                 discovered = isDicovered(item, statWriter, player);
                 this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56, item, discovered));
