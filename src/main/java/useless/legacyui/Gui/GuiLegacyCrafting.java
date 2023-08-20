@@ -76,7 +76,6 @@ public class GuiLegacyCrafting extends GuiContainer {
         for (GuiButtonTransparent button : slotButtons){
             if (guibutton == button){
                 selectDisplaySlot(i);
-                currentScroll = 0;
             }
             i++;
         }
@@ -112,7 +111,9 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     public void selectDisplaySlot(int slotIndex){
-        currentScroll = 0; // reset scroll
+        if (currentSlot != slotIndex){
+            currentScroll = 0; // reset scroll
+        }
         if (slotIndex < 0){
             slotIndex = 0;
         } else if (slotIndex > totalDisplaySlots-1) {
@@ -137,16 +138,6 @@ public class GuiLegacyCrafting extends GuiContainer {
         tabString = "" + (tab+1) + "/" + (maxDisplayedTabs);
         updatePages();
     }
-    public void lastPage() {
-        --tab;
-        this.updatePages();
-    }
-
-    public void nextPage() {
-        ++tab;
-        this.updatePages();
-    }
-
     protected void updatePages() {
         // update scrollbar position
         scrollUp.xPosition = (this.width - this.xSize)/2 + 11 + 18 * currentSlot;
