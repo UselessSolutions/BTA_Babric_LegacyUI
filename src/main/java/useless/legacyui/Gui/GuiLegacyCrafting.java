@@ -5,15 +5,11 @@ import net.minecraft.client.gui.GuiContainer;
 import net.minecraft.core.crafting.CraftingManager;
 import net.minecraft.core.crafting.recipe.*;
 import net.minecraft.core.entity.player.EntityPlayer;
-import net.minecraft.core.player.inventory.ContainerGuidebookRecipeBase;
-import net.minecraft.core.player.inventory.ContainerGuidebookRecipeCrafting;
 import net.minecraft.core.player.inventory.slot.Slot;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
-import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.CraftingCategories;
 import useless.legacyui.Sorting.SortingCategory;
-import useless.legacyui.utils.arrayUtil;
+import useless.legacyui.utils.ArrayUtil;
 
 import java.util.List;
 
@@ -113,7 +109,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         }
         else{
             // craft
-           //((ContainerWorkbenchLegacy)this.inventorySlots).setRecipes(this.mc.thePlayer, categories[tab], this.mc.statFileWriter, currentSlot, currentScroll);
+           ((ContainerWorkbenchLegacy)this.inventorySlots).craft(this.mc.thePlayer, categories[tab], currentSlot, currentScroll);
         }
         if (slotIndex < 0){
             slotIndex = 0;
@@ -215,7 +211,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.drawTexturedModalRect(j + bookMarkWidth * tab, k - 2, 0, 175, bookMarkWidth, 30);
 
         // If 2x2
-        if (categories[tab].recipeGroups[currentSlot].getContainer(arrayUtil.wrapAroundIndex(currentScroll, categories[tab].recipeGroups[currentSlot].recipes.length)).inventorySlots.size() < 6){
+        if (categories[tab].recipeGroups[currentSlot].getContainer(ArrayUtil.wrapAroundIndex(currentScroll, categories[tab].recipeGroups[currentSlot].recipes.length)).inventorySlots.size() < 6){
             this.drawTexturedModalRect(j + 19,k + 108,61,175, 54, 54);
         }
 

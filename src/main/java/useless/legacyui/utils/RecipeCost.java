@@ -1,0 +1,67 @@
+package useless.legacyui.utils;
+
+import net.minecraft.core.item.ItemStack;
+import net.minecraft.core.player.inventory.ContainerGuidebookRecipeCrafting;
+import useless.legacyui.LegacyUI;
+
+public class RecipeCost {
+    public ItemStack[] itemStacks;
+    public int[] quantity;
+
+    public RecipeCost(ItemStack[] itemStacks, int[] quantity){
+        this.itemStacks = itemStacks;
+        this.quantity = quantity;
+    }
+    public RecipeCost(ContainerGuidebookRecipeCrafting recipe){
+        ItemStack[] items = new ItemStack[9];
+
+
+        for (int i = 1; i < items.length; i++){
+            if (recipe.inventorySlots.size()-1 > i){
+                boolean itemInList = false;
+                for (int j = 0; j < items.length; j++){
+                    if (items[j] == null || recipe.inventorySlots.get(i).getStack() == null) {continue;}
+                    if (recipe.inventorySlots.get(i).getStack().getItem() == items[j].getItem()){
+                        itemInList = true;
+                    }
+                }
+                if (!itemInList){
+                    items[i] = recipe.inventorySlots.get(i).getStack();
+                }
+            }
+        }
+
+        int[] amounts = new int[9];
+        for (int i = 0; i < amounts.length; i++){
+            amounts[i] = InventoryUtil.itemsInInventory(recipe.inventorySlots, items[i]);
+        }
+
+        int realItemCount = 0;
+        for (int i = 0; i < amounts.length; i++){
+            if (items[i] != null){
+                realItemCount++;
+            }
+        }
+
+        this.itemStacks = new ItemStack[realItemCount];
+        this.quantity = new int[realItemCount];
+        int recipeIndex = 0;
+        for (int i = 0; i < items.length; i++){
+            if (items[i] != null){
+                itemStacks[recipeIndex] = items[i];
+                quantity[recipeIndex] = amounts[i];
+                recipeIndex++;
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        String returnString = "";
+        int i = 0;
+        for (ItemStack item: itemStacks) {
+            returnString += item.getItem().getKey() + " | " + quantity[i++] + "\n";
+        }
+        return returnString;
+    }
+}
