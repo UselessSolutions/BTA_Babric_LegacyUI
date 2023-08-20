@@ -239,7 +239,7 @@ public class CraftingCategories {
                         _polishedStones.add(recipe);
                     } else if (recipeItem.getKey().toLowerCase().contains("layer")){
                         _layers.add(recipe);
-                    } else if (recipeItem.getKey().toLowerCase().contains("oak") && !recipeItem.getKey().toLowerCase().contains("leave")){
+                    } else if (recipeItem.getKey().toLowerCase().contains("oak") && !recipeItem.getKey().toLowerCase().contains("shelf")){
                         _woodenBlocks.add(recipe);
                     } else {
                         _blocks.add(recipe);
