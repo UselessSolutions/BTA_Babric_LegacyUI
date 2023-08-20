@@ -42,7 +42,6 @@ public class GuiLegacyCrafting extends GuiContainer {
     public GuiLegacyCrafting(EntityPlayer player, int i, int j, int k) {
         super(new ContainerWorkbenchLegacy(player.inventory, player.world, i, j, k));
     }
-
     public void initGui() {
         super.initGui();
         this.xSize = 256+17; // width of texture plus the 17px strip that was cut off
@@ -96,7 +95,6 @@ public class GuiLegacyCrafting extends GuiContainer {
         }
 
     }
-
     public void scroll(int direction) {
         int count = 1;
         while (this.scrollUp.enabled && direction > 0 && count > 0) {
@@ -109,10 +107,13 @@ public class GuiLegacyCrafting extends GuiContainer {
         }
         updatePages();
     }
-
     public void selectDisplaySlot(int slotIndex){
         if (currentSlot != slotIndex){
             currentScroll = 0; // reset scroll
+        }
+        else{
+            // craft
+           //((ContainerWorkbenchLegacy)this.inventorySlots).setRecipes(this.mc.thePlayer, categories[tab], this.mc.statFileWriter, currentSlot, currentScroll);
         }
         if (slotIndex < 0){
             slotIndex = 0;
@@ -138,6 +139,17 @@ public class GuiLegacyCrafting extends GuiContainer {
         tabString = "" + (tab+1) + "/" + (maxDisplayedTabs);
         updatePages();
     }
+    public boolean getIsMouseOverSlot(Slot slot, int i, int j) {
+        int k = (this.width - this.xSize) / 2;
+        int l = (this.height - this.ySize) / 2;
+        i -= k;
+        j -= l;
+        int slotSize = 16;
+        if (slot instanceof SlotResizable){
+            slotSize = ((SlotResizable) slot).width;
+        }
+        return i >= slot.xDisplayPosition - 1 && i < slot.xDisplayPosition + slotSize -2 + 1 && j >= slot.yDisplayPosition - 1 && j < slot.yDisplayPosition + slotSize -2 + 1;
+    }
     protected void updatePages() {
         // update scrollbar position
         scrollUp.xPosition = (this.width - this.xSize)/2 + 11 + 18 * currentSlot;
@@ -145,8 +157,6 @@ public class GuiLegacyCrafting extends GuiContainer {
 
         this.updateRecipesByPage(tab);
     }
-
-
     public void updateRecipesByPage(int page) {
         int startIndex = page * totalDisplaySlots;
         this.categories = new SortingCategory[storedCategories.length];
@@ -155,13 +165,10 @@ public class GuiLegacyCrafting extends GuiContainer {
         }
         ((ContainerWorkbenchLegacy)this.inventorySlots).setRecipes(this.mc.thePlayer, categories[tab], this.mc.statFileWriter, currentSlot, currentScroll);
     }
-
-
     public void onGuiClosed() {
         super.onGuiClosed();
         this.inventorySlots.onCraftGuiClosed(this.mc.thePlayer);
     }
-
     public void drawGuiContainerForegroundLayer() {
         this.fontRenderer.drawCenteredString("Inventory", 205, this.ySize - 78, 0XFFFFFF);
         this.fontRenderer.drawCenteredString("Crafting", 72, this.ySize - 78, 0XFFFFFF);
@@ -189,7 +196,6 @@ public class GuiLegacyCrafting extends GuiContainer {
         }
 
     }
-
     public void drawGuiContainerBackgroundLayer(float f) {
         //this.scroll(Mouse.getDWheel()); // Scroll through tabs
         int i = this.mc.renderEngine.getTexture("assets/gui/legacycrafting.png");
@@ -219,9 +225,6 @@ public class GuiLegacyCrafting extends GuiContainer {
             this.drawTexturedModalRect(j + 12 + 18 * currentSlot,k + 76,168,175, 18, 18);
         }
 
-
-
-
         // Category icons TODO Make icons render based of pages selected
         int item = 0;
         this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
@@ -234,17 +237,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
     }
 
-    public boolean getIsMouseOverSlot(Slot slot, int i, int j) {
-        int k = (this.width - this.xSize) / 2;
-        int l = (this.height - this.ySize) / 2;
-        i -= k;
-        j -= l;
-        int slotSize = 16;
-        if (slot instanceof SlotResizable){
-            slotSize = ((SlotResizable) slot).width;
-        }
-        return i >= slot.xDisplayPosition - 1 && i < slot.xDisplayPosition + slotSize -2 + 1 && j >= slot.yDisplayPosition - 1 && j < slot.yDisplayPosition + slotSize -2 + 1;
-    }
+
     static {
         int i;
         tab = 0;
