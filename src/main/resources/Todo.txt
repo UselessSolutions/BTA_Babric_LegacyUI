@@ -1,10 +1,7 @@
 Needed Things
-| Variable to adjust inventory render size
-| Integrate Slot width variable throughout
 - Recipe tags for categorizing recipes
 - Helper class for managing recipe tags
 - Custom controller ui integration
-| Modify font sizes
 - Comment and refactor code to be more readable
 - Configuration options (for whatever needs it)
 - texture pack support
@@ -13,10 +10,7 @@ Needed Things
 - Separate tab icon texture
 - Icon helper class for adding additional icons
 - Config for if undiscovered items should be blocked out
-- Invisible buttons for tab selection
 - Old Gui Sounds
-
-- Highlight avalible items appriopriately
 
 - Guide books tabs for recipe types
 - Guide book recipe groups
@@ -31,7 +25,3 @@ Bugs
 - Font scale does not keep centered text
 - Durability rendered at incorrect scale
 - String shadows offset incorrectly at different scales
-
-
-Fixed
-- Block rendering is not centered when resized
