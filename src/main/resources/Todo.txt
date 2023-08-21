@@ -17,6 +17,9 @@ Needed Things
 - 512x512 gui textures
 - controller action wheel binds
 
+- Redo item categorization
+- Optimize Code
+
 Bugs
 - Click drag does not use resized slots
 - Font scale does not keep centered text
