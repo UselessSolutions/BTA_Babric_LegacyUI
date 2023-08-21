@@ -74,9 +74,10 @@ public class ContainerWorkbenchLegacy extends Container {
 
         int index = 0;
         for (RecipeGroup group : craftingGroups){
-
+        ContainerGuidebookRecipeCrafting currentContainer = group.getContainer(ArrayUtil.wrapAroundIndex(currentScrollAmount, group.recipes.length));
+        boolean craftable = canCraft(player, new RecipeCost(currentContainer));
             if (index == currentSlotId){ // special rendering for scrolling and recipe preview
-                ContainerGuidebookRecipeCrafting currentContainer = group.getContainer(ArrayUtil.wrapAroundIndex(currentScrollAmount, group.recipes.length));
+
 
                 // Recipebar preview
                 item = currentContainer.inventorySlots.get(0).getStack();
@@ -100,9 +101,10 @@ public class ContainerWorkbenchLegacy extends Container {
                 }
 
                 // Crafting table result preview
+
                 item = currentContainer.inventorySlots.get(0).getStack();
                 discovered = isDicovered(item, statWriter, player);
-                this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 103, 123, item, discovered, !canCraft(player, new RecipeCost(currentContainer)), 0xFF0000, 26));
+                this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 103, 123, item, discovered || craftable, !craftable, 0xFF0000, 26));
 
                 for (int j = 1; j < currentContainer.inventorySlots.size(); j++) {
                     item = currentContainer.inventorySlots.get(j).getStack();
@@ -123,7 +125,7 @@ public class ContainerWorkbenchLegacy extends Container {
             else { // Renders first slot of none selected groups
                 item = group.getContainer(0).inventorySlots.get(0).getStack();
                 discovered = isDicovered(item, statWriter, player);
-                this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56, item, discovered));
+                this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56, item, discovered || craftable));
             }
 
             index++;

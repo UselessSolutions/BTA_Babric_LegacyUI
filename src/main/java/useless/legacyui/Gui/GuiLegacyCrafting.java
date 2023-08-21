@@ -2,6 +2,7 @@ package useless.legacyui.Gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiContainer;
+import net.minecraft.client.input.InputType;
 import net.minecraft.core.crafting.CraftingManager;
 import net.minecraft.core.crafting.recipe.*;
 import net.minecraft.core.entity.player.EntityPlayer;
@@ -84,14 +85,14 @@ public class GuiLegacyCrafting extends GuiContainer {
             i++;
         }
         if (guibutton == scrollUp){
-            scroll(-1);
+            scrollSlot(-1);
         }
         if (guibutton == scrollDown){
-            scroll(1);
+            scrollSlot(1);
         }
 
     }
-    public void scroll(int direction) {
+    public void scrollSlot(int direction) {
         int count = 1;
         while (this.scrollUp.enabled && direction > 0 && count > 0) {
             currentScroll += 1;
@@ -108,8 +109,7 @@ public class GuiLegacyCrafting extends GuiContainer {
             currentScroll = 0; // reset scroll
         }
         else{
-            // craft
-           ((ContainerWorkbenchLegacy)this.inventorySlots).craft(this.mc.thePlayer, categories[tab], currentSlot, currentScroll);
+           craft();
         }
         if (slotIndex < 0){
             slotIndex = 0;
@@ -121,6 +121,22 @@ public class GuiLegacyCrafting extends GuiContainer {
         currentSlot = slotIndex;
         slotString = "" + (currentSlot+1) + "/" + (totalDisplaySlots);
         updatePages();
+    }
+    public void scrollDisplaySlot(int direction){
+        if (direction > 0){
+            while (direction > 0){
+                selectDisplaySlot(currentSlot + 1);
+                direction--;
+            }
+        } else if (direction < 0) {
+            while (direction < 0){
+                selectDisplaySlot(currentSlot - 1);
+                direction++;
+            }
+        }
+    }
+    public void craft(){
+        ((ContainerWorkbenchLegacy)this.inventorySlots).craft(this.mc.thePlayer, categories[tab], currentSlot, currentScroll);
     }
     public void selectTab(int tabIndex){
         currentSlot = 0; //Reset to start on tab change
@@ -134,6 +150,19 @@ public class GuiLegacyCrafting extends GuiContainer {
         tab = tabIndex;
         tabString = "" + (tab+1) + "/" + (maxDisplayedTabs);
         updatePages();
+    }
+    public void scrollTab(int direction){
+        if (direction > 0){
+            while (direction > 0){
+                selectTab(tab + 1);
+                direction--;
+            }
+        } else if (direction < 0) {
+            while (direction < 0){
+                selectTab(tab - 1);
+                direction++;
+            }
+        }
     }
     public boolean getIsMouseOverSlot(Slot slot, int i, int j) {
         int k = (this.width - this.xSize) / 2;
@@ -166,17 +195,22 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.inventorySlots.onCraftGuiClosed(this.mc.thePlayer);
     }
     public void drawGuiContainerForegroundLayer() {
-        this.fontRenderer.drawCenteredString("Inventory", 205, this.ySize - 78, 0XFFFFFF);
-        this.fontRenderer.drawCenteredString("Crafting", 72, this.ySize - 78, 0XFFFFFF);
+        this.drawStringCenteredNoShadow(fontRenderer,"Inventory", 205, this.ySize - 78, 0x404040);
+        this.drawStringCenteredNoShadow(fontRenderer,"Crafting", 72, this.ySize - 78, 0x404040);
         //this.drawStringNoShadow(this.fontRenderer, this.tabString, this.xSize - this.fontRenderer.getStringWidth(this.tabString) - 52, 36, 0x404040);
         //this.drawStringNoShadow(this.fontRenderer, this.slotString,+ 52, 36, 0x404040);
+
+
+
+        if (this.mc.inputType == InputType.CONTROLLER) {
+            this.drawStringCenteredNoShadow(fontRenderer, "Using Controller :)", this.xSize/2, this.ySize/2 - 8, 0x404040);
+        }
+
+
 
         int i = this.mc.renderEngine.getTexture("assets/gui/legacycrafting.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(i);
-
-
-
 
         // Render Selector Scrollbar when applicable
         if (categories[tab].recipeGroups[currentSlot].recipes.length > 1){
