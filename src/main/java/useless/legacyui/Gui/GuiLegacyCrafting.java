@@ -8,6 +8,8 @@ import net.minecraft.core.crafting.recipe.*;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.player.inventory.slot.Slot;
 import org.lwjgl.opengl.GL11;
+import useless.legacyui.Gui.Container.ContainerWorkbenchLegacy;
+import useless.legacyui.Gui.Slot.SlotResizable;
 import useless.legacyui.Sorting.CraftingCategories;
 import useless.legacyui.Sorting.SortingCategory;
 import useless.legacyui.utils.ArrayUtil;

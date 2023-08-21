@@ -1,4 +1,4 @@
-package useless.legacyui.Gui;
+package useless.legacyui.Gui.Container;
 
 import net.minecraft.core.InventoryAction;
 import net.minecraft.core.achievement.stat.StatFileWriter;
@@ -13,6 +13,8 @@ import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotCrafting;
 import net.minecraft.core.player.inventory.slot.SlotGuidebook;
 import net.minecraft.core.world.World;
+import useless.legacyui.Gui.Slot.SlotCraftingDisplay;
+import useless.legacyui.Gui.Slot.SlotResizable;
 import useless.legacyui.Sorting.RecipeGroup;
 import useless.legacyui.Sorting.SortingCategory;
 import useless.legacyui.utils.ArrayUtil;
