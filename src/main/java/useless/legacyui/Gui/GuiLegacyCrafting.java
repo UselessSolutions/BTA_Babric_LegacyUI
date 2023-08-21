@@ -202,16 +202,6 @@ public class GuiLegacyCrafting extends GuiContainer {
     public void drawGuiContainerForegroundLayer() {
         this.drawStringCenteredNoShadow(fontRenderer,"Inventory", 205, this.ySize - 78, 0x404040);
         this.drawStringCenteredNoShadow(fontRenderer,"Crafting", 72, this.ySize - 78, 0x404040);
-        //this.drawStringNoShadow(this.fontRenderer, this.tabString, this.xSize - this.fontRenderer.getStringWidth(this.tabString) - 52, 36, 0x404040);
-        //this.drawStringNoShadow(this.fontRenderer, this.slotString,+ 52, 36, 0x404040);
-
-
-
-        if (this.mc.inputType == InputType.CONTROLLER) {
-            this.drawStringCenteredNoShadow(fontRenderer, "Using Controller :)", this.xSize/2, this.ySize/2 - 8, 0x404040);
-        }
-
-
 
         int i = this.mc.renderEngine.getTexture("assets/gui/legacycrafting.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -270,6 +260,32 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
         this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
         this.drawTexturedModalRect(j + 9 + 34*item,k + 6, 16 * item++, 256-16, 16, 16);
+
+        if (this.mc.inputType == InputType.CONTROLLER) {
+            // Controller Prompts
+            int craftX = 50;
+            drawStringNoShadow(fontRenderer, "Craft", craftX + 12,this.height-24, 0xFFFFFFFF);
+            int exitX = craftX + 12 + fontRenderer.getStringWidth("Craft") + 12;
+            drawStringNoShadow(fontRenderer, "Exit",  exitX + 12,this.height-24, 0xFFFFFFFF);
+            int tabX = exitX + 12 + fontRenderer.getStringWidth("Exit") + 12;
+            drawStringNoShadow(fontRenderer, "Select Tab",  tabX + 37,this.height-24, 0xFFFFFFFF);
+
+
+            i = this.mc.renderEngine.getTexture("assets/gui/xbox360.png");
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            this.mc.renderEngine.bindTexture(i);
+            GL11.glScaled(.5D,.5D,.5D);
+
+            this.drawTexturedModalRect(craftX * 2,(this.height-26) * 2, 0,0, 20, 20);
+            this.drawTexturedModalRect(exitX * 2,(this.height-26) * 2, 20,0, 20, 20);
+            this.drawTexturedModalRect(tabX * 2,(this.height-26) * 2, 90,0, 71, 21);
+
+            GL11.glScaled(2,2,2);
+        }
+
+
+
+
     }
 
 
