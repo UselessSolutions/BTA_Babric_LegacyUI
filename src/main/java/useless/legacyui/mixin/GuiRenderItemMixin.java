@@ -84,9 +84,6 @@ public class GuiRenderItemMixin extends Gui {
             GL11.glDisable(2929);
         }
 
-
-
-
         if (isSelected) {
             GL11.glDisable(2896);
             GL11.glDisable(2929);
