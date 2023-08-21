@@ -23,3 +23,4 @@ Bugs
 - Font scale does not keep centered text
 - Durability rendered at incorrect scale
 - String shadows offset incorrectly at different scales
+- Crafts when you open gui
