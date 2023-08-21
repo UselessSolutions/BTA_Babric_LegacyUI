@@ -26,16 +26,6 @@ public class ControllerInputMixin {
     public Button buttonX;
     @Shadow
     public Button buttonY;
-    @Shadow
-    public Button buttonL;
-    @Shadow
-    public Button buttonR;
-    @Shadow
-    public DigitalPad digitalPad;
-    @Shadow
-    public double cursorX;
-    @Shadow
-    public double cursorY;
 
     @Final
     @Shadow
@@ -53,114 +43,17 @@ public class ControllerInputMixin {
      * @author Useless
      * @reason Need to overwrite dpad controls for legacy UI
      */
-    @Overwrite
-    public void inventoryControls(GuiContainer guiContainer) {
-        Slot slot = this.getSlotAt((int)this.cursorX, (int)this.cursorY, guiContainer);
-        if (slot != null && !(guiContainer instanceof GuiLegacyCrafting)) {
-            Slot slot3;
-            if (this.digitalPad.right.pressedThisFrame()) {
-                slot3 = null;
-                for (Slot slot2 : guiContainer.inventorySlots.inventorySlots) {
-                    if (slot2.xDisplayPosition <= slot.xDisplayPosition || Math.abs(slot2.yDisplayPosition - slot.yDisplayPosition) >= 12 || slot3 != null && slot2.xDisplayPosition >= slot3.xDisplayPosition) continue;
-                    slot3 = slot2;
-                }
-                if (slot3 == null) {
-                    for (Slot slot2 : guiContainer.inventorySlots.inventorySlots) {
-                        if (Math.abs(slot2.yDisplayPosition - slot.yDisplayPosition) >= 12 || slot3 != null && slot2.xDisplayPosition >= slot3.xDisplayPosition) continue;
-                        slot3 = slot2;
-                    }
-                }
-                this.snapToSlot(guiContainer, slot3);
+    @Inject(method = "Lnet/minecraft/client/input/controller/ControllerInput;inventoryControls(Lnet/minecraft/client/gui/GuiContainer;)V", at = @At("HEAD"))
+    public void inventoryControlsInject(GuiContainer guiContainer, CallbackInfo cbi) {
+        if ((guiContainer instanceof GuiLegacyCrafting)) {
+            if (this.buttonA.pressedThisFrame() || this.buttonX.pressedThisFrame() || this.buttonY.pressedThisFrame()) {
+                this.minecraft.sndManager.playSound("random.ui_click", SoundType.GUI_SOUNDS, 1.0f, 1.0f);
             }
-            if (this.digitalPad.left.pressedThisFrame()) {
-                slot3 = null;
-                for (Slot slot2 : guiContainer.inventorySlots.inventorySlots) {
-                    if (slot2.xDisplayPosition >= slot.xDisplayPosition || Math.abs(slot2.yDisplayPosition - slot.yDisplayPosition) >= 12 || slot3 != null && slot2.xDisplayPosition <= slot3.xDisplayPosition) continue;
-                    slot3 = slot2;
-                }
-                if (slot3 == null) {
-                    for (Slot slot2 : guiContainer.inventorySlots.inventorySlots) {
-                        if (Math.abs(slot2.yDisplayPosition - slot.yDisplayPosition) >= 12 || slot3 != null && slot2.xDisplayPosition <= slot3.xDisplayPosition) continue;
-                        slot3 = slot2;
-                    }
-                }
-                this.snapToSlot(guiContainer, slot3);
+            if (this.buttonB.pressedThisFrame()) {
+                this.minecraft.sndManager.playSound("random.ui_back", SoundType.GUI_SOUNDS, 1.0f, 1.0f);
             }
-            if (this.digitalPad.up.pressedThisFrame()) {
-                slot3 = null;
-                for (Slot slot2 : guiContainer.inventorySlots.inventorySlots) {
-                    if (slot2.yDisplayPosition >= slot.yDisplayPosition || Math.abs(slot2.xDisplayPosition - slot.xDisplayPosition) >= 12 || slot3 != null && slot2.yDisplayPosition <= slot3.yDisplayPosition) continue;
-                    slot3 = slot2;
-                }
-                if (slot3 == null) {
-                    for (Slot slot2 : guiContainer.inventorySlots.inventorySlots) {
-                        if (Math.abs(slot2.xDisplayPosition - slot.xDisplayPosition) >= 12 || slot3 != null && slot2.yDisplayPosition <= slot3.yDisplayPosition) continue;
-                        slot3 = slot2;
-                    }
-                }
-                this.snapToSlot(guiContainer, slot3);
-            }
-            if (this.digitalPad.down.pressedThisFrame()) {
-                slot3 = null;
-                for (Slot slot2 : guiContainer.inventorySlots.inventorySlots) {
-                    if (slot2.yDisplayPosition <= slot.yDisplayPosition || Math.abs(slot2.xDisplayPosition - slot.xDisplayPosition) >= 12 || slot3 != null && slot2.yDisplayPosition >= slot3.yDisplayPosition) continue;
-                    slot3 = slot2;
-                }
-                if (slot3 == null) {
-                    for (Slot slot2 : guiContainer.inventorySlots.inventorySlots) {
-                        if (Math.abs(slot2.xDisplayPosition - slot.xDisplayPosition) >= 12 || slot3 != null && slot2.yDisplayPosition >= slot3.yDisplayPosition) continue;
-                        slot3 = slot2;
-                    }
-                }
-                this.snapToSlot(guiContainer, slot3);
-            }
-        }
-        if (this.buttonR.pressedThisFrame() && (slot = this.getSlotAtCursor(guiContainer)) != null) {
-            System.out.println("SLOT: " + slot.id);
-        }
-        if (guiContainer instanceof GuiInventoryCreative) {
-            GuiInventoryCreative inventoryCreative = (GuiInventoryCreative)guiContainer;
-            if (this.buttonL.pressedThisFrame()) {
-                inventoryCreative.scroll(1);
-            }
-            if (this.buttonR.pressedThisFrame()) {
-                inventoryCreative.scroll(-1);
-            }
-        }
-        if (guiContainer instanceof GuiGuidebook) {
-            GuiGuidebook guidebook = (GuiGuidebook)guiContainer;
-            if (this.buttonL.pressedThisFrame()) {
-                guidebook.scroll(1);
-            }
-            if (this.buttonR.pressedThisFrame()) {
-                guidebook.scroll(-1);
-            }
-        }
-        if (guiContainer instanceof GuiCrafting) {
-            this.craftingGuiHandler.handleCrafting((GuiCrafting)guiContainer);
-        }
-        if (guiContainer instanceof GuiInventory) {
-            this.craftingGuiHandler.handleInventory((GuiInventory)guiContainer);
-        }
-        if (guiContainer instanceof GuiFurnace) {
-            this.craftingGuiHandler.handleFurnace((GuiFurnace)guiContainer);
-        }
-        if (this.buttonA.pressedThisFrame() || this.buttonX.pressedThisFrame() || this.buttonY.pressedThisFrame()) {
-            this.minecraft.sndManager.playSound("random.ui_click", SoundType.GUI_SOUNDS, 1.0f, 1.0f);
-        }
-        if (this.buttonB.pressedThisFrame()) {
-            this.minecraft.sndManager.playSound("random.ui_back", SoundType.GUI_SOUNDS, 1.0f, 1.0f);
-        }
-        if (guiContainer instanceof GuiLegacyCrafting) {
             legacyControllerInventoryHandler.handleCrafting((GuiLegacyCrafting)guiContainer);
-
+            return;
         }
     }
-
-    @Shadow
-    public Slot getSlotAt(int x, int y, GuiContainer guiContainer) {return null;}
-    @Shadow
-    public Slot getSlotAtCursor(GuiContainer guiContainer) {return null;}
-    @Shadow
-    public void snapToSlot(GuiContainer guiContainer, Slot slot) {}
 }

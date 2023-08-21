@@ -1,7 +1,6 @@
-package useless.legacyui.Gui;
+package useless.legacyui.Gui.Slot;
 
 import net.minecraft.core.item.ItemStack;
-import net.minecraft.core.player.inventory.IInventory;
 import net.minecraft.core.player.inventory.slot.SlotGuidebook;
 
 public class SlotCraftingDisplay extends SlotGuidebook implements IResizable{

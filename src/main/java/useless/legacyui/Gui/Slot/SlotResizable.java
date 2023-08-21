@@ -1,4 +1,4 @@
-package useless.legacyui.Gui;
+package useless.legacyui.Gui.Slot;
 
 import net.minecraft.core.player.inventory.IInventory;
 import net.minecraft.core.player.inventory.slot.Slot;

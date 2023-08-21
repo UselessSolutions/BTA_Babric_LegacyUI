@@ -5,20 +5,16 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiRenderItem;
 import net.minecraft.client.render.Lighting;
 import net.minecraft.client.render.TextureFX;
-import net.minecraft.client.render.entity.ItemEntityRenderer;
 import net.minecraft.core.Global;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.slot.Slot;
-import net.minecraft.core.player.inventory.slot.SlotGuidebook;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import useless.legacyui.Gui.IResizable;
-import useless.legacyui.Gui.SlotCraftingDisplay;
-import useless.legacyui.Gui.SlotResizable;
-import useless.legacyui.LegacyUI;
+import useless.legacyui.Gui.Slot.IResizable;
+import useless.legacyui.Gui.Slot.SlotCraftingDisplay;
 import useless.legacyui.Rendering.LegacyItemEntityRenderer;
 
 @Mixin(value = GuiRenderItem.class, remap = false)
@@ -83,9 +79,6 @@ public class GuiRenderItemMixin extends Gui {
 
             GL11.glDisable(2929);
         }
-
-
-
 
         if (isSelected) {
             GL11.glDisable(2896);
