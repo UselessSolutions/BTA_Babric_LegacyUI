@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "id": "legacyui",
-  "version": "${version}",
+  "version": "0.4.0",
 
-  "name": "LegacyUI",
-  "description": "This mod aims bring the familiar Legacy Console Edition UIs into BTA.",
+  "name": "Better Than Legacy!",
+  "description": "A UI overhaul mod for BTA, designed with controllers in mind!",
   "authors": [
     "Useless"
   ],
   "icon": "icon.png",
   "contact": {
-    "homepage": "",
+    "homepage": "https://github.com/UselessBullets/BTA_Babric_LegacyUI",
     "sources": ""
   },
 
