@@ -74,15 +74,16 @@ public class ContainerWorkbenchLegacy extends Container {
 
         int index = 0;
         for (RecipeGroup group : craftingGroups){
-        ContainerGuidebookRecipeCrafting currentContainer = group.getContainer(ArrayUtil.wrapAroundIndex(currentScrollAmount, group.recipes.length));
+        ContainerGuidebookRecipeCrafting currentContainer = group.getContainer(ArrayUtil.wrapAroundIndex(0, group.recipes.length));
         boolean craftable = canCraft(player, new RecipeCost(currentContainer));
             if (index == currentSlotId){ // special rendering for scrolling and recipe preview
-
+                currentContainer = group.getContainer(ArrayUtil.wrapAroundIndex(currentScrollAmount, group.recipes.length));
+                craftable = canCraft(player, new RecipeCost(currentContainer));
 
                 // Recipebar preview
                 item = currentContainer.inventorySlots.get(0).getStack();
                 discovered = isDicovered(item, statWriter, player);
-                this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56, currentContainer.inventorySlots.get(0).getStack(), discovered));
+                this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56, currentContainer.inventorySlots.get(0).getStack(), discovered || craftable));
 
                 if (group.recipes.length > 1) { // If multiple items in recipe group
                     int idUpper = ArrayUtil.wrapAroundIndex(currentScrollAmount + 1, group.recipes.length); // Next item in grouo
@@ -91,12 +92,12 @@ public class ContainerWorkbenchLegacy extends Container {
                     // Next item preview
                     item = group.getContainer(idUpper).inventorySlots.get(0).getStack();
                     discovered = isDicovered(item, statWriter, player);
-                    this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56 + 21, item, discovered));
+                    this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56 + 21, item, discovered || canCraft(player, new RecipeCost(group.getContainer(idUpper)))));
 
                     // Previous item preview
                     item = group.getContainer(idLower).inventorySlots.get(0).getStack();
                     discovered = isDicovered(item, statWriter, player);
-                    this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56 - 21, item, discovered));
+                    this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56 - 21, item, discovered || canCraft(player, new RecipeCost(group.getContainer(idLower)))));
 
                 }
 
