@@ -1,7 +1,6 @@
 Needed Things
 - Recipe tags for categorizing recipes
 - Helper class for managing recipe tags
-- Custom controller ui integration
 - Comment and refactor code to be more readable
 - Configuration options (for whatever needs it)
 - texture pack support
@@ -24,3 +23,4 @@ Bugs
 - Durability rendered at incorrect scale
 - String shadows offset incorrectly at different scales
 - Crafts when you open gui
+- Crafting Broken in multiplayer
