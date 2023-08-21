@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "LegacyUI",
-  "description": "This mod aims to help new BTA modders.",
+  "description": "This mod aims bring the familiar Legacy Console Edition UIs into BTA.",
   "authors": [
     "Useless"
   ],
