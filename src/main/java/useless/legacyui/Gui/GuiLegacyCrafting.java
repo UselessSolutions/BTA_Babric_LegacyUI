@@ -60,8 +60,9 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.controlList.add(scrollUp);
         this.controlList.add(scrollDown);
 
+
         this.updatePages();
-        this.selectDisplaySlot(currentSlot);
+        this.selectDisplaySlot(currentSlot, false);
     }
     protected void buttonPressed(GuiButton guibutton) {
         //LegacyUI.LOGGER.info("" + currentScroll);
@@ -105,11 +106,14 @@ public class GuiLegacyCrafting extends GuiContainer {
         updatePages();
     }
     public void selectDisplaySlot(int slotIndex){
+        selectDisplaySlot(slotIndex, true);
+    }
+    public void selectDisplaySlot(int slotIndex, boolean craft){
         if (currentSlot != slotIndex){
             currentScroll = 0; // reset scroll
         }
-        else{
-           craft();
+        else if (craft){
+            craft();
         }
         if (slotIndex < 0){
             slotIndex = 0;
@@ -125,12 +129,12 @@ public class GuiLegacyCrafting extends GuiContainer {
     public void scrollDisplaySlot(int direction){
         if (direction > 0){
             while (direction > 0){
-                selectDisplaySlot(currentSlot + 1);
+                selectDisplaySlot(currentSlot + 1, false);
                 direction--;
             }
         } else if (direction < 0) {
             while (direction < 0){
-                selectDisplaySlot(currentSlot - 1);
+                selectDisplaySlot(currentSlot - 1, false);
                 direction++;
             }
         }
@@ -183,7 +187,6 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.updateRecipesByPage(tab);
     }
     public void updateRecipesByPage(int page) {
-        int startIndex = page * totalDisplaySlots;
         this.categories = new SortingCategory[storedCategories.length];
         for (int i = 0; i < categories.length; ++i) {
             categories[i] = (SortingCategory) storedCategories[i];
