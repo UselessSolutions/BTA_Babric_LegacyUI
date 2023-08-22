@@ -19,7 +19,3 @@ Needed Things
 
 - Redo item categorization
 - Optimize Code
-
-Bugs
-- Click drag does not use resized slots
-- Crafting Broken in multiplayer
