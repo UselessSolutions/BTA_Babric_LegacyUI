@@ -65,7 +65,7 @@ public class ContainerWorkbenchLegacy extends Container {
 
         this.onCraftMatrixChanged(this.craftMatrix);
     }
-    public void setRecipes(EntityPlayer player, SortingCategory category, StatFileWriter statWriter, int currentSlotId, int currentScrollAmount) {
+    public void setRecipes(EntityPlayer player, SortingCategory category, StatFileWriter statWriter, int currentSlotId, int currentScrollAmount, boolean showCraftingPreview) {
         this.inventorySlots.clear();
         craftingSlots();
 
@@ -104,25 +104,26 @@ public class ContainerWorkbenchLegacy extends Container {
                 }
 
                 // Crafting table result preview
-
-                item = currentContainer.inventorySlots.get(0).getStack();
-                discovered = isDicovered(item, statWriter, player);
-                this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 103, 123, item, discovered || craftable, !craftable, 0xFF0000, 26));
-
-                for (int j = 1; j < currentContainer.inventorySlots.size(); j++) {
-                    item = currentContainer.inventorySlots.get(j).getStack();
+                if (showCraftingPreview){
+                    item = currentContainer.inventorySlots.get(0).getStack();
                     discovered = isDicovered(item, statWriter, player);
+                    this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 103, 123, item, discovered || craftable, !craftable, 0xFF0000, 26));
 
-                    if (currentContainer.inventorySlots.size() > 5){
-                        // Render 3x3 crafting grid
-                        this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 20 + 18 * ((j - 1) % 3), 109 + 18 * ((j - 1) / 3), item, discovered, 0 >= InventoryUtil.itemsInInventory(player.inventory, item) && item != null, 0xFF0000));
+                    for (int j = 1; j < currentContainer.inventorySlots.size(); j++) {
+                        item = currentContainer.inventorySlots.get(j).getStack();
+                        discovered = isDicovered(item, statWriter, player);
+
+                        if (currentContainer.inventorySlots.size() > 5){
+                            // Render 3x3 crafting grid
+                            this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 20 + 18 * ((j - 1) % 3), 109 + 18 * ((j - 1) / 3), item, discovered, 0 >= InventoryUtil.itemsInInventory(player.inventory, item) && item != null, 0xFF0000));
+                        }
+                        else {
+                            // Render 2x2 crafting gird
+                            this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 29 + 18 * ((j - 1) % 2), 118 + 18 * ((j - 1) / 2), item, discovered, 0 >= InventoryUtil.itemsInInventory(player.inventory, item) && item != null, 0xFF0000));
+                        }
+
+
                     }
-                    else {
-                        // Render 2x2 crafting gird
-                        this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 29 + 18 * ((j - 1) % 2), 118 + 18 * ((j - 1) / 2), item, discovered, 0 >= InventoryUtil.itemsInInventory(player.inventory, item) && item != null, 0xFF0000));
-                    }
-
-
                 }
             }
             else { // Renders first slot of none selected groups
@@ -286,5 +287,6 @@ public class ContainerWorkbenchLegacy extends Container {
         // - 14 to account for the 14 display items
         return this.inventorySlots.size() - 10 - 14 + number;
     }
+
 
 }
