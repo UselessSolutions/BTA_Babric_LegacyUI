@@ -74,7 +74,7 @@ dependencies {
 
 	// Helper library
 	// If you do not need Halplibe you can comment this line out or delete this line
-	//modImplementation "bta-halplibe:halplibe:${project.halplibe_version}"
+	modImplementation "bta-halplibe:halplibe:${project.halplibe_version}"
 
 	modImplementation "ModMenu:ModMenu:2.0.0"
 
