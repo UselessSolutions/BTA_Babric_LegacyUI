@@ -208,7 +208,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.drawStringCenteredNoShadow(fontRenderer,"Inventory", 205, this.ySize - 78, 0x404040);
         this.drawStringCenteredNoShadow(fontRenderer,"Crafting", 72, this.ySize - 78, 0x404040);
 
-        int i = this.mc.renderEngine.getTexture("assets/gui/legacycrafting.png");
+        int i = this.mc.renderEngine.getTexture("/assets/legacyui/gui/legacycrafting.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(i);
 
@@ -228,7 +228,7 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
     public void drawGuiContainerBackgroundLayer(float f) {
         //this.scroll(Mouse.getDWheel()); // Scroll through tabs
-        int i = this.mc.renderEngine.getTexture("assets/gui/legacycrafting.png");
+        int i = this.mc.renderEngine.getTexture("/assets/legacyui/gui/legacycrafting.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(i);
         int j = (this.width - this.xSize) / 2;
@@ -276,7 +276,7 @@ public class GuiLegacyCrafting extends GuiContainer {
             drawStringNoShadow(fontRenderer, "Select Tab",  tabX + 37,this.height-24, 0xFFFFFFFF);
 
 
-            i = this.mc.renderEngine.getTexture("assets/gui/xbox360.png");
+            i = this.mc.renderEngine.getTexture("/assets/legacyui/gui/xbox360.png");
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.mc.renderEngine.bindTexture(i);
             GL11.glScaled(.5D,.5D,.5D);
