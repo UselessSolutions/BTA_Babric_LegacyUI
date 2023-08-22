@@ -10,6 +10,7 @@ import net.minecraft.core.player.inventory.slot.Slot;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.Gui.Container.ContainerWorkbenchLegacy;
 import useless.legacyui.Gui.Slot.SlotResizable;
+import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.CraftingCategories;
 import useless.legacyui.Sorting.SortingCategory;
 import useless.legacyui.utils.ArrayUtil;
@@ -36,6 +37,7 @@ public class GuiLegacyCrafting extends GuiContainer {
 
     protected static Object[] storedCategories;
 
+    private boolean wasHoldingItem = false;
 
 
     public GuiLegacyCrafting(EntityPlayer player, int i, int j, int k) {
@@ -142,7 +144,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         }
     }
     public void craft(){
-        ((ContainerWorkbenchLegacy)this.inventorySlots).craft(this.mc.thePlayer, categories[tab], currentSlot, currentScroll);
+        ((ContainerWorkbenchLegacy)this.inventorySlots).craft(this.mc, this.inventorySlots.windowId, categories[tab], currentSlot, currentScroll);
     }
     public void selectTab(int tabIndex){
         currentSlot = 0; //Reset to start on tab change
@@ -193,13 +195,16 @@ public class GuiLegacyCrafting extends GuiContainer {
         for (int i = 0; i < categories.length; ++i) {
             categories[i] = (SortingCategory) storedCategories[i];
         }
-        ((ContainerWorkbenchLegacy)this.inventorySlots).setRecipes(this.mc.thePlayer, categories[tab], this.mc.statFileWriter, currentSlot, currentScroll);
+        ((ContainerWorkbenchLegacy)this.inventorySlots).setRecipes(this.mc.thePlayer, categories[tab], this.mc.statFileWriter, currentSlot, currentScroll, renderCraftingDisplay());
     }
     public void onGuiClosed() {
         super.onGuiClosed();
         this.inventorySlots.onCraftGuiClosed(this.mc.thePlayer);
     }
     public void drawGuiContainerForegroundLayer() {
+        if (wasHoldingItem != holdingItem()){
+            updatePages(); // TODO might be bad idea?
+        }
         this.drawStringCenteredNoShadow(fontRenderer,"Inventory", 205, this.ySize - 78, 0x404040);
         this.drawStringCenteredNoShadow(fontRenderer,"Crafting", 72, this.ySize - 78, 0x404040);
 
@@ -240,7 +245,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.drawTexturedModalRect(j + bookMarkWidth * tab, k - 2, 0, 175, bookMarkWidth, 30);
 
         // If 2x2
-        if (categories[tab].recipeGroups[currentSlot].getContainer(ArrayUtil.wrapAroundIndex(currentScroll, categories[tab].recipeGroups[currentSlot].recipes.length)).inventorySlots.size() < 6){
+        if (categories[tab].recipeGroups[currentSlot].getContainer(ArrayUtil.wrapAroundIndex(currentScroll, categories[tab].recipeGroups[currentSlot].recipes.length)).inventorySlots.size() < 6  && renderCraftingDisplay()){
             this.drawTexturedModalRect(j + 19,k + 108,61,175, 54, 54);
         }
 
@@ -282,10 +287,19 @@ public class GuiLegacyCrafting extends GuiContainer {
 
             GL11.glScaled(2,2,2);
         }
+    }
+    public boolean holdingItem(){
+        wasHoldingItem = mc.thePlayer.inventory.getHeldItemStack() != null;
+        return wasHoldingItem;
+    }
+    public boolean renderCraftingDisplay(){
+        boolean holdingItem = mc.thePlayer.inventory.getHeldItemStack() != null;
 
-
-
-
+        boolean isItem = false;
+        for (int i = 1; i < 10; i++){
+            isItem = isItem || (inventorySlots.getSlot(i) != null && inventorySlots.getSlot(i).getStack() != null);
+        }
+        return !isItem && !holdingItem;
     }
 
 
