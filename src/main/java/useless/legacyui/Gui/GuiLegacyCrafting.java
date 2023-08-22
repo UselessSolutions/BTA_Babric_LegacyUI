@@ -6,7 +6,9 @@ import net.minecraft.client.input.InputType;
 import net.minecraft.core.crafting.CraftingManager;
 import net.minecraft.core.crafting.recipe.*;
 import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.slot.Slot;
+import net.minecraft.core.util.helper.Time;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.Gui.Container.ContainerWorkbenchLegacy;
 import useless.legacyui.Gui.Slot.SlotResizable;
@@ -37,7 +39,10 @@ public class GuiLegacyCrafting extends GuiContainer {
 
     protected static Object[] storedCategories;
 
-    private boolean wasHoldingItem = false;
+    private ItemStack lastHeldItem = null;
+    private boolean lastCheckPassed = false;
+
+    private long timeStart = 0;
 
 
     public GuiLegacyCrafting(EntityPlayer player, int i, int j, int k) {
@@ -188,9 +193,6 @@ public class GuiLegacyCrafting extends GuiContainer {
         scrollUp.xPosition = (this.width - this.xSize)/2 + 11 + 18 * currentSlot;
         scrollDown.xPosition = (this.width - this.xSize)/2 + 11 + 18 * currentSlot;
 
-        this.updateRecipesByPage(tab);
-    }
-    public void updateRecipesByPage(int page) {
         this.categories = new SortingCategory[storedCategories.length];
         for (int i = 0; i < categories.length; ++i) {
             categories[i] = (SortingCategory) storedCategories[i];
@@ -202,9 +204,8 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.inventorySlots.onCraftGuiClosed(this.mc.thePlayer);
     }
     public void drawGuiContainerForegroundLayer() {
-        if (wasHoldingItem != holdingItem()){
-            updatePages(); // TODO might be bad idea?
-        }
+        shouldUpdateThisFrame();
+
         this.drawStringCenteredNoShadow(fontRenderer,"Inventory", 205, this.ySize - 78, 0x404040);
         this.drawStringCenteredNoShadow(fontRenderer,"Crafting", 72, this.ySize - 78, 0x404040);
 
@@ -288,10 +289,6 @@ public class GuiLegacyCrafting extends GuiContainer {
             GL11.glScaled(2,2,2);
         }
     }
-    public boolean holdingItem(){
-        wasHoldingItem = mc.thePlayer.inventory.getHeldItemStack() != null;
-        return wasHoldingItem;
-    }
     public boolean renderCraftingDisplay(){
         boolean holdingItem = mc.thePlayer.inventory.getHeldItemStack() != null;
 
@@ -302,6 +299,19 @@ public class GuiLegacyCrafting extends GuiContainer {
         return !isItem && !holdingItem;
     }
 
+    public void shouldUpdateThisFrame(){
+        if (lastHeldItem != mc.thePlayer.inventory.getHeldItemStack() || lastCheckPassed){
+            if (lastCheckPassed && System.currentTimeMillis() - timeStart > 50){
+                lastHeldItem = mc.thePlayer.inventory.getHeldItemStack();
+                //timeStart = Time.now();
+                updatePages();
+                lastCheckPassed = false;
+            } else if (!lastCheckPassed) {
+                timeStart = Time.now();
+                lastCheckPassed = true;
+            }
+        }
+    }
 
     static {
         int i;
