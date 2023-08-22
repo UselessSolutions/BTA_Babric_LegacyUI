@@ -5,6 +5,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiRenderItem;
 import net.minecraft.client.render.Lighting;
 import net.minecraft.client.render.TextureFX;
+import net.minecraft.client.render.entity.ItemEntityRenderer;
 import net.minecraft.core.Global;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.slot.Slot;
@@ -12,15 +13,13 @@ import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import useless.legacyui.Gui.Slot.IResizable;
 import useless.legacyui.Gui.Slot.SlotCraftingDisplay;
-import useless.legacyui.Rendering.LegacyItemEntityRenderer;
 
 @Mixin(value = GuiRenderItem.class, remap = false)
 public class GuiRenderItemMixin extends Gui {
-    @Unique
-    private static final LegacyItemEntityRenderer itemRenderer = new LegacyItemEntityRenderer();
+    @Shadow
+    static ItemEntityRenderer itemRenderer = new ItemEntityRenderer();
     @Shadow
     Minecraft mc;
     /**
@@ -69,13 +68,12 @@ public class GuiRenderItemMixin extends Gui {
         if (!hasDrawnSlotBackground) {
             GL11.glEnable(2929);
 
-            int fontHeight = mc.fontRenderer.fontHeight;
-            if (slot instanceof IResizable){
-                fontHeight = (int)(9*(((slotSize)/18f))); // Smaller font
-            }
-
-            itemRenderer.renderItemIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, itemStack, x, y, discovered ? 1.0F : 0.0F, 1.0F, renderScale);
-            itemRenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, itemStack, x, y, discovered ? null : "?", fontHeight);
+            GL11.glScaled(renderScale, renderScale, renderScale);
+            int newX = (int)(x*(1d/renderScale));
+            int newY = (int)(y* (1d/renderScale));
+            itemRenderer.renderItemIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, itemStack, newX, newY, discovered ? 1.0F : 0.0F, 1.0F);
+            itemRenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, itemStack, newX, newY, discovered ? null : "?");
+            GL11.glScaled(1d/renderScale, 1d/renderScale, 1d/renderScale);
 
             GL11.glDisable(2929);
         }
