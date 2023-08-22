@@ -78,9 +78,9 @@ public class LegacyControllerInventoryHandler extends ControllerInventoryHandler
         if (controllerInput.digitalPad.left.pressedThisFrame()) {
             crafting.scrollDisplaySlot(-1);
         }
-        if (controllerInput.buttonA.pressedThisFrame()) {
+        /*if (controllerInput.buttonA.pressedThisFrame()) {
             crafting.craft();
-        }
+        }*/
 
         this.handleAbstractCrafting(crafting, e -> e.id > 9, e -> e.id > 0 && e.id < 10, e -> e.id == 0, 5, 0, 24);
     }

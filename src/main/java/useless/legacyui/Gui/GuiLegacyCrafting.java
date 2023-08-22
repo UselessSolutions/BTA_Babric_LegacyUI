@@ -131,7 +131,13 @@ public class GuiLegacyCrafting extends GuiContainer {
         }
         currentSlot = slotIndex;
         slotString = "" + (currentSlot+1) + "/" + (totalDisplaySlots);
+        setControllerCursorPosition();
         updatePages();
+    }
+
+    public void setControllerCursorPosition(){
+        this.mc.controllerInput.cursorX = slotButtons[currentSlot].xPosition + 9;
+        this.mc.controllerInput.cursorY = slotButtons[currentSlot].yPosition + 9;
     }
     public void scrollDisplaySlot(int direction){
         if (direction > 0){
@@ -158,6 +164,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         }
         tab = tabIndex;
         tabString = "" + (tab+1) + "/" + (maxDisplayedTabs);
+        setControllerCursorPosition();
         updatePages();
     }
     public void scrollTab(int direction){
