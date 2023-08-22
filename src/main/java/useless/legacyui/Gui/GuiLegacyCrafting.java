@@ -39,7 +39,7 @@ public class GuiLegacyCrafting extends GuiContainer {
 
     protected static Object[] storedCategories;
 
-    private ItemStack lastHeldItem = null;
+    private boolean lastHeldItemWasNull = false;
     private boolean lastCheckPassed = false;
 
     private long timeStart = 0;
@@ -300,12 +300,12 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     public void shouldUpdateThisFrame(){
-        if (lastHeldItem != mc.thePlayer.inventory.getHeldItemStack() || lastCheckPassed){
+        if (lastHeldItemWasNull != (mc.thePlayer.inventory.getHeldItemStack() == null) || lastCheckPassed){
+            lastHeldItemWasNull = (mc.thePlayer.inventory.getHeldItemStack() == null);
             if (!LegacyUI.config.getBoolean("ExperimentalQuickStackFix")){
                 updatePages();
             }
             else if (lastCheckPassed && System.currentTimeMillis() - timeStart > LegacyUI.config.getInt("ExperimentalQuickStackFixDelay")){
-                lastHeldItem = mc.thePlayer.inventory.getHeldItemStack();
                 //timeStart = Time.now();
                 updatePages();
                 lastCheckPassed = false;

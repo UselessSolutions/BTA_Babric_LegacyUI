@@ -16,7 +16,7 @@ public class LegacyUI implements ModInitializer {
         Properties props = new Properties();
         props.setProperty("CraftingHideUndiscoveredItems","true");
         props.setProperty("ExperimentalQuickStackFix", "false");
-        props.setProperty("ExperimentalQuickStackFixDelay", "200");
+        props.setProperty("ExperimentalQuickStackFixDelay", "50");
         config = new ConfigHandler(MOD_ID, props);
     }
 
