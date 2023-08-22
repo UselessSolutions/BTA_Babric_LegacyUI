@@ -6,7 +6,9 @@ import net.minecraft.client.input.InputType;
 import net.minecraft.core.crafting.CraftingManager;
 import net.minecraft.core.crafting.recipe.*;
 import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.slot.Slot;
+import net.minecraft.core.util.helper.Time;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.Gui.Container.ContainerWorkbenchLegacy;
 import useless.legacyui.Gui.Slot.SlotResizable;
@@ -37,7 +39,10 @@ public class GuiLegacyCrafting extends GuiContainer {
 
     protected static Object[] storedCategories;
 
-    private boolean wasHoldingItem = false;
+    private boolean lastHeldItemWasNull = false;
+    private boolean lastCheckPassed = false;
+
+    private long timeStart = 0;
 
 
     public GuiLegacyCrafting(EntityPlayer player, int i, int j, int k) {
@@ -120,15 +125,19 @@ public class GuiLegacyCrafting extends GuiContainer {
             craft();
         }
         if (slotIndex < 0){
-            slotIndex = 0;
-        } else if (slotIndex > totalDisplaySlots-1) {
-            slotIndex = totalDisplaySlots-1;
-        } else if (slotIndex > categories[tab].recipeGroups.length - 1) {
-            slotIndex = categories[tab].recipeGroups.length - 1;
+            slotIndex += categories[tab].recipeGroups.length;
+        } else if (slotIndex > categories[tab].recipeGroups.length -1) {
+            slotIndex -= categories[tab].recipeGroups.length;
         }
         currentSlot = slotIndex;
         slotString = "" + (currentSlot+1) + "/" + (totalDisplaySlots);
+        setControllerCursorPosition();
         updatePages();
+    }
+
+    public void setControllerCursorPosition(){
+        this.mc.controllerInput.cursorX = slotButtons[currentSlot].xPosition + 9;
+        this.mc.controllerInput.cursorY = slotButtons[currentSlot].yPosition + 9;
     }
     public void scrollDisplaySlot(int direction){
         if (direction > 0){
@@ -149,14 +158,13 @@ public class GuiLegacyCrafting extends GuiContainer {
     public void selectTab(int tabIndex){
         currentSlot = 0; //Reset to start on tab change
         if (tabIndex < 0){
-            tabIndex = 0;
-        } else if (tabIndex > maxDisplayedTabs -1) {
-            tabIndex = maxDisplayedTabs -1;
-        } else if (tabIndex > categories.length - 1){ // Prevents crashing if trying to move to tab which does not exist
-            tabIndex = categories.length - 1;
+            tabIndex += categories.length;
+        } else if (tabIndex > categories.length -1) {
+            tabIndex -= categories.length;
         }
         tab = tabIndex;
         tabString = "" + (tab+1) + "/" + (maxDisplayedTabs);
+        setControllerCursorPosition();
         updatePages();
     }
     public void scrollTab(int direction){
@@ -188,9 +196,6 @@ public class GuiLegacyCrafting extends GuiContainer {
         scrollUp.xPosition = (this.width - this.xSize)/2 + 11 + 18 * currentSlot;
         scrollDown.xPosition = (this.width - this.xSize)/2 + 11 + 18 * currentSlot;
 
-        this.updateRecipesByPage(tab);
-    }
-    public void updateRecipesByPage(int page) {
         this.categories = new SortingCategory[storedCategories.length];
         for (int i = 0; i < categories.length; ++i) {
             categories[i] = (SortingCategory) storedCategories[i];
@@ -202,9 +207,8 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.inventorySlots.onCraftGuiClosed(this.mc.thePlayer);
     }
     public void drawGuiContainerForegroundLayer() {
-        if (wasHoldingItem != holdingItem()){
-            updatePages(); // TODO might be bad idea?
-        }
+        shouldUpdateThisFrame();
+
         this.drawStringCenteredNoShadow(fontRenderer,"Inventory", 205, this.ySize - 78, 0x404040);
         this.drawStringCenteredNoShadow(fontRenderer,"Crafting", 72, this.ySize - 78, 0x404040);
 
@@ -288,10 +292,6 @@ public class GuiLegacyCrafting extends GuiContainer {
             GL11.glScaled(2,2,2);
         }
     }
-    public boolean holdingItem(){
-        wasHoldingItem = mc.thePlayer.inventory.getHeldItemStack() != null;
-        return wasHoldingItem;
-    }
     public boolean renderCraftingDisplay(){
         boolean holdingItem = mc.thePlayer.inventory.getHeldItemStack() != null;
 
@@ -302,6 +302,22 @@ public class GuiLegacyCrafting extends GuiContainer {
         return !isItem && !holdingItem;
     }
 
+    public void shouldUpdateThisFrame(){
+        if (lastHeldItemWasNull != (mc.thePlayer.inventory.getHeldItemStack() == null) || lastCheckPassed){
+            lastHeldItemWasNull = (mc.thePlayer.inventory.getHeldItemStack() == null);
+            if (!LegacyUI.config.getBoolean("ExperimentalQuickStackFix")){
+                updatePages();
+            }
+            else if (lastCheckPassed && System.currentTimeMillis() - timeStart > LegacyUI.config.getInt("ExperimentalQuickStackFixDelay")){
+                //timeStart = Time.now();
+                updatePages();
+                lastCheckPassed = false;
+            } else if (!lastCheckPassed) {
+                timeStart = Time.now();
+                lastCheckPassed = true;
+            }
+        }
+    }
 
     static {
         int i;

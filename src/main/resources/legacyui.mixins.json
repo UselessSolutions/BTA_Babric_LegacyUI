@@ -5,7 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "ControllerInputMixin",
-    "FontMixin",
+    "GuiItemDragHandlerMixin",
     "GuiRenderItemMixin",
     "MinecraftMixin",
     "PlayerSPMixin"

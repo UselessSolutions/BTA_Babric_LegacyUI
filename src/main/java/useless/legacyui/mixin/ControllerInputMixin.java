@@ -1,8 +1,10 @@
 package useless.legacyui.mixin;
 
+import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
+import net.minecraft.client.input.InputHandler;
 import net.minecraft.client.input.controller.*;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.sound.SoundType;
@@ -26,14 +28,10 @@ public class ControllerInputMixin {
     public Button buttonX;
     @Shadow
     public Button buttonY;
-
-    @Final
-    @Shadow
-    public ControllerInventoryHandler craftingGuiHandler;
-
+    @Shadow public DigitalPad digitalPad;
+    @Shadow @Final public ControllerInventoryHandler craftingGuiHandler;
     @Unique
     public LegacyControllerInventoryHandler legacyControllerInventoryHandler;
-
     @Inject(method = "Lnet/minecraft/client/input/controller/ControllerInput;<init>(Lnet/minecraft/client/Minecraft;Lnet/java/games/input/Controller;)V", at = @At("TAIL"))
     public void constructor(Minecraft minecraft, Controller controller, CallbackInfo cbi){
         legacyControllerInventoryHandler = new LegacyControllerInventoryHandler(craftingGuiHandler.controllerInput);
@@ -43,7 +41,7 @@ public class ControllerInputMixin {
      * @author Useless
      * @reason Need to overwrite dpad controls for legacy UI
      */
-    @Inject(method = "Lnet/minecraft/client/input/controller/ControllerInput;inventoryControls(Lnet/minecraft/client/gui/GuiContainer;)V", at = @At("HEAD"))
+    @Inject(method = "Lnet/minecraft/client/input/controller/ControllerInput;inventoryControls(Lnet/minecraft/client/gui/GuiContainer;)V", at = @At("HEAD"), cancellable = true)
     public void inventoryControlsInject(GuiContainer guiContainer, CallbackInfo cbi) {
         if ((guiContainer instanceof GuiLegacyCrafting)) {
             if (this.buttonA.pressedThisFrame() || this.buttonX.pressedThisFrame() || this.buttonY.pressedThisFrame()) {
@@ -53,7 +51,7 @@ public class ControllerInputMixin {
                 this.minecraft.sndManager.playSound("random.ui_back", SoundType.GUI_SOUNDS, 1.0f, 1.0f);
             }
             legacyControllerInventoryHandler.handleCrafting((GuiLegacyCrafting)guiContainer);
-            return;
+            cbi.cancel();
         }
     }
 }
