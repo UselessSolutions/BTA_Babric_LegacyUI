@@ -142,7 +142,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         }
     }
     public void craft(){
-        ((ContainerWorkbenchLegacy)this.inventorySlots).craft(this.mc.thePlayer, categories[tab], currentSlot, currentScroll);
+        ((ContainerWorkbenchLegacy)this.inventorySlots).craft(this.mc, this.inventorySlots.windowId, categories[tab], currentSlot, currentScroll);
     }
     public void selectTab(int tabIndex){
         currentSlot = 0; //Reset to start on tab change
