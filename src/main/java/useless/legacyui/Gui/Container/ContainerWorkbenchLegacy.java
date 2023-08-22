@@ -16,6 +16,7 @@ import net.minecraft.core.player.inventory.slot.SlotGuidebook;
 import net.minecraft.core.world.World;
 import useless.legacyui.Gui.Slot.SlotCraftingDisplay;
 import useless.legacyui.Gui.Slot.SlotResizable;
+import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.RecipeGroup;
 import useless.legacyui.Sorting.SortingCategory;
 import useless.legacyui.utils.ArrayUtil;
@@ -171,6 +172,9 @@ public class ContainerWorkbenchLegacy extends Container {
         return canCraft;
     }
     private boolean isDicovered(ItemStack item, StatFileWriter statWriter, EntityPlayer player){
+        if (!LegacyUI.config.getBoolean("CraftingHideUndiscoveredItems")){
+            return true;
+        }
         if (player.getGamemode() == Gamemode.creative) {
             return true;
         }

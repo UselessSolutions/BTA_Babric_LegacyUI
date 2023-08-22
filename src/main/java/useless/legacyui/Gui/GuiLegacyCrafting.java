@@ -301,7 +301,10 @@ public class GuiLegacyCrafting extends GuiContainer {
 
     public void shouldUpdateThisFrame(){
         if (lastHeldItem != mc.thePlayer.inventory.getHeldItemStack() || lastCheckPassed){
-            if (lastCheckPassed && System.currentTimeMillis() - timeStart > 50){
+            if (!LegacyUI.config.getBoolean("ExperimentalQuickStackFix")){
+                updatePages();
+            }
+            else if (lastCheckPassed && System.currentTimeMillis() - timeStart > LegacyUI.config.getInt("ExperimentalQuickStackFixDelay")){
                 lastHeldItem = mc.thePlayer.inventory.getHeldItemStack();
                 //timeStart = Time.now();
                 updatePages();
