@@ -125,11 +125,9 @@ public class GuiLegacyCrafting extends GuiContainer {
             craft();
         }
         if (slotIndex < 0){
-            slotIndex = 0;
-        } else if (slotIndex > totalDisplaySlots-1) {
-            slotIndex = totalDisplaySlots-1;
-        } else if (slotIndex > categories[tab].recipeGroups.length - 1) {
-            slotIndex = categories[tab].recipeGroups.length - 1;
+            slotIndex += categories[tab].recipeGroups.length;
+        } else if (slotIndex > categories[tab].recipeGroups.length -1) {
+            slotIndex -= categories[tab].recipeGroups.length;
         }
         currentSlot = slotIndex;
         slotString = "" + (currentSlot+1) + "/" + (totalDisplaySlots);
@@ -154,11 +152,9 @@ public class GuiLegacyCrafting extends GuiContainer {
     public void selectTab(int tabIndex){
         currentSlot = 0; //Reset to start on tab change
         if (tabIndex < 0){
-            tabIndex = 0;
-        } else if (tabIndex > maxDisplayedTabs -1) {
-            tabIndex = maxDisplayedTabs -1;
-        } else if (tabIndex > categories.length - 1){ // Prevents crashing if trying to move to tab which does not exist
-            tabIndex = categories.length - 1;
+            tabIndex += categories.length;
+        } else if (tabIndex > categories.length -1) {
+            tabIndex -= categories.length;
         }
         tab = tabIndex;
         tabString = "" + (tab+1) + "/" + (maxDisplayedTabs);
