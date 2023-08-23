@@ -136,8 +136,10 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     public void setControllerCursorPosition(){
-        this.mc.controllerInput.cursorX = slotButtons[currentSlot].xPosition + 9;
-        this.mc.controllerInput.cursorY = slotButtons[currentSlot].yPosition + 9;
+        if (this.mc.inputType == InputType.CONTROLLER){
+            this.mc.controllerInput.cursorX = slotButtons[currentSlot].xPosition + 9;
+            this.mc.controllerInput.cursorY = slotButtons[currentSlot].yPosition + 9;
+        }
     }
     public void scrollDisplaySlot(int direction){
         if (direction > 0){
