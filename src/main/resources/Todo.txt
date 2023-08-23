@@ -2,7 +2,6 @@ Needed Things
 - Recipe tags for categorizing recipes
 - Helper class for managing recipe tags
 - Comment and refactor code to be more readable
-- texture pack support
 - translucent block/item rendering
 - xbox popup style achievements (Config option)
 - Separate tab icon texture

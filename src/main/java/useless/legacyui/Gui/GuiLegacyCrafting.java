@@ -213,8 +213,6 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.inventorySlots.onCraftGuiClosed(this.mc.thePlayer);
     }
     public void drawGuiContainerForegroundLayer() {
-        shouldUpdateThisFrame();
-
         this.drawStringCenteredNoShadow(fontRenderer,"Inventory", 205, this.ySize - 78, LegacyUI.getGuiLabelColor());
         this.drawStringCenteredNoShadow(fontRenderer,"Crafting", 72, this.ySize - 78, LegacyUI.getGuiLabelColor());
 
@@ -252,7 +250,9 @@ public class GuiLegacyCrafting extends GuiContainer {
         }
     }
     public void drawGuiContainerBackgroundLayer(float f) {
-        this.scrollSlot(-Mouse.getDWheel()); // Scroll through tabs
+        shouldUpdateThisFrame();
+
+        //this.scrollSlot(-Mouse.getDWheel()); // Scroll through tabs
 
         if (isKeyPressed(mc.gameSettings.keyForward.keyCode()) || isKeyPressed(mc.gameSettings.keyLookUp.keyCode()) ){
             scrollSlot(-1);
