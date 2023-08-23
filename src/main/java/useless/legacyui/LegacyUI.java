@@ -20,28 +20,18 @@ public class LegacyUI implements ModInitializer {
         props.setProperty("CraftingHideUndiscoveredItems","true");
         props.setProperty("ExperimentalQuickStackFix", "false");
         props.setProperty("ExperimentalQuickStackFixDelay", "50");
+        props.setProperty("GuiLabelColor", "404040");
         config = new ConfigHandler(MOD_ID, props);
     }
-    private static int GuiLabelColor = 0x404040;
 
     private static boolean guimodExists = false;
 
     @Override
     public void onInitialize() {
-        for (ModContainer mod : FabricLoader.getInstance().getAllMods()){
-            if (mod.toString().contains("guimod")){
-                guimodExists = true;
-            }
-        }
         LOGGER.info("LegacyUI initialized.");
     }
     public static int getGuiLabelColor(){
-        if (guimodExists){
-            return ModMenuConfigManager.getConfig().getLabelColor();
-        }
-        else {
-            return GuiLabelColor;
-        }
+        return Integer.decode("0X" + config.getProperty("GuiLabelColor"));
     }
 
 }
