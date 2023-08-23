@@ -22,15 +22,26 @@ public class LegacyUI implements ModInitializer {
         props.setProperty("ExperimentalQuickStackFixDelay", "50");
         config = new ConfigHandler(MOD_ID, props);
     }
-    public static int GuiLabelColor = 0x404040;
+    private static int GuiLabelColor = 0x404040;
+
+    private static boolean guimodExists = false;
 
     @Override
     public void onInitialize() {
         for (ModContainer mod : FabricLoader.getInstance().getAllMods()){
             if (mod.toString().contains("guimod")){
-                GuiLabelColor = ModMenuConfigManager.getConfig().getLabelColor();
+                guimodExists = true;
             }
         }
         LOGGER.info("LegacyUI initialized.");
     }
+    public static int getGuiLabelColor(){
+        if (guimodExists){
+            return ModMenuConfigManager.getConfig().getLabelColor();
+        }
+        else {
+            return GuiLabelColor;
+        }
+    }
+
 }

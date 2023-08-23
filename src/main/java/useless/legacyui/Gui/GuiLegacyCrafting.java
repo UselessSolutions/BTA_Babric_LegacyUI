@@ -209,8 +209,8 @@ public class GuiLegacyCrafting extends GuiContainer {
     public void drawGuiContainerForegroundLayer() {
         shouldUpdateThisFrame();
 
-        this.drawStringCenteredNoShadow(fontRenderer,"Inventory", 205, this.ySize - 78, LegacyUI.GuiLabelColor);
-        this.drawStringCenteredNoShadow(fontRenderer,"Crafting", 72, this.ySize - 78, LegacyUI.GuiLabelColor);
+        this.drawStringCenteredNoShadow(fontRenderer,"Inventory", 205, this.ySize - 78, LegacyUI.getGuiLabelColor());
+        this.drawStringCenteredNoShadow(fontRenderer,"Crafting", 72, this.ySize - 78, LegacyUI.getGuiLabelColor());
 
         int i = this.mc.renderEngine.getTexture("/assets/legacyui/gui/legacycrafting.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
