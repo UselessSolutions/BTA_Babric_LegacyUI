@@ -77,8 +77,8 @@ public class ContainerWorkbenchLegacy extends Container {
 
         int index = 0;
         for (RecipeGroup group : craftingGroups){
-        ContainerGuidebookRecipeCrafting currentContainer = group.getContainer(ArrayUtil.wrapAroundIndex(0, group.recipes.length));
-        boolean craftable = canCraft(player, new RecipeCost(currentContainer));
+        ContainerGuidebookRecipeCrafting currentContainer;
+        boolean craftable;
             if (index == currentSlotId){ // special rendering for scrolling and recipe preview
                 currentContainer = group.getContainer(ArrayUtil.wrapAroundIndex(currentScrollAmount, group.recipes.length));
                 craftable = canCraft(player, new RecipeCost(currentContainer));
@@ -86,7 +86,7 @@ public class ContainerWorkbenchLegacy extends Container {
                 // Recipebar preview
                 item = currentContainer.inventorySlots.get(0).getStack();
                 discovered = isDicovered(item, statWriter, player);
-                this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56, currentContainer.inventorySlots.get(0).getStack(), discovered || craftable));
+                this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56, currentContainer.inventorySlots.get(0).getStack(), discovered || craftable, !craftable, 0xFF0000));
 
                 if (group.recipes.length > 1) { // If multiple items in recipe group
                     int idUpper = ArrayUtil.wrapAroundIndex(currentScrollAmount + 1, group.recipes.length); // Next item in grouo
@@ -95,17 +95,20 @@ public class ContainerWorkbenchLegacy extends Container {
                     // Next item preview
                     item = group.getContainer(idUpper).inventorySlots.get(0).getStack();
                     discovered = isDicovered(item, statWriter, player);
-                    this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56 + 21, item, discovered || canCraft(player, new RecipeCost(group.getContainer(idUpper)))));
+                    craftable = canCraft(player, new RecipeCost(group.getContainer(idUpper)));
+                    this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56 + 21, item, discovered || craftable, !craftable, 0xFF0000));
 
                     // Previous item preview
                     item = group.getContainer(idLower).inventorySlots.get(0).getStack();
                     discovered = isDicovered(item, statWriter, player);
-                    this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56 - 21, item, discovered || canCraft(player, new RecipeCost(group.getContainer(idLower)))));
+                    craftable = canCraft(player, new RecipeCost(group.getContainer(idLower)));
+                    this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56 - 21, item, discovered || craftable, !craftable, 0xFF0000));
 
                 }
 
                 // Crafting table result preview
                 if (showCraftingPreview){
+                    craftable = canCraft(player, new RecipeCost(currentContainer));
                     item = currentContainer.inventorySlots.get(0).getStack();
                     discovered = isDicovered(item, statWriter, player);
                     this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 103, 123, item, discovered || craftable, !craftable, 0xFF0000, 26));
@@ -130,7 +133,8 @@ public class ContainerWorkbenchLegacy extends Container {
             else { // Renders first slot of none selected groups
                 item = group.getContainer(0).inventorySlots.get(0).getStack();
                 discovered = isDicovered(item, statWriter, player);
-                this.addSlot(new SlotGuidebook(this.inventorySlots.size(), 12 + 18 * index, 56, item, discovered || craftable));
+                craftable = canCraft(player, new RecipeCost(group.getContainer(0)));
+                this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56, item, discovered || craftable, !craftable, 0xFF0000));
             }
 
             index++;
