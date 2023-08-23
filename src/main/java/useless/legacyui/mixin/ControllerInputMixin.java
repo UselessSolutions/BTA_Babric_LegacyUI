@@ -37,10 +37,6 @@ public class ControllerInputMixin {
         legacyControllerInventoryHandler = new LegacyControllerInventoryHandler(craftingGuiHandler.controllerInput);
     }
 
-    /**
-     * @author Useless
-     * @reason Need to overwrite dpad controls for legacy UI
-     */
     @Inject(method = "inventoryControls(Lnet/minecraft/client/gui/GuiContainer;)V", at = @At("HEAD"), cancellable = true)
     public void inventoryControlsInject(GuiContainer guiContainer, CallbackInfo cbi) {
         if ((guiContainer instanceof GuiLegacyCrafting)) {
