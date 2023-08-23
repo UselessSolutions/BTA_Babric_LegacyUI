@@ -22,7 +22,7 @@ public class LegacyUI implements ModInitializer {
         props.setProperty("ExperimentalQuickStackFixDelay", "50");
         props.setProperty("GuiLabelColor", "404040");
         props.setProperty("HighlightColor", "FF0000");
-        props.setProperty("OverrideLabelModColor", "true");
+        props.setProperty("OverrideLabelModColor", "false");
         config = new ConfigHandler(MOD_ID, props);
     }
     private static int GuiLabelColor = -1;
