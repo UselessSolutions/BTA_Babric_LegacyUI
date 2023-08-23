@@ -289,7 +289,7 @@ public class ContainerWorkbenchLegacy extends Container {
     }
     public int getHotbarSlotId(int number) {
         // - 14 to account for the 14 display items
-        return this.inventorySlots.size() - 10 - 14 + number;
+        return 9 + 27 + number;
     }
 
 

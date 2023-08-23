@@ -136,8 +136,10 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     public void setControllerCursorPosition(){
-        this.mc.controllerInput.cursorX = slotButtons[currentSlot].xPosition + 9;
-        this.mc.controllerInput.cursorY = slotButtons[currentSlot].yPosition + 9;
+        if (this.mc.inputType == InputType.CONTROLLER){
+            this.mc.controllerInput.cursorX = slotButtons[currentSlot].xPosition + 9;
+            this.mc.controllerInput.cursorY = slotButtons[currentSlot].yPosition + 9;
+        }
     }
     public void scrollDisplaySlot(int direction){
         if (direction > 0){
@@ -209,8 +211,8 @@ public class GuiLegacyCrafting extends GuiContainer {
     public void drawGuiContainerForegroundLayer() {
         shouldUpdateThisFrame();
 
-        this.drawStringCenteredNoShadow(fontRenderer,"Inventory", 205, this.ySize - 78, 0x404040);
-        this.drawStringCenteredNoShadow(fontRenderer,"Crafting", 72, this.ySize - 78, 0x404040);
+        this.drawStringCenteredNoShadow(fontRenderer,"Inventory", 205, this.ySize - 78, LegacyUI.getGuiLabelColor());
+        this.drawStringCenteredNoShadow(fontRenderer,"Crafting", 72, this.ySize - 78, LegacyUI.getGuiLabelColor());
 
         int i = this.mc.renderEngine.getTexture("/assets/legacyui/gui/legacycrafting.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
