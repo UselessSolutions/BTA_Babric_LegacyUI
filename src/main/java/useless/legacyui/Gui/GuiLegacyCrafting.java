@@ -11,6 +11,7 @@ import net.minecraft.core.util.helper.Time;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import useless.legacyui.ConfigTranslations;
 import useless.legacyui.Gui.Container.ContainerWorkbenchLegacy;
 import useless.legacyui.Gui.Slot.SlotResizable;
 import useless.legacyui.LegacyUI;
@@ -353,10 +354,10 @@ public class GuiLegacyCrafting extends GuiContainer {
     public void shouldUpdateThisFrame(){
         if (lastHeldItemWasNull != (mc.thePlayer.inventory.getHeldItemStack() == null) || lastCheckPassed){
             lastHeldItemWasNull = (mc.thePlayer.inventory.getHeldItemStack() == null);
-            if (!LegacyUI.config.getBoolean("ExperimentalQuickStackFix")){
+            if (!LegacyUI.config.getBoolean(ConfigTranslations.EXPERIMENTAL_STACK_FIX.getKey())){
                 updatePages();
             }
-            else if (lastCheckPassed && System.currentTimeMillis() - timeStart > LegacyUI.config.getInt("ExperimentalQuickStackFixDelay")){
+            else if (lastCheckPassed && System.currentTimeMillis() - timeStart > LegacyUI.config.getInt(ConfigTranslations.EXPERIMENTAL_STACK_DELAY.getKey())){
                 //timeStart = Time.now();
                 updatePages();
                 lastCheckPassed = false;

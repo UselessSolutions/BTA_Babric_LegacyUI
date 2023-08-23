@@ -14,6 +14,7 @@ import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotCrafting;
 import net.minecraft.core.player.inventory.slot.SlotGuidebook;
 import net.minecraft.core.world.World;
+import useless.legacyui.ConfigTranslations;
 import useless.legacyui.Gui.Slot.SlotCraftingDisplay;
 import useless.legacyui.Gui.Slot.SlotResizable;
 import useless.legacyui.LegacyUI;
@@ -86,7 +87,7 @@ public class ContainerWorkbenchLegacy extends Container {
                 // Recipebar preview
                 item = currentContainer.inventorySlots.get(0).getStack();
                 discovered = isDicovered(item, statWriter, player);
-                this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56, currentContainer.inventorySlots.get(0).getStack(), discovered || craftable, !craftable, 0xFF0000));
+                this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56, currentContainer.inventorySlots.get(0).getStack(), discovered || craftable, !craftable, LegacyUI.getHighlightColor()));
 
                 if (group.recipes.length > 1) { // If multiple items in recipe group
                     int idUpper = ArrayUtil.wrapAroundIndex(currentScrollAmount + 1, group.recipes.length); // Next item in grouo
@@ -96,13 +97,13 @@ public class ContainerWorkbenchLegacy extends Container {
                     item = group.getContainer(idUpper).inventorySlots.get(0).getStack();
                     discovered = isDicovered(item, statWriter, player);
                     craftable = canCraft(player, new RecipeCost(group.getContainer(idUpper)));
-                    this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56 + 21, item, discovered || craftable, !craftable, 0xFF0000));
+                    this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56 + 21, item, discovered || craftable, !craftable, LegacyUI.getHighlightColor()));
 
                     // Previous item preview
                     item = group.getContainer(idLower).inventorySlots.get(0).getStack();
                     discovered = isDicovered(item, statWriter, player);
                     craftable = canCraft(player, new RecipeCost(group.getContainer(idLower)));
-                    this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56 - 21, item, discovered || craftable, !craftable, 0xFF0000));
+                    this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56 - 21, item, discovered || craftable, !craftable, LegacyUI.getHighlightColor()));
 
                 }
 
@@ -112,7 +113,7 @@ public class ContainerWorkbenchLegacy extends Container {
                     craftable = canCraft(player, cost);
                     item = currentContainer.inventorySlots.get(0).getStack();
                     discovered = isDicovered(item, statWriter, player);
-                    this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 103, 123, item, discovered || craftable, !craftable, 0xFF0000, 26));
+                    this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 103, 123, item, discovered || craftable, !craftable, LegacyUI.getHighlightColor(), 26));
 
                     for (int j = 1; j < currentContainer.inventorySlots.size(); j++) {
                         item = currentContainer.inventorySlots.get(j).getStack();
@@ -131,11 +132,11 @@ public class ContainerWorkbenchLegacy extends Container {
 
                         if (currentContainer.inventorySlots.size() > 5){
                             // Render 3x3 crafting grid
-                            this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 20 + 18 * ((j - 1) % 3), 109 + 18 * ((j - 1) / 3), item, discovered, InventoryUtil.itemsInInventory(inventoryPlayer, item) <= cost.quantity[k] && item != null, 0xFF0000));
+                            this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 20 + 18 * ((j - 1) % 3), 109 + 18 * ((j - 1) / 3), item, discovered, InventoryUtil.itemsInInventory(inventoryPlayer, item) <= cost.quantity[k] && item != null, LegacyUI.getHighlightColor()));
                         }
                         else {
                             // Render 2x2 crafting gird
-                            this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 29 + 18 * ((j - 1) % 2), 118 + 18 * ((j - 1) / 2), item, discovered, 0 > cost.quantity[k] && item != null, 0xFF0000));
+                            this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 29 + 18 * ((j - 1) % 2), 118 + 18 * ((j - 1) / 2), item, discovered, 0 > cost.quantity[k] && item != null, LegacyUI.getHighlightColor()));
                         }
 
 
@@ -146,7 +147,7 @@ public class ContainerWorkbenchLegacy extends Container {
                 item = group.getContainer(0).inventorySlots.get(0).getStack();
                 discovered = isDicovered(item, statWriter, player);
                 craftable = canCraft(player, new RecipeCost(group.getContainer(0)));
-                this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56, item, discovered || craftable, !craftable, 0xFF0000));
+                this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56, item, discovered || craftable, !craftable, LegacyUI.getHighlightColor()));
             }
 
             index++;
@@ -188,7 +189,7 @@ public class ContainerWorkbenchLegacy extends Container {
         return canCraft;
     }
     private boolean isDicovered(ItemStack item, StatFileWriter statWriter, EntityPlayer player){
-        if (!LegacyUI.config.getBoolean("CraftingHideUndiscoveredItems")){
+        if (!LegacyUI.config.getBoolean(ConfigTranslations.CRAFTING_HIDE_UNDISCOVERED.getKey())){
             return true;
         }
         if (player.getGamemode() == Gamemode.creative) {

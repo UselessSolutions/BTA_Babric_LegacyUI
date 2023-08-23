@@ -20,16 +20,20 @@ public class LegacyUI implements ModInitializer {
         props.setProperty("CraftingHideUndiscoveredItems","true");
         props.setProperty("ExperimentalQuickStackFix", "false");
         props.setProperty("ExperimentalQuickStackFixDelay", "50");
+        props.setProperty("GuiLabelColor", "404040");
+        props.setProperty("HighlightColor", "FF0000");
+        props.setProperty("OverrideLabelModColor", "true");
         config = new ConfigHandler(MOD_ID, props);
     }
-    private static int GuiLabelColor = 0x404040;
+    private static int GuiLabelColor = -1;
+    private static final int HighlightColor = Integer.decode("0X" + config.getString(ConfigTranslations.HIGHLIGHT_COLOR.getKey()));
 
     private static boolean guimodExists = false;
 
     @Override
     public void onInitialize() {
         for (ModContainer mod : FabricLoader.getInstance().getAllMods()){
-            if (mod.toString().contains("guimod 1.2.0")){
+            if (mod.toString().contains("guimod")){
                 LegacyUI.LOGGER.info("Found Mod: " + mod);
                 guimodExists = true;
             }
@@ -37,12 +41,23 @@ public class LegacyUI implements ModInitializer {
         LOGGER.info("LegacyUI initialized.");
     }
     public static int getGuiLabelColor(){
-        if (guimodExists){
-            return ModMenuConfigManager.getConfig().getLabelColor();
+        if (GuiLabelColor == -1){
+            if (guimodExists && !config.getBoolean(ConfigTranslations.OVERRIDE_LABEL_COLOR.getKey())){
+                try {
+                    GuiLabelColor = ModMenuConfigManager.getConfig().getLabelColor();
+                }
+                catch (NoClassDefFoundError error){
+                    GuiLabelColor = Integer.decode("0X" + config.getString(ConfigTranslations.GUI_LABEL_COLOR.getKey()));
+                }
+            }
+            else {
+                GuiLabelColor = Integer.decode("0X" + config.getString(ConfigTranslations.GUI_LABEL_COLOR.getKey()));
+            }
         }
-        else {
-            return GuiLabelColor;
-        }
+        return GuiLabelColor;
     }
 
+    public static int getHighlightColor(){
+        return HighlightColor;
+    }
 }
