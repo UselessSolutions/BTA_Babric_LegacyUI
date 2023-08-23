@@ -6,9 +6,10 @@ import net.minecraft.client.input.InputType;
 import net.minecraft.core.crafting.CraftingManager;
 import net.minecraft.core.crafting.recipe.*;
 import net.minecraft.core.entity.player.EntityPlayer;
-import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.util.helper.Time;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.Gui.Container.ContainerWorkbenchLegacy;
 import useless.legacyui.Gui.Slot.SlotResizable;
@@ -17,6 +18,7 @@ import useless.legacyui.Sorting.CraftingCategories;
 import useless.legacyui.Sorting.SortingCategory;
 import useless.legacyui.utils.ArrayUtil;
 
+import java.security.Key;
 import java.util.List;
 
 public class GuiLegacyCrafting extends GuiContainer {
@@ -43,6 +45,8 @@ public class GuiLegacyCrafting extends GuiContainer {
     private boolean lastCheckPassed = false;
 
     private long timeStart = 0;
+
+    private boolean[] keysPressed = new boolean[65536];
 
 
     public GuiLegacyCrafting(EntityPlayer player, int i, int j, int k) {
@@ -232,8 +236,50 @@ public class GuiLegacyCrafting extends GuiContainer {
         }
 
     }
+    private boolean isKeyPressed(int keyCode){
+        if (Keyboard.isKeyDown(keyCode)){
+            if (keysPressed[keyCode]){
+                return false;
+            }
+            else {
+                keysPressed[keyCode] = true;
+                return true;
+            }
+        }
+        else {
+            keysPressed[keyCode] = false;
+            return false;
+        }
+    }
     public void drawGuiContainerBackgroundLayer(float f) {
-        //this.scroll(Mouse.getDWheel()); // Scroll through tabs
+        this.scrollSlot(-Mouse.getDWheel()); // Scroll through tabs
+
+        if (isKeyPressed(mc.gameSettings.keyForward.keyCode()) || isKeyPressed(mc.gameSettings.keyLookUp.keyCode()) ){
+            scrollSlot(-1);
+        }
+        if (isKeyPressed(mc.gameSettings.keyBack.keyCode()) || isKeyPressed(mc.gameSettings.keyLookDown.keyCode())){
+            scrollSlot(1);
+        }
+        if (isKeyPressed(mc.gameSettings.keyRight.keyCode()) || isKeyPressed(mc.gameSettings.keyLookRight.keyCode())){
+            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+                scrollTab(1);
+            }
+            else {
+                scrollDisplaySlot(1);
+            }
+        }
+        if (isKeyPressed(mc.gameSettings.keyLeft.keyCode()) || isKeyPressed(mc.gameSettings.keyLookLeft.keyCode())){
+            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+                scrollTab(-1);
+            }
+            else {
+                scrollDisplaySlot(-1);
+            }
+        }
+        if (isKeyPressed(mc.gameSettings.keyJump.keyCode())){
+            craft();
+        }
+
         int i = this.mc.renderEngine.getTexture("/assets/legacyui/gui/legacycrafting.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(i);

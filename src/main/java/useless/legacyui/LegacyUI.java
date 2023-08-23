@@ -29,7 +29,8 @@ public class LegacyUI implements ModInitializer {
     @Override
     public void onInitialize() {
         for (ModContainer mod : FabricLoader.getInstance().getAllMods()){
-            if (mod.toString().contains("guimod")){
+            if (mod.toString().contains("guimod 1.2.0")){
+                LegacyUI.LOGGER.info("Found Mod: " + mod);
                 guimodExists = true;
             }
         }
