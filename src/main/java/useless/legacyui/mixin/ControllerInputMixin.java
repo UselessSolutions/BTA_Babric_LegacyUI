@@ -32,7 +32,7 @@ public class ControllerInputMixin {
     @Shadow @Final public ControllerInventoryHandler craftingGuiHandler;
     @Unique
     public LegacyControllerInventoryHandler legacyControllerInventoryHandler;
-    @Inject(method = "Lnet/minecraft/client/input/controller/ControllerInput;<init>(Lnet/minecraft/client/Minecraft;Lnet/java/games/input/Controller;)V", at = @At("TAIL"))
+    @Inject(method = "<init>(Lnet/minecraft/client/Minecraft;Lnet/java/games/input/Controller;)V", at = @At("TAIL"))
     public void constructor(Minecraft minecraft, Controller controller, CallbackInfo cbi){
         legacyControllerInventoryHandler = new LegacyControllerInventoryHandler(craftingGuiHandler.controllerInput);
     }
@@ -41,7 +41,7 @@ public class ControllerInputMixin {
      * @author Useless
      * @reason Need to overwrite dpad controls for legacy UI
      */
-    @Inject(method = "Lnet/minecraft/client/input/controller/ControllerInput;inventoryControls(Lnet/minecraft/client/gui/GuiContainer;)V", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "inventoryControls(Lnet/minecraft/client/gui/GuiContainer;)V", at = @At("HEAD"), cancellable = true)
     public void inventoryControlsInject(GuiContainer guiContainer, CallbackInfo cbi) {
         if ((guiContainer instanceof GuiLegacyCrafting)) {
             if (this.buttonA.pressedThisFrame() || this.buttonX.pressedThisFrame() || this.buttonY.pressedThisFrame()) {
