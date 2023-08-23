@@ -253,6 +253,15 @@ public class ContainerWorkbenchLegacy extends Container {
         }
     }
     public void handleHotbarSwap(int[] args, EntityPlayer player) {
+        LegacyUI.LOGGER.info("0: " + args[0] + " | 1:" + args[1]);
+        for (int i = 0; i < this.inventorySlots.size(); i++){
+            if (this.inventorySlots.get(i).getStack() != null){
+                LegacyUI.LOGGER.info("" + i + "| " + this.inventorySlots.get(i).getStack().toString());
+            }
+            else {
+                LegacyUI.LOGGER.info("" + i + "| Null");
+            }
+        }
         // Dont hotbar swap the crafting guide!
         if (args[0] > 45) {
             return;
@@ -289,7 +298,7 @@ public class ContainerWorkbenchLegacy extends Container {
     }
     public int getHotbarSlotId(int number) {
         // - 14 to account for the 14 display items
-        return this.inventorySlots.size() - 10 - 14 + number;
+        return 9 + 27 + number;
     }
 
 
