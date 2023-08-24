@@ -1,5 +1,6 @@
 package useless.legacyui.Gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiContainer;
 import net.minecraft.client.input.InputType;
@@ -52,6 +53,7 @@ public class GuiLegacyCrafting extends GuiContainer {
 
     public GuiLegacyCrafting(EntityPlayer player, int i, int j, int k) {
         super(new ContainerWorkbenchLegacy(player.inventory, player.world, i, j, k));
+        this.mc = Minecraft.getMinecraft(this);
     }
 
     public void initGui() {

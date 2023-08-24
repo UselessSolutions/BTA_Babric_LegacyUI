@@ -5,28 +5,61 @@ import net.minecraft.client.gui.*;
 import net.minecraft.client.render.EntityRenderDispatcher;
 import net.minecraft.client.render.Lighting;
 import net.minecraft.core.entity.player.EntityPlayer;
-import net.minecraft.core.item.ItemArmor;
-import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.lang.I18n;
-import net.minecraft.core.player.inventory.ContainerDispenser;
-import net.minecraft.core.player.inventory.ContainerGuidebook;
 import net.minecraft.core.player.inventory.ContainerPlayer;
-import net.minecraft.core.player.inventory.ContainerPlayerCreative;
+import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.util.helper.DamageType;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.Gui.Container.ContainerInventoryLegacy;
+import useless.legacyui.Gui.Container.ContainerWorkbenchLegacy;
+import useless.legacyui.Gui.Slot.SlotResizable;
+import useless.legacyui.LegacyUI;
 
 public class GuiLegacyInventory extends GuiInventory{
+    protected EntityPlayer player;
     private DamageType hoveredDamageType;
     GuiTooltip guiTooltip;
+    protected GuiButton craftingButton;
+    protected  GuiLegacyCrafting craftingGui;
     public GuiLegacyInventory(EntityPlayer player) {
         super(player);
         mc = Minecraft.getMinecraft(this);
+        this.player = player;
         this.guiTooltip = new GuiTooltip(mc);
-        this.ySize = 176;
         inventorySlots = new ContainerInventoryLegacy(player.inventory, ((ContainerPlayer)inventorySlots).craftMatrix, ((ContainerPlayer)inventorySlots).craftResult);
         armourButtonFloatX = 20 - 44;
         armourValuesFloat = 130 - 44 - 5;
+    }
+
+    public void initGui(){
+        super.initGui();
+        this.ySize = 176;
+        craftingButton = new GuiButton(10, (width - xSize) / 2 + 136, (height - ySize) / 2 + 42, 24, 27, "");
+        craftingButton.visible = false;
+        controlList.add(craftingButton);
+    }
+    protected void buttonPressed(GuiButton guibutton) {
+        super.buttonPressed(guibutton);
+        if (guibutton == craftingButton){
+            LegacyUI.LOGGER.info("Craft Button Pressed");
+            openCrafting();
+        }
+
+    }
+
+    protected void openCrafting(){
+        mc.displayGuiScreen(new GuiLegacyCrafting(player, (int)player.x, (int)player.y, (int)player.z));
+    }
+    public boolean getIsMouseOverSlot(Slot slot, int i, int j) {
+        int k = (this.width - this.xSize) / 2;
+        int l = (this.height - this.ySize) / 2;
+        i -= k;
+        j -= l;
+        int slotSize = 16;
+        if (slot instanceof SlotResizable) {
+            slotSize = ((SlotResizable) slot).width;
+        }
+        return i >= slot.xDisplayPosition - 1 && i < slot.xDisplayPosition + slotSize - 2 + 1 && j >= slot.yDisplayPosition - 1 && j < slot.yDisplayPosition + slotSize - 2 + 1;
     }
     @Override
     protected void drawGuiContainerForegroundLayer() {
@@ -72,7 +105,6 @@ public class GuiLegacyInventory extends GuiInventory{
         GL11.glDisable(32826);
     }
     public void drawProtectionOverlay(int mouseX, int mouseY) {
-        int xOffset = 44;
         this.hoveredDamageType = null;
         int x = this.width / 2 - this.armourValuesFloat - 4;
         int y = this.height / 2 - 79;
