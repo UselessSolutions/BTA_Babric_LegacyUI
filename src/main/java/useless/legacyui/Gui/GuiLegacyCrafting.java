@@ -31,11 +31,11 @@ public class GuiLegacyCrafting extends GuiContainer {
     protected String tabString = "1/1"; // Indicator of what tab page you are on
 
     // Button Hell
-    protected GuiButtonTransparent[] slotButtons = new GuiButtonTransparent[totalDisplaySlots];
-    protected GuiButtonTransparent[] tabButtons = new GuiButtonTransparent[maxDisplayedTabs];
+    protected GuiButton[] slotButtons = new GuiButton[totalDisplaySlots];
+    protected GuiButton[] tabButtons = new GuiButton[maxDisplayedTabs];
 
-    protected GuiButtonTransparent scrollUp;
-    protected GuiButtonTransparent scrollDown;
+    protected GuiButton scrollUp;
+    protected GuiButton scrollDown;
     protected SortingCategory[] categories;
     protected static int currentScroll = 0;
     protected static int currentCategory = 0;
@@ -62,16 +62,21 @@ public class GuiLegacyCrafting extends GuiContainer {
 
         // Setup Invisible buttons
         for (int i = 0; i < slotButtons.length; i++) {
-            slotButtons[i] = new GuiButtonTransparent(i + 4, (this.width - this.xSize) / 2 + 11 + 18 * i, (this.height - this.ySize) / 2 + 55, 18, 18, "");
+            slotButtons[i] = new GuiButton(i + 4, (this.width - this.xSize) / 2 + 11 + 18 * i, (this.height - this.ySize) / 2 + 55, 18, 18, "");
+            slotButtons[i].visible = false;
             this.controlList.add(slotButtons[i]);
         }
         for (int i = 0; i < tabButtons.length; i++) {
-            tabButtons[i] = new GuiButtonTransparent(i + 4 + slotButtons.length, (this.width - this.xSize) / 2 + 34 * i, (this.height - this.ySize) / 2, 34, 24, "");
+            tabButtons[i] = new GuiButton(i + 4 + slotButtons.length, (this.width - this.xSize) / 2 + 34 * i, (this.height - this.ySize) / 2, 34, 24, "");
+            tabButtons[i].visible = false;
             this.controlList.add(tabButtons[i]);
         }
 
-        scrollUp = new GuiButtonTransparent(4 + slotButtons.length + tabButtons.length + 1, (this.width - this.xSize) / 2 + 11, (this.height - this.ySize) / 2 + 26, 18, 26, "");
-        scrollDown = new GuiButtonTransparent(4 + slotButtons.length + tabButtons.length + 2, (this.width - this.xSize) / 2 + 11, (this.height - this.ySize) / 2 + 76, 18, 26, "");
+        scrollUp = new GuiButton(4 + slotButtons.length + tabButtons.length + 1, (this.width - this.xSize) / 2 + 11, (this.height - this.ySize) / 2 + 26, 18, 26, "");
+        scrollUp.visible = false;
+
+        scrollDown = new GuiButton(4 + slotButtons.length + tabButtons.length + 2, (this.width - this.xSize) / 2 + 11, (this.height - this.ySize) / 2 + 76, 18, 26, "");
+        scrollDown.visible = false;
         this.controlList.add(scrollUp);
         this.controlList.add(scrollDown);
 
@@ -86,7 +91,7 @@ public class GuiLegacyCrafting extends GuiContainer {
             return;
         }
         int i = 0;
-        for (GuiButtonTransparent button : slotButtons) {
+        for (GuiButton button : slotButtons) {
             if (guibutton == button) {
                 selectDisplaySlot(i);
             }
@@ -94,7 +99,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         }
 
         i = 0;
-        for (GuiButtonTransparent button : tabButtons) {
+        for (GuiButton button : tabButtons) {
             if (guibutton == button) {
                 selectTab(i);
                 currentScroll = 0;
