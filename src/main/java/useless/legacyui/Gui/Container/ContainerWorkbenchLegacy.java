@@ -67,6 +67,10 @@ public class ContainerWorkbenchLegacy extends Container {
         this.onCraftMatrixChanged(this.craftMatrix);
     }
     public void setRecipes(EntityPlayer player, SortingCategory category, StatFileWriter statWriter, int currentSlotId, int currentScrollAmount, boolean showCraftingPreview) {
+        for (RecipeGroup group : category.recipeGroups){
+            LegacyUI.LOGGER.debug("CategoryGroup: " + group.getContainer(0).inventorySlots.get(0).getStack().getItem().getKey());
+        }
+        LegacyUI.LOGGER.debug("Category: " + category + " | slotId: " + currentSlotId + " | currentScroll: " + currentScrollAmount + " | craftPreview: " + showCraftingPreview);
         this.inventorySlots.clear();
         craftingSlots();
 
