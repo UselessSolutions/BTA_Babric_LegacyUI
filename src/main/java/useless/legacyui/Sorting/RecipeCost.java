@@ -1,12 +1,19 @@
-package useless.legacyui.utils;
+package useless.legacyui.Sorting;
 
+import net.minecraft.core.crafting.CraftingManager;
+import net.minecraft.core.crafting.recipe.RecipeShaped;
+import net.minecraft.core.crafting.recipe.RecipeShapeless;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.ContainerGuidebookRecipeCrafting;
 import useless.legacyui.LegacyUI;
+import useless.legacyui.utils.InventoryUtil;
 
 public class RecipeCost {
+    private static CraftingManager craftingManager = CraftingManager.getInstance();
     public ItemStack[] itemStacks;
     public int[] quantity;
+
+    public boolean useAlts;
 
     public RecipeCost(ItemStack[] itemStacks, int[] quantity){
         this.itemStacks = itemStacks;
@@ -14,6 +21,11 @@ public class RecipeCost {
     }
     public RecipeCost(ContainerGuidebookRecipeCrafting recipe){
         ItemStack[] items = new ItemStack[9];
+
+        useAlts = false;
+        if (recipe.recipe instanceof RecipeShaped){
+            useAlts = ((RecipeShaped)(recipe.recipe)).useAlternatives;
+        }
 
 
         for (int i = 1; i < items.length; i++){

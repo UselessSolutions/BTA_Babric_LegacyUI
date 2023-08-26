@@ -12,7 +12,6 @@ import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.core.player.inventory.*;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotCrafting;
-import net.minecraft.core.player.inventory.slot.SlotGuidebook;
 import net.minecraft.core.world.World;
 import useless.legacyui.ConfigTranslations;
 import useless.legacyui.Gui.Slot.SlotCraftingDisplay;
@@ -22,7 +21,7 @@ import useless.legacyui.Sorting.RecipeGroup;
 import useless.legacyui.Sorting.SortingCategory;
 import useless.legacyui.utils.ArrayUtil;
 import useless.legacyui.utils.InventoryUtil;
-import useless.legacyui.utils.RecipeCost;
+import useless.legacyui.Sorting.RecipeCost;
 
 import java.util.List;
 
@@ -68,6 +67,10 @@ public class ContainerWorkbenchLegacy extends Container {
         this.onCraftMatrixChanged(this.craftMatrix);
     }
     public void setRecipes(EntityPlayer player, SortingCategory category, StatFileWriter statWriter, int currentSlotId, int currentScrollAmount, boolean showCraftingPreview) {
+        for (RecipeGroup group : category.recipeGroups){
+            LegacyUI.LOGGER.debug("CategoryGroup: " + group.getContainer(0).inventorySlots.get(0).getStack().getItem().getKey());
+        }
+        LegacyUI.LOGGER.debug("Category: " + category + " | slotId: " + currentSlotId + " | currentScroll: " + currentScrollAmount + " | craftPreview: " + showCraftingPreview);
         this.inventorySlots.clear();
         craftingSlots();
 
@@ -132,11 +135,11 @@ public class ContainerWorkbenchLegacy extends Container {
 
                         if (currentContainer.inventorySlots.size() > 5){
                             // Render 3x3 crafting grid
-                            this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 20 + 18 * ((j - 1) % 3), 109 + 18 * ((j - 1) / 3), item, discovered, InventoryUtil.itemsInInventory(inventoryPlayer, item) <= cost.quantity[k] && item != null, LegacyUI.getHighlightColor()));
+                            this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 20 + 18 * ((j - 1) % 3), 109 + 18 * ((j - 1) / 3), item, discovered, InventoryUtil.itemsInInventory(inventoryPlayer, item, cost.useAlts) <= cost.quantity[k] && item != null, LegacyUI.getHighlightColor()));
                         }
                         else {
                             // Render 2x2 crafting gird
-                            this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 29 + 18 * ((j - 1) % 2), 118 + 18 * ((j - 1) / 2), item, discovered, 0 > cost.quantity[k] && item != null, LegacyUI.getHighlightColor()));
+                            this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 29 + 18 * ((j - 1) % 2), 118 + 18 * ((j - 1) / 2), item, discovered, InventoryUtil.itemsInInventory(inventoryPlayer, item, cost.useAlts) <= cost.quantity[k] && item != null, LegacyUI.getHighlightColor()));
                         }
 
 
@@ -162,7 +165,7 @@ public class ContainerWorkbenchLegacy extends Container {
             for (int i = 1; i < recipe.inventorySlots.size(); i++){
                 ItemStack itemStack = recipe.inventorySlots.get(i).getStack();
                 if (itemStack != null){
-                    int slotId = InventoryUtil.findStackIndex(mc.thePlayer.inventory.mainInventory, itemStack); // Finds slot index of an inventory slot with a desired item
+                    int slotId = InventoryUtil.findStackIndex(mc.thePlayer.inventory.mainInventory, itemStack, recipeCost.useAlts); // Finds slot index of an inventory slot with a desired item
                     if (slotId == -1) {continue;}
                     if (slotId < 9){ slotId += 36;}
 
@@ -184,7 +187,7 @@ public class ContainerWorkbenchLegacy extends Container {
     private boolean canCraft(EntityPlayer player, RecipeCost cost){
         boolean canCraft = true;
         for (int i = 0; i < cost.itemStacks.length; i++){
-            canCraft = canCraft && InventoryUtil.itemsInInventory(player.inventory, cost.itemStacks[i]) >= cost.quantity[i];
+            canCraft = canCraft && InventoryUtil.itemsInInventory(player.inventory, cost.itemStacks[i], cost.useAlts) >= cost.quantity[i];
         }
         return canCraft;
     }
