@@ -5,6 +5,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import turniplabs.halplibe.helper.ItemHelper;
 import turniplabs.halplibe.util.ConfigHandler;
 import useless.config.ModMenuConfigManager;
 
@@ -38,6 +39,7 @@ public class LegacyUI implements ModInitializer {
                 guimodExists = true;
             }
         }
+        SoundManager.getInstance();
         LOGGER.info("LegacyUI initialized.");
     }
     public static int getGuiLabelColor(){
