@@ -39,7 +39,8 @@ public class LegacyUI implements ModInitializer {
                 guimodExists = true;
             }
         }
-        SoundManager.getInstance();
+        SoundManager soundManager = SoundManager.getInstance();
+        soundManager.addSound(MOD_ID, "ui/back.wav");
         LOGGER.info("LegacyUI initialized.");
     }
     public static int getGuiLabelColor(){
