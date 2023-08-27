@@ -29,7 +29,7 @@ public class RecipeCost {
 
 
         for (int i = 1; i < items.length; i++){
-            if (recipe.inventorySlots.size()-1 > i){
+            if (recipe.inventorySlots.size() > i){
                 boolean itemInList = false;
                 for (int j = 0; j < items.length; j++){
                     if (items[j] == null || recipe.inventorySlots.get(i).getStack() == null) {continue;}
