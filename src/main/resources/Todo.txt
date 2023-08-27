@@ -1,6 +1,6 @@
 Needed Things
 - Recipe tags for categorizing recipes
-- Helper class for managing recipe tags
+- Helper class for managing recipe tags <-
 - Comment and refactor code to be more readable
 - translucent block/item rendering
 - xbox popup style achievements (Config option)
@@ -13,6 +13,12 @@ Needed Things
 
 - 512x512 gui textures
 - controller action wheel binds
+
+- configs for how items should be sorted
+- tips gui
+- creative inventory gui
+- survival inventory gui
+- paper doll onscreen corner
 
 - Redo item categorization
 - Optimize Code
