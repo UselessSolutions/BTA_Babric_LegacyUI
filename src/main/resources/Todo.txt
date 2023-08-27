@@ -22,3 +22,5 @@ Needed Things
 
 - Redo item categorization
 - Optimize Code
+
+- Sound manager class
