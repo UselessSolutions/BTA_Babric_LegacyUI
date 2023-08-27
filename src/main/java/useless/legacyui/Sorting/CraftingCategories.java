@@ -47,6 +47,8 @@ public class CraftingCategories {
         List<Object> _ladders = new ArrayList<Object>();
         List<Object> _polishedStones = new ArrayList<Object>();
         List<Object> _layers = new ArrayList<Object>();
+        List<Object> _books = new ArrayList<Object>();
+        List<Object> _decoBlocks = new ArrayList<Object>();
 
         // Tools
         List<Object> _picks = new ArrayList<Object>();
@@ -58,6 +60,7 @@ public class CraftingCategories {
         List<Object> _fishing = new ArrayList<Object>();
         List<Object> _bucket = new ArrayList<Object>();
         List<Object> _fireStarts = new ArrayList<Object>();
+        List<Object> _label = new ArrayList<Object>();
 
         // Combat
         List<Object> _swords = new ArrayList<Object>();
@@ -85,6 +88,7 @@ public class CraftingCategories {
         List<Object> _buttonLevers = new ArrayList<Object>();
         List<Object> _baseRedstone = new ArrayList<Object>();
         List<Object> _lampBlocks = new ArrayList<Object>();
+        List<Object> _redstoneBlock = new ArrayList<Object>();
 
         // Transit
         List<Object> _rails = new ArrayList<Object>();
@@ -93,13 +97,18 @@ public class CraftingCategories {
 
         // Misc
         List<Object> _dyes = new ArrayList<Object>();
+        List<Object> _decompacts = new ArrayList<Object>();
         List<Object> _others = new ArrayList<Object>();
+
 
         for (IRecipe recipe : manager.getRecipeList()) {
             if (recipe instanceof RecipeShaped || recipe instanceof RecipeShapeless) {
                 LegacyUI.LOGGER.debug("" + j + " | " + recipe.getRecipeOutput().getItemName());
                 Item recipeItem = recipe.getRecipeOutput().getItem();
                 if (recipeItem instanceof ItemDye) {
+                    if (recipe.getRecipeOutput().getMetadata() == 4){ // Lapis
+                        _decompacts.add(recipe);
+                    }
                     _dyes.add(recipe);
                 } else if (recipeItem instanceof ItemToolPickaxe) {
                     _picks.add(recipe);
@@ -145,7 +154,11 @@ public class CraftingCategories {
                     if (recipeItem == Item.foodCake) {
                         _cake.add(recipe);
                     }
-                    else if (recipeItem == Item.dustRedstone || recipeItem == Item.repeater) {
+                    else if (recipeItem == Item.dustRedstone) {
+                        _decompacts.add(recipe);
+                        _baseRedstone.add(recipe);
+                    }
+                    else if (recipeItem == Item.repeater) {
                         _baseRedstone.add(recipe);
                     }
 
@@ -181,11 +194,20 @@ public class CraftingCategories {
                     _stickTorches.add(recipe);
                 } else if (recipeItem instanceof  ItemBed) {
                     _bed.add(recipe);
+                } else if (recipeItem == Item.diamond || recipeItem == Item.ingotIron || recipeItem == Item.ingotGold || recipeItem == Item.ingotSteel || recipeItem == Item.ingotSteelCrude || recipeItem == Item.quartz || recipeItem == Item.olivine || recipeItem == Item.coal || recipeItem == Item.nethercoal) {
+                    _decompacts.add(recipe);
+                } else if (recipeItem instanceof  ItemLabel) {
+                    _label.add(recipe);
+                } else if (recipeItem == Item.paper || recipeItem == Item.book || recipeItem == Block.bookshelfPlanksOak.asItem()) {
+                    _books.add(recipe);
+                } else if (recipeItem == Item.sign || recipeItem == Item.painting || recipeItem == Item.flag) {
+                    _decoBlocks.add(recipe);
                 }
 
                 // Blocks
                 else if (recipeItem.id < Block.blocksList.length) {
                     if (recipeItem.id == Block.blockCharcoal.id || recipeItem.id == Block.blockCoal.id || recipeItem.id == Block.blockGold.id || recipeItem.id == Block.blockDiamond.id || recipeItem.id == Block.blockIron.id || recipeItem.id == Block.blockLapis.id || recipeItem.id == Block.blockNetherCoal.id || recipeItem.id == Block.blockOlivine.id || recipeItem.id == Block.blockQuartz.id || recipeItem.id == Block.blockRedstone.id || recipeItem.id == Block.blockSteel.id) {
+                        if (recipeItem.id == Block.blockRedstone.id) {_redstoneBlock.add(recipe);}
                         _resourceBlocks.add(recipe);
                     } else if (recipeItem.getKey().toLowerCase().contains("ladder") || recipeItem.getKey().toLowerCase().contains("chain")){
                         _ladders.add(recipe);
@@ -267,6 +289,8 @@ public class CraftingCategories {
         RecipeGroup stickTorchGroup = new RecipeGroup(_stickTorches.toArray());
         RecipeGroup bedGroup = new RecipeGroup(_bed.toArray());
         RecipeGroup ladderGroup = new RecipeGroup(_ladders.toArray());
+        RecipeGroup bookGroup = new RecipeGroup(_books.toArray());
+        RecipeGroup decoBlockGroup = new RecipeGroup(_decoBlocks.toArray());
         //RecipeGroup foodGroup = new RecipeGroup(_food.toArray());
 
         // Blocks 2
@@ -283,6 +307,7 @@ public class CraftingCategories {
         _miscTools.addAll(_bucket);
         _miscTools.addAll(_shears);
         _miscTools.addAll(_fireStarts);
+        _miscTools.addAll(_label);
 
         RecipeGroup pickaxeGroup = new RecipeGroup(_picks.toArray());
         RecipeGroup shovelGroup = new RecipeGroup(_shovels.toArray());
@@ -318,6 +343,7 @@ public class CraftingCategories {
         RecipeGroup pistonGroup = new RecipeGroup(_pistonBlocks.toArray());
         RecipeGroup pressurePlateGroup = new RecipeGroup(_pressurePlates.toArray());
         RecipeGroup buttonLeversGroup = new RecipeGroup(_buttonLevers.toArray());
+        RecipeGroup redstoneBlockGroup = new RecipeGroup(_redstoneBlock.toArray());
 
         // Transit
         RecipeGroup railGroup = new RecipeGroup(_rails.toArray());
@@ -328,13 +354,14 @@ public class CraftingCategories {
         // Misc
         RecipeGroup dyesGroup = new RecipeGroup(_dyes.toArray());
         RecipeGroup resourceBlocksGroup = new RecipeGroup(_resourceBlocks.toArray());
+        RecipeGroup unresourceItemsGroup = new RecipeGroup(_decompacts.toArray());
         RecipeGroup othersGroup = new RecipeGroup(_others.toArray());
 
 
-        SortingCategory blocks = new SortingCategory(new RecipeGroup[]{ woodenBlocksGroup, stickTorchGroup, guiGroup, chestsGroup, bedGroup, fencesGroup, gatesGroup, ladderGroup, doorsGroup, woodenStairsGroup, woodenSlabsGroup});
+        SortingCategory blocks = new SortingCategory(new RecipeGroup[]{ woodenBlocksGroup, stickTorchGroup, guiGroup, chestsGroup, bedGroup, fencesGroup, gatesGroup, ladderGroup, doorsGroup, woodenStairsGroup, woodenSlabsGroup, bookGroup, decoBlockGroup});
         addCategory(blocks);
 
-        SortingCategory blocks2 = new SortingCategory(new RecipeGroup[]{brickGroup, polishedGroup, stairsGroup, slabsGroup, woolGroup, naturalGroup, layerGroup, resourceBlocksGroup, blocksGroup,});
+        SortingCategory blocks2 = new SortingCategory(new RecipeGroup[]{brickGroup, polishedGroup, stairsGroup, slabsGroup, woolGroup, naturalGroup, layerGroup, resourceBlocksGroup, unresourceItemsGroup});
         addCategory(blocks2);
 
         SortingCategory tools = new SortingCategory(new RecipeGroup[]{pickaxeGroup, shovelGroup, axeGroup, hoeGroup, swordGroup, fishingGroup, rangedGroup, ammoGroup, miscToolsGroup, informationGroup, helmetsGroup, chestPlatesGroup, leggingsGroup, bootsGroup});
@@ -343,13 +370,13 @@ public class CraftingCategories {
         SortingCategory food = new SortingCategory(new RecipeGroup[]{breadGroup, stewGroup, cakeGroup, cookieGroup, icecreamGroup, goldAppleGroup, sugarGroup});
         addCategory(food);
 
-        SortingCategory redstone = new SortingCategory(new RecipeGroup[]{baseRedstoneGroup, buttonLeversGroup, pressurePlateGroup, pistonGroup, lampsGroup, miscRedstoneGroup});
+        SortingCategory redstone = new SortingCategory(new RecipeGroup[]{baseRedstoneGroup, redstoneBlockGroup, buttonLeversGroup, pressurePlateGroup, pistonGroup, lampsGroup, miscRedstoneGroup});
         addCategory(redstone);
 
         SortingCategory transit = new SortingCategory(new RecipeGroup[]{railGroup, cartGroup, boatGroup});
         addCategory(transit);
 
-        SortingCategory misc = new SortingCategory(new RecipeGroup[]{dyesGroup, othersGroup});
+        SortingCategory misc = new SortingCategory(new RecipeGroup[]{dyesGroup, blocksGroup, othersGroup});
         addCategory(misc);
 
     }
