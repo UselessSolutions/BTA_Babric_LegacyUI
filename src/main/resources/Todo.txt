@@ -23,4 +23,6 @@ Needed Things
 - Redo item categorization
 - Optimize Code
 
+- Legacy Console tooltip textures
+
 - Sound manager class
