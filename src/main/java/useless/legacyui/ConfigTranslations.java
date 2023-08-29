@@ -6,7 +6,8 @@ public enum ConfigTranslations {
     OVERRIDE_LABEL_COLOR,
     CRAFTING_HIDE_UNDISCOVERED,
     EXPERIMENTAL_STACK_FIX,
-    EXPERIMENTAL_STACK_DELAY;
+    EXPERIMENTAL_STACK_DELAY,
+    USE_LEGACY_SOUNDS;
     private static final ConfigTranslations[] configs;
     private int id;
     private String key;
@@ -34,5 +35,6 @@ public enum ConfigTranslations {
         ConfigTranslations.setId(CRAFTING_HIDE_UNDISCOVERED, 3, "CraftingHideUndiscoveredItems");
         ConfigTranslations.setId(EXPERIMENTAL_STACK_FIX, 4, "ExperimentalQuickStackFix");
         ConfigTranslations.setId(EXPERIMENTAL_STACK_DELAY, 5, "ExperimentalQuickStackFixDelay");
+        ConfigTranslations.setId(USE_LEGACY_SOUNDS, 6, "UseLegacySounds");
     }
 }
