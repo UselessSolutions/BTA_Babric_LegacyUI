@@ -26,3 +26,5 @@ Needed Things
 - Legacy Console tooltip textures
 
 - Sound manager class
+
+- Menu Panorama
