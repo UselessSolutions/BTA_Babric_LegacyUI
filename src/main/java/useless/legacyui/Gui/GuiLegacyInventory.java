@@ -8,6 +8,7 @@ import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.lang.I18n;
 import net.minecraft.core.player.inventory.ContainerPlayer;
 import net.minecraft.core.player.inventory.slot.Slot;
+import net.minecraft.core.sound.SoundType;
 import net.minecraft.core.util.helper.DamageType;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.Gui.Container.ContainerInventoryLegacy;
@@ -21,6 +22,7 @@ public class GuiLegacyInventory extends GuiInventory{
     GuiTooltip guiTooltip;
     protected GuiButton craftingButton;
     protected  GuiLegacyCrafting craftingGui;
+    private long tick = 0;
     public GuiLegacyInventory(EntityPlayer player) {
         super(player);
         mc = Minecraft.getMinecraft(this);
@@ -49,6 +51,7 @@ public class GuiLegacyInventory extends GuiInventory{
 
     protected void openCrafting(){
         mc.displayGuiScreen(new GuiLegacyCrafting(player, (int)player.x, (int)player.y, (int)player.z));
+
     }
     public boolean getIsMouseOverSlot(Slot slot, int i, int j) {
         int k = (this.width - this.xSize) / 2;
@@ -63,7 +66,6 @@ public class GuiLegacyInventory extends GuiInventory{
     }
     @Override
     protected void drawGuiContainerForegroundLayer() {
-        return;
     }
     @Override
     protected void drawGuiContainerBackgroundLayer(float f) {
@@ -86,7 +88,7 @@ public class GuiLegacyInventory extends GuiInventory{
         float f5 = (float)(j + 51) - this.xSize_lo;
         float f6 = (float)(k + 75 - 50) - this.ySize_lo;
         GL11.glRotatef(135.0f, 0.0f, 1.0f, 0.0f);
-        Lighting.turnOff();
+        Lighting.enableLight();
         GL11.glRotatef(-135.0f, 0.0f, 1.0f, 0.0f);
         GL11.glRotatef(-((float)Math.atan(f6 / 40.0f)) * 20.0f, 1.0f, 0.0f, 0.0f);
         this.mc.thePlayer.renderYawOffset = (float)Math.atan(f5 / 40.0f) * 20.0f;
@@ -101,7 +103,7 @@ public class GuiLegacyInventory extends GuiInventory{
         this.mc.thePlayer.yRot = f3;
         this.mc.thePlayer.xRot = f4;
         GL11.glPopMatrix();
-        Lighting.turnOn();
+        Lighting.disable();
         GL11.glDisable(32826);
     }
     public void drawProtectionOverlay(int mouseX, int mouseY) {

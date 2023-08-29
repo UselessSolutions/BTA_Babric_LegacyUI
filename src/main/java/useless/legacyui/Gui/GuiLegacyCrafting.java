@@ -8,6 +8,7 @@ import net.minecraft.core.crafting.CraftingManager;
 import net.minecraft.core.crafting.recipe.*;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.player.inventory.slot.Slot;
+import net.minecraft.core.sound.SoundType;
 import net.minecraft.core.util.helper.Time;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -118,6 +119,7 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     public void scrollSlot(int direction) {
+        mc.sndManager.playSound("legacyui.ui.scroll", SoundType.GUI_SOUNDS, 1, 1);
         int count = 1;
         while (this.scrollUp.enabled && direction > 0 && count > 0) {
             currentScroll += 1;
@@ -135,6 +137,7 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     public void selectDisplaySlot(int slotIndex, boolean craft) {
+        mc.sndManager.playSound("legacyui.ui.focus", SoundType.GUI_SOUNDS, 1, 1);
         if (currentSlot != slotIndex) {
             currentScroll = 0; // reset scroll
         } else if (craft) {
@@ -173,10 +176,16 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     public void craft() {
-        ((ContainerWorkbenchLegacy) this.inventorySlots).craft(this.mc, this.inventorySlots.windowId, categories[tab], currentSlot, currentScroll);
+        if (((ContainerWorkbenchLegacy) this.inventorySlots).craft(this.mc, this.inventorySlots.windowId, categories[tab], currentSlot, currentScroll)){
+            mc.sndManager.playSound("legacyui.ui.craft", SoundType.GUI_SOUNDS, 1, 1);
+        } else {
+            mc.sndManager.playSound("legacyui.ui.craftfail", SoundType.GUI_SOUNDS, 1, 1);
+        }
+
     }
 
     public void selectTab(int tabIndex) {
+        mc.sndManager.playSound("legacyui.ui.focus", SoundType.GUI_SOUNDS, 1, 1);
         currentSlot = 0; //Reset to start on tab change
         if (tabIndex < 0) {
             tabIndex += categories.length;
