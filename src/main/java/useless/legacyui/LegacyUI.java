@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import turniplabs.halplibe.util.ConfigHandler;
 import useless.config.ModMenuConfigManager;
+import useless.prismaticlibe.helper.SoundHelper;
 
 import java.util.Properties;
 

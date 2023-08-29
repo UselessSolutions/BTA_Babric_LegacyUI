@@ -1,20 +1,10 @@
 package useless.legacyui.Gui.Container;
 
-import net.minecraft.client.gui.GuiContainer;
-import net.minecraft.core.InventoryAction;
-import net.minecraft.core.crafting.ICrafting;
-import net.minecraft.core.entity.player.EntityPlayer;
-import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.*;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotArmor;
 import net.minecraft.core.player.inventory.slot.SlotCrafting;
-import net.minecraft.core.player.inventory.slot.SlotCreative;
-import useless.legacyui.Gui.Slot.SlotResizable;
-import useless.legacyui.LegacyUI;
-
-import java.util.ArrayList;
-import java.util.List;
+import useless.prismaticlibe.gui.slot.SlotResizable;
 
 public class ContainerInventoryLegacy extends ContainerPlayer {
     public ContainerInventoryLegacy(InventoryPlayer inventoryplayer, InventoryCrafting craftMatrix, IInventory craftResult) {

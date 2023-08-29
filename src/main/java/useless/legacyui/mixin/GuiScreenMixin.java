@@ -8,10 +8,9 @@ import net.minecraft.client.sound.SoundManager;
 import net.minecraft.core.sound.SoundType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import useless.legacyui.ConfigTranslations;
-import useless.legacyui.Gui.IButtonSounds;
+import useless.prismaticlibe.gui.IButtonSounds;
 import useless.legacyui.LegacyUI;
 
 @Mixin(value = GuiScreen.class, remap = false)

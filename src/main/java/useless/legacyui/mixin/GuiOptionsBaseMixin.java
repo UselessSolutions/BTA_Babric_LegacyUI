@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import useless.legacyui.ConfigTranslations;
-import useless.legacyui.Gui.IButtonSounds;
+import useless.prismaticlibe.gui.IButtonSounds;
 import useless.legacyui.LegacyUI;
 
 @Mixin(value = GuiOptionsPageBase.class, remap = false)

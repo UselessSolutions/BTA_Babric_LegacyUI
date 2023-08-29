@@ -11,17 +11,16 @@ import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.sound.SoundType;
 import net.minecraft.core.util.helper.Time;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.ConfigTranslations;
 import useless.legacyui.Gui.Container.ContainerWorkbenchLegacy;
-import useless.legacyui.Gui.Slot.SlotResizable;
+import useless.prismaticlibe.gui.slot.SlotResizable;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.CraftingCategories;
 import useless.legacyui.Sorting.SortingCategory;
 import useless.legacyui.utils.ArrayUtil;
+import useless.prismaticlibe.gui.GuiAuditoryButtons;
 
-import java.security.Key;
 import java.util.List;
 
 public class GuiLegacyCrafting extends GuiContainer {

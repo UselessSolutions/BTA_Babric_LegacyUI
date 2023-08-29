@@ -30,7 +30,8 @@ public class ControllerInputMixin {
     public Button buttonX;
     @Shadow
     public Button buttonY;
-    @Shadow public DigitalPad digitalPad;
+    @Shadow
+    public DigitalPad digitalPad;
     @Shadow @Final public ControllerInventoryHandler craftingGuiHandler;
     @Unique
     public LegacyControllerInventoryHandler legacyControllerInventoryHandler;

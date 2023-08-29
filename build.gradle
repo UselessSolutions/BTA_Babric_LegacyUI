@@ -51,6 +51,14 @@ repositories {
 		metadataSources { artifact() }
 	}
 	ivy {
+		url = "https://github.com/UselessBullets"
+		patternLayout {
+			artifact "[organisation]/releases/download/v[revision]/[module]-[revision].jar"
+			m2compatible = true
+		}
+		metadataSources { artifact() }
+	}
+	ivy {
 		url = "https://piston-data.mojang.com"
 		patternLayout {
 			artifact "v1/[organisation]/[revision]/[module].jar"
@@ -89,6 +97,7 @@ dependencies {
 
 	modImplementation "ModMenu:ModMenu:2.0.0"
 	modImplementation "BTA_Babric_GuiLabels:GuiLabels:1.2.0"
+	modImplementation "BTA_Babric_PrismaticLibe:prismaticlibe:${project.prismatic_version}"
 
 	implementation "org.slf4j:slf4j-api:1.8.0-beta4"
 	implementation "org.apache.logging.log4j:log4j-slf4j18-impl:2.16.0"

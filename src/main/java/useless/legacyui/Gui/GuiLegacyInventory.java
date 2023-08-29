@@ -8,12 +8,10 @@ import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.lang.I18n;
 import net.minecraft.core.player.inventory.ContainerPlayer;
 import net.minecraft.core.player.inventory.slot.Slot;
-import net.minecraft.core.sound.SoundType;
 import net.minecraft.core.util.helper.DamageType;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.Gui.Container.ContainerInventoryLegacy;
-import useless.legacyui.Gui.Container.ContainerWorkbenchLegacy;
-import useless.legacyui.Gui.Slot.SlotResizable;
+import useless.prismaticlibe.gui.slot.SlotResizable;
 import useless.legacyui.LegacyUI;
 
 public class GuiLegacyInventory extends GuiInventory{
