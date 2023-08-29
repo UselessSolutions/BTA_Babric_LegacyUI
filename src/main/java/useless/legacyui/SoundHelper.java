@@ -2,31 +2,29 @@ package useless.legacyui;
 
 
 import com.b100.utils.FileUtils;
-import com.google.common.io.Files;
 import net.minecraft.client.Minecraft;
 
 import java.io.*;
-import java.net.URI;
 import java.util.Hashtable;
 
 
-public class SoundManager {
+public class SoundHelper {
     private static Hashtable<String, String> fileCache = new Hashtable<String, String>();
     public static File appDirectory = Minecraft.getAppDir("minecraft-bta");
     public static File soundDirectory = new File(appDirectory.getAbsolutePath() + "\\resources\\mod\\sound");
-    private static SoundManager soundManager;
+    private static SoundHelper soundHelper;
     private Minecraft mc;
 
-    public SoundManager(){
+    public SoundHelper(){
         mc = Minecraft.getMinecraft(this);
         LegacyUI.LOGGER.info(soundDirectory.getAbsolutePath());
-        soundManager = this;
+        soundHelper = this;
     }
-    public static SoundManager getInstance(){
-        if (soundManager == null){
-            return new SoundManager();
+    public static SoundHelper getInstance(){
+        if (soundHelper == null){
+            return new SoundHelper();
         }
-        return soundManager;
+        return soundHelper;
     }
     public void addSound(String MOD_ID, String soundSource){
         String destination = ("\\" + MOD_ID + "\\" + soundSource.replace("/", "\\")).replace("\\\\", "\\");
@@ -47,7 +45,7 @@ public class SoundManager {
         // Alright, we don't have the file, let's extract it
         try {
             // Read the file we're looking for
-            InputStream fileStream = SoundManager.class.getResourceAsStream(jarFilePath);
+            InputStream fileStream = SoundHelper.class.getResourceAsStream(jarFilePath);
 
             // Was the resource found?
             if(fileStream == null)
