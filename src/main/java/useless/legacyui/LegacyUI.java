@@ -24,6 +24,7 @@ public class LegacyUI implements ModInitializer {
         props.setProperty("GuiLabelColor", "404040");
         props.setProperty("HighlightColor", "FF0000");
         props.setProperty("OverrideLabelModColor", "false");
+        props.setProperty("UseLegacySounds", "true");
         config = new ConfigHandler(MOD_ID, props);
     }
     private static int GuiLabelColor = -1;
@@ -41,6 +42,11 @@ public class LegacyUI implements ModInitializer {
         }
         SoundManager soundManager = SoundManager.getInstance();
         soundManager.addSound(MOD_ID, "ui/back.wav");
+        soundManager.addSound(MOD_ID, "ui/craft.wav");
+        soundManager.addSound(MOD_ID, "ui/craftfail.wav");
+        soundManager.addSound(MOD_ID, "ui/focus.wav");
+        soundManager.addSound(MOD_ID, "ui/press.wav");
+        soundManager.addSound(MOD_ID, "ui/scroll.wav");
         LOGGER.info("LegacyUI initialized.");
     }
     public static int getGuiLabelColor(){
