@@ -157,7 +157,7 @@ public class ContainerWorkbenchLegacy extends Container {
         }
 
     }
-    public void craft(Minecraft mc, int windowId, SortingCategory category, int currentSlotId, int currentScrollAmount){
+    public boolean craft(Minecraft mc, int windowId, SortingCategory category, int currentSlotId, int currentScrollAmount){
         ContainerGuidebookRecipeCrafting recipe = category.recipeGroups[currentSlotId].getContainer(ArrayUtil.wrapAroundIndex(currentScrollAmount, category.recipeGroups[currentSlotId].recipes.length));
         RecipeCost recipeCost = new RecipeCost(recipe);
 
@@ -182,7 +182,9 @@ public class ContainerWorkbenchLegacy extends Container {
                 }
             }
             mc.playerController.doInventoryAction(windowId, InventoryAction.MOVE_STACK, new int[]{0}, mc.thePlayer);
+            return true; // Craft succeeded
         }
+        return false; // Craft failed
     }
     private boolean canCraft(EntityPlayer player, RecipeCost cost){
         boolean canCraft = true;
