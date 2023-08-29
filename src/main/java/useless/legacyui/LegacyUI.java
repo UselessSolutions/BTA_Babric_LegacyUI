@@ -5,7 +5,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import turniplabs.halplibe.helper.ItemHelper;
 import turniplabs.halplibe.util.ConfigHandler;
 import useless.config.ModMenuConfigManager;
 
@@ -40,13 +39,13 @@ public class LegacyUI implements ModInitializer {
                 guimodExists = true;
             }
         }
-        SoundManager soundManager = SoundManager.getInstance();
-        soundManager.addSound(MOD_ID, "ui/back.wav");
-        soundManager.addSound(MOD_ID, "ui/craft.wav");
-        soundManager.addSound(MOD_ID, "ui/craftfail.wav");
-        soundManager.addSound(MOD_ID, "ui/focus.wav");
-        soundManager.addSound(MOD_ID, "ui/press.wav");
-        soundManager.addSound(MOD_ID, "ui/scroll.wav");
+        SoundHelper soundHelper = SoundHelper.getInstance();
+        soundHelper.addSound(MOD_ID, "ui/back.wav");
+        soundHelper.addSound(MOD_ID, "ui/craft.wav");
+        soundHelper.addSound(MOD_ID, "ui/craftfail.wav");
+        soundHelper.addSound(MOD_ID, "ui/focus.wav");
+        soundHelper.addSound(MOD_ID, "ui/press.wav");
+        soundHelper.addSound(MOD_ID, "ui/scroll.wav");
         LOGGER.info("LegacyUI initialized.");
     }
     public static int getGuiLabelColor(){
