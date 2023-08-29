@@ -10,8 +10,10 @@ import java.util.Hashtable;
 
 public class SoundHelper {
     private static Hashtable<String, String> fileCache = new Hashtable<String, String>();
-    public static File appDirectory = Minecraft.getAppDir("minecraft-bta");
-    public static File soundDirectory = new File(appDirectory.getAbsolutePath() + "\\resources\\mod\\sound");
+    public static final File appDirectory = Minecraft.getAppDir("minecraft-bta");
+    public static final File soundDirectory = new File(appDirectory.getAbsolutePath() + "\\resources\\mod\\sound");
+    public static final File musicDirectory = new File(appDirectory.getAbsolutePath() + "\\resources\\mod\\music");
+    public static final File streamingDirectory = new File(appDirectory.getAbsolutePath() + "\\resources\\mod\\streaming");
     private static SoundHelper soundHelper;
     private Minecraft mc;
 
@@ -25,6 +27,13 @@ public class SoundHelper {
             return new SoundHelper();
         }
         return soundHelper;
+    }
+    public void addMusic(String MOD_ID, String soundSource){
+        String destination = ("\\" + soundSource.replace("/", "\\")).replace("\\\\", "\\");
+        String source = ("/assets/" + MOD_ID + "/music/" + soundSource).replace("//", "/").trim();
+
+        String tempfile = extract(source);
+        FileUtils.copy(new File(tempfile), new File(musicDirectory, destination));
     }
     public void addSound(String MOD_ID, String soundSource){
         String destination = ("\\" + MOD_ID + "\\" + soundSource.replace("/", "\\")).replace("\\\\", "\\");
