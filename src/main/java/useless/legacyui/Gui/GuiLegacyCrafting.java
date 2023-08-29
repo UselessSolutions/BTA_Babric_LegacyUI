@@ -33,11 +33,11 @@ public class GuiLegacyCrafting extends GuiContainer {
     protected String tabString = "1/1"; // Indicator of what tab page you are on
 
     // Button Hell
-    protected GuiButton[] slotButtons = new GuiButton[totalDisplaySlots];
-    protected GuiButton[] tabButtons = new GuiButton[maxDisplayedTabs];
+    protected GuiAuditoryButtons[] slotButtons = new GuiAuditoryButtons[totalDisplaySlots];
+    protected GuiAuditoryButtons[] tabButtons = new GuiAuditoryButtons[maxDisplayedTabs];
 
-    protected GuiButton scrollUp;
-    protected GuiButton scrollDown;
+    protected GuiAuditoryButtons scrollUp;
+    protected GuiAuditoryButtons scrollDown;
     protected SortingCategory[] categories;
     protected static int currentScroll = 0;
     protected static int currentCategory = 0;
@@ -65,21 +65,25 @@ public class GuiLegacyCrafting extends GuiContainer {
 
         // Setup Invisible buttons
         for (int i = 0; i < slotButtons.length; i++) {
-            slotButtons[i] = new GuiButton(i + 4, (this.width - this.xSize) / 2 + 11 + 18 * i, (this.height - this.ySize) / 2 + 55, 18, 18, "");
+            slotButtons[i] = new GuiAuditoryButtons(i + 4, (this.width - this.xSize) / 2 + 11 + 18 * i, (this.height - this.ySize) / 2 + 55, 18, 18, "");
             slotButtons[i].visible = false;
+            slotButtons[i].setMuted(true);
             this.controlList.add(slotButtons[i]);
         }
         for (int i = 0; i < tabButtons.length; i++) {
-            tabButtons[i] = new GuiButton(i + 4 + slotButtons.length, (this.width - this.xSize) / 2 + 34 * i, (this.height - this.ySize) / 2, 34, 24, "");
+            tabButtons[i] = new GuiAuditoryButtons(i + 4 + slotButtons.length, (this.width - this.xSize) / 2 + 34 * i, (this.height - this.ySize) / 2, 34, 24, "");
             tabButtons[i].visible = false;
+            tabButtons[i].setMuted(true);
             this.controlList.add(tabButtons[i]);
         }
 
-        scrollUp = new GuiButton(4 + slotButtons.length + tabButtons.length + 1, (this.width - this.xSize) / 2 + 11, (this.height - this.ySize) / 2 + 26, 18, 26, "");
+        scrollUp = new GuiAuditoryButtons(4 + slotButtons.length + tabButtons.length + 1, (this.width - this.xSize) / 2 + 11, (this.height - this.ySize) / 2 + 26, 18, 26, "");
         scrollUp.visible = false;
+        scrollUp.setMuted(true);
 
-        scrollDown = new GuiButton(4 + slotButtons.length + tabButtons.length + 2, (this.width - this.xSize) / 2 + 11, (this.height - this.ySize) / 2 + 76, 18, 26, "");
+        scrollDown = new GuiAuditoryButtons(4 + slotButtons.length + tabButtons.length + 2, (this.width - this.xSize) / 2 + 11, (this.height - this.ySize) / 2 + 76, 18, 26, "");
         scrollDown.visible = false;
+        scrollDown.setMuted(true);
         this.controlList.add(scrollUp);
         this.controlList.add(scrollDown);
 
@@ -119,7 +123,7 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     public void scrollSlot(int direction) {
-        mc.sndManager.playSound("legacyui.ui.scroll", SoundType.GUI_SOUNDS, 1, 1);
+        uiSound("legacyui.ui.scroll");
         int count = 1;
         while (this.scrollUp.enabled && direction > 0 && count > 0) {
             currentScroll += 1;
@@ -137,8 +141,8 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     public void selectDisplaySlot(int slotIndex, boolean craft) {
-        mc.sndManager.playSound("legacyui.ui.focus", SoundType.GUI_SOUNDS, 1, 1);
         if (currentSlot != slotIndex) {
+            uiSound("legacyui.ui.focus");
             currentScroll = 0; // reset scroll
         } else if (craft) {
             craft();
@@ -177,15 +181,15 @@ public class GuiLegacyCrafting extends GuiContainer {
 
     public void craft() {
         if (((ContainerWorkbenchLegacy) this.inventorySlots).craft(this.mc, this.inventorySlots.windowId, categories[tab], currentSlot, currentScroll)){
-            mc.sndManager.playSound("legacyui.ui.craft", SoundType.GUI_SOUNDS, 1, 1);
+            uiSound("legacyui.ui.craft");
         } else {
-            mc.sndManager.playSound("legacyui.ui.craftfail", SoundType.GUI_SOUNDS, 1, 1);
+            uiSound("legacyui.ui.craftfail");
         }
 
     }
 
     public void selectTab(int tabIndex) {
-        mc.sndManager.playSound("legacyui.ui.focus", SoundType.GUI_SOUNDS, 1, 1);
+        uiSound("legacyui.ui.focus");
         currentSlot = 0; //Reset to start on tab change
         if (tabIndex < 0) {
             tabIndex += categories.length;
@@ -399,6 +403,15 @@ public class GuiLegacyCrafting extends GuiContainer {
                 timeStart = Time.now();
                 lastCheckPassed = true;
             }
+        }
+    }
+
+    private void uiSound(String soundDir){
+        if (LegacyUI.config.getBoolean(ConfigTranslations.USE_LEGACY_SOUNDS.getKey())){
+            mc.sndManager.playSound(soundDir, SoundType.GUI_SOUNDS, 1, 1);
+        }
+        else {
+            mc.sndManager.playSound("random.click", SoundType.GUI_SOUNDS, 1, 1);
         }
     }
 

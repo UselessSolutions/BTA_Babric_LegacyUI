@@ -12,8 +12,10 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import useless.legacyui.ConfigTranslations;
 import useless.legacyui.Controller.LegacyControllerInventoryHandler;
 import useless.legacyui.Gui.GuiLegacyCrafting;
+import useless.legacyui.LegacyUI;
 
 @Mixin(value = ControllerInput.class, remap = false)
 public class ControllerInputMixin {
@@ -41,10 +43,21 @@ public class ControllerInputMixin {
     public void inventoryControlsInject(GuiContainer guiContainer, CallbackInfo cbi) {
         if ((guiContainer instanceof GuiLegacyCrafting)) {
             if (this.buttonA.pressedThisFrame() || this.buttonX.pressedThisFrame() || this.buttonY.pressedThisFrame()) {
-                this.minecraft.sndManager.playSound("random.ui_click", SoundType.GUI_SOUNDS, 1.0f, 1.0f);
+                if (LegacyUI.config.getBoolean(ConfigTranslations.USE_LEGACY_SOUNDS.getKey())){
+                    this.minecraft.sndManager.playSound("legacyui.ui.press", SoundType.GUI_SOUNDS, 1.0f, 1.0f);
+                }
+                else {
+                    this.minecraft.sndManager.playSound("random.ui_click", SoundType.GUI_SOUNDS, 1.0f, 1.0f);
+                }
+
             }
             if (this.buttonB.pressedThisFrame()) {
-                this.minecraft.sndManager.playSound("random.ui_back", SoundType.GUI_SOUNDS, 1.0f, 1.0f);
+                if (LegacyUI.config.getBoolean(ConfigTranslations.USE_LEGACY_SOUNDS.getKey())){
+                    this.minecraft.sndManager.playSound("legacyui.ui.back", SoundType.GUI_SOUNDS, 1.0f, 1.0f);
+                }
+                else {
+                    this.minecraft.sndManager.playSound("random.ui_back", SoundType.GUI_SOUNDS, 1.0f, 1.0f);
+                }
             }
             legacyControllerInventoryHandler.handleCrafting((GuiLegacyCrafting)guiContainer);
             cbi.cancel();
