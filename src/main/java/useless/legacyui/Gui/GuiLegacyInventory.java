@@ -48,7 +48,7 @@ public class GuiLegacyInventory extends GuiInventory{
     }
 
     protected void openCrafting(){
-        mc.displayGuiScreen(new GuiLegacyCrafting(player, (int)player.x, (int)player.y, (int)player.z));
+        mc.displayGuiScreen(new GuiLegacyCrafting(player));
 
     }
     public boolean getIsMouseOverSlot(Slot slot, int i, int j) {

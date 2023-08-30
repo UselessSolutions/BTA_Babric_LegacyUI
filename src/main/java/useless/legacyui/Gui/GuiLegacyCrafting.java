@@ -49,11 +49,18 @@ public class GuiLegacyCrafting extends GuiContainer {
     private long timeStart = 0;
 
     private boolean[] keysPressed = new boolean[65536];
+    private boolean isInInventory;
 
 
     public GuiLegacyCrafting(EntityPlayer player, int i, int j, int k) {
         super(new ContainerWorkbenchLegacy(player.inventory, player.world, i, j, k));
         this.mc = Minecraft.getMinecraft(this);
+        this.isInInventory = false;
+    }
+    public GuiLegacyCrafting(EntityPlayer player) {
+        super(new ContainerWorkbenchLegacy(player.inventory));
+        this.mc = Minecraft.getMinecraft(this);
+        this.isInInventory = true;
     }
 
     public void initGui() {
@@ -332,7 +339,7 @@ public class GuiLegacyCrafting extends GuiContainer {
             this.drawTexturedModalRect(j + bookMarkWidth * tab, k - 2, 0, 175, bookMarkWidth, 30);
 
             // If 2x2
-            if (categories[tab].recipeGroups[currentSlot].getContainer(ArrayUtil.wrapAroundIndex(currentScroll, categories[tab].recipeGroups[currentSlot].recipes.length)).inventorySlots.size() < 6 && renderCraftingDisplay()) {
+            if (isInInventory || categories[tab].recipeGroups[currentSlot].getContainer(ArrayUtil.wrapAroundIndex(currentScroll, categories[tab].recipeGroups[currentSlot].recipes.length)).inventorySlots.size() < 6 && renderCraftingDisplay()) {
                 this.drawTexturedModalRect(j + 19, k + 108, 61, 175, 54, 54);
             }
 
