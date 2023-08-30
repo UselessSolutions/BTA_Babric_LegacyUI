@@ -269,22 +269,23 @@ public class ContainerWorkbenchLegacy extends Container {
         }
     }
     public List<Integer> getMoveSlots(InventoryAction action, Slot slot, int target, EntityPlayer player) {
+        int offset = isInInventory ? -5:0;
         if (slot.id == 0) {
             return this.getSlots(0, 1, false);
-        } else if (slot.id >= 1 && slot.id < 9) {
-            return this.getSlots(1, 9, false);
+        } else if (slot.id >= 1 && slot.id < 9 + offset) {
+            return this.getSlots(1, 9 + offset, false);
         } else {
             if (action == InventoryAction.MOVE_SIMILAR) {
-                if (slot.id >= 10 && slot.id <= 45) {
-                    return this.getSlots(10, 36, false);
+                if (slot.id >= 10 + offset && slot.id <= 45 + offset) {
+                    return this.getSlots(10 + offset, 36, false);
                 }
             } else {
-                if (slot.id >= 10 && slot.id <= 36) {
-                    return this.getSlots(10, 27, false);
+                if (slot.id >= 10 + offset && slot.id <= 36 + offset) {
+                    return this.getSlots(10 + offset, 27, false);
                 }
 
-                if (slot.id >= 37 && slot.id <= 45) {
-                    return this.getSlots(37, 9, false);
+                if (slot.id >= 37 + offset && slot.id <= 45 + offset) {
+                    return this.getSlots(37 + offset, 9, false);
                 }
             }
 
@@ -292,16 +293,17 @@ public class ContainerWorkbenchLegacy extends Container {
         }
     }
     public List<Integer> getTargetSlots(InventoryAction action, Slot slot, int target, EntityPlayer player) {
-        if (slot.id >= 10 && slot.id <= 45) { // Inventory
+        int offset = isInInventory ? -5:0;
+        if (slot.id >= 10 + offset && slot.id <= 45 + offset) { // Inventory
             if (target == 1) {
-                return this.getSlots(1, 9, false);
-            } else if (slot.id <= 36) {
-                return this.getSlots(37, 9, false);
+                return this.getSlots(1, craftingSlotsNumber-1, false);
+            } else if (slot.id <= 36 + offset) {
+                return this.getSlots(37 + offset, 9, false);
             } else {
-                return this.getSlots(10, 27, false);
+                return this.getSlots(10 + offset, 27, false);
             }
-        } else if (slot.id < 10) { // Crafting
-            return slot.id == 0 ? this.getSlots(10, 36, true) : this.getSlots(10, 36, false);
+        } else if (slot.id < 10 + offset) { // Crafting
+            return slot.id == 0 ? this.getSlots(10 + offset, 36, true) : this.getSlots(10 + offset, 36, false);
         } else {
             return null;
         }
