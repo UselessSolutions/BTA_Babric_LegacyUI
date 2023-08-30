@@ -83,7 +83,6 @@ public class ContainerWorkbenchLegacy extends Container {
         // 3x9 inventory
         for (baseIterator = 0; baseIterator < 3; ++baseIterator) {
             for (subIterator = 0; subIterator < 9; ++subIterator) {
-                this.addSlot(new SlotResizable(this.inventoryPlayer, subIterator + baseIterator * 9 + 9, 153 + subIterator * 12, 112 + baseIterator * 12, 12));
                 this.addSlot(new SlotResizable(this.inventoryPlayer, subIterator + baseIterator * 9 + 9, 153 + subIterator * 12, 112 + baseIterator * 12, 12)); inventorySlotsNumber++;
             }
         }
@@ -198,10 +197,13 @@ public class ContainerWorkbenchLegacy extends Container {
                     if (slotId == -1) {continue;}
                     if (slotId < 9){ slotId += 36;}
 
+
+
                     if (recipe.inventorySlots.size() > 5 || isInInventory){// 3x3 crafting
-                        mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId + 1}, mc.thePlayer); // Picks up stack
+                        int offset = isInInventory ? -4:1;
+                        mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId + offset}, mc.thePlayer); // Picks up stack
                         mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_RIGHT, new int[]{i}, mc.thePlayer); // Places one item
-                        mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId + 1}, mc.thePlayer); // Puts down stack
+                        mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId + offset}, mc.thePlayer); // Puts down stack
                     }
                     else {// 2x2 crafting
                         mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId + 1}, mc.thePlayer); // Picks up stack
@@ -259,6 +261,7 @@ public class ContainerWorkbenchLegacy extends Container {
 
     }
     public boolean isUsableByPlayer(EntityPlayer entityplayer) {
+        if (isInInventory) {return true;}
         if (this.field_20133_c.getBlockId(this.x, this.y, this.z) != Block.workbench.id) {
             return false;
         } else {
@@ -289,15 +292,15 @@ public class ContainerWorkbenchLegacy extends Container {
         }
     }
     public List<Integer> getTargetSlots(InventoryAction action, Slot slot, int target, EntityPlayer player) {
-        if (slot.id >= 10 && slot.id <= 45) {
+        if (slot.id >= 10 && slot.id <= 45) { // Inventory
             if (target == 1) {
                 return this.getSlots(1, 9, false);
-            } else if (slot.id >= 10 && slot.id <= 36) {
+            } else if (slot.id <= 36) {
                 return this.getSlots(37, 9, false);
             } else {
-                return slot.id >= 37 && slot.id <= 45 ? this.getSlots(10, 27, false) : null;
+                return this.getSlots(10, 27, false);
             }
-        } else if (slot.id < 10) {
+        } else if (slot.id < 10) { // Crafting
             return slot.id == 0 ? this.getSlots(10, 36, true) : this.getSlots(10, 36, false);
         } else {
             return null;
