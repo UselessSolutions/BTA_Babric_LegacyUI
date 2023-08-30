@@ -28,11 +28,18 @@ import java.util.List;
 public class ContainerWorkbenchLegacy extends Container {
     public InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
     public IInventory craftResult = new InventoryCraftResult();
-    private World field_20133_c;
+    private final World field_20133_c;
     private int x;
     private int y;
     private int z;
     private InventoryPlayer inventoryPlayer;
+    private final boolean isInInventory;
+    private int craftingSlotsNumber = 0;
+    private int inventorySlotsNumber = 0;
+
+    private int getTotalSlots(){
+        return craftingSlotsNumber + inventorySlotsNumber;
+    }
 
     public ContainerWorkbenchLegacy(InventoryPlayer inventoryplayer, World world, int i, int j, int k) {
         this.field_20133_c = world;
@@ -40,28 +47,50 @@ public class ContainerWorkbenchLegacy extends Container {
         this.y = j;
         this.z = k;
         this.inventoryPlayer = inventoryplayer;
+        this.isInInventory = false;
+    }
+    public ContainerWorkbenchLegacy(InventoryPlayer inventoryplayer) {
+        this.field_20133_c = null;
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+        this.inventoryPlayer = inventoryplayer;
+        this.isInInventory = true;
     }
     public void craftingSlots() {
-        this.addSlot(new SlotCrafting(this.inventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 107, 127));
+        this.addSlot(new SlotCrafting(this.inventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 107, 127)); craftingSlotsNumber++;
         int baseIterator;
         int subIterator;
-        // 3x3 Crafting
-        for (baseIterator = 0; baseIterator < 3; ++baseIterator) {
-            for (subIterator = 0; subIterator < 3; ++subIterator) {
-                this.addSlot(new Slot(this.craftMatrix, subIterator + baseIterator * 3, 20 + subIterator * 18, 109 + baseIterator * 18));
+
+        if (isInInventory){
+            // 2x2 Crafting
+            for (baseIterator = 0; baseIterator < 2; ++baseIterator) {
+                for (subIterator = 0; subIterator < 2; ++subIterator) {
+                    this.addSlot(new Slot(this.craftMatrix, subIterator + baseIterator * 3, 29 + subIterator * 18, 118 + baseIterator * 18)); craftingSlotsNumber++;
+                }
             }
         }
+        else {
+            // 3x3 Crafting
+            for (baseIterator = 0; baseIterator < 3; ++baseIterator) {
+                for (subIterator = 0; subIterator < 3; ++subIterator) {
+                    this.addSlot(new Slot(this.craftMatrix, subIterator + baseIterator * 3, 20 + subIterator * 18, 109 + baseIterator * 18)); craftingSlotsNumber++;
+                }
+            }
+        }
+
 
         // 3x9 inventory
         for (baseIterator = 0; baseIterator < 3; ++baseIterator) {
             for (subIterator = 0; subIterator < 9; ++subIterator) {
                 this.addSlot(new SlotResizable(this.inventoryPlayer, subIterator + baseIterator * 9 + 9, 153 + subIterator * 12, 112 + baseIterator * 12, 12));
+                this.addSlot(new SlotResizable(this.inventoryPlayer, subIterator + baseIterator * 9 + 9, 153 + subIterator * 12, 112 + baseIterator * 12, 12)); inventorySlotsNumber++;
             }
         }
 
         // 1x9 hotbar
         for (baseIterator = 0; baseIterator < 9; ++baseIterator) {
-            this.addSlot(new SlotResizable(this.inventoryPlayer, baseIterator, 153 + baseIterator * 12, 154, 12));
+            this.addSlot(new SlotResizable(this.inventoryPlayer, baseIterator, 153 + baseIterator * 12, 154, 12)); inventorySlotsNumber++;
         }
 
         this.onCraftMatrixChanged(this.craftMatrix);
@@ -169,7 +198,7 @@ public class ContainerWorkbenchLegacy extends Container {
                     if (slotId == -1) {continue;}
                     if (slotId < 9){ slotId += 36;}
 
-                    if (recipe.inventorySlots.size() > 5){// 3x3 crafting
+                    if (recipe.inventorySlots.size() > 5 || isInInventory){// 3x3 crafting
                         mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId + 1}, mc.thePlayer); // Picks up stack
                         mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_RIGHT, new int[]{i}, mc.thePlayer); // Places one item
                         mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId + 1}, mc.thePlayer); // Puts down stack
@@ -276,7 +305,7 @@ public class ContainerWorkbenchLegacy extends Container {
     }
     public void handleHotbarSwap(int[] args, EntityPlayer player) {
         // Dont hotbar swap the crafting guide!
-        if (args[0] > 45) {
+        if (args[0] > getTotalSlots()) {
             return;
         }
 
@@ -311,7 +340,7 @@ public class ContainerWorkbenchLegacy extends Container {
     }
     public int getHotbarSlotId(int number) {
         // - 14 to account for the 14 display items
-        return 9 + 27 + number;
+        return craftingSlotsNumber + inventorySlotsNumber + number - 9;
     }
 
 
