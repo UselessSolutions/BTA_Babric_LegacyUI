@@ -389,7 +389,7 @@ public class GuiLegacyCrafting extends GuiContainer {
         boolean holdingItem = mc.thePlayer.inventory.getHeldItemStack() != null;
 
         boolean isItem = false;
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < (isInInventory ? 5:10); i++) {
             isItem = isItem || (inventorySlots.getSlot(i) != null && inventorySlots.getSlot(i).getStack() != null);
         }
         return !isItem && !holdingItem;
