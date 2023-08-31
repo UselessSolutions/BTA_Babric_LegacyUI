@@ -80,6 +80,7 @@ public class GuiLegacyInventory extends GuiInventory{
     }
     @Override
     protected void drawGuiContainerForegroundLayer() {
+        drawStringNoShadow(fontRenderer, "Inventory",8, 82, LegacyUI.getGuiLabelColor());
     }
     @Override
     protected void drawGuiContainerBackgroundLayer(float f) {
