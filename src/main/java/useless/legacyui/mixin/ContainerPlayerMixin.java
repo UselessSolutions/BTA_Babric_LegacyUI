@@ -8,6 +8,7 @@ import net.minecraft.core.player.inventory.InventoryCrafting;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotCrafting;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -30,14 +31,46 @@ public class ContainerPlayerMixin extends Container {
         }
 
     }
-    @Shadow
-    public List<Integer> getMoveSlots(InventoryAction inventoryAction, Slot slot, int i, EntityPlayer entityPlayer) {
+    /**
+     * @author Useless
+     * @reason Legacy ui survival inventory has fewer slots
+     */
+    @Overwrite
+    public List<Integer> getMoveSlots(InventoryAction action, Slot slot, int target, EntityPlayer player) {
+        if (slot.id >= 5-5 && slot.id <= 8-5) { // armor slots
+            return this.getSlots(5-5, 4, false);
+        }
+        if (action == InventoryAction.MOVE_SIMILAR) {
+            if (slot.id >= 9-5 && slot.id <= 44-5) { // Entire inventory
+                return this.getSlots(9-5, 36, false);
+            }
+        } else {
+            if (slot.id >= 9-5 && slot.id <= 35-5) { // Main inventory
+                return this.getSlots(9-5, 27, false);
+            }
+            if (slot.id >= 36-5 && slot.id <= 44-5) { // Hotbar
+                return this.getSlots(36-5, 9, false);
+            }
+        }
         return null;
     }
 
-    @Shadow
-    public List<Integer> getTargetSlots(InventoryAction inventoryAction, Slot slot, int i, EntityPlayer entityPlayer) {
-        return null;
+    /**
+     * @author Useless
+     * @reason Legacy ui survival inventory has fewer slots
+     */
+    @Overwrite
+    public List<Integer> getTargetSlots(InventoryAction action, Slot slot, int target, EntityPlayer player) {
+        if (slot.id >= 9-5 && slot.id <= 44-5) {
+            if (target == 2) { // Armor Slots
+                return this.getSlots(5-5, 4, false);
+            }
+            if (slot.id < 36-5) { // Hotbar
+                return this.getSlots(36-5, 9, false);
+            }
+            return this.getSlots(9-5, 27, false); // Main Inventory
+        }
+        return this.getSlots(9-5, 36, false); // Entire Inventory
     }
 
     @Shadow
