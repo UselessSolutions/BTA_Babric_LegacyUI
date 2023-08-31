@@ -43,7 +43,7 @@ public class LegacyUI implements ModInitializer {
         SoundHelper.addSound(MOD_ID, "ui/press.wav");
         SoundHelper.addSound(MOD_ID, "ui/scroll.wav");
         SoundHelper.addSound(MOD_ID, "ui/achievement.wav");
-        
+
         LOGGER.info("LegacyUI initialized.");
     }
     public static int getGuiLabelColor(){

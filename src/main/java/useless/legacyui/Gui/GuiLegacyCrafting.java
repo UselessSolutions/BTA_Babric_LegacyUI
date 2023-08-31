@@ -23,9 +23,9 @@ import useless.prismaticlibe.gui.GuiAuditoryButtons;
 import java.util.List;
 
 public class GuiLegacyCrafting extends GuiContainer {
-    protected static int tab; // Current page of tabs
+    protected  int tab; // Current page of tabs
     protected final int maxDisplayedTabs = 8; // Total amount of tab pages, zero index
-    protected static int currentSlot;
+    protected  int currentSlot;
     protected final int totalDisplaySlots = 14;
     protected String slotString = "1/1";
     protected String tabString = "1/1"; // Indicator of what tab page you are on
@@ -37,8 +37,8 @@ public class GuiLegacyCrafting extends GuiContainer {
     protected GuiAuditoryButtons scrollUp;
     protected GuiAuditoryButtons scrollDown;
     protected SortingCategory[] categories;
-    protected static int currentScroll = 0;
-    protected static int currentCategory = 0;
+    protected  int currentScroll = 0;
+    protected  int currentCategory = 0;
 
     protected static Object[] storedCategories;
 
@@ -423,17 +423,7 @@ public class GuiLegacyCrafting extends GuiContainer {
     }
 
     static {
-        int i;
-        tab = 0;
-        currentSlot = 0;
-        currentScroll = 0;
-        currentCategory = 0;
-
-
         List<SortingCategory> categories = CraftingCategories.getInstance().getCategories();
-        List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-
         GuiLegacyCrafting.storedCategories = categories.toArray();
-
     }
 }
