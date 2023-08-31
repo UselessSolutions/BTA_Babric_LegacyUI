@@ -3,8 +3,6 @@ package useless.legacyui.Gui.Container;
 import net.minecraft.core.player.inventory.*;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotArmor;
-import net.minecraft.core.player.inventory.slot.SlotCrafting;
-import useless.prismaticlibe.gui.slot.SlotResizable;
 
 public class ContainerInventoryLegacy extends ContainerPlayer {
     public ContainerInventoryLegacy(InventoryPlayer inventoryplayer, InventoryCrafting craftMatrix, IInventory craftResult) {
@@ -17,8 +15,7 @@ public class ContainerInventoryLegacy extends ContainerPlayer {
         this.craftResult = craftResult;
         int i;
         for (i = 0; i < 4; ++i) {
-            int j1 = i;
-            this.addSlot(new SlotArmor(this, inventory, inventory.getSizeInventory() - 1 - i, 8 + 41, 8 + i * 18, j1));
+            this.addSlot(new SlotArmor(this, inventory, inventory.getSizeInventory() - 1 - i, 8 + 41, 8 + i * 18, i));
         }
         for (i = 0; i < 3; ++i) {
             for (int k1 = 0; k1 < 9; ++k1) {
@@ -28,9 +25,5 @@ public class ContainerInventoryLegacy extends ContainerPlayer {
         for (i = 0; i < 9; ++i) {
             this.addSlot(new Slot(inventory, i, 8 + i * 18, 142 + 10));
         }
-
     }
-
-
-
 }
