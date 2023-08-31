@@ -2,6 +2,7 @@ package useless.legacyui.Gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
+import net.minecraft.client.input.InputType;
 import net.minecraft.client.render.EntityRenderDispatcher;
 import net.minecraft.client.render.Lighting;
 import net.minecraft.core.entity.player.EntityPlayer;
@@ -50,6 +51,7 @@ public class GuiLegacyInventory extends GuiInventory{
     }
 
     protected void openCrafting(){
+        LegacyUI.armBackOverride();
         uiSound("legacyui.ui.press");
         mc.displayGuiScreen(new GuiLegacyCrafting(player));
 
@@ -93,15 +95,15 @@ public class GuiLegacyInventory extends GuiInventory{
         GL11.glEnable(32826);
         GL11.glEnable(2903);
         GL11.glPushMatrix();
-        GL11.glTranslatef(j + 51 + 44, k + 75, 50.0f);
+        GL11.glTranslatef(j + 51 + 44, k + 75 - 2, 50.0f);
         float f1 = 30.0f;
         GL11.glScalef(-f1, f1, f1);
         GL11.glRotatef(180.0f, 0.0f, 0.0f, 1.0f);
         float f2 = this.mc.thePlayer.renderYawOffset;
         float f3 = this.mc.thePlayer.yRot;
         float f4 = this.mc.thePlayer.xRot;
-        float f5 = (float)(j + 51) - this.xSize_lo;
-        float f6 = (float)(k + 75 - 50) - this.ySize_lo;
+        float f5 = (float)(j + 94) - this.xSize_lo; // Controls where the character looks
+        float f6 = (float)(k + 75 - 50) - this.ySize_lo; // Controls where the character looks
         GL11.glRotatef(135.0f, 0.0f, 1.0f, 0.0f);
         Lighting.enableLight();
         GL11.glRotatef(-135.0f, 0.0f, 1.0f, 0.0f);
@@ -120,6 +122,43 @@ public class GuiLegacyInventory extends GuiInventory{
         GL11.glPopMatrix();
         Lighting.disable();
         GL11.glDisable(32826);
+
+        if (this.mc.inputType == InputType.CONTROLLER) {
+            int spacing = 14;
+            int buttonsOffset = 2;
+            int aX = 50;
+            drawStringNoShadow(fontRenderer, "Take all", aX + spacing, this.height - 24, 0xFFFFFF);
+            int promptASize = fontRenderer.getStringWidth("Take all");
+
+            int bX = aX + spacing + promptASize;
+            drawStringNoShadow(fontRenderer, "Exit", bX + spacing, this.height - 24, 0xFFFFFF);
+            int promptBSize = fontRenderer.getStringWidth("Exit");
+
+            int xX = bX + spacing + promptBSize;
+            drawStringNoShadow(fontRenderer, "Take half", xX + spacing, this.height - 24, 0xFFFFFF);
+            int promptXSize = fontRenderer.getStringWidth("Take half");
+
+            int yX = xX + spacing + promptXSize;
+            drawStringNoShadow(fontRenderer, "Quick move", yX + spacing, this.height - 24, 0xFFFFFF);
+            int promptYSize = fontRenderer.getStringWidth("Quick move");
+
+            int rbX = yX + spacing + promptYSize;
+            drawStringNoShadow(fontRenderer, "What's this?", rbX + spacing + 7, this.height - 24, 0xFFFFFF);
+            int promptRBSize = fontRenderer.getStringWidth("What's this?");
+
+            int controllerTexture = this.mc.renderEngine.getTexture("/assets/legacyui/gui/xbox360.png");
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            this.mc.renderEngine.bindTexture(controllerTexture);
+            GL11.glScaled(.5D, .5D, .5D);
+
+            this.drawTexturedModalRect((aX + buttonsOffset) * 2, (this.height - 26) * 2, 0, 0, 20, 20);
+            this.drawTexturedModalRect((bX + buttonsOffset) * 2, (this.height - 26) * 2, 20, 0, 20, 20);
+            this.drawTexturedModalRect((xX + buttonsOffset) * 2, (this.height - 26) * 2, 40, 0, 20, 20);
+            this.drawTexturedModalRect((yX + buttonsOffset) * 2, (this.height - 26) * 2, 60, 0, 20, 20);
+            this.drawTexturedModalRect((rbX + buttonsOffset) * 2, (this.height - 26) * 2, 128, 0, 34, 21);
+
+            GL11.glScaled(2, 2, 2);
+        }
     }
     public void drawProtectionOverlay(int mouseX, int mouseY) {
         this.hoveredDamageType = null;

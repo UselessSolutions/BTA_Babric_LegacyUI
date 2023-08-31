@@ -362,11 +362,13 @@ public class GuiLegacyCrafting extends GuiContainer {
             if (this.mc.inputType == InputType.CONTROLLER) {
                 // Controller Prompts
                 int craftX = 50;
-                drawStringNoShadow(fontRenderer, "Craft", craftX + 12, this.height - 24, 0xFFFFFFFF);
-                int exitX = craftX + 12 + fontRenderer.getStringWidth("Craft") + 12;
-                drawStringNoShadow(fontRenderer, "Exit", exitX + 12, this.height - 24, 0xFFFFFFFF);
-                int tabX = exitX + 12 + fontRenderer.getStringWidth("Exit") + 12;
-                drawStringNoShadow(fontRenderer, "Select Tab", tabX + 37, this.height - 24, 0xFFFFFFFF);
+                int spacing = 14;
+                int buttonsOffset = 2;
+                drawStringNoShadow(fontRenderer, "Craft", craftX + spacing, this.height - 24, 0xFFFFFFFF);
+                int exitX = craftX + spacing + fontRenderer.getStringWidth("Craft") + spacing;
+                drawStringNoShadow(fontRenderer, "Exit", exitX + spacing, this.height - 24, 0xFFFFFFFF);
+                int tabX = exitX + spacing + fontRenderer.getStringWidth("Exit") + spacing;
+                drawStringNoShadow(fontRenderer, "Select Tab", tabX + spacing + 25, this.height - 24, 0xFFFFFFFF);
 
 
                 i = this.mc.renderEngine.getTexture("/assets/legacyui/gui/xbox360.png");
@@ -374,9 +376,9 @@ public class GuiLegacyCrafting extends GuiContainer {
                 this.mc.renderEngine.bindTexture(i);
                 GL11.glScaled(.5D, .5D, .5D);
 
-                this.drawTexturedModalRect(craftX * 2, (this.height - 26) * 2, 0, 0, 20, 20);
-                this.drawTexturedModalRect(exitX * 2, (this.height - 26) * 2, 20, 0, 20, 20);
-                this.drawTexturedModalRect(tabX * 2, (this.height - 26) * 2, 90, 0, 71, 21);
+                this.drawTexturedModalRect((craftX + buttonsOffset) * 2, (this.height - 26) * 2, 0, 0, 20, 20);
+                this.drawTexturedModalRect((exitX + buttonsOffset) * 2, (this.height - 26) * 2, 20, 0, 20, 20);
+                this.drawTexturedModalRect((tabX + buttonsOffset) * 2, (this.height - 26) * 2, 90, 0, 71, 21);
 
                 GL11.glScaled(2, 2, 2);
             }
