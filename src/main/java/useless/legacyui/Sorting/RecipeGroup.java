@@ -1,18 +1,16 @@
 package useless.legacyui.Sorting;
 
 import net.minecraft.core.crafting.recipe.IRecipe;
-import net.minecraft.core.crafting.recipe.RecipeShaped;
-import net.minecraft.core.crafting.recipe.RecipeShapeless;
 import net.minecraft.core.player.inventory.ContainerGuidebookRecipeCrafting;
-import useless.legacyui.LegacyUI;
 import useless.legacyui.utils.ArrayUtil;
 
 
 public class RecipeGroup {
-    public Object[] recipes;
+    private Object[] recipes;
+    private Object[] smallRecipes;
 
     private short fourSlotRecipes;
-    private int[] indexMap;
+
     public RecipeGroup(Object[] recipes){
         fourSlotRecipes = 0;
         this.recipes = recipes;
@@ -25,14 +23,15 @@ public class RecipeGroup {
                 fourSlotRecipes++;
             }
         }
-        indexMap = new int[fourSlotRecipes];
+        smallRecipes = new Object[fourSlotRecipes];
         int mapIndex = 0;
         for (int i = 0; i < recipes.length; i++){
             ContainerGuidebookRecipeCrafting currentContainer = getContainer(i, false);
             if (currentContainer.inventorySlots.size() < 6){
-                indexMap[mapIndex++] = i;
+                smallRecipes[mapIndex++] = recipes[i];
             }
         }
+
     }
 
     public ContainerGuidebookRecipeCrafting getContainer(int index, boolean isSmall){
@@ -40,14 +39,21 @@ public class RecipeGroup {
             index = ArrayUtil.wrapAroundIndex(index, recipes.length);
             return new ContainerGuidebookRecipeCrafting(((IRecipe)recipes[index]));
         }
-        if (fourSlotRecipes <= 0){
-            return null;
+        else {
+            index = ArrayUtil.wrapAroundIndex(index, smallRecipes.length);
+            return new ContainerGuidebookRecipeCrafting(((IRecipe)smallRecipes[index]));
         }
-        index = ArrayUtil.wrapAroundIndex(index, fourSlotRecipes);
-        return new ContainerGuidebookRecipeCrafting(((IRecipe)recipes[indexMap[index]]));
+
     }
 
-    public short getSmallRecipes(){
+    public int getSmallRecipesAmount(){
         return fourSlotRecipes;
+    }
+
+    public Object[] getRecipes(boolean isSmall) {
+        if (!isSmall){
+            return recipes;
+        }
+        return smallRecipes;
     }
 }

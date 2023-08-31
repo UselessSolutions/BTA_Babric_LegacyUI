@@ -19,7 +19,6 @@ import useless.prismaticlibe.gui.slot.SlotResizable;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.RecipeGroup;
 import useless.legacyui.Sorting.SortingCategory;
-import useless.legacyui.utils.ArrayUtil;
 import useless.legacyui.utils.InventoryUtil;
 import useless.legacyui.Sorting.RecipeCost;
 
@@ -95,14 +94,14 @@ public class ContainerWorkbenchLegacy extends Container {
         this.onCraftMatrixChanged(this.craftMatrix);
     }
     public void setRecipes(EntityPlayer player, SortingCategory category, StatFileWriter statWriter, int currentSlotId, int currentScrollAmount, boolean showCraftingPreview) {
-        for (RecipeGroup group : category.recipeGroups){
-            LegacyUI.LOGGER.debug("CategoryGroup: " + group.getContainer(0).inventorySlots.get(0).getStack().getItem().getKey());
+        for (RecipeGroup group : category.getRecipeGroups(isInInventory)){
+            LegacyUI.LOGGER.debug("CategoryGroup: " + group.getContainer(0, isInInventory).inventorySlots.get(0).getStack().getItem().getKey());
         }
         LegacyUI.LOGGER.debug("Category: " + category + " | slotId: " + currentSlotId + " | currentScroll: " + currentScrollAmount + " | craftPreview: " + showCraftingPreview);
         this.inventorySlots.clear();
         craftingSlots();
 
-        RecipeGroup[] craftingGroups = category.recipeGroups;
+        RecipeGroup[] craftingGroups = category.getRecipeGroups(isInInventory);
         boolean discovered;
         boolean highlighted;
         ItemStack item;
@@ -112,7 +111,7 @@ public class ContainerWorkbenchLegacy extends Container {
         ContainerGuidebookRecipeCrafting currentContainer;
         boolean craftable;
             if (index == currentSlotId){ // special rendering for scrolling and recipe preview
-                currentContainer = group.getContainer(ArrayUtil.wrapAroundIndex(currentScrollAmount, group.recipes.length));
+                currentContainer = group.getContainer(currentScrollAmount, isInInventory);
                 craftable = canCraft(player, new RecipeCost(currentContainer));
 
                 // Recipebar preview
@@ -120,20 +119,20 @@ public class ContainerWorkbenchLegacy extends Container {
                 discovered = isDicovered(item, statWriter, player);
                 this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56, currentContainer.inventorySlots.get(0).getStack(), discovered || craftable, !craftable, LegacyUI.getHighlightColor()));
 
-                if (group.recipes.length > 1) { // If multiple items in recipe group
-                    int idUpper = ArrayUtil.wrapAroundIndex(currentScrollAmount + 1, group.recipes.length); // Next item in grouo
-                    int idLower = ArrayUtil.wrapAroundIndex(currentScrollAmount - 1, group.recipes.length); // Last item in group
+                if (group.getRecipes(isInInventory).length > 1) { // If multiple items in recipe group
+                    int idUpper = currentScrollAmount + 1; // Next item in grouo
+                    int idLower = currentScrollAmount - 1; // Last item in group
 
                     // Next item preview
-                    item = group.getContainer(idUpper).inventorySlots.get(0).getStack();
+                    item = group.getContainer(idUpper, isInInventory).inventorySlots.get(0).getStack();
                     discovered = isDicovered(item, statWriter, player);
-                    craftable = canCraft(player, new RecipeCost(group.getContainer(idUpper)));
+                    craftable = canCraft(player, new RecipeCost(group.getContainer(idUpper, isInInventory)));
                     this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56 + 21, item, discovered || craftable, !craftable, LegacyUI.getHighlightColor()));
 
                     // Previous item preview
-                    item = group.getContainer(idLower).inventorySlots.get(0).getStack();
+                    item = group.getContainer(idLower, isInInventory).inventorySlots.get(0).getStack();
                     discovered = isDicovered(item, statWriter, player);
-                    craftable = canCraft(player, new RecipeCost(group.getContainer(idLower)));
+                    craftable = canCraft(player, new RecipeCost(group.getContainer(idLower, isInInventory)));
                     this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56 - 21, item, discovered || craftable, !craftable, LegacyUI.getHighlightColor()));
 
                 }
@@ -175,9 +174,9 @@ public class ContainerWorkbenchLegacy extends Container {
                 }
             }
             else { // Renders first slot of none selected groups
-                item = group.getContainer(0).inventorySlots.get(0).getStack();
+                item = group.getContainer(0, isInInventory).inventorySlots.get(0).getStack();
                 discovered = isDicovered(item, statWriter, player);
-                craftable = canCraft(player, new RecipeCost(group.getContainer(0)));
+                craftable = canCraft(player, new RecipeCost(group.getContainer(0, isInInventory)));
                 this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56, item, discovered || craftable, !craftable, LegacyUI.getHighlightColor()));
             }
 
@@ -186,7 +185,7 @@ public class ContainerWorkbenchLegacy extends Container {
 
     }
     public boolean craft(Minecraft mc, int windowId, SortingCategory category, int currentSlotId, int currentScrollAmount){
-        ContainerGuidebookRecipeCrafting recipe = category.recipeGroups[currentSlotId].getContainer(ArrayUtil.wrapAroundIndex(currentScrollAmount, category.recipeGroups[currentSlotId].recipes.length));
+        ContainerGuidebookRecipeCrafting recipe = category.getRecipeGroups(isInInventory)[currentSlotId].getContainer(currentScrollAmount, isInInventory);
         RecipeCost recipeCost = new RecipeCost(recipe);
 
         if (canCraft(mc.thePlayer, recipeCost)){

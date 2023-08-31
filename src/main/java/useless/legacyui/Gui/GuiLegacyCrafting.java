@@ -18,7 +18,6 @@ import useless.prismaticlibe.gui.slot.SlotResizable;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.CraftingCategories;
 import useless.legacyui.Sorting.SortingCategory;
-import useless.legacyui.utils.ArrayUtil;
 import useless.prismaticlibe.gui.GuiAuditoryButtons;
 
 import java.util.List;
@@ -154,9 +153,9 @@ public class GuiLegacyCrafting extends GuiContainer {
             craft();
         }
         if (slotIndex < 0) {
-            slotIndex += categories[tab].recipeGroups.length;
-        } else if (slotIndex > categories[tab].recipeGroups.length - 1) {
-            slotIndex -= categories[tab].recipeGroups.length;
+            slotIndex += categories[tab].getRecipeGroups(isInInventory).length;
+        } else if (slotIndex > categories[tab].getRecipeGroups(isInInventory).length - 1) {
+            slotIndex -= categories[tab].getRecipeGroups(isInInventory).length;
         }
         currentSlot = slotIndex;
         slotString = "" + (currentSlot + 1) + "/" + (totalDisplaySlots);
@@ -261,7 +260,7 @@ public class GuiLegacyCrafting extends GuiContainer {
             this.mc.renderEngine.bindTexture(i);
 
             // Render Selector Scrollbar when applicable
-            if (categories[tab].recipeGroups[currentSlot].recipes.length > 1) {
+            if (categories[tab].getRecipeGroups(isInInventory)[currentSlot].getRecipes(isInInventory).length > 1) {
                 this.drawTexturedModalRect(7 + 18 * currentSlot, 21, 115, 175, 26, 31);
                 this.drawTexturedModalRect(7 + 18 * currentSlot, 76, 141, 175, 26, 31);
 
@@ -339,12 +338,12 @@ public class GuiLegacyCrafting extends GuiContainer {
             this.drawTexturedModalRect(j + bookMarkWidth * tab, k - 2, 0, 175, bookMarkWidth, 30);
 
             // If 2x2
-            if (isInInventory || categories[tab].recipeGroups[currentSlot].getContainer(ArrayUtil.wrapAroundIndex(currentScroll, categories[tab].recipeGroups[currentSlot].recipes.length)).inventorySlots.size() < 6 && renderCraftingDisplay()) {
+            if (isInInventory || categories[tab].getRecipeGroups(isInInventory)[currentSlot].getContainer(currentScroll, isInInventory).inventorySlots.size() < 6 && renderCraftingDisplay()) {
                 this.drawTexturedModalRect(j + 19, k + 108, 61, 175, 54, 54);
             }
 
             // Render Selector Scrollbar background when applicable
-            if (categories[tab].recipeGroups[currentSlot].recipes.length > 1) {
+            if (categories[tab].getRecipeGroups(isInInventory)[currentSlot].getRecipes(isInInventory).length > 1) {
                 this.drawTexturedModalRect(j + 12 + 18 * currentSlot, k + 34, 168, 175, 18, 18);
                 this.drawTexturedModalRect(j + 12 + 18 * currentSlot, k + 76, 168, 175, 18, 18);
             }
