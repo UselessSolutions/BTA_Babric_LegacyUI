@@ -35,7 +35,7 @@ public class GuiLegacyInventory extends GuiInventory{
     public void initGui(){
         super.initGui();
         this.ySize = 176;
-        craftingButton = new GuiAuditoryButtons(10, (width - xSize) / 2 + 138, (height - ySize) / 2 + 17, 20, 21, "");
+        craftingButton = new GuiAuditoryButtons(10, (width - xSize) / 2 + 138, (height - ySize) / 2 + 33, 20, 21, "");
         craftingButton.setMuted(true);
         craftingButton.visible = false;
         controlList.add(craftingButton);
