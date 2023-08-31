@@ -11,7 +11,7 @@ Brings back that legacy console feel with its own style!
 
 ### Add the required mods:
 Dependencies:
-- PrismaticLibe >=2.1.0: https://github.com/UselessBullets/BTA_Babric_PrismaticLibe/releases
+- PrismaticLibe (only needed for BTL versions >= 0.5.0) >=2.1.0: https://github.com/UselessBullets/BTA_Babric_PrismaticLibe/releases
 - HalpLibe >= 2.1.1: https://github.com/Turnip-Labs/bta-halplibe/releases
 - Better than Legacy!: https://github.com/UselessBullets/BTA_Babric_LegacyUI/releases
 
