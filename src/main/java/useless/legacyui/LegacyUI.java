@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import turniplabs.halplibe.util.ConfigHandler;
 import useless.config.ModMenuConfigManager;
+import useless.prismaticlibe.helper.ModCheckHelper;
+import useless.prismaticlibe.helper.SoundHelper;
 
 import java.util.Properties;
 
@@ -23,21 +25,30 @@ public class LegacyUI implements ModInitializer {
         props.setProperty("GuiLabelColor", "404040");
         props.setProperty("HighlightColor", "FF0000");
         props.setProperty("OverrideLabelModColor", "false");
+        props.setProperty("UseLegacySounds", "true");
         config = new ConfigHandler(MOD_ID, props);
     }
     private static int GuiLabelColor = -1;
     private static final int HighlightColor = Integer.decode("0X" + config.getString(ConfigTranslations.HIGHLIGHT_COLOR.getKey()));
 
-    private static boolean guimodExists = false;
+    private static final boolean guimodExists = ModCheckHelper.checkForMod("guimod", ">=1.2.0");
+    private static boolean backOverride = false;
 
     @Override
     public void onInitialize() {
-        for (ModContainer mod : FabricLoader.getInstance().getAllMods()){
-            if (mod.toString().contains("guimod")){
-                LegacyUI.LOGGER.info("Found Mod: " + mod);
-                guimodExists = true;
-            }
-        }
+        SoundHelper.addSound(MOD_ID, "ui/back.wav");
+        SoundHelper.addSound(MOD_ID, "ui/craft.wav");
+        SoundHelper.addSound(MOD_ID, "ui/craftfail.wav");
+        SoundHelper.addSound(MOD_ID, "ui/focus.wav");
+        SoundHelper.addSound(MOD_ID, "ui/press.wav");
+        SoundHelper.addSound(MOD_ID, "ui/scroll.wav");
+        SoundHelper.addSound(MOD_ID, "ui/achievement.wav");
+
+        SoundHelper.addMusic(MOD_ID, "02 - Door.ogg");
+        SoundHelper.addMusic(MOD_ID, "06 - Moog City.ogg");
+        SoundHelper.addMusic(MOD_ID, "22 - Beginning.ogg");
+        SoundHelper.addMusic(MOD_ID, "23 - Droopy Likes Ricochet.ogg");
+        SoundHelper.addMusic(MOD_ID, "24 - Droopy Likes Your Face.ogg");
         LOGGER.info("LegacyUI initialized.");
     }
     public static int getGuiLabelColor(){
@@ -59,5 +70,15 @@ public class LegacyUI implements ModInitializer {
 
     public static int getHighlightColor(){
         return HighlightColor;
+    }
+    public static boolean getBackOverride(){
+        if (backOverride){
+            backOverride = false;
+            return true;
+        }
+        return false;
+    }
+    public static void armBackOverride(){
+        backOverride = true;
     }
 }

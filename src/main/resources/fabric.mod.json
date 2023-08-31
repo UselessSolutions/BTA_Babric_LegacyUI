@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "legacyui",
-  "version": "0.4.8",
+  "version": "0.5.0",
 
   "name": "Better Than Legacy!",
   "description": "A UI overhaul mod for BTA, designed with controllers in mind!",
@@ -28,7 +28,8 @@
 
   "depends": {
     "fabricloader": ">=0.13.3",
-    "halplibe": ">=2.1.1"
+    "halplibe": ">=2.1.1",
+    "prismaticlibe": ">=2.1.0"
   },
   "suggests": {
   }

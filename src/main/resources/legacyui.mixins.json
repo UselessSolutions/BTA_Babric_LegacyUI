@@ -4,9 +4,13 @@
   "package": "useless.legacyui.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "ContainerPlayerMixin",
     "ControllerInputMixin",
-    "GuiItemDragHandlerMixin",
-    "GuiRenderItemMixin",
+    "GuiAchievementMixin",
+    "GuiContainerMixin",
+    "GuiInventoryMixin",
+    "GuiOptionsBaseMixin",
+    "GuiScreenMixin",
     "MinecraftMixin",
     "PlayerSPMixin"
   ],
