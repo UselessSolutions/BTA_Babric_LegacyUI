@@ -4,6 +4,7 @@
   "package": "useless.legacyui.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "ContainerPlayerMixin",
     "ControllerInputMixin",
     "GuiAchievementMixin",
     "GuiOptionsBaseMixin",

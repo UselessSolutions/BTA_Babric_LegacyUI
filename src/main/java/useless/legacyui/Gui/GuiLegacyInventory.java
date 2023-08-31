@@ -8,9 +8,12 @@ import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.lang.I18n;
 import net.minecraft.core.player.inventory.ContainerPlayer;
 import net.minecraft.core.player.inventory.slot.Slot;
+import net.minecraft.core.sound.SoundType;
 import net.minecraft.core.util.helper.DamageType;
 import org.lwjgl.opengl.GL11;
+import useless.legacyui.ConfigTranslations;
 import useless.legacyui.Gui.Container.ContainerInventoryLegacy;
+import useless.prismaticlibe.gui.GuiAuditoryButtons;
 import useless.prismaticlibe.gui.slot.SlotResizable;
 import useless.legacyui.LegacyUI;
 
@@ -18,9 +21,7 @@ public class GuiLegacyInventory extends GuiInventory{
     protected EntityPlayer player;
     private DamageType hoveredDamageType;
     GuiTooltip guiTooltip;
-    protected GuiButton craftingButton;
-    protected  GuiLegacyCrafting craftingGui;
-    private long tick = 0;
+    protected GuiAuditoryButtons craftingButton;
     public GuiLegacyInventory(EntityPlayer player) {
         super(player);
         mc = Minecraft.getMinecraft(this);
@@ -34,7 +35,8 @@ public class GuiLegacyInventory extends GuiInventory{
     public void initGui(){
         super.initGui();
         this.ySize = 176;
-        craftingButton = new GuiButton(10, (width - xSize) / 2 + 136, (height - ySize) / 2 + 42, 24, 27, "");
+        craftingButton = new GuiAuditoryButtons(10, (width - xSize) / 2 + 138, (height - ySize) / 2 + 17, 20, 21, "");
+        craftingButton.setMuted(true);
         craftingButton.visible = false;
         controlList.add(craftingButton);
     }
@@ -48,6 +50,7 @@ public class GuiLegacyInventory extends GuiInventory{
     }
 
     protected void openCrafting(){
+        uiSound("legacyui.ui.press");
         mc.displayGuiScreen(new GuiLegacyCrafting(player));
 
     }
@@ -61,6 +64,19 @@ public class GuiLegacyInventory extends GuiInventory{
             slotSize = ((SlotResizable) slot).width;
         }
         return i >= slot.xDisplayPosition - 1 && i < slot.xDisplayPosition + slotSize - 2 + 1 && j >= slot.yDisplayPosition - 1 && j < slot.yDisplayPosition + slotSize - 2 + 1;
+    }
+
+    public void drawScreen(int x, int y, float renderPartialTicks) {
+        super.drawScreen(x, y, renderPartialTicks);
+        int inventoryTex = this.mc.renderEngine.getTexture("/assets/legacyui/gui/legacyinventory.png");
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        this.mc.renderEngine.bindTexture(inventoryTex);
+        if (craftingButton.isHovered(x , y)){
+            this.drawTexturedModalRect(craftingButton.xPosition, craftingButton.yPosition, 177, 77, 20, 21);
+        }
+        else {
+            this.drawTexturedModalRect(craftingButton.xPosition, craftingButton.yPosition, 177, 54, 20, 21);
+        }
     }
     @Override
     protected void drawGuiContainerForegroundLayer() {
@@ -152,6 +168,14 @@ public class GuiLegacyInventory extends GuiInventory{
             }
             String str = I18n.getInstance().translateKey("damagetype." + this.hoveredDamageType.name().toLowerCase()) + ":\n" + protection + " / 100";
             this.guiTooltip.render(str, mouseX, mouseY, 8, -8);
+        }
+    }
+    private void uiSound(String soundDir){
+        if (LegacyUI.config.getBoolean(ConfigTranslations.USE_LEGACY_SOUNDS.getKey())){
+            mc.sndManager.playSound(soundDir, SoundType.GUI_SOUNDS, 1, 1);
+        }
+        else {
+            mc.sndManager.playSound("random.click", SoundType.GUI_SOUNDS, 1, 1);
         }
     }
 
