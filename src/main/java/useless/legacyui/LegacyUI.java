@@ -43,12 +43,7 @@ public class LegacyUI implements ModInitializer {
         SoundHelper.addSound(MOD_ID, "ui/press.wav");
         SoundHelper.addSound(MOD_ID, "ui/scroll.wav");
         SoundHelper.addSound(MOD_ID, "ui/achievement.wav");
-
-        SoundHelper.addMusic(MOD_ID, "02 - Door.ogg");
-        SoundHelper.addMusic(MOD_ID, "06 - Moog City.ogg");
-        SoundHelper.addMusic(MOD_ID, "22 - Beginning.ogg");
-        SoundHelper.addMusic(MOD_ID, "23 - Droopy Likes Ricochet.ogg");
-        SoundHelper.addMusic(MOD_ID, "24 - Droopy Likes Your Face.ogg");
+        
         LOGGER.info("LegacyUI initialized.");
     }
     public static int getGuiLabelColor(){
