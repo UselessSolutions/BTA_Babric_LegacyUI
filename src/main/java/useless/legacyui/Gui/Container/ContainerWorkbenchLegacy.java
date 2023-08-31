@@ -120,7 +120,7 @@ public class ContainerWorkbenchLegacy extends Container {
                 this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56, currentContainer.inventorySlots.get(0).getStack(), discovered || craftable, !craftable, LegacyUI.getHighlightColor()));
 
                 if (group.getRecipes(isInInventory).length > 1) { // If multiple items in recipe group
-                    int idUpper = currentScrollAmount + 1; // Next item in grouo
+                    int idUpper = currentScrollAmount + 1; // Next item in group
                     int idLower = currentScrollAmount - 1; // Last item in group
 
                     // Next item preview
