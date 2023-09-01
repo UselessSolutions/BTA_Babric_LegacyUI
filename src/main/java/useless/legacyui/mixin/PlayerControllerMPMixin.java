@@ -22,6 +22,8 @@ import useless.legacyui.LegacyUI;
 import useless.legacyui.SlotRemaps;
 import useless.legacyui.utils.PacketUtil;
 
+import java.util.Arrays;
+
 @Mixin(value = PlayerControllerMP.class, remap = false)
 public class PlayerControllerMPMixin extends PlayerController {
 
@@ -36,12 +38,16 @@ public class PlayerControllerMPMixin extends PlayerController {
 
     @Inject(method = "doInventoryAction(ILnet/minecraft/core/InventoryAction;[ILnet/minecraft/core/entity/player/EntityPlayer;)Lnet/minecraft/core/item/ItemStack;", at = @At("HEAD"), cancellable = true)
     public void lieToServer(int windowId, InventoryAction action, int[] args, EntityPlayer entityplayer, CallbackInfoReturnable<ItemStack> cir) {
+        LegacyUI.LOGGER.info("Action" + action);
+        LegacyUI.LOGGER.info("Args" + Arrays.toString(args));
         if (mc.currentScreen instanceof GuiLegacyInventory){
             short actionId = entityplayer.craftingInventory.getActionId(entityplayer.inventory);
-            if (args != null){
-                args = new int[]{SlotRemaps.remapSurvivalInventory(args[0], false), args[1]};
-            }
             ItemStack itemstack = super.doInventoryAction(windowId, action, args, entityplayer);
+            if (args != null){
+                for (int i = 0; i < args.length; i++){
+                    args[i]= SlotRemaps.remapInventoryCrafting(args[i], false);
+                }
+            }
             this.netHandler.addToSendQueue(new Packet102WindowClick(windowId, action, args, itemstack, actionId));
             cir.setReturnValue(itemstack);
         }
@@ -49,7 +55,9 @@ public class PlayerControllerMPMixin extends PlayerController {
             short actionId = entityplayer.craftingInventory.getActionId(entityplayer.inventory);
             ItemStack itemstack = super.doInventoryAction(windowId, action, args, entityplayer);
             if (args != null){
-                args = new int[]{SlotRemaps.remapInventoryCrafting(args[0], false), args[1]};
+                for (int i = 0; i < args.length; i++){
+                    args[i]= SlotRemaps.remapInventoryCrafting(args[i], false);
+                }
             }
             this.netHandler.addToSendQueue(new Packet102WindowClick(windowId, action, args, itemstack, actionId));
             cir.setReturnValue(itemstack);

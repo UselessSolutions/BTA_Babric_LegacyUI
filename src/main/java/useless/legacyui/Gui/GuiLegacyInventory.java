@@ -26,6 +26,7 @@ public class GuiLegacyInventory extends GuiInventory{
     protected GuiAuditoryButtons craftingButton;
     public GuiLegacyInventory(EntityPlayer player) {
         super(player);
+        GlobalOverrides.armOverrideCrafting();
         mc = Minecraft.getMinecraft(this);
         this.player = player;
         this.guiTooltip = new GuiTooltip(mc);

@@ -55,11 +55,13 @@ public class GuiLegacyCrafting extends GuiContainer {
 
     public GuiLegacyCrafting(EntityPlayer player, int i, int j, int k) {
         super(new ContainerWorkbenchLegacy(player.inventory, player.world, i, j, k));
+        GlobalOverrides.armOverrideCrafting();
         this.mc = Minecraft.getMinecraft(this);
         this.isInInventory = false;
     }
     public GuiLegacyCrafting(EntityPlayer player) {
         super(new ContainerWorkbenchLegacy(player.inventory));
+        GlobalOverrides.armOverrideCrafting();
         this.mc = Minecraft.getMinecraft(this);
         this.isInInventory = true;
     }
