@@ -31,6 +31,7 @@ public class ContainerPlayerMixin extends Container {
         else {
             isCreative = false;
         }
+
         if (slot instanceof SlotCrafting && !isCreative){
             return; // Remove crafting output
         } else if (slot.getInventory() instanceof InventoryCrafting && !isCreative) {
@@ -51,7 +52,7 @@ public class ContainerPlayerMixin extends Container {
         if (player.getGamemode() == Gamemode.survival){
             return survivalGetMoveSlots(action, slot, target, player);
         }
-        return creativeGetTargetSlots(action, slot, target, player);
+        return creativeGetMoveSlots(action, slot, target, player);
 
     }
 

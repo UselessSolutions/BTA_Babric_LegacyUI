@@ -24,6 +24,3 @@ Needed Things
 - Legacy Console tooltip textures
 
 - Menu Panorama
-
-BUGS
-- creative crafting broken
