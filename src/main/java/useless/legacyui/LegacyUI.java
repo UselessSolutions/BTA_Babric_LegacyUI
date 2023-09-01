@@ -32,7 +32,6 @@ public class LegacyUI implements ModInitializer {
     private static final int HighlightColor = Integer.decode("0X" + config.getString(ConfigTranslations.HIGHLIGHT_COLOR.getKey()));
 
     private static final boolean guimodExists = ModCheckHelper.checkForMod("guimod", ">=1.2.0");
-    private static boolean backOverride = false;
 
     @Override
     public void onInitialize() {
@@ -66,14 +65,5 @@ public class LegacyUI implements ModInitializer {
     public static int getHighlightColor(){
         return HighlightColor;
     }
-    public static boolean getBackOverride(){
-        if (backOverride){
-            backOverride = false;
-            return true;
-        }
-        return false;
-    }
-    public static void armBackOverride(){
-        backOverride = true;
-    }
+
 }

@@ -13,6 +13,7 @@ import net.minecraft.core.sound.SoundType;
 import net.minecraft.core.util.helper.DamageType;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.ConfigTranslations;
+import useless.legacyui.GlobalOverrides;
 import useless.legacyui.Gui.Container.ContainerInventoryLegacy;
 import useless.prismaticlibe.gui.GuiAuditoryButtons;
 import useless.prismaticlibe.gui.slot.SlotResizable;
@@ -51,7 +52,7 @@ public class GuiLegacyInventory extends GuiInventory{
     }
 
     protected void openCrafting(){
-        LegacyUI.armBackOverride();
+        GlobalOverrides.armBackOverride();
         uiSound("legacyui.ui.press");
         mc.displayGuiScreen(new GuiLegacyCrafting(player));
 

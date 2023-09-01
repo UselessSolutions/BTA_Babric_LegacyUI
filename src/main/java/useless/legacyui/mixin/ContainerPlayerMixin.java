@@ -25,7 +25,7 @@ public class ContainerPlayerMixin extends Container {
         } else if (slot.getInventory() instanceof InventoryCrafting) {
             return; // Remove crafting grid
         } else {
-            slot.id = containerPlayer.inventorySlots.size();
+            slot.id = containerPlayer.inventorySlots.size(); // Add slot is private so manually doing it instead
             containerPlayer.inventorySlots.add(slot);
             containerPlayer.inventoryItemStacks.add(null);
         }

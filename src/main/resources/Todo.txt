@@ -27,4 +27,3 @@ Needed Things
 
 BUGS
 - creative crafting broken
-- sounds not being deployed properly

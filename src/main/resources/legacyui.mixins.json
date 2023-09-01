@@ -8,6 +8,7 @@
     "ControllerInputMixin",
     "GuiAchievementMixin",
     "GuiContainerMixin",
+    "GuiInventoryCreativeMixin",
     "GuiInventoryMixin",
     "GuiOptionsBaseMixin",
     "GuiScreenMixin",
