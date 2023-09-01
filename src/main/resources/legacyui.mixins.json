@@ -12,6 +12,8 @@
     "GuiOptionsBaseMixin",
     "GuiScreenMixin",
     "MinecraftMixin",
+    "NetClientHandlerMixin",
+    "PlayerControllerMPMixin",
     "PlayerSPMixin"
   ],
   "client": [
