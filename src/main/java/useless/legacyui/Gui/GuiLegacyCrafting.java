@@ -21,6 +21,7 @@ import useless.legacyui.Sorting.CraftingCategories;
 import useless.legacyui.Sorting.SortingCategory;
 import useless.prismaticlibe.gui.GuiAuditoryButtons;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class GuiLegacyCrafting extends GuiContainer {
@@ -49,20 +50,18 @@ public class GuiLegacyCrafting extends GuiContainer {
     private long timeStart = 0;
 
     private boolean[] keysPressed = new boolean[65536];
-    private boolean isInInventory;
+    public boolean isInInventory;
 
 
     public GuiLegacyCrafting(EntityPlayer player, int i, int j, int k) {
         super(new ContainerWorkbenchLegacy(player.inventory, player.world, i, j, k));
         this.mc = Minecraft.getMinecraft(this);
         this.isInInventory = false;
-        GlobalOverrides.currentGuiScreen = this;
     }
     public GuiLegacyCrafting(EntityPlayer player) {
         super(new ContainerWorkbenchLegacy(player.inventory));
         this.mc = Minecraft.getMinecraft(this);
         this.isInInventory = true;
-        GlobalOverrides.currentGuiScreen = this;
     }
 
     public void initGui() {
@@ -275,6 +274,7 @@ public class GuiLegacyCrafting extends GuiContainer {
             }
         }
         catch (Exception e){
+            LegacyUI.LOGGER.warn(e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
             onGuiClosed();
         }
 

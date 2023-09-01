@@ -25,8 +25,9 @@ public class ContainerPlayerMixin extends Container {
 
     @Redirect(method = "<init>(Lnet/minecraft/core/player/inventory/InventoryPlayer;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/player/inventory/ContainerPlayer;addSlot(Lnet/minecraft/core/player/inventory/slot/Slot;)V"))
     private void craftingSlotRemover(ContainerPlayer containerPlayer, Slot slot){
-        EntityPlayer player = Minecraft.getMinecraft(this).thePlayer;
-        boolean inInventorySurvival = GlobalOverrides.currentGuiScreen instanceof GuiLegacyInventory;
+        Minecraft mc = Minecraft.getMinecraft(this);
+        EntityPlayer player = mc.thePlayer;
+        boolean inInventorySurvival = mc.currentScreen instanceof GuiLegacyInventory;
 
         if (slot instanceof SlotCrafting && inInventorySurvival){
             return; // Remove crafting output

@@ -7,4 +7,14 @@ public class SlotRemaps {
         }
         return id + 5;
     }
+    public static int remapInventoryCrafting(int id, boolean fromServer){
+        if (id < 5){ // [0,4] are crafting slots
+            return id;
+        }
+        if (fromServer){
+            // skip over the 4 armor slots
+            return id - 4;
+        }
+        return id + 4;
+    }
 }

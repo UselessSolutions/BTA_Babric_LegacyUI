@@ -22,7 +22,7 @@ public class NetClientHandlerMixin extends NetHandler {
      */
     @Overwrite
     public void handleWindowItems(Packet104WindowItems packet104windowitems) {
-        if (GlobalOverrides.currentGuiScreen instanceof GuiLegacyInventory){
+        if (mc.currentScreen instanceof GuiLegacyInventory){
             standardHandleWindowItems(PacketUtil.packet104Converter(packet104windowitems));
 
         }
