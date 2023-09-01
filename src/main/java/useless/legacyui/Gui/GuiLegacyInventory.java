@@ -32,6 +32,7 @@ public class GuiLegacyInventory extends GuiInventory{
         inventorySlots = new ContainerInventoryLegacy(player.inventory, ((ContainerPlayer)inventorySlots).craftMatrix, ((ContainerPlayer)inventorySlots).craftResult);
         armourButtonFloatX = 20 - 44;
         armourValuesFloat = 130 - 44 - 5;
+        GlobalOverrides.currentGuiScreen = this;
     }
 
     public void initGui(){

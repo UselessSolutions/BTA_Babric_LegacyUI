@@ -16,6 +16,7 @@ import useless.legacyui.LegacyUI;
 public class GuiContainerMixin extends GuiScreen {
     @Inject(method = "onGuiClosed()V", at = @At("HEAD"))
     private void closingSound(CallbackInfo cbi){
+        GlobalOverrides.currentGuiScreen = null;
         if (LegacyUI.config.getBoolean(ConfigTranslations.USE_LEGACY_SOUNDS.getKey()) && !GlobalOverrides.getBackOverride()){
             Minecraft.getMinecraft(this).sndManager.playSound("legacyui.ui.back", SoundType.GUI_SOUNDS, 1,1);
         }

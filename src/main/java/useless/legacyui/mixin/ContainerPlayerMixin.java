@@ -15,6 +15,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import useless.legacyui.GlobalOverrides;
+import useless.legacyui.Gui.GuiLegacyInventory;
 
 import java.util.List;
 
@@ -24,17 +26,11 @@ public class ContainerPlayerMixin extends Container {
     @Redirect(method = "<init>(Lnet/minecraft/core/player/inventory/InventoryPlayer;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/player/inventory/ContainerPlayer;addSlot(Lnet/minecraft/core/player/inventory/slot/Slot;)V"))
     private void craftingSlotRemover(ContainerPlayer containerPlayer, Slot slot){
         EntityPlayer player = Minecraft.getMinecraft(this).thePlayer;
-        boolean isCreative;
-        if (player != null){
-            isCreative = player.getGamemode() == Gamemode.creative;
-        }
-        else {
-            isCreative = false;
-        }
+        boolean inInventorySurvival = GlobalOverrides.currentGuiScreen instanceof GuiLegacyInventory;
 
-        if (slot instanceof SlotCrafting && !isCreative){
+        if (slot instanceof SlotCrafting && inInventorySurvival){
             return; // Remove crafting output
-        } else if (slot.getInventory() instanceof InventoryCrafting && !isCreative) {
+        } else if (slot.getInventory() instanceof InventoryCrafting && inInventorySurvival) {
             return; // Remove crafting grid
         } else {
             slot.id = containerPlayer.inventorySlots.size(); // Add slot is private so manually doing it instead

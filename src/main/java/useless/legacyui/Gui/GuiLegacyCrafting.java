@@ -13,6 +13,7 @@ import net.minecraft.core.util.helper.Time;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.ConfigTranslations;
+import useless.legacyui.GlobalOverrides;
 import useless.legacyui.Gui.Container.ContainerWorkbenchLegacy;
 import useless.prismaticlibe.gui.slot.SlotResizable;
 import useless.legacyui.LegacyUI;
@@ -55,11 +56,13 @@ public class GuiLegacyCrafting extends GuiContainer {
         super(new ContainerWorkbenchLegacy(player.inventory, player.world, i, j, k));
         this.mc = Minecraft.getMinecraft(this);
         this.isInInventory = false;
+        GlobalOverrides.currentGuiScreen = this;
     }
     public GuiLegacyCrafting(EntityPlayer player) {
         super(new ContainerWorkbenchLegacy(player.inventory));
         this.mc = Minecraft.getMinecraft(this);
         this.isInInventory = true;
+        GlobalOverrides.currentGuiScreen = this;
     }
 
     public void initGui() {
