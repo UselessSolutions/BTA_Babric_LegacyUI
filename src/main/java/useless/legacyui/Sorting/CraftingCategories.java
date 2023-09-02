@@ -291,7 +291,7 @@ public class CraftingCategories {
         RecipeGroup ladderGroup = new RecipeGroup(_ladders.toArray());
         RecipeGroup bookGroup = new RecipeGroup(_books.toArray());
         RecipeGroup decoBlockGroup = new RecipeGroup(_decoBlocks.toArray());
-        //RecipeGroup foodGroup = new RecipeGroup(_food.toArray());
+        RecipeGroup foodGroup = new RecipeGroup(_food.toArray());
 
         // Blocks 2
         RecipeGroup slabsGroup = new RecipeGroup(_slabsBlocks.toArray());
@@ -367,7 +367,7 @@ public class CraftingCategories {
         SortingCategory tools = new SortingCategory(new RecipeGroup[]{pickaxeGroup, shovelGroup, axeGroup, hoeGroup, swordGroup, fishingGroup, rangedGroup, ammoGroup, miscToolsGroup, informationGroup, helmetsGroup, chestPlatesGroup, leggingsGroup, bootsGroup});
         addCategory(tools);
 
-        SortingCategory food = new SortingCategory(new RecipeGroup[]{breadGroup, stewGroup, cakeGroup, cookieGroup, icecreamGroup, goldAppleGroup, sugarGroup});
+        SortingCategory food = new SortingCategory(new RecipeGroup[]{breadGroup, stewGroup, cakeGroup, cookieGroup, icecreamGroup, goldAppleGroup, sugarGroup, foodGroup});
         addCategory(food);
 
         SortingCategory redstone = new SortingCategory(new RecipeGroup[]{baseRedstoneGroup, redstoneBlockGroup, buttonLeversGroup, pressurePlateGroup, pistonGroup, lampsGroup, miscRedstoneGroup});
