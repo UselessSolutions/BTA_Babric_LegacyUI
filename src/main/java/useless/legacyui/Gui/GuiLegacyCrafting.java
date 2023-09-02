@@ -48,7 +48,7 @@ public class GuiLegacyCrafting extends GuiContainer {
     private long timeStart = 0;
 
     private boolean[] keysPressed = new boolean[65536];
-    private boolean isInInventory;
+    public boolean isInInventory;
 
 
     public GuiLegacyCrafting(EntityPlayer player, int i, int j, int k) {
