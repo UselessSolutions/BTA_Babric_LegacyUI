@@ -14,9 +14,6 @@ public class RecipeGroup {
     public RecipeGroup(Object[] recipes){
         fourSlotRecipes = 0;
         this.recipes = recipes;
-        if (recipes.length < 1){
-            throw new IllegalArgumentException("recipes.length should always be greater than 0!");
-        }
         for (int i = 0; i < recipes.length; i++){
             ContainerGuidebookRecipeCrafting currentContainer = getContainer(i, false);
             if (currentContainer.inventorySlots.size() < 6){
