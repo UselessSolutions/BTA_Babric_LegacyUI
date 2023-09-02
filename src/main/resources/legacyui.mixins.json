@@ -8,7 +8,6 @@
     "ControllerInputMixin",
     "Gui.GuiAchievementMixin",
     "Gui.GuiContainerMixin",
-    "Gui.GuiIngameMixin",
     "Gui.GuiInventoryMixin",
     "Gui.GuiOptionsBaseMixin",
     "Gui.GuiScreenMixin",
