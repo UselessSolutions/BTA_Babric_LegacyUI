@@ -15,41 +15,59 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import useless.legacyui.Gui.GuiLegacyInventory;
 
 import java.util.List;
 
 @Mixin(value = ContainerPlayer.class, remap = false)
 public class ContainerPlayerMixin extends Container {
+    @Unique
+    protected Minecraft mc = Minecraft.getMinecraft(this);
 
     @Redirect(method = "<init>(Lnet/minecraft/core/player/inventory/InventoryPlayer;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/player/inventory/ContainerPlayer;addSlot(Lnet/minecraft/core/player/inventory/slot/Slot;)V"))
     private void craftingSlotRemover(ContainerPlayer containerPlayer, Slot slot){
-        EntityPlayer player = Minecraft.getMinecraft(this).thePlayer;
+        EntityPlayer player = mc.thePlayer;
         boolean isCreative;
         if (player != null){
             isCreative = player.getGamemode() == Gamemode.creative;
+
         }
         else {
-            isCreative = false;
+            isCreative = true;
+
         }
 
-        if (slot instanceof SlotCrafting && !isCreative){
-            return; // Remove crafting output
-        } else if (slot.getInventory() instanceof InventoryCrafting && !isCreative) {
-            return; // Remove crafting grid
-        } else {
-            slot.id = containerPlayer.inventorySlots.size(); // Add slot is private so manually doing it instead
-            containerPlayer.inventorySlots.add(slot);
-            containerPlayer.inventoryItemStacks.add(null);
+        if (mc.isMultiplayerWorld() && !(mc.currentScreen instanceof GuiLegacyInventory)){
+            addSlot(containerPlayer, slot);
         }
+        else {
+            if (slot instanceof SlotCrafting && (!isCreative)){
+                return; // Remove crafting output
+            } else if (slot.getInventory() instanceof InventoryCrafting && (!isCreative)) {
+                return; // Remove crafting grid
+            } else {
+                addSlot(containerPlayer, slot);
+            }
+        }
+
+
 
     }
+
+    @Unique
+    private void addSlot(ContainerPlayer containerPlayer, Slot slot){
+        slot.id = containerPlayer.inventorySlots.size(); // Add slot is private so manually doing it instead
+        containerPlayer.inventorySlots.add(slot);
+        containerPlayer.inventoryItemStacks.add(null);
+    }
+
     /**
      * @author Useless
      * @reason Legacy ui survival inventory has fewer slots
      */
     @Overwrite
     public List<Integer> getMoveSlots(InventoryAction action, Slot slot, int target, EntityPlayer player) {
-        if (player.getGamemode() == Gamemode.survival){
+        if (player.getGamemode() == Gamemode.survival && !mc.isMultiplayerWorld()){
             return survivalGetMoveSlots(action, slot, target, player);
         }
         return creativeGetMoveSlots(action, slot, target, player);
@@ -109,7 +127,7 @@ public class ContainerPlayerMixin extends Container {
      */
     @Overwrite
     public List<Integer> getTargetSlots(InventoryAction action, Slot slot, int target, EntityPlayer player) {
-        if (player.getGamemode() == Gamemode.survival){
+        if (player.getGamemode() == Gamemode.survival && !mc.isMultiplayerWorld()){
             return survivalGetTargetSlots(action, slot, target, player);
         }
         return creativeGetTargetSlots(action, slot, target, player);
