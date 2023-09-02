@@ -1,4 +1,4 @@
-package useless.legacyui.mixin;
+package useless.legacyui.mixin.Gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiContainer;
