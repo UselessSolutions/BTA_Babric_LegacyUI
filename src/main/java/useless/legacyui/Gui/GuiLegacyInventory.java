@@ -136,12 +136,12 @@ public class GuiLegacyInventory extends GuiInventory{
             int promptBSize = fontRenderer.getStringWidth("Exit");
 
             int xX = bX + spacing + promptBSize;
-            drawStringNoShadow(fontRenderer, "Take half", xX + spacing, this.height - 24, 0xFFFFFF);
-            int promptXSize = fontRenderer.getStringWidth("Take half");
+            drawStringNoShadow(fontRenderer, "Quick move", xX + spacing, this.height - 24, 0xFFFFFF);
+            int promptXSize = fontRenderer.getStringWidth("Quick move");
 
             int yX = xX + spacing + promptXSize;
-            drawStringNoShadow(fontRenderer, "Quick move", yX + spacing, this.height - 24, 0xFFFFFF);
-            int promptYSize = fontRenderer.getStringWidth("Quick move");
+            drawStringNoShadow(fontRenderer, "Take half", yX + spacing, this.height - 24, 0xFFFFFF);
+            int promptYSize = fontRenderer.getStringWidth("Take half");
 
             int rbX = yX + spacing + promptYSize;
             drawStringNoShadow(fontRenderer, "What's this?", rbX + spacing + 7, this.height - 24, 0xFFFFFF);
