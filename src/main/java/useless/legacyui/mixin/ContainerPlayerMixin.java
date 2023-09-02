@@ -23,26 +23,42 @@ public class ContainerPlayerMixin extends Container {
 
     @Redirect(method = "<init>(Lnet/minecraft/core/player/inventory/InventoryPlayer;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/player/inventory/ContainerPlayer;addSlot(Lnet/minecraft/core/player/inventory/slot/Slot;)V"))
     private void craftingSlotRemover(ContainerPlayer containerPlayer, Slot slot){
-        EntityPlayer player = Minecraft.getMinecraft(this).thePlayer;
+        Minecraft mc = Minecraft.getMinecraft(this);
+        EntityPlayer player = mc.thePlayer;
         boolean isCreative;
         if (player != null){
             isCreative = player.getGamemode() == Gamemode.creative;
+
         }
         else {
-            isCreative = false;
+            isCreative = true;
+
         }
 
-        if (slot instanceof SlotCrafting && !isCreative){
-            return; // Remove crafting output
-        } else if (slot.getInventory() instanceof InventoryCrafting && !isCreative) {
-            return; // Remove crafting grid
-        } else {
-            slot.id = containerPlayer.inventorySlots.size(); // Add slot is private so manually doing it instead
-            containerPlayer.inventorySlots.add(slot);
-            containerPlayer.inventoryItemStacks.add(null);
+        if (mc.isMultiplayerWorld()){
+            addSlot(containerPlayer, slot);
         }
+        else {
+            if (slot instanceof SlotCrafting && (!isCreative)){
+                return; // Remove crafting output
+            } else if (slot.getInventory() instanceof InventoryCrafting && (!isCreative)) {
+                return; // Remove crafting grid
+            } else {
+                addSlot(containerPlayer, slot);
+            }
+        }
+
+
 
     }
+
+    @Unique
+    private void addSlot(ContainerPlayer containerPlayer, Slot slot){
+        slot.id = containerPlayer.inventorySlots.size(); // Add slot is private so manually doing it instead
+        containerPlayer.inventorySlots.add(slot);
+        containerPlayer.inventoryItemStacks.add(null);
+    }
+
     /**
      * @author Useless
      * @reason Legacy ui survival inventory has fewer slots
