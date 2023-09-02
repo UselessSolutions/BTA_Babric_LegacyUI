@@ -26,7 +26,9 @@ public class NetClientHandlerMixin extends NetHandler {
             standardHandleWindowItems(PacketUtil.packet104Converter(packet104windowitems));
 
         }
-        standardHandleWindowItems(packet104windowitems);
+        else {
+            standardHandleWindowItems(packet104windowitems);
+        }
     }
 
     @Unique

@@ -41,6 +41,7 @@ public class PlayerControllerMPMixin extends PlayerController {
                 }
             }
             ItemStack itemstack = super.doInventoryAction(windowId, action, args, entityplayer);
+            LegacyUI.LOGGER.info("Item: " + itemstack);
             this.netHandler.addToSendQueue(new Packet102WindowClick(windowId, action, args, itemstack, actionId));
             cir.setReturnValue(itemstack);
         }
