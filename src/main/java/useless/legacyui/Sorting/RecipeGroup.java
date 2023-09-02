@@ -9,7 +9,7 @@ public class RecipeGroup {
     private Object[] recipes;
     private Object[] smallRecipes;
 
-    private short fourSlotRecipes;
+    private short fourSlotRecipes; // Number of 2x2 recipes in the group
 
     public RecipeGroup(Object[] recipes){
         fourSlotRecipes = 0;
