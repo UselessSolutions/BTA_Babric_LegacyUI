@@ -1,11 +1,9 @@
-package useless.legacyui.Gui;
+package useless.legacyui.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiContainer;
 import net.minecraft.client.input.InputType;
-import net.minecraft.core.crafting.CraftingManager;
-import net.minecraft.core.crafting.recipe.*;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.sound.SoundType;
@@ -13,11 +11,11 @@ import net.minecraft.core.util.helper.Time;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.ConfigTranslations;
-import useless.legacyui.Gui.Container.ContainerWorkbenchLegacy;
+import useless.legacyui.gui.container.ContainerWorkbenchLegacy;
 import useless.prismaticlibe.gui.slot.SlotResizable;
 import useless.legacyui.LegacyUI;
-import useless.legacyui.Sorting.CraftingCategories;
-import useless.legacyui.Sorting.SortingCategory;
+import useless.legacyui.sorting.CraftingCategories;
+import useless.legacyui.sorting.SortingCategory;
 import useless.prismaticlibe.gui.GuiAuditoryButtons;
 
 import java.util.List;
@@ -360,7 +358,7 @@ public class GuiLegacyCrafting extends GuiContainer {
             this.drawTexturedModalRect(j + 9 + 34 * item, k + 6, 16 * item++, 256 - 16, 16, 16);
 
             if (this.mc.inputType == InputType.CONTROLLER) {
-                // Controller Prompts
+                // controller Prompts
                 int craftX = 50;
                 int spacing = 14;
                 int buttonsOffset = 2;

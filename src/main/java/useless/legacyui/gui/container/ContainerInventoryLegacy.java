@@ -1,13 +1,8 @@
-package useless.legacyui.Gui.Container;
+package useless.legacyui.gui.container;
 
-import net.minecraft.core.InventoryAction;
-import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.player.inventory.*;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotArmor;
-import org.spongepowered.asm.mixin.Unique;
-
-import java.util.List;
 
 public class ContainerInventoryLegacy extends ContainerPlayer {
     public ContainerInventoryLegacy(InventoryPlayer inventoryplayer, InventoryCrafting craftMatrix, IInventory craftResult) {

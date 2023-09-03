@@ -1,4 +1,4 @@
-package useless.legacyui.Sorting;
+package useless.legacyui.sorting;
 
 
 import java.util.ArrayList;

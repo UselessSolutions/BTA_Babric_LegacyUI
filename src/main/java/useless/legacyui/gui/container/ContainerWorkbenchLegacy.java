@@ -1,4 +1,4 @@
-package useless.legacyui.Gui.Container;
+package useless.legacyui.gui.container;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.InventoryAction;
@@ -17,10 +17,10 @@ import useless.legacyui.ConfigTranslations;
 import useless.prismaticlibe.gui.slot.SlotCraftingDisplay;
 import useless.prismaticlibe.gui.slot.SlotResizable;
 import useless.legacyui.LegacyUI;
-import useless.legacyui.Sorting.RecipeGroup;
-import useless.legacyui.Sorting.SortingCategory;
+import useless.legacyui.sorting.RecipeGroup;
+import useless.legacyui.sorting.SortingCategory;
 import useless.legacyui.utils.InventoryUtil;
-import useless.legacyui.Sorting.RecipeCost;
+import useless.legacyui.sorting.RecipeCost;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
-package useless.legacyui.mixin.Gui;
+package useless.legacyui.mixin.gui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.options.GuiOptionsPageBase;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.core.sound.SoundType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,8 +13,8 @@ import useless.legacyui.ConfigTranslations;
 import useless.prismaticlibe.gui.IButtonSounds;
 import useless.legacyui.LegacyUI;
 
-@Mixin(value = GuiOptionsPageBase.class, remap = false)
-public class GuiOptionsBaseMixin extends GuiScreen {
+@Mixin(value = GuiScreen.class, remap = false)
+public class GuiScreenMixin extends Gui {
     public GuiButton button;
 
     @Redirect(method = "mouseClicked(III)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiButton;mousePressed(Lnet/minecraft/client/Minecraft;II)Z"))

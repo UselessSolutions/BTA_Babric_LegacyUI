@@ -1,4 +1,4 @@
-package useless.legacyui.Sorting;
+package useless.legacyui.sorting;
 
 import net.minecraft.core.crafting.recipe.IRecipe;
 import net.minecraft.core.player.inventory.ContainerGuidebookRecipeCrafting;

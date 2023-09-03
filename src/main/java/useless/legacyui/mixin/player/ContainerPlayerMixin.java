@@ -1,4 +1,4 @@
-package useless.legacyui.mixin;
+package useless.legacyui.mixin.player;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.InventoryAction;
@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import useless.legacyui.Gui.GuiLegacyInventory;
+import useless.legacyui.gui.GuiLegacyInventory;
 
 import java.util.List;
 

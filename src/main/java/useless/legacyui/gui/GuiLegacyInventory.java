@@ -1,4 +1,4 @@
-package useless.legacyui.Gui;
+package useless.legacyui.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
@@ -14,7 +14,7 @@ import net.minecraft.core.util.helper.DamageType;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.ConfigTranslations;
 import useless.legacyui.GlobalOverrides;
-import useless.legacyui.Gui.Container.ContainerInventoryLegacy;
+import useless.legacyui.gui.container.ContainerInventoryLegacy;
 import useless.prismaticlibe.gui.GuiAuditoryButtons;
 import useless.prismaticlibe.gui.slot.SlotResizable;
 import useless.legacyui.LegacyUI;

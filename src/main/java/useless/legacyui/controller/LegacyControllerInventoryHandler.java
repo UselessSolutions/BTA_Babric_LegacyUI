@@ -1,11 +1,11 @@
-package useless.legacyui.Controller;
+package useless.legacyui.controller;
 
 import com.b100.utils.interfaces.Condition;
 import net.minecraft.client.gui.GuiContainer;
 import net.minecraft.client.input.controller.ControllerInput;
 import net.minecraft.client.input.controller.ControllerInventoryHandler;
 import net.minecraft.core.player.inventory.slot.Slot;
-import useless.legacyui.Gui.GuiLegacyCrafting;
+import useless.legacyui.gui.GuiLegacyCrafting;
 
 public class LegacyControllerInventoryHandler extends ControllerInventoryHandler {
     private Slot lastSlot;

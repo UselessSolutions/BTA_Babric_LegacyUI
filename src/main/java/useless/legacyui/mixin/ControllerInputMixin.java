@@ -1,20 +1,17 @@
 package useless.legacyui.mixin;
 
-import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
-import net.minecraft.client.input.InputHandler;
 import net.minecraft.client.input.controller.*;
-import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.sound.SoundType;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import useless.legacyui.ConfigTranslations;
-import useless.legacyui.Controller.LegacyControllerInventoryHandler;
-import useless.legacyui.Gui.GuiLegacyCrafting;
+import useless.legacyui.controller.LegacyControllerInventoryHandler;
+import useless.legacyui.gui.GuiLegacyCrafting;
 import useless.legacyui.LegacyUI;
 
 @Mixin(value = ControllerInput.class, remap = false)

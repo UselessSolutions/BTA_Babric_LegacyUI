@@ -1,4 +1,4 @@
-package useless.legacyui.mixin;
+package useless.legacyui.mixin.player;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.EntityPlayerSP;
@@ -7,7 +7,7 @@ import net.minecraft.core.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import useless.legacyui.Gui.GuiLegacyCrafting;
+import useless.legacyui.gui.GuiLegacyCrafting;
 
 @Mixin(value = EntityPlayerSP.class, remap = false)
 public class PlayerSPMixin extends EntityPlayer {

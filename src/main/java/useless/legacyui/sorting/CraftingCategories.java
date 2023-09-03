@@ -1,4 +1,4 @@
-package useless.legacyui.Sorting;
+package useless.legacyui.sorting;
 
 import net.minecraft.core.block.Block;
 import net.minecraft.core.crafting.CraftingManager;
