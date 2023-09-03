@@ -8,6 +8,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import useless.legacyui.GlobalOverrides;
 import useless.legacyui.Gui.GuiLegacyInventory;
 import useless.legacyui.utils.PacketUtil;
@@ -15,19 +19,13 @@ import useless.legacyui.utils.PacketUtil;
 @Mixin(value = NetClientHandler.class, remap = false)
 public class NetClientHandlerMixin extends NetHandler {
     @Unique
-    private Minecraft mc = Minecraft.getMinecraft(this);
-    /**
-     * @author Useless
-     * @reason Packet spoofing for multiplayer compatibility
-     */
-    @Overwrite
-    public void handleWindowItems(Packet104WindowItems packet104windowitems) {
+    private final Minecraft mc = Minecraft.getMinecraft(this);
+
+    @Inject(method = "handleWindowItems(Lnet/minecraft/core/net/packet/Packet104WindowItems;)V", at = @At("HEAD"), cancellable = true)
+    public void handleWindowItems(Packet104WindowItems packet104windowitems, CallbackInfo ci) {
         if (mc.currentScreen instanceof GuiLegacyInventory){
             standardHandleWindowItems(PacketUtil.packet104Converter(packet104windowitems));
-
-        }
-        else {
-            standardHandleWindowItems(packet104windowitems);
+            ci.cancel();
         }
     }
 
