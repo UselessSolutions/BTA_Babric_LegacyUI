@@ -4,6 +4,8 @@
   "package": "useless.legacyui.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+  ],
+  "client": [
     "ContainerPlayerMixin",
     "ControllerInputMixin",
     "Gui.GuiAchievementMixin",
@@ -15,8 +17,6 @@
     "NetClientHandlerMixin",
     "PlayerControllerMPMixin",
     "PlayerSPMixin"
-  ],
-  "client": [
   ],
   "injectors": {
     "defaultRequire": 1
