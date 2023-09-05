@@ -1,12 +1,9 @@
 package useless.legacyui;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import turniplabs.halplibe.util.ConfigHandler;
-import useless.config.ModMenuConfigManager;
 import useless.prismaticlibe.helper.ModCheckHelper;
 import useless.prismaticlibe.helper.SoundHelper;
 
@@ -31,7 +28,7 @@ public class LegacyUI implements ModInitializer {
     private static int GuiLabelColor = -1;
     private static final int HighlightColor = Integer.decode("0X" + config.getString(ConfigTranslations.HIGHLIGHT_COLOR.getKey()));
 
-    private static final boolean guimodExists = ModCheckHelper.checkForMod("guimod", ">=1.2.0");
+    private static final boolean guimodExists = ModCheckHelper.checkForMod("guimod", ">=2.0.0");
 
     @Override
     public void onInitialize() {
@@ -49,9 +46,9 @@ public class LegacyUI implements ModInitializer {
         if (GuiLabelColor == -1){
             if (guimodExists && !config.getBoolean(ConfigTranslations.OVERRIDE_LABEL_COLOR.getKey())){
                 try {
-                    GuiLabelColor = ModMenuConfigManager.getConfig().getLabelColor();
+                    GuiLabelColor = ModuleGuiLabels.getColorFromMod();
                 }
-                catch (NoClassDefFoundError error){
+                catch (Exception error){
                     GuiLabelColor = Integer.decode("0X" + config.getString(ConfigTranslations.GUI_LABEL_COLOR.getKey()));
                 }
             }

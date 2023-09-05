@@ -96,7 +96,7 @@ dependencies {
 	modImplementation "com.github.Turnip-Labs:bta-halplibe:${project.halplibe_version}"
 
 	modImplementation "ModMenu:ModMenu:2.0.0"
-	modImplementation "BTA_Babric_GuiLabels:GuiLabels:1.2.0"
+	modImplementation "BTA_Babric_GuiLabels:GuiLabels:2.0.0"
 	modImplementation "BTA_Babric_PrismaticLibe:prismaticlibe:${project.prismatic_version}"
 
 	implementation "org.slf4j:slf4j-api:1.8.0-beta4"
