@@ -7,6 +7,7 @@ import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.core.player.inventory.Container;
 import net.minecraft.core.player.inventory.ContainerPlayer;
 import net.minecraft.core.player.inventory.InventoryCrafting;
+import net.minecraft.core.player.inventory.InventoryPlayer;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotCrafting;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,13 +42,25 @@ public class ContainerPlayerMixin extends Container {
             addSlot(containerPlayer, slot);
         }
         else {
-            if (slot instanceof SlotCrafting && (!isCreative)){
-                return; // Remove crafting output
-            } else if (slot.getInventory() instanceof InventoryCrafting && (!isCreative)) {
-                return; // Remove crafting grid
-            } else {
-                addSlot(containerPlayer, slot);
+            if (isCreative){
+                if (slot instanceof SlotCrafting && (!isCreative)){
+                    return; // Remove crafting output
+                } else if (slot.getInventory() instanceof InventoryCrafting && (!isCreative)) {
+                    return; // Remove crafting grid
+                } else {
+                    addSlot(containerPlayer, slot);
+                }
             }
+            else {
+                if (slot instanceof SlotCrafting){
+                    return; // Remove crafting output
+                } else if (slot.getInventory() instanceof InventoryCrafting) {
+                    return; // Remove crafting grid
+                } else {
+                    addSlot(containerPlayer, slot);
+                }
+            }
+
         }
 
 

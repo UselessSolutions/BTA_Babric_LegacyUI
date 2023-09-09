@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import useless.legacyui.Gui.GuiLegacyCrafting;
+import useless.legacyui.Gui.GuiLegacyCreative;
 import useless.legacyui.Gui.GuiLegacyInventory;
 
 
@@ -24,7 +25,7 @@ public class MinecraftMixin {
     private GuiInventory getGuiInventory() {
         Minecraft minecraft = Minecraft.getMinecraft(this);
         if (minecraft.thePlayer.getGamemode() == Gamemode.creative) {
-            return new GuiInventoryCreative(minecraft.thePlayer);
+            return new GuiLegacyCreative(minecraft.thePlayer);
         }
         return new GuiLegacyInventory(minecraft.thePlayer);
     }
