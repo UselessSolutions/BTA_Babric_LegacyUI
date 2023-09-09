@@ -1,4 +1,4 @@
-package useless.legacyui.utils;
+package useless.legacyui.Utils;
 
 import net.minecraft.core.block.Block;
 import net.minecraft.core.crafting.CraftingManager;

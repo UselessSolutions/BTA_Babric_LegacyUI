@@ -19,7 +19,7 @@ import useless.prismaticlibe.gui.slot.SlotResizable;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.RecipeGroup;
 import useless.legacyui.Sorting.SortingCategory;
-import useless.legacyui.utils.InventoryUtil;
+import useless.legacyui.Utils.InventoryUtil;
 import useless.legacyui.Sorting.RecipeCost;
 
 import java.util.List;
@@ -119,7 +119,7 @@ public class ContainerWorkbenchLegacy extends Container {
                 discovered = isDicovered(item, statWriter, player);
                 this.addSlot(new SlotCraftingDisplay(this.inventorySlots.size(), 12 + 18 * index, 56, currentContainer.inventorySlots.get(0).getStack(), discovered || craftable, !craftable, LegacyUI.getHighlightColor()));
 
-                if (group.getRecipes(isInInventory).length > 1) { // If multiple items in recipe group
+                if (group.getRecipes(isInInventory).length > 1) { // If multiple Items in recipe group
                     int idUpper = currentScrollAmount + 1; // Next item in group
                     int idLower = currentScrollAmount - 1; // Last item in group
 
@@ -173,7 +173,7 @@ public class ContainerWorkbenchLegacy extends Container {
                     }
                 }
             }
-            else { // Renders first slot of none selected groups
+            else { // Renders first Slot of none selected groups
                 item = group.getContainer(0, isInInventory).inventorySlots.get(0).getStack();
                 discovered = isDicovered(item, statWriter, player);
                 craftable = canCraft(player, new RecipeCost(group.getContainer(0, isInInventory)));
@@ -192,7 +192,7 @@ public class ContainerWorkbenchLegacy extends Container {
             for (int i = 1; i < recipe.inventorySlots.size(); i++){
                 ItemStack itemStack = recipe.inventorySlots.get(i).getStack();
                 if (itemStack != null){
-                    int slotId = InventoryUtil.findStackIndex(mc.thePlayer.inventory.mainInventory, itemStack, recipeCost.useAlts); // Finds slot index of an inventory slot with a desired item
+                    int slotId = InventoryUtil.findStackIndex(mc.thePlayer.inventory.mainInventory, itemStack, recipeCost.useAlts); // Finds Slot index of an inventory Slot with a desired item
                     if (slotId == -1) {continue;}
                     if (slotId < 9){ slotId += 36;}
 
@@ -343,7 +343,7 @@ public class ContainerWorkbenchLegacy extends Container {
         hotbarSlot.onSlotChanged();
     }
     public int getHotbarSlotId(int number) {
-        // - 14 to account for the 14 display items
+        // - 14 to account for the 14 display Items
         return craftingSlotsNumber + inventorySlotsNumber + number - 9;
     }
 

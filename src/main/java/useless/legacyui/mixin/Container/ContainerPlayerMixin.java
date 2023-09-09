@@ -1,4 +1,4 @@
-package useless.legacyui.mixin;
+package useless.legacyui.mixin.Container;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.InventoryAction;
@@ -56,7 +56,7 @@ public class ContainerPlayerMixin extends Container {
 
     @Unique
     private void addSlot(ContainerPlayer containerPlayer, Slot slot){
-        slot.id = containerPlayer.inventorySlots.size(); // Add slot is private so manually doing it instead
+        slot.id = containerPlayer.inventorySlots.size(); // Add Slot is private so manually doing it instead
         containerPlayer.inventorySlots.add(slot);
         containerPlayer.inventoryItemStacks.add(null);
     }

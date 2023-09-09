@@ -4,8 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiContainer;
 import net.minecraft.client.input.InputType;
-import net.minecraft.core.crafting.CraftingManager;
-import net.minecraft.core.crafting.recipe.*;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.sound.SoundType;
@@ -65,7 +63,7 @@ public class GuiLegacyCrafting extends GuiContainer {
     public void initGui() {
         super.initGui();
         this.xSize = 256 + 17; // width of texture plus the 17px strip that was cut off
-        this.ySize = 175; // height of gui window
+        this.ySize = 175; // height of Gui window
 
 
         // Setup Invisible buttons
@@ -267,7 +265,7 @@ public class GuiLegacyCrafting extends GuiContainer {
                 // Draw slightly wider marker
                 this.drawTexturedModalRect(7 + 18 * currentSlot, 52, 35, 175, 26, 24);
             } else {
-                // Render Selection texture ontop of currently selected slot, does not require offset like bg layer
+                // Render Selection texture ontop of currently selected Slot, does not require offset like bg layer
                 this.drawTexturedModalRect(8 + 18 * currentSlot, 52, 36, 175, 24, 24);
             }
         }
@@ -327,8 +325,8 @@ public class GuiLegacyCrafting extends GuiContainer {
             int j = (this.width - this.xSize) / 2;
             int k = (this.height - this.ySize) / 2;
 
-            // Draws base gui background
-            this.drawTexturedModalRect(j, k, 0, 0, 256, this.ySize); // TODO make gui texture 512x512
+            // Draws base Gui background
+            this.drawTexturedModalRect(j, k, 0, 0, 256, this.ySize); // TODO make Gui texture 512x512
             this.drawTexturedModalRect(j + 256, k + this.ySize - 81, 205, 175, 17, 81);
             this.drawTexturedModalRect(j + 256, k + this.ySize - 81 - 81, 222, 175, 17, 81);
             this.drawTexturedModalRect(j + 256, k + this.ySize - 81 - 81 - 13, 239, 175, 17, 13);

@@ -2,7 +2,7 @@ package useless.legacyui.Sorting;
 
 import net.minecraft.core.crafting.recipe.IRecipe;
 import net.minecraft.core.player.inventory.ContainerGuidebookRecipeCrafting;
-import useless.legacyui.utils.ArrayUtil;
+import useless.legacyui.Utils.ArrayUtil;
 
 
 public class RecipeGroup {

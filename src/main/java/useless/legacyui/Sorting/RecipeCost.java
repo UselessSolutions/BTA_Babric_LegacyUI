@@ -2,11 +2,9 @@ package useless.legacyui.Sorting;
 
 import net.minecraft.core.crafting.CraftingManager;
 import net.minecraft.core.crafting.recipe.RecipeShaped;
-import net.minecraft.core.crafting.recipe.RecipeShapeless;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.ContainerGuidebookRecipeCrafting;
-import useless.legacyui.LegacyUI;
-import useless.legacyui.utils.InventoryUtil;
+import useless.legacyui.Utils.InventoryUtil;
 
 public class RecipeCost {
     private static CraftingManager craftingManager = CraftingManager.getInstance();

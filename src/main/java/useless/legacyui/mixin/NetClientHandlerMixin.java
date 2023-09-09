@@ -8,9 +8,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import useless.legacyui.GlobalOverrides;
 import useless.legacyui.Gui.GuiLegacyInventory;
-import useless.legacyui.utils.PacketUtil;
+import useless.legacyui.Utils.PacketUtil;
 
 @Mixin(value = NetClientHandler.class, remap = false)
 public class NetClientHandlerMixin extends NetHandler {

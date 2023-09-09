@@ -1,4 +1,4 @@
-package useless.legacyui.utils;
+package useless.legacyui.Utils;
 
 public class ArrayUtil {
     public static int wrapAroundIndex(int index, int arrayLength) {

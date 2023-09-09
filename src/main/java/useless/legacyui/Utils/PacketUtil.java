@@ -1,4 +1,4 @@
-package useless.legacyui.utils;
+package useless.legacyui.Utils;
 
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.net.packet.Packet104WindowItems;

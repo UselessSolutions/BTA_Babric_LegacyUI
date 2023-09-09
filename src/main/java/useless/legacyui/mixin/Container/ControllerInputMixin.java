@@ -1,12 +1,9 @@
-package useless.legacyui.mixin;
+package useless.legacyui.mixin.Container;
 
-import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
-import net.minecraft.client.input.InputHandler;
 import net.minecraft.client.input.controller.*;
-import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.sound.SoundType;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;

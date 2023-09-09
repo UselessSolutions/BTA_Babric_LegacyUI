@@ -6,8 +6,8 @@
   "mixins": [
   ],
   "client": [
-    "ContainerPlayerMixin",
-    "ControllerInputMixin",
+    "Container.ContainerPlayerMixin",
+    "Container.ControllerInputMixin",
     "Gui.GuiAchievementMixin",
     "Gui.GuiContainerMixin",
     "Gui.GuiInventoryMixin",
