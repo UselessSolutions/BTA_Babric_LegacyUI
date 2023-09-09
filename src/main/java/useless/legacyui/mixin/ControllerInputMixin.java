@@ -1,4 +1,4 @@
-package useless.legacyui.mixin.Container;
+package useless.legacyui.mixin;
 
 import net.java.games.input.Controller;
 import net.minecraft.client.Minecraft;

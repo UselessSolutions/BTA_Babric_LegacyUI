@@ -1,7 +1,9 @@
 package useless.legacyui.Gui.Container;
 
+import net.minecraft.core.InventoryAction;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.tag.BlockTags;
+import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.*;
@@ -32,7 +34,7 @@ public class ContainerCreativeLegacy extends ContainerPlayer {
         for (i = 0; i < slotsWide * slotsTall; ++i) {
             int x = i % slotsWide;
             int y = i / slotsWide;
-            this.addSlot(new SlotCreative(inventorySlots.size() + i, 12 + x * 18, 37 + y * 18, ContainerPlayerCreative.creativeItems.get(i)));
+            this.addSlot(new SlotCreative(9 + i, 12 + x * 18, 37 + y * 18, ContainerPlayerCreative.creativeItems.get(i)));
         }
     }
     public void updatePage(){

@@ -12,7 +12,7 @@ public class GuiLegacyCreative extends GuiInventory {
     protected ContainerCreativeLegacy container;
     public GuiLegacyCreative(EntityPlayer player) {
         super(player);
-        this.inventorySlots = this.container = new ContainerCreativeLegacy(player.inventory, ((ContainerPlayer)inventorySlots).craftMatrix, ((ContainerPlayer)inventorySlots).craftResult);
+        this.inventorySlots = new ContainerCreativeLegacy(player.inventory, ((ContainerPlayer)inventorySlots).craftMatrix, ((ContainerPlayer)inventorySlots).craftResult);
     }
     public void initGui() {
         this.xSize = 273; // width of texture plus the 17px strip that was cut off
@@ -20,7 +20,7 @@ public class GuiLegacyCreative extends GuiInventory {
     }
     public void drawGuiContainerForegroundLayer() {
         ContainerCreativeLegacy.scrollRow(-Mouse.getDWheel()/10);
-        container.updatePage();
+        ((ContainerCreativeLegacy)inventorySlots).updatePage();
 
         int i = this.mc.renderEngine.getTexture("/assets/legacyui/gui/legacycreative.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

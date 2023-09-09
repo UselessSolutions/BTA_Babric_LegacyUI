@@ -7,7 +7,7 @@
   ],
   "client": [
     "Container.ContainerPlayerMixin",
-    "Container.ControllerInputMixin",
+    "ControllerInputMixin",
     "Gui.GuiAchievementMixin",
     "Gui.GuiContainerMixin",
     "Gui.GuiInventoryMixin",

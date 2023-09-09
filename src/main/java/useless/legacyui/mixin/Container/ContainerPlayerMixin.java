@@ -9,6 +9,7 @@ import net.minecraft.core.player.inventory.ContainerPlayer;
 import net.minecraft.core.player.inventory.InventoryCrafting;
 import net.minecraft.core.player.inventory.InventoryPlayer;
 import net.minecraft.core.player.inventory.slot.Slot;
+import net.minecraft.core.player.inventory.slot.SlotArmor;
 import net.minecraft.core.player.inventory.slot.SlotCrafting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -43,11 +44,13 @@ public class ContainerPlayerMixin extends Container {
         }
         else {
             if (isCreative){
-                if (slot instanceof SlotCrafting && (!isCreative)){
+                if (slot instanceof SlotCrafting){
                     return; // Remove crafting output
-                } else if (slot.getInventory() instanceof InventoryCrafting && (!isCreative)) {
+                } else if (slot.getInventory() instanceof InventoryCrafting) {
                     return; // Remove crafting grid
-                } else {
+                } else if (slot instanceof SlotArmor){
+                    return; // Remove armor slots
+                } else if (slot.yDisplayPosition == 142){ // Only hotbar hack
                     addSlot(containerPlayer, slot);
                 }
             }
