@@ -10,6 +10,8 @@ import java.util.Arrays;
 public class CategoryManager {
     private static ArrayList<ItemCategory> itemCategories = new ArrayList<ItemCategory>();
 
+    public static int[][] craftingTexturesTemp = new int[][] {new int[]{0,0}, new int[]{16,0}, new int[]{32,0}, new int[]{48,0}, new int[]{64,0}, new int[]{80,0}, new int[]{96,0}, new int[]{112,0}};
+
     public static ItemCategory get(int index){
         if (index < itemCategories.size()){
             return itemCategories.get(index);
@@ -27,7 +29,8 @@ public class CategoryManager {
         itemCategories.add((new ItemCategory("Other Blocks", new int[]{i++ * 16,0})));
         itemCategories.add((new ItemCategory("Tools and Equipment", new int[]{i++ * 16,0})));
         itemCategories.add((new ItemCategory("Food", new int[]{i++ * 16,0})));
-        itemCategories.add((new ItemCategory("Redstone", new int[]{i++ * 16,0})));
+        itemCategories.add((new ItemCategory("Redstone", new int[]{128,0})));
+        i++;
         i++;
         itemCategories.add((new ItemCategory("Miscellaneous", new int[]{i++ * 16,0})));
         itemCategories.add((new ItemCategory("Modded", new int[]{i++ * 16,0})));

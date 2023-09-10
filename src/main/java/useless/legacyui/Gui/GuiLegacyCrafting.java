@@ -343,14 +343,10 @@ public class GuiLegacyCrafting extends GuiContainer {
             double scale = 1.5D;
             GL11.glScaled(scale, scale, scale);
             for (int v = 0; v < maxDisplayedTabs; v++){
-                ItemCategory category = CategoryManager.get(v);
-                if (category != null){
-                    int[] icon = category.iconCoord;
-                    int x = (int)((j + 6 + bookMarkWidth * v)/scale);
-                    int y = (int)((k + 3)/scale);
-                    this.drawTexturedModalRect(x, y, icon[0], icon[1], 16, 16);
-                }
-
+                int[] icon = CategoryManager.craftingTexturesTemp[v];
+                int x = (int)((j + 6 + bookMarkWidth * v)/scale);
+                int y = (int)((k + 3)/scale);
+                this.drawTexturedModalRect(x, y, icon[0], icon[1], 16, 16);
             }
             GL11.glScaled(1/scale,1/scale,1/scale);
 
