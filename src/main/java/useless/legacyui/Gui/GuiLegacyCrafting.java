@@ -323,7 +323,7 @@ public class GuiLegacyCrafting extends GuiContainer {
 
             // Renders selected bookmark
             int bookMarkWidth = 34;
-            this.drawTexturedModalRect(j + bookMarkWidth * tab, k - 2, 0, 175, bookMarkWidth, 30);
+            this.drawTexturedModalRect(j + bookMarkWidth * tab, k - 2, 0, 175, bookMarkWidth + 1, 30);
 
             // If 2x2
             if (isInInventory || categories[tab].getRecipeGroups(isInInventory)[currentSlot].getContainer(currentScroll, isInInventory).inventorySlots.size() < 6 && renderCraftingDisplay()) {

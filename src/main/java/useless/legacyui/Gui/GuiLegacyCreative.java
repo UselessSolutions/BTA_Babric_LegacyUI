@@ -175,7 +175,7 @@ public class GuiLegacyCreative extends GuiInventory {
 
         // Renders selected bookmark
         int bookMarkWidth = 34;
-        this.drawTexturedModalRect(j + bookMarkWidth * tab, k - 2, 0, 175, bookMarkWidth, 30);
+        this.drawTexturedModalRect(j + bookMarkWidth * tab, k - 2, 0, 175, bookMarkWidth + 1, 30);
 
         i = this.mc.renderEngine.getTexture("/assets/legacyui/gui/icons.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

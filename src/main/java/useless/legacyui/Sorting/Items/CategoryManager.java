@@ -54,7 +54,7 @@ public class CategoryManager {
                         natBlockCategory.addItem(stack);
                         continue;
                     }
-                    if (Arrays.stream(new String[]{"button", "plate", "redstone", "dispenser", "tnt", "piston", "sensor", "noteblock", "lever", "trap"}).anyMatch(name.toLowerCase()::contains)){
+                    if (Arrays.stream(new String[]{"button", "plate", "redstone", "dispenser", "tnt", "piston", "sensor", "noteblock", "lever", "spikes"}).anyMatch(name.toLowerCase()::contains)){
                         redstoneCategory.addItem(stack);
                         continue;
                     }
@@ -109,7 +109,7 @@ public class CategoryManager {
             else { // modded items
                 moddedCategory.addItem(stack);
             }
-
         }
+        ItemCategory.printUnsorted();
     }
 }
