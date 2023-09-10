@@ -3,6 +3,7 @@ package useless.legacyui.Gui.Container;
 import net.minecraft.core.InventoryAction;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.tag.BlockTags;
+import net.minecraft.core.crafting.CraftingManager;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
@@ -10,6 +11,10 @@ import net.minecraft.core.player.inventory.*;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotArmor;
 import net.minecraft.core.player.inventory.slot.SlotCreative;
+import useless.legacyui.LegacyUI;
+import useless.legacyui.Sorting.CraftingCategories;
+import useless.legacyui.Sorting.Items.CategoryManager;
+import useless.legacyui.Sorting.Items.ItemCategory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +23,7 @@ public class ContainerCreativeLegacy extends ContainerPlayer {
     public static int slotsWide = 13;
     public static int slotsTall = 6;
     public static int currentRow = 0;
-    public static int totalRows = ContainerPlayerCreative.creativeItemsCount/slotsWide;
+    protected static ItemCategory currentCategory = CategoryManager.get(0);
     protected int creativeSlotsStart;
     public ContainerCreativeLegacy(InventoryPlayer inventoryplayer) {
         this(inventoryplayer, true);
@@ -37,12 +42,13 @@ public class ContainerCreativeLegacy extends ContainerPlayer {
             this.addSlot(new SlotCreative(this.creativeSlotsStart + i, 12 + x * 18, 37 + y * 18, ContainerPlayerCreative.creativeItems.get(i)));
         }
     }
-    public void updatePage(){
+    public void updatePage(int tab){
+        currentCategory = CategoryManager.get(tab);
         for (int i = 0; i < slotsWide * slotsTall; ++i) {
             ItemStack item;
             int index = i + currentRow * slotsWide;
-            if (index < ContainerPlayerCreative.creativeItemsCount){
-                item = ContainerPlayerCreative.creativeItems.get(index);
+            if (index < currentCategory.size()){
+                item = currentCategory.get(index);
             }
             else {
                 item = null;
@@ -59,8 +65,11 @@ public class ContainerCreativeLegacy extends ContainerPlayer {
         }
         if (currentRow < 0){
             currentRow = 0;
-        } else if (currentRow > totalRows){
-            currentRow = totalRows;
+        } else if (currentRow > getTotalRows()){
+            currentRow = getTotalRows();
         }
+    }
+    public static int getTotalRows(){
+        return currentCategory.size()/slotsWide;
     }
 }

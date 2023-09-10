@@ -12,6 +12,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.ConfigTranslations;
 import useless.legacyui.Gui.Container.ContainerWorkbenchLegacy;
+import useless.legacyui.Sorting.Items.CategoryManager;
+import useless.legacyui.Sorting.Items.ItemCategory;
 import useless.legacyui.Utils.KeyboardUtil;
 import useless.prismaticlibe.gui.slot.SlotResizable;
 import useless.legacyui.LegacyUI;
@@ -335,15 +337,22 @@ public class GuiLegacyCrafting extends GuiContainer {
             }
 
             // Category icons TODO Make icons render based of pages selected
-            int item = 0;
-            this.drawTexturedModalRect(j + 9 + 34 * item, k + 6, 16 * item++, 256 - 16, 16, 16);
-            this.drawTexturedModalRect(j + 9 + 34 * item, k + 6, 16 * item++, 256 - 16, 16, 16);
-            this.drawTexturedModalRect(j + 9 + 34 * item, k + 6, 16 * item++, 256 - 16, 16, 16);
-            this.drawTexturedModalRect(j + 9 + 34 * item, k + 6, 16 * item++, 256 - 16, 16, 16);
-            this.drawTexturedModalRect(j + 9 + 34 * item, k + 6, 16 * item++, 256 - 16, 16, 16);
-            this.drawTexturedModalRect(j + 9 + 34 * item, k + 6, 16 * item++, 256 - 16, 16, 16);
-            this.drawTexturedModalRect(j + 9 + 34 * item, k + 6, 16 * item++, 256 - 16, 16, 16);
-            this.drawTexturedModalRect(j + 9 + 34 * item, k + 6, 16 * item++, 256 - 16, 16, 16);
+            i = this.mc.renderEngine.getTexture("/assets/legacyui/gui/icons.png");
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            this.mc.renderEngine.bindTexture(i);
+            double scale = 1.5D;
+            GL11.glScaled(scale, scale, scale);
+            for (int v = 0; v < maxDisplayedTabs; v++){
+                ItemCategory category = CategoryManager.get(v);
+                if (category != null){
+                    int[] icon = category.iconCoord;
+                    int x = (int)((j + 6 + bookMarkWidth * v)/scale);
+                    int y = (int)((k + 3)/scale);
+                    this.drawTexturedModalRect(x, y, icon[0], icon[1], 16, 16);
+                }
+
+            }
+            GL11.glScaled(1/scale,1/scale,1/scale);
 
             if (this.mc.inputType == InputType.CONTROLLER) {
                 // Controller Prompts

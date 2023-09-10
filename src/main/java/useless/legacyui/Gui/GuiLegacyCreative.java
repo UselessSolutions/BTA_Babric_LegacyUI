@@ -22,7 +22,6 @@ public class GuiLegacyCreative extends GuiInventory {
     protected final int maxDisplayedTabs = 8; // Total amount of tab pages, zero index
     protected int currentCursorColumn;
     protected int currentCursorRow;
-    protected Object[] categories = new Object[8];
     public GuiLegacyCreative(EntityPlayer player) {
         super(player);
         this.container = (ContainerCreativeLegacy)inventorySlots;
@@ -30,6 +29,8 @@ public class GuiLegacyCreative extends GuiInventory {
     public void initGui() {
         this.xSize = 273; // width of texture plus the 17px strip that was cut off
         this.ySize = 175; // height of Gui window
+        tab = 0;
+        updatePages();
     }
     public void setControllerCursorPosition() {
         if (this.mc.inputType == InputType.CONTROLLER) {
@@ -40,9 +41,9 @@ public class GuiLegacyCreative extends GuiInventory {
     public void selectTab(int tabIndex) {
         uiSound("legacyui.ui.focus");
         if (tabIndex < 0) {
-            tabIndex += categories.length;
-        } else if (tabIndex > categories.length - 1) {
-            tabIndex -= categories.length;
+            tabIndex += CategoryManager.size();
+        } else if (tabIndex > CategoryManager.size() - 1) {
+            tabIndex -= CategoryManager.size();
         }
         tab = tabIndex;
         setControllerCursorPosition();
@@ -61,6 +62,7 @@ public class GuiLegacyCreative extends GuiInventory {
                 direction++;
             }
         }
+        ContainerCreativeLegacy.currentRow = 0;
     }
 
     public void scrollCursorColumn(int direction){
@@ -140,7 +142,7 @@ public class GuiLegacyCreative extends GuiInventory {
         updatePages();
     }
     protected void updatePages(){
-        ((ContainerCreativeLegacy)inventorySlots).updatePage();
+        ((ContainerCreativeLegacy)inventorySlots).updatePage(tab);
     }
     public void drawGuiContainerForegroundLayer() {
         int i = this.mc.renderEngine.getTexture("/assets/legacyui/gui/legacycreative.png");
@@ -153,7 +155,7 @@ public class GuiLegacyCreative extends GuiInventory {
         // Scroll Bar
         int scrollTopY = 36;
         int scrollBottomY = 143 - 15;
-        int scrollYPos = (int)((scrollBottomY-scrollTopY) * ((float)ContainerCreativeLegacy.currentRow/ContainerCreativeLegacy.totalRows));
+        int scrollYPos = (int)((scrollBottomY-scrollTopY) * ((float)ContainerCreativeLegacy.currentRow/ContainerCreativeLegacy.getTotalRows()));
         this.drawTexturedModalRect(251, scrollTopY + scrollYPos, 131, 175, 15, 15);
     }
     public void drawGuiContainerBackgroundLayer(float f) {
@@ -185,12 +187,11 @@ public class GuiLegacyCreative extends GuiInventory {
             if (category != null){
                 int[] icon = category.iconCoord;
                 int x = (int)((j + 6 + bookMarkWidth * v)/scale);
-                int y = (int)((k + 6)/scale);
+                int y = (int)((k + 3)/scale);
                 this.drawTexturedModalRect(x, y, icon[0], icon[1], 16, 16);
             }
 
         }
-
         GL11.glScaled(1/scale,1/scale,1/scale);
 
     }
