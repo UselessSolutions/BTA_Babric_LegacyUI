@@ -12,6 +12,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.ConfigTranslations;
 import useless.legacyui.Gui.Container.ContainerWorkbenchLegacy;
+import useless.legacyui.Utils.KeyboardUtil;
 import useless.prismaticlibe.gui.slot.SlotResizable;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.CraftingCategories;
@@ -21,9 +22,9 @@ import useless.prismaticlibe.gui.GuiAuditoryButtons;
 import java.util.List;
 
 public class GuiLegacyCrafting extends GuiContainer {
-    protected  int tab; // Current page of tabs
+    protected int tab; // Current page of tabs
     protected final int maxDisplayedTabs = 8; // Total amount of tab pages, zero index
-    protected  int currentSlot;
+    protected int currentSlot;
     protected final int totalDisplaySlots = 14;
     protected String slotString = "1/1";
     protected String tabString = "1/1"; // Indicator of what tab page you are on
@@ -45,7 +46,6 @@ public class GuiLegacyCrafting extends GuiContainer {
 
     private long timeStart = 0;
 
-    private boolean[] keysPressed = new boolean[65536];
     public boolean isInInventory;
 
 
@@ -275,19 +275,7 @@ public class GuiLegacyCrafting extends GuiContainer {
 
     }
 
-    private boolean isKeyPressed(int keyCode) {
-        if (Keyboard.isKeyDown(keyCode)) {
-            if (keysPressed[keyCode]) {
-                return false;
-            } else {
-                keysPressed[keyCode] = true;
-                return true;
-            }
-        } else {
-            keysPressed[keyCode] = false;
-            return false;
-        }
-    }
+
 
     public void drawGuiContainerBackgroundLayer(float f) {
         try {
@@ -295,27 +283,27 @@ public class GuiLegacyCrafting extends GuiContainer {
 
             //this.scrollSlot(-Mouse.getDWheel()); // Scroll through tabs
 
-            if (isKeyPressed(mc.gameSettings.keyForward.keyCode()) || isKeyPressed(mc.gameSettings.keyLookUp.keyCode())) {
+            if (KeyboardUtil.isKeyPressed(mc.gameSettings.keyForward.keyCode()) || KeyboardUtil.isKeyPressed(mc.gameSettings.keyLookUp.keyCode())) {
                 scrollSlot(-1);
             }
-            if (isKeyPressed(mc.gameSettings.keyBack.keyCode()) || isKeyPressed(mc.gameSettings.keyLookDown.keyCode())) {
+            if (KeyboardUtil.isKeyPressed(mc.gameSettings.keyBack.keyCode()) || KeyboardUtil.isKeyPressed(mc.gameSettings.keyLookDown.keyCode())) {
                 scrollSlot(1);
             }
-            if (isKeyPressed(mc.gameSettings.keyRight.keyCode()) || isKeyPressed(mc.gameSettings.keyLookRight.keyCode())) {
+            if (KeyboardUtil.isKeyPressed(mc.gameSettings.keyRight.keyCode()) || KeyboardUtil.isKeyPressed(mc.gameSettings.keyLookRight.keyCode())) {
                 if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                     scrollTab(1);
                 } else {
                     scrollDisplaySlot(1);
                 }
             }
-            if (isKeyPressed(mc.gameSettings.keyLeft.keyCode()) || isKeyPressed(mc.gameSettings.keyLookLeft.keyCode())) {
+            if (KeyboardUtil.isKeyPressed(mc.gameSettings.keyLeft.keyCode()) || KeyboardUtil.isKeyPressed(mc.gameSettings.keyLookLeft.keyCode())) {
                 if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                     scrollTab(-1);
                 } else {
                     scrollDisplaySlot(-1);
                 }
             }
-            if (isKeyPressed(mc.gameSettings.keyJump.keyCode())) {
+            if (KeyboardUtil.isKeyPressed(mc.gameSettings.keyJump.keyCode())) {
                 craft();
             }
 

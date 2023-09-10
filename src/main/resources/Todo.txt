@@ -24,3 +24,9 @@ Needed Things
 - Legacy Console tooltip textures
 
 - Menu Panorama
+
+- Dont render hotbar in menus
+- Brighten background darkness in menus
+- Properly implement single player inventory slots
+- Split screen
+- Flag gui

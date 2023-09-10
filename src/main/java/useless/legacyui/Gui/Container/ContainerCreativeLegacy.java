@@ -19,22 +19,22 @@ public class ContainerCreativeLegacy extends ContainerPlayer {
     public static int slotsTall = 6;
     public static int currentRow = 0;
     public static int totalRows = ContainerPlayerCreative.creativeItemsCount/slotsWide;
-    public ContainerCreativeLegacy(InventoryPlayer inventoryplayer, InventoryCrafting craftMatrix, IInventory craftResult) {
-        this(inventoryplayer, true, craftMatrix, craftResult);
+    protected int creativeSlotsStart;
+    public ContainerCreativeLegacy(InventoryPlayer inventoryplayer) {
+        this(inventoryplayer, true);
     }
-    public ContainerCreativeLegacy(InventoryPlayer inventory, boolean isSinglePlayer, InventoryCrafting craftMatrix, IInventory craftResult) {
+    public ContainerCreativeLegacy(InventoryPlayer inventory, boolean isSinglePlayer) {
         super(inventory, isSinglePlayer);
         inventorySlots.clear();
-        this.craftMatrix = craftMatrix;
-        this.craftResult = craftResult;
         int i;
         for (i = 0; i < 9; ++i) {
             this.addSlot(new Slot(inventory, i, 57 + i * 18, 151));
         }
+        this.creativeSlotsStart = this.inventorySlots.size();
         for (i = 0; i < slotsWide * slotsTall; ++i) {
             int x = i % slotsWide;
             int y = i / slotsWide;
-            this.addSlot(new SlotCreative(9 + i, 12 + x * 18, 37 + y * 18, ContainerPlayerCreative.creativeItems.get(i)));
+            this.addSlot(new SlotCreative(this.creativeSlotsStart + i, 12 + x * 18, 37 + y * 18, ContainerPlayerCreative.creativeItems.get(i)));
         }
     }
     public void updatePage(){
