@@ -1,9 +1,12 @@
 package useless.legacyui;
 
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.core.item.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import turniplabs.halplibe.util.ConfigHandler;
+import useless.legacyui.Sorting.Items.CategoryManager;
+import useless.legacyui.Sorting.Items.ItemCategory;
 import useless.prismaticlibe.helper.ModCheckHelper;
 import useless.prismaticlibe.helper.SoundHelper;
 
@@ -41,6 +44,7 @@ public class LegacyUI implements ModInitializer {
         SoundHelper.addSound(MOD_ID, "ui/achievement.wav");
 
         LOGGER.info("LegacyUI initialized.");
+
     }
     public static int getGuiLabelColor(){
         if (GuiLabelColor == -1){
@@ -62,5 +66,7 @@ public class LegacyUI implements ModInitializer {
     public static int getHighlightColor(){
         return HighlightColor;
     }
+    public static int iconTileWidth = 32;
+    public static int imagesTilesLength = 16;
 
 }

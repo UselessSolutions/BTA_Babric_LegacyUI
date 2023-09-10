@@ -1,6 +1,7 @@
 package useless.legacyui;
 
 public class GlobalOverrides {
+
     private static boolean backOverride = false;
     public static boolean getBackOverride(){
         if (backOverride){

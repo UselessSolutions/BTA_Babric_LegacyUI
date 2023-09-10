@@ -30,3 +30,4 @@ Needed Things
 - Properly implement single player inventory slots
 - Split screen
 - Flag gui
+- Refactor bow and arrows into its own group from hand cannon/ charge
