@@ -46,7 +46,7 @@ public class ContainerCreativeLegacy extends ContainerPlayer {
         currentCategory = CategoryManager.get(tab);
         for (int i = 0; i < slotsWide * slotsTall; ++i) {
             ItemStack item;
-            int index = i + currentRow * slotsWide;
+            int index = i + (currentRow) * slotsWide;
             if (index < currentCategory.size()){
                 item = currentCategory.get(index);
             }
@@ -70,6 +70,10 @@ public class ContainerCreativeLegacy extends ContainerPlayer {
         }
     }
     public static int getTotalRows(){
-        return currentCategory.size()/slotsWide;
+        int size = (currentCategory.size()/slotsWide) - slotsTall + 1;
+        if (size < 0){
+            size = 0;
+        }
+        return size;
     }
 }
