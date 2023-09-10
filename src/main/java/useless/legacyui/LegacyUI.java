@@ -62,5 +62,7 @@ public class LegacyUI implements ModInitializer {
     public static int getHighlightColor(){
         return HighlightColor;
     }
+    public static int iconTileWidth = 32;
+    public static int imagesTilesLength = 16;
 
 }

@@ -12,6 +12,8 @@ import org.lwjgl.opengl.GL11;
 import useless.legacyui.ConfigTranslations;
 import useless.legacyui.Gui.Container.ContainerCreativeLegacy;
 import useless.legacyui.LegacyUI;
+import useless.legacyui.Sorting.Items.CategoryManager;
+import useless.legacyui.Sorting.Items.ItemCategory;
 import useless.legacyui.Utils.KeyboardUtil;
 
 public class GuiLegacyCreative extends GuiInventory {
@@ -172,6 +174,25 @@ public class GuiLegacyCreative extends GuiInventory {
         // Renders selected bookmark
         int bookMarkWidth = 34;
         this.drawTexturedModalRect(j + bookMarkWidth * tab, k - 2, 0, 175, bookMarkWidth, 30);
+
+        i = this.mc.renderEngine.getTexture("/assets/legacyui/gui/icons.png");
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.mc.renderEngine.bindTexture(i);
+        double scale = 1.5D;
+        GL11.glScaled(scale, scale, scale);
+        for (int v = 0; v < maxDisplayedTabs; v++){
+            ItemCategory category = CategoryManager.get(v);
+            if (category != null){
+                int[] icon = category.iconCoord;
+                int x = (int)((j + 6 + bookMarkWidth * v)/scale);
+                int y = (int)((k + 6)/scale);
+                this.drawTexturedModalRect(x, y, icon[0], icon[1], 16, 16);
+            }
+
+        }
+
+        GL11.glScaled(1/scale,1/scale,1/scale);
+
     }
     private void uiSound(String soundDir){
         if (LegacyUI.config.getBoolean(ConfigTranslations.USE_LEGACY_SOUNDS.getKey())){
