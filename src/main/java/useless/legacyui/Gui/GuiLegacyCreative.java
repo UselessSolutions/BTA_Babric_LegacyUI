@@ -18,6 +18,8 @@ public class GuiLegacyCreative extends GuiInventory {
     protected ContainerCreativeLegacy container;
     protected int tab; // Current page of tabs
     protected final int maxDisplayedTabs = 8; // Total amount of tab pages, zero index
+    protected int currentCursorColumn;
+    protected int currentCursorRow;
     protected Object[] categories = new Object[8];
     public GuiLegacyCreative(EntityPlayer player) {
         super(player);
@@ -58,30 +60,82 @@ public class GuiLegacyCreative extends GuiInventory {
             }
         }
     }
+
+    public void scrollCursorColumn(int direction){
+        if (direction > 0) {
+            while (direction > 0) {
+                selectCursorColumn(currentCursorColumn + 1);
+                direction--;
+            }
+        } else if (direction < 0) {
+            while (direction < 0) {
+                selectCursorColumn(currentCursorColumn - 1);
+                direction++;
+            }
+        }
+    }
+    public void selectCursorColumn(int columnIndex) {
+        uiSound("legacyui.ui.focus");
+        if (columnIndex < 0) {
+            columnIndex += ContainerCreativeLegacy.slotsWide;
+        } else if (columnIndex >= ContainerCreativeLegacy.slotsWide) {
+            columnIndex -= ContainerCreativeLegacy.slotsWide;
+        }
+        currentCursorColumn = columnIndex;
+        setControllerCursorPosition();
+        updatePages();
+    }
+    public void scrollCursorRow(int direction){
+        if (direction > 0) {
+            while (direction > 0) {
+                selectCursorRow(currentCursorRow + 1);
+                direction--;
+            }
+        } else if (direction < 0) {
+            while (direction < 0) {
+                selectCursorRow(currentCursorRow - 1);
+                direction++;
+            }
+        }
+    }
+    public void selectCursorRow(int rowIndex) {
+        uiSound("legacyui.ui.focus");
+        if (rowIndex < 0) {
+            rowIndex = 0;
+            ContainerCreativeLegacy.scrollRow(-1);
+        } else if (rowIndex >= ContainerCreativeLegacy.slotsTall) {
+            rowIndex = ContainerCreativeLegacy.slotsTall - 1;
+            ContainerCreativeLegacy.scrollRow(1);
+        }
+        currentCursorRow = rowIndex;
+        setControllerCursorPosition();
+        updatePages();
+    }
     protected void checkInputs(){
-        /*if (KeyboardUtil.isKeyPressed(mc.gameSettings.keyForward.keyCode()) || KeyboardUtil.isKeyPressed(mc.gameSettings.keyLookUp.keyCode())) {
-            scrollSlot(-1);
+        if (KeyboardUtil.isKeyPressed(mc.gameSettings.keyForward.keyCode()) || KeyboardUtil.isKeyPressed(mc.gameSettings.keyLookUp.keyCode())) {
+            scrollCursorRow(-1);
         }
         if (KeyboardUtil.isKeyPressed(mc.gameSettings.keyBack.keyCode()) || KeyboardUtil.isKeyPressed(mc.gameSettings.keyLookDown.keyCode())) {
-            scrollSlot(1);
-        }*/
+            scrollCursorRow(1);
+        }
         if (KeyboardUtil.isKeyPressed(mc.gameSettings.keyRight.keyCode()) || KeyboardUtil.isKeyPressed(mc.gameSettings.keyLookRight.keyCode())) {
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                 scrollTab(1);
             } else {
-                //scrollDisplaySlot(1);
+                scrollCursorColumn(1);
             }
         }
         if (KeyboardUtil.isKeyPressed(mc.gameSettings.keyLeft.keyCode()) || KeyboardUtil.isKeyPressed(mc.gameSettings.keyLookLeft.keyCode())) {
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                 scrollTab(-1);
             } else {
-                //scrollDisplaySlot(-1);
+                scrollCursorColumn(-1);
             }
         }
 
         int mouseScroll = Mouse.getDWheel();
         ContainerCreativeLegacy.scrollRow(-mouseScroll/10);
+        updatePages();
     }
     protected void updatePages(){
         ((ContainerCreativeLegacy)inventorySlots).updatePage();
@@ -90,6 +144,9 @@ public class GuiLegacyCreative extends GuiInventory {
         int i = this.mc.renderEngine.getTexture("/assets/legacyui/gui/legacycreative.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(i);
+
+        // Cursor
+        this.drawTexturedModalRect(8 + currentCursorColumn * 18, 33 + currentCursorRow * 18, 36, 175, 24, 24);
 
         // Scroll Bar
         int scrollTopY = 36;
@@ -111,6 +168,10 @@ public class GuiLegacyCreative extends GuiInventory {
         this.drawTexturedModalRect(j + 256, k + this.ySize - 13, 205, 175, 17, 13);
         this.drawTexturedModalRect(j + 256, k + this.ySize - 81 - 13, 222, 175, 17, 81);
         this.drawTexturedModalRect(j + 256, k + this.ySize - 81 - 81 - 13, 239, 175, 17, 81);
+
+        // Renders selected bookmark
+        int bookMarkWidth = 34;
+        this.drawTexturedModalRect(j + bookMarkWidth * tab, k - 2, 0, 175, bookMarkWidth, 30);
     }
     private void uiSound(String soundDir){
         if (LegacyUI.config.getBoolean(ConfigTranslations.USE_LEGACY_SOUNDS.getKey())){
