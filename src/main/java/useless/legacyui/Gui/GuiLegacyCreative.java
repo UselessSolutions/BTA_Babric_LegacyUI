@@ -6,6 +6,7 @@ import net.minecraft.client.input.InputType;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.player.inventory.ContainerPlayer;
 import net.minecraft.core.player.inventory.ContainerPlayerCreative;
+import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.sound.SoundType;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -74,8 +75,11 @@ public class GuiLegacyCreative extends GuiInventory {
     }
     public void setControllerCursorPosition() {
         if (this.mc.inputType == InputType.CONTROLLER) {
-            this.mc.controllerInput.cursorX = 50;
-            this.mc.controllerInput.cursorY = 50;
+            int j = (this.width - this.xSize) / 2;
+            int k = (this.height - this.ySize) / 2;
+            Slot slot = container.inventorySlots.get(9);
+            this.mc.controllerInput.cursorX = j + slot.xDisplayPosition + 9;
+            this.mc.controllerInput.cursorY = k + slot.yDisplayPosition + 9;
         }
     }
     public void selectTab(int tabIndex) {
