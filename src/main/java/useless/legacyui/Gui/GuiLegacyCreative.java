@@ -11,6 +11,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.ConfigTranslations;
+import useless.legacyui.Controller.LegacyControllerInventoryHandler;
 import useless.legacyui.Gui.Container.ContainerCreativeLegacy;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.Items.CategoryManager;
@@ -23,6 +24,7 @@ public class GuiLegacyCreative extends GuiInventory {
     protected int tab; // Current page of tabs
     protected final int maxDisplayedTabs = 8; // Total amount of tab pages, zero index
     protected GuiAuditoryButtons[] tabButtons = new GuiAuditoryButtons[maxDisplayedTabs];
+    protected GuiAuditoryButtons scrollBar;
     protected int currentCursorColumn;
     protected int currentCursorRow;
     public GuiLegacyCreative(EntityPlayer player) {
@@ -33,13 +35,32 @@ public class GuiLegacyCreative extends GuiInventory {
         this.xSize = 273; // width of texture plus the 17px strip that was cut off
         this.ySize = 175; // height of Gui window
         for (int i = 0; i < tabButtons.length; i++) {
-            tabButtons[i] = new GuiAuditoryButtons(i + 4, (this.width - this.xSize) / 2 + 34 * i, (this.height - this.ySize) / 2, 34, 24, "");
+            tabButtons[i] = new GuiAuditoryButtons(controlList.size(), (this.width - this.xSize) / 2 + 34 * i, (this.height - this.ySize) / 2, 34, 24, "");
             tabButtons[i].visible = false;
             tabButtons[i].setMuted(true);
             this.controlList.add(tabButtons[i]);
         }
+        scrollBar = new GuiAuditoryButtons(controlList.size(), (this.width - this.xSize) / 2 + 251, (this.height - this.ySize) / 2 + 35, 15, 112, "");
+        scrollBar.visible = false;
+        this.controlList.add(scrollBar);
         tab = 0;
         updatePages();
+    }
+    public void drawScreen(int x, int y, float renderPartialTicks) {
+        super.drawScreen(x,y,renderPartialTicks);
+
+        if (scrollBar.isHovered(x,y)){
+            if (Mouse.isButtonDown(0)){
+                float scrollProgress = (y-scrollBar.getY())/ (float)scrollBar.getHeight();
+                ContainerCreativeLegacy.currentRow = Math.round(ContainerCreativeLegacy.getTotalRows() * scrollProgress);
+            }
+        }
+        if (mc.inputType == InputType.CONTROLLER && scrollBar.isHovered((int)mc.controllerInput.cursorX, (int)mc.controllerInput.cursorY)) {
+            if (mc.controllerInput.buttonA.isPressed()){
+                float scrollProgress = (((int)mc.controllerInput.cursorY)-scrollBar.getY())/ (float)scrollBar.getHeight();
+                ContainerCreativeLegacy.currentRow = Math.round(ContainerCreativeLegacy.getTotalRows() * scrollProgress);
+            }
+        }
     }
     protected void buttonPressed(GuiButton guibutton) {
         //LegacyUI.LOGGER.info("" + currentScroll);
