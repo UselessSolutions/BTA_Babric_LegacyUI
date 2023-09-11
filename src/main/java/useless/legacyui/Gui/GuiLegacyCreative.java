@@ -1,5 +1,6 @@
 package useless.legacyui.Gui;
 
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiInventory;
 import net.minecraft.client.input.InputType;
 import net.minecraft.core.entity.player.EntityPlayer;
@@ -15,11 +16,13 @@ import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.Items.CategoryManager;
 import useless.legacyui.Sorting.Items.ItemCategory;
 import useless.legacyui.Utils.KeyboardUtil;
+import useless.prismaticlibe.gui.GuiAuditoryButtons;
 
 public class GuiLegacyCreative extends GuiInventory {
     protected ContainerCreativeLegacy container;
     protected int tab; // Current page of tabs
     protected final int maxDisplayedTabs = 8; // Total amount of tab pages, zero index
+    protected GuiAuditoryButtons[] tabButtons = new GuiAuditoryButtons[maxDisplayedTabs];
     protected int currentCursorColumn;
     protected int currentCursorRow;
     public GuiLegacyCreative(EntityPlayer player) {
@@ -29,8 +32,24 @@ public class GuiLegacyCreative extends GuiInventory {
     public void initGui() {
         this.xSize = 273; // width of texture plus the 17px strip that was cut off
         this.ySize = 175; // height of Gui window
+        for (int i = 0; i < tabButtons.length; i++) {
+            tabButtons[i] = new GuiAuditoryButtons(i + 4, (this.width - this.xSize) / 2 + 34 * i, (this.height - this.ySize) / 2, 34, 24, "");
+            tabButtons[i].visible = false;
+            tabButtons[i].setMuted(true);
+            this.controlList.add(tabButtons[i]);
+        }
         tab = 0;
         updatePages();
+    }
+    protected void buttonPressed(GuiButton guibutton) {
+        //LegacyUI.LOGGER.info("" + currentScroll);
+        int i = 0;
+        for (GuiButton button : tabButtons) {
+            if (guibutton == button) {
+                selectTab(i);
+            }
+            i++;
+        }
     }
     public void setControllerCursorPosition() {
         if (this.mc.inputType == InputType.CONTROLLER) {
