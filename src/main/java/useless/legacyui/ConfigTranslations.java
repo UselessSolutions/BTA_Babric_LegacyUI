@@ -3,6 +3,7 @@ package useless.legacyui;
 public enum ConfigTranslations {
     GUI_LABEL_COLOR,
     HIGHLIGHT_COLOR,
+    GUI_BACKGROUND_COLOR,
     OVERRIDE_LABEL_COLOR,
     CRAFTING_HIDE_UNDISCOVERED,
     EXPERIMENTAL_STACK_FIX,
@@ -38,5 +39,6 @@ public enum ConfigTranslations {
         ConfigTranslations.setId(EXPERIMENTAL_STACK_DELAY, 5, "ExperimentalQuickStackFixDelay");
         ConfigTranslations.setId(USE_LEGACY_SOUNDS, 6, "UseLegacySounds");
         ConfigTranslations.setId(HIDE_HOTBAR_IN_GUIS, 7, "HideHotbarInGUIs");
+        ConfigTranslations.setId(GUI_BACKGROUND_COLOR, 8, "GuiBackgroundColor");
     }
 }

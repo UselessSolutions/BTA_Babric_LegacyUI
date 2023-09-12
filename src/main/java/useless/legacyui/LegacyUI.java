@@ -24,6 +24,7 @@ public class LegacyUI implements ModInitializer {
         props.setProperty("ExperimentalQuickStackFixDelay", "50");
         props.setProperty("GuiLabelColor", "404040");
         props.setProperty("HighlightColor", "FF0000");
+        props.setProperty("GuiBackgroundColor", "90101010");
         props.setProperty("OverrideLabelModColor", "false");
         props.setProperty("UseLegacySounds", "true");
         props.setProperty("HideHotbarInGUIs", "true");
@@ -31,6 +32,7 @@ public class LegacyUI implements ModInitializer {
     }
     private static int GuiLabelColor = -1;
     private static final int HighlightColor = Integer.decode("0X" + config.getString(ConfigTranslations.HIGHLIGHT_COLOR.getKey()));
+    private static final int GuiBackgroundColor = ((Integer.decode("0X" + config.getString(ConfigTranslations.GUI_BACKGROUND_COLOR.getKey()).substring(0,2)) << 24) + Integer.decode("0X" + config.getString(ConfigTranslations.GUI_BACKGROUND_COLOR.getKey()).substring(2)));
 
     private static final boolean guimodExists = ModCheckHelper.checkForMod("guimod", ">=2.0.0");
 
@@ -43,7 +45,6 @@ public class LegacyUI implements ModInitializer {
         SoundHelper.addSound(MOD_ID, "ui/press.wav");
         SoundHelper.addSound(MOD_ID, "ui/scroll.wav");
         SoundHelper.addSound(MOD_ID, "ui/achievement.wav");
-
         LOGGER.info("LegacyUI initialized.");
 
     }
@@ -66,6 +67,9 @@ public class LegacyUI implements ModInitializer {
 
     public static int getHighlightColor(){
         return HighlightColor;
+    }
+    public static int getGuiBackgroundColor(){
+        return GuiBackgroundColor;
     }
     public static int iconTileWidth = 32;
     public static int imagesTilesLength = 16;

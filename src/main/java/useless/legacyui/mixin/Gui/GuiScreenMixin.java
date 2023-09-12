@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.core.sound.SoundType;
+import net.minecraft.core.util.helper.Color;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -43,7 +44,10 @@ public class GuiScreenMixin extends Gui {
                 soundManager.playSound(soundPath, soundType, volume, pitch);
             }
         }
+    }
 
-
+    @Redirect(method = "drawWorldBackground(I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/util/helper/Color;getARGB()I"))
+    private int newBackgroundColor(Color instance){
+        return LegacyUI.getGuiBackgroundColor();
     }
 }
