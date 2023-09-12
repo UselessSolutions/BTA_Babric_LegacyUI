@@ -359,6 +359,42 @@ public class GuiLegacyCreative extends GuiInventory {
         }
         GL11.glScaled(1/scale,1/scale,1/scale);
 
+        if (this.mc.inputType == InputType.CONTROLLER) {
+            int spacing = 14;
+            int buttonsOffset = 2;
+            int aX = 50;
+            drawStringNoShadow(fontRenderer, "Move Stack", aX + spacing, this.height - 24, 0xFFFFFF);
+            int promptASize = fontRenderer.getStringWidth("Move Stack");
+
+            int bX = aX + spacing + promptASize;
+            drawStringNoShadow(fontRenderer, "Exit", bX + spacing, this.height - 24, 0xFFFFFF);
+            int promptBSize = fontRenderer.getStringWidth("Exit");
+
+            int xX = bX + spacing + promptBSize;
+            drawStringNoShadow(fontRenderer, "Quick move", xX + spacing, this.height - 24, 0xFFFFFF);
+            int promptXSize = fontRenderer.getStringWidth("Quick move");
+
+            int yX = xX + spacing + promptXSize;
+            drawStringNoShadow(fontRenderer, "Take half", yX + spacing, this.height - 24, 0xFFFFFF);
+            int promptYSize = fontRenderer.getStringWidth("Take half");
+
+            int rbX = yX + spacing + promptYSize;
+            drawStringNoShadow(fontRenderer, "Select Tab", rbX + 40, this.height - 24, 0xFFFFFF);
+            int promptRBSize = fontRenderer.getStringWidth("Select Tab");
+
+            int controllerTexture = this.mc.renderEngine.getTexture("/assets/legacyui/gui/xbox360.png");
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            this.mc.renderEngine.bindTexture(controllerTexture);
+            GL11.glScaled(.5D, .5D, .5D);
+
+            this.drawTexturedModalRect((aX + buttonsOffset) * 2, (this.height - 26) * 2, 0, 0, 20, 20);
+            this.drawTexturedModalRect((bX + buttonsOffset) * 2, (this.height - 26) * 2, 20, 0, 20, 20);
+            this.drawTexturedModalRect((xX + buttonsOffset) * 2, (this.height - 26) * 2, 40, 0, 20, 20);
+            this.drawTexturedModalRect((yX + buttonsOffset) * 2, (this.height - 26) * 2, 60, 0, 20, 20);
+            this.drawTexturedModalRect((rbX + buttonsOffset) * 2, (this.height - 26) * 2, 90, 0, 71, 21);
+
+            GL11.glScaled(2, 2, 2);
+        }
     }
     private void uiSound(String soundDir){
         if (LegacyUI.config.getBoolean(ConfigTranslations.USE_LEGACY_SOUNDS.getKey())){

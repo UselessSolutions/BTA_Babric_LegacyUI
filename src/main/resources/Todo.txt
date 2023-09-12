@@ -24,7 +24,6 @@ Needed Things
 
 - Menu Panorama
 
-- Brighten background darkness in menus
 - Properly implement single player inventory slots
 - Split screen
 - Flag gui

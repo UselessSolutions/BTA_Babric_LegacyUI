@@ -143,9 +143,9 @@ public class GuiLegacyInventory extends GuiInventory{
             drawStringNoShadow(fontRenderer, "Take half", yX + spacing, this.height - 24, 0xFFFFFF);
             int promptYSize = fontRenderer.getStringWidth("Take half");
 
-            int rbX = yX + spacing + promptYSize;
+            /*int rbX = yX + spacing + promptYSize;
             drawStringNoShadow(fontRenderer, "What's this?", rbX + spacing + 7, this.height - 24, 0xFFFFFF);
-            int promptRBSize = fontRenderer.getStringWidth("What's this?");
+            int promptRBSize = fontRenderer.getStringWidth("What's this?");*/
 
             int controllerTexture = this.mc.renderEngine.getTexture("/assets/legacyui/gui/xbox360.png");
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -156,7 +156,7 @@ public class GuiLegacyInventory extends GuiInventory{
             this.drawTexturedModalRect((bX + buttonsOffset) * 2, (this.height - 26) * 2, 20, 0, 20, 20);
             this.drawTexturedModalRect((xX + buttonsOffset) * 2, (this.height - 26) * 2, 40, 0, 20, 20);
             this.drawTexturedModalRect((yX + buttonsOffset) * 2, (this.height - 26) * 2, 60, 0, 20, 20);
-            this.drawTexturedModalRect((rbX + buttonsOffset) * 2, (this.height - 26) * 2, 128, 0, 34, 21);
+            //this.drawTexturedModalRect((rbX + buttonsOffset) * 2, (this.height - 26) * 2, 128, 0, 34, 21);
 
             GL11.glScaled(2, 2, 2);
         }

@@ -9,6 +9,7 @@ import net.minecraft.client.input.controller.ControllerInventoryHandler;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.sound.SoundType;
 import useless.legacyui.ConfigTranslations;
+import useless.legacyui.Gui.Container.ContainerCreativeLegacy;
 import useless.legacyui.Gui.GuiLegacyCrafting;
 import useless.legacyui.Gui.GuiLegacyCreative;
 import useless.legacyui.LegacyUI;
@@ -108,6 +109,7 @@ public class LegacyControllerInventoryHandler extends ControllerInventoryHandler
 
         this.handleAbstractCrafting(crafting, e -> e.id > 9, e -> e.id > 0 && e.id < 10, e -> e.id == 0, 5, 0, 24);
     }
+    private static long lastScrollTime = 0;
     @Override
     public void handleInventory(GuiInventory inventory) {
         if (inventory instanceof GuiLegacyCreative){
@@ -117,6 +119,15 @@ public class LegacyControllerInventoryHandler extends ControllerInventoryHandler
             }
             if (controllerInput.buttonR.pressedThisFrame()) {
                 creativeInventory.scrollTab(1);
+            }
+            int repeatScrollDelay = 1000/10;
+            if (Math.abs(controllerInput.joyRight.getY()) > 0.5 && System.currentTimeMillis() - lastScrollTime > repeatScrollDelay){
+                if (controllerInput.joyRight.getY() > 0){
+                    ContainerCreativeLegacy.scrollRow(1);
+                } else {
+                    ContainerCreativeLegacy.scrollRow(-1);
+                }
+                lastScrollTime = System.currentTimeMillis();
             }
         }
         this.handleAbstractCrafting(inventory, e -> e.id >= 9 && e.id <= 44, e -> e.id >= 1 && e.id <= 4, e -> e.id == 0, 1, 0, 22);
