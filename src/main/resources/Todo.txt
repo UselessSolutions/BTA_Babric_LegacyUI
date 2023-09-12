@@ -15,7 +15,6 @@ Needed Things
 
 - configs for how items should be sorted
 - tips gui
-- creative inventory gui
 - paper doll onscreen corner
 
 - Redo item categorization
@@ -25,7 +24,6 @@ Needed Things
 
 - Menu Panorama
 
-- Dont render hotbar in menus
 - Brighten background darkness in menus
 - Properly implement single player inventory slots
 - Split screen

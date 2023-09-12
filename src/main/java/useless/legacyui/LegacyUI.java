@@ -26,6 +26,7 @@ public class LegacyUI implements ModInitializer {
         props.setProperty("HighlightColor", "FF0000");
         props.setProperty("OverrideLabelModColor", "false");
         props.setProperty("UseLegacySounds", "true");
+        props.setProperty("HideHotbarInGUIs", "true");
         config = new ConfigHandler(MOD_ID, props);
     }
     private static int GuiLabelColor = -1;

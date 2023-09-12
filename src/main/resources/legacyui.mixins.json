@@ -7,17 +7,18 @@
   ],
   "client": [
     "ControllerInputMixin",
+    "GamemodeCreativeMixin",
     "MinecraftMixin",
     "NetClientHandlerMixin",
     "PlayerControllerMPMixin",
     "PlayerSPMixin",
     "Container.ContainerPlayerMixin",
-    "GamemodeCreativeMixin",
     "Gui.GuiAchievementMixin",
     "Gui.GuiContainerMixin",
     "Gui.GuiInventoryMixin",
     "Gui.GuiOptionsBaseMixin",
-    "Gui.GuiScreenMixin"
+    "Gui.GuiScreenMixin",
+    "Gui.GuiIngameMixin"
   ],
   "injectors": {
     "defaultRequire": 1

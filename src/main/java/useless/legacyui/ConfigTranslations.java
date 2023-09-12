@@ -7,7 +7,8 @@ public enum ConfigTranslations {
     CRAFTING_HIDE_UNDISCOVERED,
     EXPERIMENTAL_STACK_FIX,
     EXPERIMENTAL_STACK_DELAY,
-    USE_LEGACY_SOUNDS;
+    USE_LEGACY_SOUNDS,
+    HIDE_HOTBAR_IN_GUIS;
     private static final ConfigTranslations[] configs;
     private int id;
     private String key;
@@ -36,5 +37,6 @@ public enum ConfigTranslations {
         ConfigTranslations.setId(EXPERIMENTAL_STACK_FIX, 4, "ExperimentalQuickStackFix");
         ConfigTranslations.setId(EXPERIMENTAL_STACK_DELAY, 5, "ExperimentalQuickStackFixDelay");
         ConfigTranslations.setId(USE_LEGACY_SOUNDS, 6, "UseLegacySounds");
+        ConfigTranslations.setId(HIDE_HOTBAR_IN_GUIS, 7, "HideHotbarInGUIs");
     }
 }
