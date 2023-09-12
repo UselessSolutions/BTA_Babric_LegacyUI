@@ -33,7 +33,7 @@ public class ContainerCreativeLegacy extends ContainerPlayer {
         inventorySlots.clear();
         int i;
         for (i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(inventory, i, 57 + i * 18, 151));
+            this.addSlot(new Slot(inventory, i, 48 + i * 18, 151));
         }
         this.creativeSlotsStart = this.inventorySlots.size();
         for (i = 0; i < slotsWide * slotsTall; ++i) {

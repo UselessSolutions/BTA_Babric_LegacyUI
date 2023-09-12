@@ -31,3 +31,4 @@ Needed Things
 - Split screen
 - Flag gui
 - Refactor bow and arrows into its own group from hand cannon/ charge
+- Random pitch offset to gui sounds
