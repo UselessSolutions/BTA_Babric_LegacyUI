@@ -37,6 +37,7 @@ public class GuiLegacyCrafting extends GuiContainer {
 
     protected GuiAuditoryButtons scrollUp;
     protected GuiAuditoryButtons scrollDown;
+    protected GuiAuditoryButtons bigSlotCraft;
     protected SortingCategory[] categories;
     protected  int currentScroll = 0;
     protected  int currentCategory = 0;
@@ -92,6 +93,10 @@ public class GuiLegacyCrafting extends GuiContainer {
         this.controlList.add(scrollUp);
         this.controlList.add(scrollDown);
 
+        bigSlotCraft = new GuiAuditoryButtons(controlList.size(), (this.width - this.xSize) / 2 + 102, (this.height - this.ySize) / 2 + 122, 26, 26, "");
+        bigSlotCraft.visible = false;
+        bigSlotCraft.setMuted(true);
+        controlList.add(bigSlotCraft);
 
         this.updatePages();
         this.selectDisplaySlot(currentSlot, false);
@@ -123,6 +128,9 @@ public class GuiLegacyCrafting extends GuiContainer {
         }
         if (guibutton == scrollDown) {
             scrollSlot(1);
+        }
+        if (guibutton == bigSlotCraft && renderCraftingDisplay()){
+            craft();
         }
 
     }
