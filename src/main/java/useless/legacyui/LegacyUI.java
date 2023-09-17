@@ -1,41 +1,21 @@
 package useless.legacyui;
 
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.core.item.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import turniplabs.halplibe.util.ConfigHandler;
-import useless.legacyui.Sorting.Items.CategoryManager;
-import useless.legacyui.Sorting.Items.ItemCategory;
-import useless.prismaticlibe.helper.ModCheckHelper;
+import useless.legacyui.Sorting.LegacyCategoryManager;
 import useless.prismaticlibe.helper.SoundHelper;
 
-import java.util.Properties;
-
-
 public class LegacyUI implements ModInitializer {
+    static {
+        //this is here to possibly fix some class loading issues, do not delete
+        try {
+            Class.forName("net.minecraft.core.block.Block");
+            Class.forName("net.minecraft.core.item.Item");
+        } catch (ClassNotFoundException ignored) {}
+    }
     public static final String MOD_ID = "legacyui";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    public static final ConfigHandler config;
-    static {
-        Properties props = new Properties();
-        props.setProperty("CraftingHideUndiscoveredItems","true");
-        props.setProperty("ExperimentalQuickStackFix", "false");
-        props.setProperty("ExperimentalQuickStackFixDelay", "50");
-        props.setProperty("GuiLabelColor", "404040");
-        props.setProperty("HighlightColor", "FF0000");
-        props.setProperty("GuiBackgroundColor", "90101010");
-        props.setProperty("OverrideLabelModColor", "false");
-        props.setProperty("UseLegacySounds", "true");
-        props.setProperty("HideHotbarInGUIs", "true");
-        config = new ConfigHandler(MOD_ID, props);
-    }
-    private static int GuiLabelColor = -1;
-    private static final int HighlightColor = Integer.decode("0X" + config.getString(ConfigTranslations.HIGHLIGHT_COLOR.getKey()));
-    private static final int GuiBackgroundColor = ((Integer.decode("0X" + config.getString(ConfigTranslations.GUI_BACKGROUND_COLOR.getKey()).substring(0,2)) << 24) + Integer.decode("0X" + config.getString(ConfigTranslations.GUI_BACKGROUND_COLOR.getKey()).substring(2)));
-
-    private static final boolean guimodExists = ModCheckHelper.checkForMod("guimod", ">=2.0.0");
-
     @Override
     public void onInitialize() {
         SoundHelper.addSound(MOD_ID, "ui/back.wav");
@@ -45,33 +25,7 @@ public class LegacyUI implements ModInitializer {
         SoundHelper.addSound(MOD_ID, "ui/press.wav");
         SoundHelper.addSound(MOD_ID, "ui/scroll.wav");
         SoundHelper.addSound(MOD_ID, "ui/achievement.wav");
+        LegacyCategoryManager.register();
         LOGGER.info("LegacyUI initialized.");
-
     }
-    public static int getGuiLabelColor(){
-        if (GuiLabelColor == -1){
-            if (guimodExists && !config.getBoolean(ConfigTranslations.OVERRIDE_LABEL_COLOR.getKey())){
-                try {
-                    GuiLabelColor = ModuleGuiLabels.getColorFromMod();
-                }
-                catch (Exception error){
-                    GuiLabelColor = Integer.decode("0X" + config.getString(ConfigTranslations.GUI_LABEL_COLOR.getKey()));
-                }
-            }
-            else {
-                GuiLabelColor = Integer.decode("0X" + config.getString(ConfigTranslations.GUI_LABEL_COLOR.getKey()));
-            }
-        }
-        return GuiLabelColor;
-    }
-
-    public static int getHighlightColor(){
-        return HighlightColor;
-    }
-    public static int getGuiBackgroundColor(){
-        return GuiBackgroundColor;
-    }
-    public static int iconTileWidth = 32;
-    public static int imagesTilesLength = 16;
-
 }
