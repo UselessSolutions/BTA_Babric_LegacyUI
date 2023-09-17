@@ -11,8 +11,6 @@ public class ModSettings {
     static {
         Properties props = new Properties();
         props.setProperty("CraftingHideUndiscoveredItems","true"); //
-        props.setProperty("ExperimentalQuickStackFix", "false"); //
-        props.setProperty("ExperimentalQuickStackFixDelay", "50"); //
         props.setProperty("GuiLabelColor", "404040");
         props.setProperty("GuiPromptColor", "FFFFFF");//
         props.setProperty("HighlightColor", "FF0000"); //
@@ -31,8 +29,6 @@ public class ModSettings {
     public static class Gui {
         private static final boolean hideUndiscoveredItems = config.getBoolean("CraftingHideUndiscoveredItems");
         private static final boolean hideHotbarInGUIs = config.getBoolean("HideHotbarInGUIs");
-        private static final boolean experimentalQuickStackFix = config.getBoolean("ExperimentalQuickStackFix");
-        private static final int experimentalQuickStackFixDelay = config.getInt("ExperimentalQuickStackFixDelay");
         private static final boolean enableLegacyCrafting = config.getBoolean("EnableLegacyCrafting");
         private static final boolean enableLegacyInventorySurvival = config.getBoolean("EnableLegacyInventorySurvival");
         private static final boolean enableLegacyInventoryCreative = config.getBoolean("EnableLegacyInventoryCreative");
@@ -44,8 +40,6 @@ public class ModSettings {
         public static boolean HideHotbarInGUIs(){
             return hideHotbarInGUIs;
         }
-        public static boolean ExperimentalQuickStackFix(){return experimentalQuickStackFix;}
-        public static int ExperimentalQuickStackFixDelay(){return experimentalQuickStackFixDelay;}
         public static boolean EnableLegacyCrafting(){
             return enableLegacyCrafting;
         }
