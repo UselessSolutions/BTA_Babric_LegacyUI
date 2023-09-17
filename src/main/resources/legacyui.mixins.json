@@ -1,24 +1,24 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "useless.legacyui.mixin",
+  "package": "useless.legacyui.Mixins",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
   ],
   "client": [
-    "ControllerInputMixin",
-    "GamemodeCreativeMixin",
+    "ContainerMixin",
+    "EntityPlayerSPMixin",
     "MinecraftMixin",
-    "NetClientHandlerMixin",
-    "PlayerControllerMPMixin",
-    "PlayerSPMixin",
-    "Container.ContainerPlayerMixin",
+    "Gamemodes.GamemodeCreativeMixin",
+    "Gamemodes.GamemodeSurvivalMixin",
     "Gui.GuiAchievementMixin",
     "Gui.GuiContainerMixin",
-    "Gui.GuiInventoryMixin",
+    "Gui.GuiIngameMixin",
+    "Gui.GuiInventoryAccessor",
     "Gui.GuiOptionsBaseMixin",
     "Gui.GuiScreenMixin",
-    "Gui.GuiIngameMixin"
+    "ControllerInputMixin",
+    "Multiplayer.PlayerControllerMPMixin"
   ],
   "injectors": {
     "defaultRequire": 1

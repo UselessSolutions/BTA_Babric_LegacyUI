@@ -1,31 +1,24 @@
 Needed Things
-- Recipe tags for categorizing recipes
-- Helper class for managing recipe tags <-
 - Comment and refactor code to be more readable
 - translucent block/item rendering
 - xbox popup style achievements (Config option)
-- Separate tab icon texture
-- Icon helper class for adding additional icons
 
 - Guide books tabs for recipe types
 - Guide book recipe groups
 
-- 512x512 gui textures
 - controller action wheel binds
 
 - configs for how items should be sorted
 - tips gui
 - paper doll onscreen corner
 
-- Redo item categorization
 - Optimize Code
 
 - Legacy Console tooltip textures
 
 - Menu Panorama
 
-- Properly implement single player inventory slots
 - Split screen
 - Flag gui
-- Refactor bow and arrows into its own group from hand cannon/ charge
 - Random pitch offset to gui sounds
+- Swap xy buttons in menus only
