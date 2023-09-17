@@ -272,6 +272,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         } else {
             LegacySoundManager.play.craftfail(false);
         }
+        setContainerRecipes();
     }
     public void onGuiClosed() {
         super.onGuiClosed();
