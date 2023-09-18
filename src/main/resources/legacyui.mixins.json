@@ -14,12 +14,13 @@
     "Gamemodes.GamemodeSurvivalMixin",
     "Gui.GuiAchievementMixin",
     "Gui.GuiContainerMixin",
+    "Gui.GuiGuidebookMixin",
     "Gui.GuiIngameMixin",
     "Gui.GuiInventoryAccessor",
     "Gui.GuiOptionsBaseMixin",
     "Gui.GuiScreenMixin",
-    "Gui.GuiGuidebookMixin",
-    "Multiplayer.PlayerControllerMPMixin"
+    "Multiplayer.PlayerControllerMPMixin",
+    "Settings.GameSettingsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

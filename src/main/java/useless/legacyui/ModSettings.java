@@ -10,20 +10,20 @@ public class ModSettings {
     public static final ConfigHandler config;
     static {
         Properties props = new Properties();
-        props.setProperty("CraftingHideUndiscoveredItems","true"); //
+        props.setProperty("CraftingHideUndiscoveredItems","true");
         props.setProperty("GuiLabelColor", "404040");
-        props.setProperty("GuiPromptColor", "FFFFFF");//
-        props.setProperty("HighlightColor", "FF0000"); //
-        props.setProperty("GuiBackgroundColor", "90101010"); //
-        props.setProperty("OverrideLabelModColor", "false"); //
-        props.setProperty("UseLegacySounds", "true"); //
-        props.setProperty("HideHotbarInGUIs", "true"); //
+        props.setProperty("GuiPromptColor", "FFFFFF");
+        props.setProperty("HighlightColor", "FF0000");
+        props.setProperty("GuiBackgroundColor", "90101010");
+        props.setProperty("OverrideLabelModColor", "false");
+        props.setProperty("UseLegacySounds", "true");
+        props.setProperty("HideHotbarInGUIs", "true");
         props.setProperty("EnableLegacyCrafting", "true");
         props.setProperty("EnableLegacyInventorySurvival", "true");
         props.setProperty("EnableLegacyInventoryCreative", "true");
         props.setProperty("ShowCraftingItemNamePreview", "true");
         props.setProperty("UseRandomPitch", "false");
-        props.setProperty("GuiControllerType", "4");
+        props.setProperty("GuiControllerType", "4"); //
         config = new ConfigHandler(LegacyUI.MOD_ID, props);
     }
     public static class Gui {
