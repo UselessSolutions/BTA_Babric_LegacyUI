@@ -1,10 +1,20 @@
 package useless.legacyui;
 
+import io.github.prospector.modmenu.ModMenu;
+import io.github.prospector.modmenu.api.ModMenuApi;
+import io.github.prospector.modmenu.impl.ModMenuApiImpl;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.options.GuiOptionsPageGeneral;
+import net.minecraft.client.gui.options.GuiOptionsPageTexturePacks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import useless.legacyui.Sorting.LegacyCategoryManager;
 import useless.prismaticlibe.helper.SoundHelper;
+
+import java.util.function.Function;
 
 public class LegacyUI implements ModInitializer {
     static {
