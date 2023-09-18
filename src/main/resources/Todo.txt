@@ -20,7 +20,5 @@ Needed Things
 
 - Split screen
 - Flag gui
-- Random pitch offset to gui sounds
 - Swap xy buttons in menus only
 - Two slot crafting scroll
-- Ability to open Guidebook with select

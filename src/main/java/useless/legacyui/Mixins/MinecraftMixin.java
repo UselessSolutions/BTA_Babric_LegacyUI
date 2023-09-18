@@ -2,6 +2,7 @@ package useless.legacyui.Mixins;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.EntityPlayerSP;
+import net.minecraft.client.gui.GuiGuidebook;
 import net.minecraft.client.gui.GuiInventory;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.core.player.gamemode.Gamemode;
@@ -10,6 +11,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import useless.legacyui.Gui.GuiScreens.GuiLegacyCrafting;
 import useless.legacyui.Gui.GuiScreens.GuiLegacyCreative;
@@ -36,6 +38,15 @@ public class MinecraftMixin {
         }
         else {
             minecraft.displayGuiScreen(guiscreen);
+        }
+    }
+    @Inject(method = "handleControllerInput()V", at = @At("TAIL"))
+    private void dpRightToOpenGuidebook(CallbackInfo ci){
+        Minecraft mc = Minecraft.getMinecraft(this);
+        if (mc.currentScreen == null){
+            if (mc.controllerInput.digitalPad.right.pressedThisFrame()){
+                mc.displayGuiScreen(new GuiGuidebook(thePlayer));
+            }
         }
     }
     /*@Inject(method = "run()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;startGame()V", shift = At.Shift.AFTER))
