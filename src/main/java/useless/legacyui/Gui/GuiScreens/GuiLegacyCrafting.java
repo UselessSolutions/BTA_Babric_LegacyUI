@@ -16,8 +16,7 @@ import useless.legacyui.Gui.GuiElements.GuiRegion;
 import useless.legacyui.Gui.IGuiController;
 import useless.legacyui.Helper.KeyboardHelper;
 import useless.legacyui.LegacySoundManager;
-import useless.legacyui.LegacyUI;
-import useless.legacyui.ModSettings;
+import useless.legacyui.Settings.ModSettings;
 import useless.legacyui.Sorting.LegacyCategoryManager;
 import useless.legacyui.Sorting.Recipe.RecipeCategory;
 import useless.legacyui.Sorting.Recipe.RecipeGroup;
@@ -313,7 +312,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         drawStringCenteredNoShadow(fontRenderer, I18n.getInstance().translateKey("legacyui.guilabel.inventory"),GUIx + 204, GUIy + 97, ModSettings.Colors.GuiLabelColor());
 
         String craftingString; // Text above crafting table
-        if (ModSettings.Gui.ShowCraftingItemNamePreview() && showCraftDisplay){ // If crafting display rendered and render item names enabled
+        if (ModSettings.legacyOptions.getShowCraftingItemNamePreview().value && showCraftDisplay){ // If crafting display rendered and render item names enabled
             craftingString = currentRecipe.getRecipeOutput().getDisplayName(); // Get Item name
             if (!LegacyContainerCrafting.isDicovered(currentRecipe.getRecipeOutput(), mc.statFileWriter, mc.thePlayer)){ // If undiscovered obscure it
                 craftingString = craftingString.replaceAll("[a-zA-Z]|[0-9]", "?");

@@ -16,11 +16,10 @@ import useless.legacyui.Gui.GuiElements.GuiRegion;
 import useless.legacyui.Gui.IGuiController;
 import useless.legacyui.Helper.KeyboardHelper;
 import useless.legacyui.LegacySoundManager;
-import useless.legacyui.ModSettings;
+import useless.legacyui.Settings.ModSettings;
 import useless.legacyui.Sorting.LegacyCategoryManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GuiLegacyCreative extends GuiInventory implements IGuiController {

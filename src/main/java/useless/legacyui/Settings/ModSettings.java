@@ -1,6 +1,8 @@
-package useless.legacyui;
+package useless.legacyui.Settings;
 
+import net.minecraft.client.Minecraft;
 import turniplabs.halplibe.util.ConfigHandler;
+import useless.legacyui.LegacyUI;
 import useless.legacyui.ModModules.GuiModModule;
 import useless.prismaticlibe.helper.ModCheckHelper;
 
@@ -8,6 +10,7 @@ import java.util.Properties;
 
 public class ModSettings {
     public static final ConfigHandler config;
+    public static final ILegacyOptions legacyOptions = (ILegacyOptions) Minecraft.getMinecraft(Minecraft.class).gameSettings;
     static {
         Properties props = new Properties();
         props.setProperty("CraftingHideUndiscoveredItems","true");
@@ -25,34 +28,6 @@ public class ModSettings {
         props.setProperty("UseRandomPitch", "false");
         props.setProperty("GuiControllerType", "4"); //
         config = new ConfigHandler(LegacyUI.MOD_ID, props);
-    }
-    public static class Gui {
-        private static final boolean hideUndiscoveredItems = config.getBoolean("CraftingHideUndiscoveredItems");
-        private static final boolean hideHotbarInGUIs = config.getBoolean("HideHotbarInGUIs");
-        private static final boolean enableLegacyCrafting = config.getBoolean("EnableLegacyCrafting");
-        private static final boolean enableLegacyInventorySurvival = config.getBoolean("EnableLegacyInventorySurvival");
-        private static final boolean enableLegacyInventoryCreative = config.getBoolean("EnableLegacyInventoryCreative");
-        private static final boolean showCraftingItemNamePreview = config.getBoolean("ShowCraftingItemNamePreview");
-        private static final int guiControllerType = Math.max(Math.min(config.getInt("GuiControllerType"),16), 0);
-        public static boolean HideUndiscoveredItems(){
-            return hideUndiscoveredItems;
-        }
-        public static boolean HideHotbarInGUIs(){
-            return hideHotbarInGUIs;
-        }
-        public static boolean EnableLegacyCrafting(){
-            return enableLegacyCrafting;
-        }
-        public static boolean EnableLegacyInventorySurvival(){
-            return enableLegacyInventorySurvival;
-        }
-        public static boolean EnableLegacyInventoryCreative(){
-            return enableLegacyInventoryCreative;
-        }
-        public static boolean ShowCraftingItemNamePreview(){
-            return showCraftingItemNamePreview;
-        }
-        public static int GuiControllerType() {return guiControllerType;}
     }
     public static class Colors {
         private static final boolean overrideLabelModColor = config.getBoolean("OverrideLabelModColor");
@@ -79,13 +54,5 @@ public class ModSettings {
         public static int GuiPromptColor(){
             return guiPromptColor;
         }
-    }
-    public static class Sounds {
-        private static final boolean useLegacySounds = config.getBoolean("UseLegacySounds");
-        private static final boolean useRandomPitch = config.getBoolean("UseRandomPitch");
-        public static boolean UseLegacySounds(){
-            return useLegacySounds;
-        }
-        public static boolean UseRandomPitch() {return  useRandomPitch;}
     }
 }

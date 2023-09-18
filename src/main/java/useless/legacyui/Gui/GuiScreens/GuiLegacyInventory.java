@@ -13,7 +13,7 @@ import useless.legacyui.Gui.GuiElements.GuiButtonPrompt;
 import useless.legacyui.LegacySoundManager;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Mixins.Gui.GuiInventoryAccessor;
-import useless.legacyui.ModSettings;
+import useless.legacyui.Settings.ModSettings;
 
 import java.util.ArrayList;
 import java.util.List;

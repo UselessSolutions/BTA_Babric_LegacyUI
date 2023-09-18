@@ -18,15 +18,13 @@ import useless.legacyui.Gui.Slots.SlotCraftingDisplayLegacy;
 import useless.legacyui.Gui.Slots.SlotNull;
 import useless.legacyui.Helper.InventoryHelper;
 import useless.legacyui.LegacyUI;
-import useless.legacyui.ModSettings;
+import useless.legacyui.Settings.ModSettings;
 import useless.legacyui.Sorting.LegacyCategoryManager;
 import useless.legacyui.Sorting.Recipe.RecipeCategory;
 import useless.legacyui.Sorting.Recipe.RecipeCost;
 import useless.legacyui.Sorting.Recipe.RecipeGroup;
-import useless.prismaticlibe.gui.slot.SlotCraftingDisplay;
 import useless.prismaticlibe.gui.slot.SlotResizable;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class LegacyContainerCrafting extends Container {
@@ -252,7 +250,7 @@ public class LegacyContainerCrafting extends Container {
         return canCraft;
     }
     public static boolean isDicovered(ItemStack item, StatFileWriter statWriter, EntityPlayer player){
-        if (!ModSettings.Gui.HideUndiscoveredItems()){
+        if (!ModSettings.legacyOptions.getCraftingHideUndiscoveredItems().value){
             return true;
         }
         if (player.getGamemode() == Gamemode.creative) {

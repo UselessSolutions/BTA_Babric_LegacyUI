@@ -1,7 +1,8 @@
-package useless.legacyui.Mixins.Settings;
+package useless.legacyui.Settings;
 
 import net.minecraft.client.option.BooleanOption;
 import net.minecraft.client.option.IntegerOption;
+import net.minecraft.client.option.RangeOption;
 import net.minecraft.client.option.StringOption;
 
 public interface ILegacyOptions {
@@ -18,5 +19,5 @@ public interface ILegacyOptions {
     IntegerOption getGuiPromptColor();
     IntegerOption getHighlightColor();
     IntegerOption getGuiBackgroundColor();
-    IntegerOption getGuiControllerType();
+    RangeOption getGuiControllerType();
 }

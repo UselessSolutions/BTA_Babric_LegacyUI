@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiElement;
 import net.minecraft.client.render.FontRenderer;
 import useless.legacyui.Gui.GuiScreens.UtilGui;
-import useless.legacyui.ModSettings;
+import useless.legacyui.Settings.ModSettings;
 
 public class GuiButtonPrompt extends GuiRegion implements GuiElement {
     private static final int buttonAtlasWidth = 256;
@@ -35,11 +35,11 @@ public class GuiButtonPrompt extends GuiRegion implements GuiElement {
     public void drawPrompt(Minecraft minecraft, int mouseX, int mouseY){
         UtilGui.bindTexture("/assets/legacyui/gui/Controller/buttons.png");
         int u = buttonCoordinates * 13;
-        int v = ModSettings.Gui.GuiControllerType()  * 13;
+        int v = ModSettings.legacyOptions.getGuiControllerType().value  * 13;
         UtilGui.drawTexturedModalRect(this, xPosition, yPosition, u, v, 13, 13, 1f/buttonAtlasWidth);
         if (buttonCooridnate2 > -1){
             u = buttonCooridnate2 * 13;
-            v = ModSettings.Gui.GuiControllerType() * 13;
+            v = ModSettings.legacyOptions.getGuiControllerType().value * 13;
             UtilGui.drawTexturedModalRect(this, xPosition + 13 + spacing, yPosition, u, v, 13, 13, 1f/buttonAtlasWidth);
             fontRenderer.drawString(prompt, xPosition + 26 + spacing * 2, yPosition+2, ModSettings.Colors.GuiPromptColor());
         } else {
