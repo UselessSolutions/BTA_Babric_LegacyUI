@@ -306,7 +306,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * currentTab, GUIy - 2, 0,175, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
 
         IRecipe currentRecipe = (IRecipe) currentCategory().getRecipeGroups(isSmall())[currentSlot].getRecipes(isSmall())[currentScroll];
-        if (currentCategory().getRecipeGroups(isSmall())[currentSlot].getContainer(currentScroll, isSmall()).inventorySlots.size() <= 5 && showCraftDisplay){ // 2x2 Crafting overlay
+        if ((currentCategory().getRecipeGroups(isSmall())[currentSlot].getContainer(currentScroll, isSmall()).inventorySlots.size() <= 5 && showCraftDisplay) || isSmall()){ // 2x2 Crafting overlay
             UtilGui.drawTexturedModalRect(this, GUIx + 19, GUIy + 108, 61, 175, 54, 54, 1f/guiTextureWidth);
         }
 
