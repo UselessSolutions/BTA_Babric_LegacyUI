@@ -19,10 +19,10 @@ public class GuiOptionsPageLegacy extends GuiOptionsPageOptionBase {
                 legacyOptions.getShowCraftingItemNamePreview(),
                 legacyOptions.getGuiControllerType(),
                 legacyOptions.getCraftingHideUndiscoveredItems(),
-                legacyOptions.getOverrideLabelModColor(),
+                legacyOptions.getOverrideLabelModColor()/*,
                 legacyOptions.getGuiPromptColor(),
                 legacyOptions.getGuiBackgroundColor(),
                 legacyOptions.getGuiLabelColor(),
-                legacyOptions.getHighlightColor());
+                legacyOptions.getHighlightColor()*/);
     }
 }
