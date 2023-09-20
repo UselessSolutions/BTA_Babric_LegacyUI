@@ -1,4 +1,4 @@
-package useless.legacyui.Gui.GuiScreens;
+package useless.legacyui.Gui.GuiScreens.Options;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.options.GuiOptionsPageOptionBase;
@@ -9,20 +9,16 @@ public class GuiOptionsPageLegacy extends GuiOptionsPageOptionBase {
     public GuiOptionsPageLegacy(GuiScreen parent, GameSettings settings) {
         super(parent, settings);
         ILegacyOptions legacyOptions = (ILegacyOptions)settings;
-        this.addOptionsCategory("legacyui.options",
+        this.addOptionsCategory("legacyui.options.gui",
                 legacyOptions.getEnableLegacyInventorySurvival(),
                 legacyOptions.getEnableLegacyCrafting(),
                 legacyOptions.getEnableLegacyInventoryCreative(),
-                legacyOptions.getUseLegacySounds(),
                 legacyOptions.getHideHotbarInGUIs(),
-                legacyOptions.getUseRandomPitch(),
-                legacyOptions.getShowCraftingItemNamePreview(),
                 legacyOptions.getGuiControllerType(),
-                legacyOptions.getCraftingHideUndiscoveredItems(),
-                legacyOptions.getOverrideLabelModColor()/*,
-                legacyOptions.getGuiPromptColor(),
-                legacyOptions.getGuiBackgroundColor(),
-                legacyOptions.getGuiLabelColor(),
-                legacyOptions.getHighlightColor()*/);
+                legacyOptions.getShowCraftingItemNamePreview(),
+                legacyOptions.getCraftingHideUndiscoveredItems());
+        this.addOptionsCategory("legacyui.options.sound",
+                legacyOptions.getUseLegacySounds(),
+                legacyOptions.getUseRandomPitch());
     }
 }

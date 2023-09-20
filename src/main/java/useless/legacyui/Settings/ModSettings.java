@@ -13,27 +13,16 @@ public class ModSettings {
     public static final ILegacyOptions legacyOptions = (ILegacyOptions) Minecraft.getMinecraft(Minecraft.class).gameSettings;
     static {
         Properties props = new Properties();
-        props.setProperty("CraftingHideUndiscoveredItems","true");
         props.setProperty("GuiLabelColor", "404040");
         props.setProperty("GuiPromptColor", "FFFFFF");
         props.setProperty("HighlightColor", "FF0000");
         props.setProperty("GuiBackgroundColor", "90101010");
-        props.setProperty("OverrideLabelModColor", "false");
-        props.setProperty("UseLegacySounds", "true");
-        props.setProperty("HideHotbarInGUIs", "true");
-        props.setProperty("EnableLegacyCrafting", "true");
-        props.setProperty("EnableLegacyInventorySurvival", "true");
-        props.setProperty("EnableLegacyInventoryCreative", "true");
-        props.setProperty("ShowCraftingItemNamePreview", "true");
-        props.setProperty("UseRandomPitch", "false");
-        props.setProperty("GuiControllerType", "4"); //
         config = new ConfigHandler(LegacyUI.MOD_ID, props);
     }
     public static class Colors {
-        private static final boolean overrideLabelModColor = config.getBoolean("OverrideLabelModColor");
         private static final int guiLabelColor;
         static {
-            if (ModCheckHelper.checkForMod("guimod", ">=2.0.0") && !overrideLabelModColor){
+            if (ModCheckHelper.checkForMod("guimod", ">=2.0.0")){
                 guiLabelColor = GuiModModule.getColorFromMod();
             } else {
                 guiLabelColor = Integer.decode("0X" + config.getString("GuiLabelColor"));

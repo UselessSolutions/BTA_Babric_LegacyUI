@@ -26,7 +26,9 @@ legacyui.prompt.select=Select
 legacyui.prompt.movestack=Quick Move
 legacyui.prompt.halfstack=Take Half
 
-legacyui.options=Better Than Legacy Settings
+legacyui.options.title=Better Than Legacy Settings
+legacyui.options.gui=Legacy GUI Settings
+legacyui.options.sound=Legacy Sound Settings
 options.enableLegacyInventorySurvival=Legacy Survival Inventory GUI
 options.enableLegacyCrafting=Legacy Crafting GUI
 options.enableLegacyInventoryCreative=Legacy Creative GUI
