@@ -1,6 +1,7 @@
 package useless.legacyui.Settings;
 
 import net.minecraft.client.option.*;
+import useless.legacyui.Gui.GuiScreens.Options.ControllerType;
 
 public interface ILegacyOptions {
     BooleanOption getCraftingHideUndiscoveredItems();
@@ -16,5 +17,5 @@ public interface ILegacyOptions {
     ColorOption getGuiPromptColor();
     ColorOption getHighlightColor();
     ColorOption getGuiBackgroundColor();
-    RangeOption getGuiControllerType();
+    EnumOption<ControllerType> getGuiControllerType();
 }

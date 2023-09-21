@@ -4,9 +4,10 @@ import net.minecraft.client.option.*;
 import net.minecraft.core.util.helper.Color;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import useless.legacyui.Gui.GuiScreens.Options.ControllerType;
 import useless.legacyui.Settings.ILegacyOptions;
 
-@Mixin(value = GameSettings.class, remap = false)
+@Mixin(value = GameSettings.class, remap = false, priority = 2000)
 public class GameSettingsMixin implements ILegacyOptions {
     @Unique
     private final GameSettings thisAsGameSettings = (GameSettings) ((Object)this);
@@ -37,7 +38,7 @@ public class GameSettingsMixin implements ILegacyOptions {
     @Unique
     public ColorOption guiBackgroundColor = new ColorOption(thisAsGameSettings, "legacyui.guiBackgroundColor", new Color().setARGB(0x90101010));
     @Unique
-    public RangeOption guiControllerType = new RangeOption(thisAsGameSettings, "legacyui.guiControllerType", 4, 13);
+    public EnumOption<ControllerType> guiControllerType = new EnumOption<>(thisAsGameSettings, "legacyui.guiControllerType", ControllerType.class, ControllerType.GENERIC);
 
     public BooleanOption getCraftingHideUndiscoveredItems() {
         return craftingHideUndiscoveredItems;
@@ -78,7 +79,7 @@ public class GameSettingsMixin implements ILegacyOptions {
     public ColorOption getGuiBackgroundColor() {
         return guiBackgroundColor;
     }
-    public RangeOption getGuiControllerType() {
+    public EnumOption<ControllerType> getGuiControllerType() {
         return guiControllerType;
     }
 }

@@ -43,3 +43,21 @@ options.legacyui.guiPromptColor=GUI Prompt Color
 options.legacyui.guiBackgroundColor=GUI Background Color
 options.legacyui.guiLabelColor=GUI Label Color
 options.legacyui.highlightColor=GUI Highlight Color
+
+options.legacyui.guiControllerType.generic=Generic Gamepad
+options.legacyui.guiControllerType.dual_sense=Dual Sense
+options.legacyui.guiControllerType.dual_shock_4=Dual Shock 4
+options.legacyui.guiControllerType.dual_shock_3=Dual Shock 3
+options.legacyui.guiControllerType.xbox_one=Xbox One
+options.legacyui.guiControllerType.xbox_360_bk=Xbox 360 Black
+options.legacyui.guiControllerType.xbox_360_wt=Xbox 360 White
+options.legacyui.guiControllerType.xbox_slim=Xbox Slim
+options.legacyui.guiControllerType.xbox_duke=Xbox Duke
+options.legacyui.guiControllerType.joycon_1=Joycon 1
+options.legacyui.guiControllerType.joycon_2=Joycon 2
+options.legacyui.guiControllerType.joycon_3=Joycon 3
+options.legacyui.guiControllerType.joycon_4=Joycon 4
+options.legacyui.guiControllerType.gamecube=Gamecube
+options.legacyui.guiControllerType.steam_controller=Steam Controller
+options.legacyui.guiControllerType.steam_deck=Steam Deck
+
