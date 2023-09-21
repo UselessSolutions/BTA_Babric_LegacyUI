@@ -16,11 +16,10 @@ import useless.legacyui.Gui.GuiElements.GuiRegion;
 import useless.legacyui.Gui.IGuiController;
 import useless.legacyui.Helper.KeyboardHelper;
 import useless.legacyui.LegacySoundManager;
-import useless.legacyui.ModSettings;
+import useless.legacyui.Settings.ModSettings;
 import useless.legacyui.Sorting.LegacyCategoryManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GuiLegacyCreative extends GuiInventory implements IGuiController {
@@ -206,7 +205,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         UtilGui.bindTexture("/assets/legacyui/gui/legacycreative.png");
         UtilGui.drawTexturedModalRect(this, craftButton.xPosition, craftButton.yPosition, craftButton.isHovered(x, y) ? 186+craftButton.width:186, 184, craftButton.width, craftButton.height, 1f/guiTextureWidth); // draw craftButton
         UtilGui.drawTexturedModalRect(this, clearButton.xPosition, clearButton.yPosition, clearButton.isHovered(x, y) ? 146+clearButton.width:146, 184, clearButton.width, clearButton.height, 1f/guiTextureWidth); // draw clearbutton
-        drawStringCentered(fontRenderer, clearButton.displayString, clearButton.xPosition + (clearButton.width/2), clearButton.yPosition + 6, ModSettings.Colors.GuiPromptColor());
+        drawStringCentered(fontRenderer, clearButton.displayString, clearButton.xPosition + (clearButton.width/2), clearButton.yPosition + 6, ModSettings.legacyOptions.getGuiPromptColor().value.value);
         if (mc.inputType == InputType.CONTROLLER){
             for (GuiButtonPrompt prompt: prompts) {
                 prompt.drawPrompt(mc, x, y);
@@ -228,7 +227,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
             UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.creativeCategories.get(i).iconCoordinate, 0.75f); // Render Icon
         }
 
-        drawStringCenteredNoShadow(fontRenderer, LegacyCategoryManager.creativeCategories.get(currentTab).getTranslatedKey(), GUIx + xSize/2, GUIy + 32, ModSettings.Colors.GuiLabelColor());
+        drawStringCenteredNoShadow(fontRenderer, LegacyCategoryManager.creativeCategories.get(currentTab).getTranslatedKey(), GUIx + xSize/2, GUIy + 32, ModSettings.legacyOptions.getGuiLabelColor().value.value);
     }
 
     @Override

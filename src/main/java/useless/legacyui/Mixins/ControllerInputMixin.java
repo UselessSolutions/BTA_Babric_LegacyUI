@@ -4,15 +4,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.input.controller.*;
 import net.minecraft.core.player.inventory.slot.Slot;
-import net.minecraft.core.sound.SoundType;
 import org.spongepowered.asm.mixin.*;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import useless.legacyui.Gui.IGuiController;
 import useless.legacyui.LegacySoundManager;
-import useless.legacyui.LegacyUI;
-import useless.legacyui.ModSettings;
 
 @Mixin(value = ControllerInput.class, remap = false)
 public class ControllerInputMixin {

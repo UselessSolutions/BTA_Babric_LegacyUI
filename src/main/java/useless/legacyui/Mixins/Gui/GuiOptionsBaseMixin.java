@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import useless.legacyui.LegacySoundManager;
-import useless.legacyui.ModSettings;
+import useless.legacyui.Settings.ModSettings;
 import useless.legacyui.Gui.GuiElements.Buttons.IButtonSounds;
 
 @Mixin(value = GuiOptionsPageBase.class, remap = false)
@@ -26,7 +26,7 @@ public class GuiOptionsBaseMixin extends GuiScreen {
         if (button != null && button instanceof IButtonSounds){
             IButtonSounds soundButton = (IButtonSounds)button;
             if (!soundButton.isMuted()){
-                if (ModSettings.Sounds.UseLegacySounds()){
+                if (ModSettings.legacyOptions.getUseLegacySounds().value){
                     LegacySoundManager.play.press(true);
                 }
                 else {
@@ -35,7 +35,7 @@ public class GuiOptionsBaseMixin extends GuiScreen {
             }
         }
         else {
-            if (ModSettings.Sounds.UseLegacySounds()){
+            if (ModSettings.legacyOptions.getUseLegacySounds().value){
                 LegacySoundManager.play.press(true);
             }
             else {

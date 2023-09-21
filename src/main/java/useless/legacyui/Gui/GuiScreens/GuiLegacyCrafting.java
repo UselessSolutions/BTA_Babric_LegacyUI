@@ -16,8 +16,7 @@ import useless.legacyui.Gui.GuiElements.GuiRegion;
 import useless.legacyui.Gui.IGuiController;
 import useless.legacyui.Helper.KeyboardHelper;
 import useless.legacyui.LegacySoundManager;
-import useless.legacyui.LegacyUI;
-import useless.legacyui.ModSettings;
+import useless.legacyui.Settings.ModSettings;
 import useless.legacyui.Sorting.LegacyCategoryManager;
 import useless.legacyui.Sorting.Recipe.RecipeCategory;
 import useless.legacyui.Sorting.Recipe.RecipeGroup;
@@ -310,10 +309,10 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             UtilGui.drawTexturedModalRect(this, GUIx + 19, GUIy + 108, 61, 175, 54, 54, 1f/guiTextureWidth);
         }
 
-        drawStringCenteredNoShadow(fontRenderer, I18n.getInstance().translateKey("legacyui.guilabel.inventory"),GUIx + 204, GUIy + 97, ModSettings.Colors.GuiLabelColor());
+        drawStringCenteredNoShadow(fontRenderer, I18n.getInstance().translateKey("legacyui.guilabel.inventory"),GUIx + 204, GUIy + 97, ModSettings.legacyOptions.getGuiLabelColor().value.value);
 
         String craftingString; // Text above crafting table
-        if (ModSettings.Gui.ShowCraftingItemNamePreview() && showCraftDisplay){ // If crafting display rendered and render item names enabled
+        if (ModSettings.legacyOptions.getShowCraftingItemNamePreview().value && showCraftDisplay){ // If crafting display rendered and render item names enabled
             craftingString = currentRecipe.getRecipeOutput().getDisplayName(); // Get Item name
             if (!LegacyContainerCrafting.isDicovered(currentRecipe.getRecipeOutput(), mc.statFileWriter, mc.thePlayer)){ // If undiscovered obscure it
                 craftingString = craftingString.replaceAll("[a-zA-Z]|[0-9]", "?");
@@ -325,8 +324,8 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             craftingString = I18n.getInstance().translateKey("legacyui.guilabel.crafting");
         }
 
-        drawStringCenteredNoShadow(fontRenderer, craftingString,GUIx + 73, GUIy + 97, ModSettings.Colors.GuiLabelColor());
-        drawStringCenteredNoShadow(fontRenderer, LegacyCategoryManager.recipeCategories.get(currentTab).getTranslatedKey(),GUIx + (xSize/2), GUIy + 36, ModSettings.Colors.GuiLabelColor());
+        drawStringCenteredNoShadow(fontRenderer, craftingString,GUIx + 73, GUIy + 97, ModSettings.legacyOptions.getGuiLabelColor().value.value);
+        drawStringCenteredNoShadow(fontRenderer, LegacyCategoryManager.recipeCategories.get(currentTab).getTranslatedKey(),GUIx + (xSize/2), GUIy + 36, ModSettings.legacyOptions.getGuiLabelColor().value.value);
 
         UtilGui.bindTexture("/assets/legacyui/gui/legacycrafting.png");
         drawSelectionCursorBackground();
