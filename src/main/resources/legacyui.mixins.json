@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "useless.legacyui.Mixins",
   "compatibilityLevel": "JAVA_8",
+  "plugin": "useless.legacyui.LegacyMixinPlugin",
   "mixins": [
   ],
   "client": [
@@ -13,22 +14,23 @@
     "Gamemodes.GamemodeCreativeMixin",
     "Gamemodes.GamemodeSurvivalMixin",
     "Gui.GuiAchievementMixin",
-    "Gui.GuiContainerMixin",
-    "Gui.GuiGuidebookMixin",
-    "Gui.GuiIngameMixin",
-    "Gui.GuiInventoryAccessor",
-    "Gui.GuiOptionsBaseMixin",
-    "Gui.GuiScreenMixin",
     "Gui.GuiAchievementsMixin",
     "Gui.GuiChestMixin",
+    "Gui.GuiContainerMixin",
     "Gui.GuiCraftingMixin",
     "Gui.GuiDispenserMixin",
     "Gui.GuiFurnaceMixin",
+    "Gui.GuiGuidebookMixin",
+    "Gui.GuiIngameMixin",
+    "Gui.GuiInventoryAccessor",
     "Gui.GuiInventoryCreativeMixin",
     "Gui.GuiInventoryMixin",
+    "Gui.GuiOptionsBaseMixin",
+    "Gui.GuiScreenMixin",
     "Gui.GuiTrommelMixin",
     "Multiplayer.PlayerControllerMPMixin",
-    "Settings.GameSettingsMixin"
+    "Settings.GameSettingsMixin",
+    "Modded.NoNameDyes.GuiBleacherMixin"
   ],
   "injectors": {
     "defaultRequire": 1

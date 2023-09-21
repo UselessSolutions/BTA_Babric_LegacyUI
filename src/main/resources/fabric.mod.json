@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "legacyui",
-  "version": "0.7.2",
+  "version": "0.7.3",
 
   "name": "Better Than Legacy!",
   "description": "A UI overhaul mod for BTA, designed with controllers in mind!",
@@ -35,5 +35,6 @@
     "prismaticlibe": ">=2.1.1"
   },
   "suggests": {
+    "modmenu": ">=2.0.0"
   }
 }
