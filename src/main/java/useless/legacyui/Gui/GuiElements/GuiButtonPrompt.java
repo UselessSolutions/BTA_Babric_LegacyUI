@@ -41,9 +41,9 @@ public class GuiButtonPrompt extends GuiRegion implements GuiElement {
             u = buttonCooridnate2 * 13;
             v = ModSettings.legacyOptions.getGuiControllerType().value * 13;
             UtilGui.drawTexturedModalRect(this, xPosition + 13 + spacing, yPosition, u, v, 13, 13, 1f/buttonAtlasWidth);
-            fontRenderer.drawString(prompt, xPosition + 26 + spacing * 2, yPosition+2, ModSettings.Colors.GuiPromptColor());
+            fontRenderer.drawString(prompt, xPosition + 26 + spacing * 2, yPosition+2, ModSettings.legacyOptions.getGuiPromptColor().value.value);
         } else {
-            fontRenderer.drawString(prompt, xPosition + 13 + spacing, yPosition+2, ModSettings.Colors.GuiPromptColor());
+            fontRenderer.drawString(prompt, xPosition + 13 + spacing, yPosition+2, ModSettings.legacyOptions.getGuiPromptColor().value.value);
         }
     }
 }

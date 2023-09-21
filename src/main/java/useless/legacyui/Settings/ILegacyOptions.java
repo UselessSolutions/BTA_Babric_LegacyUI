@@ -1,9 +1,6 @@
 package useless.legacyui.Settings;
 
-import net.minecraft.client.option.BooleanOption;
-import net.minecraft.client.option.IntegerOption;
-import net.minecraft.client.option.RangeOption;
-import net.minecraft.client.option.StringOption;
+import net.minecraft.client.option.*;
 
 public interface ILegacyOptions {
     BooleanOption getCraftingHideUndiscoveredItems();
@@ -15,9 +12,9 @@ public interface ILegacyOptions {
     BooleanOption getEnableLegacyInventoryCreative();
     BooleanOption getShowCraftingItemNamePreview();
     BooleanOption getUseRandomPitch();
-    IntegerOption getGuiLabelColor();
-    IntegerOption getGuiPromptColor();
-    IntegerOption getHighlightColor();
-    IntegerOption getGuiBackgroundColor();
+    ColorOption getGuiLabelColor();
+    ColorOption getGuiPromptColor();
+    ColorOption getHighlightColor();
+    ColorOption getGuiBackgroundColor();
     RangeOption getGuiControllerType();
 }

@@ -22,6 +22,6 @@ public class GuiGuidebookMixin {
     }
     @Redirect(method = "drawGuiContainerForegroundLayer()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGuidebook;drawStringNoShadow(Lnet/minecraft/client/render/FontRenderer;Ljava/lang/String;III)V"))
     public void drawGuiContainerForegroundLayer(GuiGuidebook instance, FontRenderer fontRenderer, String s, int x, int y, int color) {
-        instance.drawStringNoShadow(fontRenderer, s, x, y, ModSettings.Colors.GuiLabelColor());
+        instance.drawStringNoShadow(fontRenderer, s, x, y, ModSettings.legacyOptions.getGuiLabelColor().value.value);
     }
 }

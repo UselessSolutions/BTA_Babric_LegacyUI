@@ -47,6 +47,6 @@ public class GuiScreenMixin extends Gui {
     }
     @Redirect(method = "drawWorldBackground(I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/util/helper/Color;getARGB()I"))
     private int newBackgroundColor(Color instance){
-        return ModSettings.Colors.GuiBackgroundColor();
+        return ModSettings.legacyOptions.getGuiBackgroundColor().value.value;
     }
 }

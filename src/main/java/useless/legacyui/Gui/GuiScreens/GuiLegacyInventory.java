@@ -85,7 +85,7 @@ public class GuiLegacyInventory extends GuiInventory {
         UtilGui.bindTexture("/assets/legacyui/gui/legacyinventory.png");
         this.drawTexturedModalRect(GUIx, GUIy, 0, 0, this.xSize, this.ySize);
         renderPlayerDoll();
-        drawStringNoShadow(fontRenderer, I18n.getInstance().translateKey("legacyui.guilabel.inventory"),GUIx + 8,GUIy +82, ModSettings.Colors.GuiLabelColor());
+        drawStringNoShadow(fontRenderer, I18n.getInstance().translateKey("legacyui.guilabel.inventory"),GUIx + 8,GUIy +82, ModSettings.legacyOptions.getGuiLabelColor().value.value);
     }
     private void renderPlayerDoll(){
         GL11.glEnable(32826);

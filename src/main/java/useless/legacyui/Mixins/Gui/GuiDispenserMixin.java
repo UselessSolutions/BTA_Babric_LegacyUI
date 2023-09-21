@@ -11,6 +11,6 @@ import useless.legacyui.Settings.ModSettings;
 public class GuiDispenserMixin {
     @Redirect(method = "drawGuiContainerForegroundLayer()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/FontRenderer;drawString(Ljava/lang/String;III)V"))
     private void changeColor(FontRenderer instance, String text, int x, int y, int color) {
-        instance.drawString(text,x,y, ModSettings.Colors.GuiLabelColor());
+        instance.drawString(text,x,y, ModSettings.legacyOptions.getGuiLabelColor().value.value);
     }
 }
