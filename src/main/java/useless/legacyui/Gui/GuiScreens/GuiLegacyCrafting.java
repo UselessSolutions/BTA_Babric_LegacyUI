@@ -131,7 +131,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             LegacySoundManager.play.focus(true);
         }
         currentTab = value;
-        int tabAmount = Math.min(8, LegacyCategoryManager.recipeCategories.size());
+        int tabAmount = Math.min(8, LegacyCategoryManager.getRecipeCategories().size());
         if (currentTab > tabAmount-1){
             currentTab -= tabAmount;
         } else if (currentTab < 0){
@@ -192,7 +192,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         }
     }
     public RecipeCategory currentCategory(){
-        return LegacyCategoryManager.recipeCategories.get(currentTab);
+        return LegacyCategoryManager.getRecipeCategories().get(currentTab);
     }
     public boolean isSmall(){
         return craftingSize <= 4;
@@ -325,14 +325,14 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         }
 
         drawStringCenteredNoShadow(fontRenderer, craftingString,GUIx + 73, GUIy + 97, ModSettings.legacyOptions.getGuiLabelColor().value.value);
-        drawStringCenteredNoShadow(fontRenderer, LegacyCategoryManager.recipeCategories.get(currentTab).getTranslatedKey(),GUIx + (xSize/2), GUIy + 36, ModSettings.legacyOptions.getGuiLabelColor().value.value);
+        drawStringCenteredNoShadow(fontRenderer, LegacyCategoryManager.getRecipeCategories().get(currentTab).getTranslatedKey(),GUIx + (xSize/2), GUIy + 36, ModSettings.legacyOptions.getGuiLabelColor().value.value);
 
         UtilGui.bindTexture("/assets/legacyui/gui/legacycrafting.png");
         drawSelectionCursorBackground();
 
         UtilGui.bindTexture("/assets/legacyui/gui/icons.png");
-        for (int i = 0; i < Math.min(LegacyCategoryManager.recipeCategories.size(), 8); i++) {
-            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.recipeCategories.get(i).iconCoordinate, 0.75f); // Render Icon
+        for (int i = 0; i < Math.min(LegacyCategoryManager.getRecipeCategories().size(), 8); i++) {
+            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getRecipeCategories().get(i).iconCoordinate, 0.75f); // Render Icon
         }
     }
     private void drawSelectionCursorForeground(){

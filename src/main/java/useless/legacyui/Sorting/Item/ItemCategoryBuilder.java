@@ -34,6 +34,7 @@ public class ItemCategoryBuilder {
     private final String modid;
     public int[] iconCoordinate = new int[]{0,0};
     private Boolean isDebug = false;
+    private Boolean forModded = false;
     private Boolean excludeModdedItems = false;
     private final List<Class> inclusiveClassList = new ArrayList<>();
     private final List<ItemStack> inclusiveItemList = new ArrayList<>();
@@ -137,6 +138,10 @@ public class ItemCategoryBuilder {
         isDebug = true;
         return this;
     }
+    public ItemCategoryBuilder isModded(){
+        forModded = true;
+        return this;
+    }
     public ItemCategoryBuilder printCurrentConfig(){
         LegacyUI.LOGGER.info("isDebug:" + isDebug);
         for (Class clazz : inclusiveClassList){
@@ -185,6 +190,9 @@ public class ItemCategoryBuilder {
         return false;
     }
     public ItemCategory build(){
+        if (forModded){
+            return buildForModded();
+        }
         List<ItemStack> unused_copy = new ArrayList<>(unusedCreativeItems);
         List<ItemStack> categoryItems = new ArrayList<>();
         int removeOffset = 0;

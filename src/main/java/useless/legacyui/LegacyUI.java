@@ -11,6 +11,7 @@ import net.minecraft.client.gui.options.GuiOptionsPageGeneral;
 import net.minecraft.client.gui.options.GuiOptionsPageTexturePacks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import useless.legacyui.Helper.IconHelper;
 import useless.legacyui.Sorting.LegacyCategoryManager;
 import useless.prismaticlibe.helper.SoundHelper;
 
@@ -35,7 +36,10 @@ public class LegacyUI implements ModInitializer {
         SoundHelper.addSound(MOD_ID, "ui/press.wav");
         SoundHelper.addSound(MOD_ID, "ui/scroll.wav");
         SoundHelper.addSound(MOD_ID, "ui/achievement.wav");
-        LegacyCategoryManager.register();
+        String[] iconTextures = new String[]{"armor.png", "bricks.png", "grass.png", "health.png", "lever.png", "modded.png", "painting.png", "planks.png", "rail.png", "redstonerail.png", "tools.png"};
+        for (String texture: iconTextures) {
+            IconHelper.getOrCreateIconTexture(MOD_ID, texture);
+        }
         LOGGER.info("LegacyUI initialized.");
     }
 }

@@ -17,6 +17,7 @@ import useless.legacyui.Gui.GuiScreens.GuiLegacyCrafting;
 import useless.legacyui.Gui.GuiScreens.GuiLegacyCreative;
 import useless.legacyui.Gui.GuiScreens.GuiLegacyInventory;
 import useless.legacyui.Settings.ModSettings;
+import useless.legacyui.Sorting.LegacyCategoryManager;
 
 @Mixin(value = Minecraft.class, remap = false)
 public class MinecraftMixin {
@@ -49,7 +50,9 @@ public class MinecraftMixin {
             }
         }
     }
-    /*@Inject(method = "run()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;startGame()V", shift = At.Shift.AFTER))
+    @Inject(method = "run()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;startGame()V", shift = At.Shift.AFTER))
     private void startOfGameInit(CallbackInfo ci){
-    }*/
+        LegacyCategoryManager.register();
+        LegacyCategoryManager.build();
+    }
 }

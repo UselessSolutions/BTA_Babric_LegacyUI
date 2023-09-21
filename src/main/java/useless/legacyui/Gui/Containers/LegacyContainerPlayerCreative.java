@@ -52,11 +52,11 @@ public class LegacyContainerPlayerCreative extends ContainerPlayerCreative {
         return creativeSlotsStart;
     }
     public static int getTotalRows(){
-        ItemCategory currentCategory = LegacyCategoryManager.creativeCategories.get(GuiLegacyCreative.currentTab);
+        ItemCategory currentCategory = LegacyCategoryManager.getCreativeCategories().get(GuiLegacyCreative.currentTab);
         return (int) Math.ceil((double) currentCategory.itemStacks.length / slotsWide);
     }
     public void setSlots(){
-        ItemCategory currentCategory = LegacyCategoryManager.creativeCategories.get(GuiLegacyCreative.currentTab);
+        ItemCategory currentCategory = LegacyCategoryManager.getCreativeCategories().get(GuiLegacyCreative.currentTab);
         for (int i = 0; i < slotsWide * slotsTall; ++i) {
             ItemStack item;
             int index = i +  + (GuiLegacyCreative.currentRow * slotsWide);
