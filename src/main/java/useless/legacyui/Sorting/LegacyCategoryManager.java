@@ -397,7 +397,7 @@ public class LegacyCategoryManager {
 
         public static RecipeCategoryBuilder category = new RecipeCategoryBuilder(MOD_ID)
                 .setIcon("lever.png")
-                .setTranslationKey("restone")
+                .setTranslationKey("redstone")
                 .addRecipeGroupBuilders(new RecipeGroupBuilder[]{basicRedstone, redstoneBlock, buttonLever, pressureplates,pistons,lamps,noteBlock,dispensers,traps});
     }
     public static class recipeTransit {
