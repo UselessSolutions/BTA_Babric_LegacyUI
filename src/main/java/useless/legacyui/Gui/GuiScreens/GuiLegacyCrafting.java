@@ -237,9 +237,9 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         inventoryRegion = new GuiRegion(100,GUIx + 147, GUIy + 94, 116, 75);
 
         I18n translator = I18n.getInstance();
-        prompts.add(new GuiButtonPrompt( 101, 50, this.height-30, 0, 3,translator.translateKey("legacyui.prompt.craft")));
-        prompts.add(new GuiButtonPrompt( 102, prompts.get(0).xPosition + prompts.get(0).width + 3, this.height-30, 1, 3,translator.translateKey("legacyui.prompt.back")));
-        prompts.add(new GuiButtonPrompt( 102, prompts.get(1).xPosition + prompts.get(1).width + 3, this.height-30, 9,10, 3,translator.translateKey("legacyui.prompt.tabselect")));
+        prompts.add(new GuiButtonPrompt( 101, 50, this.height-30, 3,translator.translateKey("legacyui.prompt.craft"), new int[]{0}));
+        prompts.add(new GuiButtonPrompt( 102, prompts.get(0).xPosition + prompts.get(0).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.back"), new int[]{1}));
+        prompts.add(new GuiButtonPrompt( 102, prompts.get(1).xPosition + prompts.get(1).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.tabselect"), new int[]{9,10}));
 
         // Static Initialization
         currentTab = 0;
