@@ -108,7 +108,7 @@ public class LegacyContainerCrafting extends Container {
         int currentScrollAmount = GuiLegacyCrafting.currentScroll;
         int categoryIndex = GuiLegacyCrafting.currentTab;
 
-        RecipeCategory category = LegacyCategoryManager.recipeCategories.get(categoryIndex);
+        RecipeCategory category = LegacyCategoryManager.getRecipeCategories().get(categoryIndex);
 
         for (RecipeGroup group : category.getRecipeGroups(isInInventory)){
             LegacyUI.LOGGER.debug("CategoryGroup: " + group.getContainer(0, isInInventory).inventorySlots.get(0).getStack().getItem().getKey());
@@ -205,7 +205,7 @@ public class LegacyContainerCrafting extends Container {
         int currentScrollAmount = GuiLegacyCrafting.currentScroll;
         int categoryIndex = GuiLegacyCrafting.currentTab;
 
-        RecipeCategory category = LegacyCategoryManager.recipeCategories.get(categoryIndex);
+        RecipeCategory category = LegacyCategoryManager.getRecipeCategories().get(categoryIndex);
 
         ContainerGuidebookRecipeCrafting recipe = category.getRecipeGroups(isInInventory)[currentSlotId].getContainer(currentScrollAmount, isInInventory);
         RecipeCost recipeCost = new RecipeCost(recipe);

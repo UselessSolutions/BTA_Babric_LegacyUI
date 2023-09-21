@@ -62,7 +62,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
             LegacySoundManager.play.focus(true);
         }
         currentTab = value;
-        int tabAmount = Math.min(8, LegacyCategoryManager.creativeCategories.size());
+        int tabAmount = Math.min(8, LegacyCategoryManager.getCreativeCategories().size());
         if (currentTab > tabAmount-1){
             currentTab -= tabAmount;
         } else if (currentTab < 0){
@@ -136,7 +136,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
     }
     public void setContainerSlots(){
         for (int i = 0; i < tabButtons.length; i++) { // Only enable buttons if there is a corresponding recipe group
-            tabButtons[i].enabled = i < LegacyCategoryManager.creativeCategories.size();
+            tabButtons[i].enabled = i < LegacyCategoryManager.getCreativeCategories().size();
         }
         container.setSlots();
     }
@@ -167,10 +167,10 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         controlList.add(craftButton);
 
         I18n translator = I18n.getInstance();
-        prompts.add(new GuiButtonPrompt( 101, 50, this.height-30, 0, 3,translator.translateKey("legacyui.prompt.select")));
-        prompts.add(new GuiButtonPrompt( 102, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30, 2, 3,translator.translateKey("legacyui.prompt.takestack")));
-        prompts.add(new GuiButtonPrompt( 102, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30, 1, 3,translator.translateKey("legacyui.prompt.back")));
-        prompts.add(new GuiButtonPrompt( 102, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30, 9,10, 3,translator.translateKey("legacyui.prompt.tabselect")));
+        prompts.add(new GuiButtonPrompt( 101, 50, this.height-30, 3,translator.translateKey("legacyui.prompt.select"), new int[]{0}));
+        prompts.add(new GuiButtonPrompt( 102, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.takestack"), new int[]{2}));
+        prompts.add(new GuiButtonPrompt( 102, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.back"), new int[]{1}));
+        prompts.add(new GuiButtonPrompt( 102, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.tabselect"), new int[]{9, 10}));
 
         selectTab(0);
         selectRow(0);
@@ -223,11 +223,11 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         UtilGui.drawTexturedModalRect(this,scrollBar.xPosition, (scrollBar.yPosition + (int) ((scrollBar.height-15)*scrollProgressLimited)),131,184,15,15,1f/guiTextureWidth);
 
         UtilGui.bindTexture("/assets/legacyui/gui/icons.png");
-        for (int i = 0; i < Math.min(LegacyCategoryManager.creativeCategories.size(), 8); i++) {
-            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.creativeCategories.get(i).iconCoordinate, 0.75f); // Render Icon
+        for (int i = 0; i < Math.min(LegacyCategoryManager.getCreativeCategories().size(), 8); i++) {
+            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getCreativeCategories().get(i).iconCoordinate, 0.75f); // Render Icon
         }
 
-        drawStringCenteredNoShadow(fontRenderer, LegacyCategoryManager.creativeCategories.get(currentTab).getTranslatedKey(), GUIx + xSize/2, GUIy + 32, ModSettings.legacyOptions.getGuiLabelColor().value.value);
+        drawStringCenteredNoShadow(fontRenderer, LegacyCategoryManager.getCreativeCategories().get(currentTab).getTranslatedKey(), GUIx + xSize/2, GUIy + 32, ModSettings.legacyOptions.getGuiLabelColor().value.value);
     }
 
     @Override
