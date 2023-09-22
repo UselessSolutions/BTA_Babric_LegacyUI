@@ -13,6 +13,7 @@ public class GuiOptionsPageLegacy extends GuiOptionsPageOptionBase {
                 legacyOptions.getEnableLegacyInventorySurvival(),
                 legacyOptions.getEnableLegacyCrafting(),
                 legacyOptions.getEnableLegacyInventoryCreative(),
+                legacyOptions.getEnableLegacyFlag(),
                 legacyOptions.getHideHotbarInGUIs(),
                 legacyOptions.getGuiControllerType(),
                 legacyOptions.getShowCraftingItemNamePreview(),
