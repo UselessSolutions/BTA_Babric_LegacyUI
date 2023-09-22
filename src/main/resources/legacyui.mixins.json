@@ -28,9 +28,10 @@
     "Gui.GuiOptionsBaseMixin",
     "Gui.GuiScreenMixin",
     "Gui.GuiTrommelMixin",
+    "Modded.NoNameDyes.GuiBleacherMixin",
+    "Modded.PotatoLogistics.GuiFilterMixin",
     "Multiplayer.PlayerControllerMPMixin",
-    "Settings.GameSettingsMixin",
-    "Modded.NoNameDyes.GuiBleacherMixin"
+    "Settings.GameSettingsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

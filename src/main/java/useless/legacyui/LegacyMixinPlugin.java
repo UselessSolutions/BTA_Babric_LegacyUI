@@ -21,7 +21,8 @@ import java.util.function.Supplier;
 public final class LegacyMixinPlugin implements IMixinConfigPlugin {
     private static final Supplier<Boolean> TRUE = () -> true;
     private static final Map<String, Supplier<Boolean>> CONDITIONS = ImmutableMap.of(
-            "useless.legacyui.Mixins.Modded.NoNameDyes.GuiBleacherMixin", () -> FabricLoader.getInstance().isModLoaded("nonamedyes")
+            "useless.legacyui.Mixins.Modded.NoNameDyes.GuiBleacherMixin", () -> FabricLoader.getInstance().isModLoaded("nonamedyes"),
+            "useless.legacyui.Mixins.Modded.PotatoLogistics.GuiFilterMixin", () -> FabricLoader.getInstance().isModLoaded("potatologistics")
     );
 
     @Override
