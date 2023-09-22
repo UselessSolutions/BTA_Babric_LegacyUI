@@ -82,7 +82,6 @@ public class InventoryHelper {
 
         return -1;
     }
-
     public static Block[] getAltGroup(ItemStack itemStack){
         for (int i = 0; i < CraftingManager.blockAlternatives.length; i++){
             for (int j = 0; j < CraftingManager.blockAlternatives[i].length; j++){

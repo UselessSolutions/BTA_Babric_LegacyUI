@@ -16,6 +16,7 @@ import net.minecraft.core.util.helper.Colors;
 import net.minecraft.core.util.helper.MathHelper;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.Gui.Containers.LegacyContainerFlag;
+import useless.legacyui.Gui.GuiElements.GuiRegion;
 
 public class GuiLegacyFlag extends GuiContainer
         implements IDrawableSurface<Byte> {
@@ -40,9 +41,12 @@ public class GuiLegacyFlag extends GuiContainer
     GuiSurface drawOverlaySurface;
     private int GUIx;
     private int GUIy;
-
+    public static int selectedDyeSlot = -1;
+    public GuiRegion dyeSlotRegion;
+    public LegacyContainerFlag containerFlag;
     public GuiLegacyFlag(EntityPlayer player, TileEntityFlag flagTileEntity, RenderEngine renderEngine) {
         super(new LegacyContainerFlag(player.inventory, flagTileEntity));
+        containerFlag = (LegacyContainerFlag)inventorySlots;
         this.renderEngineInstance = renderEngine;
         this.tileEntity = flagTileEntity;
         this.xSize = 170;
@@ -59,6 +63,7 @@ public class GuiLegacyFlag extends GuiContainer
     public void initGui() {
         GUIx = (this.width - this.xSize) / 2;
         GUIy = (this.height - this.ySize) / 2;
+        dyeSlotRegion = new GuiRegion(200, GUIx + 3, GUIy + 37, 164, 22);
         super.initGui();
         this.controlList.clear();
         this.canvasX = GUIx + 37;
@@ -215,6 +220,10 @@ public class GuiLegacyFlag extends GuiContainer
         UtilGui.bindTexture("/assets/legacyui/gui/legacyflag.png");
         drawTexturedModalRect(GUIx, GUIy, 0, 0, this.xSize, this.ySize);
 
+        if (selectedDyeSlot > 0){
+            drawTexturedModalRect(GUIx + 7 + (33 * (selectedDyeSlot-1)), GUIy + 39, 0, 237, 90, 18);
+        }
+
         if (selectedColor == 0) {
             drawString(fontRenderer, "1", GUIx + 49, GUIy + 59, -1);
         } else {
@@ -231,10 +240,24 @@ public class GuiLegacyFlag extends GuiContainer
             drawStringNoShadow(fontRenderer, "3", GUIx + 115, GUIy + 59, -8421505);
         }
     }
+    protected void drawGuiContainerForegroundLayer() {
+        if (selectedDyeSlot > 0){
+            UtilGui.bindTexture("/assets/legacyui/gui/legacyflag.png");
+            drawTexturedModalRect( - 6  + (33 * (selectedDyeSlot - 1)), 35, 0, 211, 116, 26);
+        }
+    }
 
     @Override
     public void drawScreen(int x, int y, float renderPartialTicks) {
+        if (dyeSlotRegion.isHovered(x, y) && selectedColor < 3){
+            setSelectedDye(selectedColor + 1);
+        } else {
+            setSelectedDye(-1);
+        }
+        containerFlag.setSlots();
+
         super.drawScreen(x, y, renderPartialTicks);
+
         this.drawOverlaySurface.clear();
         int xInCanvas = (x - this.canvasX) / 4;
         int yInCanvas = (y - this.canvasY) / 4;
@@ -321,5 +344,8 @@ public class GuiLegacyFlag extends GuiContainer
         if (this.mc.theWorld.isClientSide) {
             this.mc.getSendQueue().addToSendQueue(new Packet141UpdateFlag(this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord, this.tileEntity.flagColors, this.tileEntity.owner));
         }
+    }
+    public void setSelectedDye(int newDye){
+        selectedDyeSlot = newDye;
     }
 }
