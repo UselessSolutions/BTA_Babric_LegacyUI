@@ -1,17 +1,10 @@
 package useless.legacyui;
 
 import com.google.common.collect.ImmutableMap;
-import goocraft4evr.nonamedyes.client.gui.GuiBleacher;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.render.FontRenderer;
 import org.objectweb.asm.tree.ClassNode;
-import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import useless.legacyui.Settings.ModSettings;
-import useless.prismaticlibe.helper.ModCheckHelper;
 
 import java.util.List;
 import java.util.Map;
