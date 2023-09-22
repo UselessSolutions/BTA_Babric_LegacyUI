@@ -5,6 +5,7 @@ import net.minecraft.core.player.inventory.ContainerFlag;
 import net.minecraft.core.player.inventory.IInventory;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotDye;
+import useless.legacyui.Gui.Slots.SlotCraftingDisplayLegacy;
 
 public class LegacyContainerFlag extends ContainerFlag {
     public IInventory inventory;
@@ -29,5 +30,8 @@ public class LegacyContainerFlag extends ContainerFlag {
         for (int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(inventory, i, 8 + 170 + i * 18, 158));
         }
+        this.addSlot(new SlotCraftingDisplayLegacy(101, 44, 40, flag.getStackInSlot(36), true, false, -1));
+        this.addSlot(new SlotCraftingDisplayLegacy(102, 77, 40, flag.getStackInSlot(37), true, false, -1));
+        this.addSlot(new SlotCraftingDisplayLegacy(103, 110, 40, flag.getStackInSlot(38), true, false, -1));
     }
 }
