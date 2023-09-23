@@ -35,9 +35,9 @@ public class LegacyContainerFlag extends ContainerFlag {
     }
     public void setSlots(){
         inventorySlots.clear();
-        this.addSlot(new SlotDye(flag, 36, 120, 57));
-        this.addSlot(new SlotDye(flag, 37, 120, 76));
-        this.addSlot(new SlotDye(flag, 38, 120, 95));
+        this.addSlot(new SlotDye(flag, 36, 129, 62));
+        this.addSlot(new SlotDye(flag, 37, 129, 81));
+        this.addSlot(new SlotDye(flag, 38, 129, 100));
         for (int y = 0; y < 3; ++y) {
             for (int x = 0; x < 9; ++x) {
                 this.addSlot(new Slot(inventory, x + y * 9 + 9, 8 + 170 + x * 18, 100 + y * 18));
@@ -47,12 +47,12 @@ public class LegacyContainerFlag extends ContainerFlag {
             this.addSlot(new Slot(inventory, i, 8 + 170 + i * 18, 158));
         }
         findDyes();
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 6; i++) {
             ItemStack stack = null;
             if (i < displayStacks.size()){
                 stack = displayStacks.get(ArrayHelper.wrapAroundIndex(i + GuiLegacyFlag.dyeScroll, displayStacks.size()));
             }
-            addSlot(new SlotCraftingDisplayLegacy(100 + i, 12 + 18 * i, 34, stack, true, false, -1));
+            addSlot(new SlotCraftingDisplayLegacy(100 + i, 15 + 18 * i, 38, stack, true, false, -1));
         }
     }
     public void swapDye(int dyeSelected){
