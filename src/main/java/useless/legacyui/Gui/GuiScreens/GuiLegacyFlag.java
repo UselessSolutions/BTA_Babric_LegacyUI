@@ -16,6 +16,7 @@ import net.minecraft.core.util.helper.Colors;
 import net.minecraft.core.util.helper.MathHelper;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.Gui.Containers.LegacyContainerFlag;
+import useless.legacyui.Gui.GuiElements.Buttons.GuiAuditoryButton;
 import useless.legacyui.Gui.GuiElements.GuiRegion;
 
 public class GuiLegacyFlag extends GuiContainer
@@ -31,26 +32,27 @@ public class GuiLegacyFlag extends GuiContainer
     private boolean isDrawing = false;
     private int canvasX = 0;
     private int canvasY = 0;
-    private int selectedColor = 0;
+    public static int selectedColor = 0;
     private FlagRenderer flagRenderer;
     private DrawableEditor<Byte> flagSurfaceEditor;
     private DrawableEditor<Byte> drawOverlaySurfaceEditor;
     private GuiTexturedButton[] toolBtns;
+    private GuiTexturedButton eraseButton;
     private int activeTool = 0;
     GuiSurface flagSurface;
     GuiSurface drawOverlaySurface;
+    private LegacyContainerFlag containerFlag;
     private int GUIx;
     private int GUIy;
-    public static int selectedDyeSlot = -1;
-    public GuiRegion dyeSlotRegion;
-    public LegacyContainerFlag containerFlag;
+    protected GuiAuditoryButton[] dyeButtons;
+
     public GuiLegacyFlag(EntityPlayer player, TileEntityFlag flagTileEntity, RenderEngine renderEngine) {
         super(new LegacyContainerFlag(player.inventory, flagTileEntity));
         containerFlag = (LegacyContainerFlag)inventorySlots;
         this.renderEngineInstance = renderEngine;
         this.tileEntity = flagTileEntity;
-        this.xSize = 170;
-        this.ySize = 151;
+        this.xSize = 148;
+        this.ySize = 138;
         flagTileEntity.owner = player.username;
         this.flagRenderer = new FlagRenderer(renderEngine);
         this.flagSurface = new GuiSurface(24, 16, 4, flagTileEntity.flagColors);
@@ -61,26 +63,32 @@ public class GuiLegacyFlag extends GuiContainer
 
     @Override
     public void initGui() {
-        GUIx = (this.width - this.xSize) / 2;
-        GUIy = (this.height - this.ySize) / 2;
-        dyeSlotRegion = new GuiRegion(200, GUIx + 3, GUIy + 37, 164, 22);
+        GUIx = (width - xSize) / 2;
+        GUIy = (height - ySize) / 2;
         super.initGui();
-        this.controlList.clear();
-        this.canvasX = GUIx + 37;
-        this.canvasY = GUIy + 74;
-        this.toolBtns = new GuiTexturedButton[7];
-        for (int i = 0; i < 7; ++i) {
-            this.toolBtns[i] = new GuiTexturedButton(i, "/assets/legacyui/gui/legacyflag.png", GUIx + 9 + 22 * i, GUIy + 8, 20 * i, 151, 20, 20);
-            if (i == this.activeTool) {
-                this.toolBtns[i].enabled = false;
+        controlList.clear();
+        toolBtns = new GuiTexturedButton[6];
+        for (int i = 0; i < 6; ++i) {
+            toolBtns[i] = new GuiTexturedButton(i, "/assets/legacyui/gui/legacyflag.png", GUIx + 9 + 22 * i, GUIy + 8, 20 * i, 138, 20, 20);
+            if (i == activeTool) {
+                toolBtns[i].enabled = false;
             }
-            this.controlList.add(this.toolBtns[i]);
+            controlList.add(toolBtns[i]);
+        }
+        eraseButton = new GuiTexturedButton(6, "/assets/legacyui/gui/legacyflag.png", GUIx + 119, GUIy + 113, 120, 138, 18, 18);
+        controlList.add(eraseButton);
+        dyeButtons = new GuiAuditoryButton[7];
+        for (int i = 0; i < dyeButtons.length; i++) {
+            dyeButtons[i] = new GuiAuditoryButton(10 + i, GUIx + 11 + 18 * i, GUIy + 33, 18, 18, "");
+            dyeButtons[i].setMuted(true);
+            dyeButtons[i].visible = false;
+            controlList.add(dyeButtons[i]);
         }
     }
 
     private void renderCanvas() {
-        this.canvasX = GUIx + 37;
-        this.canvasY = GUIy + 74;
+        this.canvasX = GUIx + 16;
+        this.canvasY = GUIy + 61;
         int[] colors = new int[5];
         for (int i = 1; i < 4; ++i) {
             ItemStack stack = this.tileEntity.getStackInSlot(35 + i);
@@ -100,10 +108,10 @@ public class GuiLegacyFlag extends GuiContainer
     @Override
     public void mouseClicked(int x, int y, int mouseButton) {
         super.mouseClicked(x, y, mouseButton);
-        if (this.tileEntity.getStackInSlot(36 + this.selectedColor) == null) {
+        if (this.tileEntity.getStackInSlot(36 + selectedColor) == null && selectedColor != 3) {
             return;
         }
-        if (this.activeTool >= 0 && this.activeTool < 4) { // Drawing
+        if (this.activeTool >= 0 && this.activeTool < 3) {
             if (!this.isDrawing) {
                 int xInCanvas = (x - this.canvasX) / 4;
                 int yInCanvas = (y - this.canvasY) / 4;
@@ -113,17 +121,13 @@ public class GuiLegacyFlag extends GuiContainer
                     this.yLast = yInCanvas;
                     this.mouseButton = mouseButton;
                     byte color = 0;
-                    int size = activeTool + 1;
-                    if (this.mouseButton == 0 && activeTool != 3) {
-                        color = (byte)(this.selectedColor + 1);
+                    if (this.mouseButton == 0 && selectedColor != 3) {
+                        color = (byte)(selectedColor + 1);
                     }
-                    if (activeTool == 3){
-                        size = 1;
-                    }
-                    this.flagSurfaceEditor.drawLine(xInCanvas, yInCanvas, xInCanvas, yInCanvas, color, size);
+                    this.flagSurfaceEditor.drawLine(xInCanvas, yInCanvas, xInCanvas, yInCanvas, color, this.activeTool + 1);
                 }
             }
-        } else if (this.activeTool == 4) { // Bucket
+        } else if (this.activeTool == 3) {
             if (!this.isDrawing) {
                 int xInCanvas = (x - this.canvasX) / 4;
                 int yInCanvas = (y - this.canvasY) / 4;
@@ -131,13 +135,13 @@ public class GuiLegacyFlag extends GuiContainer
                     this.isDrawing = true;
                     this.mouseButton = mouseButton;
                     byte color = 0;
-                    if (this.mouseButton == 0) {
-                        color = (byte)(this.selectedColor + 1);
+                    if (this.mouseButton == 0 && selectedColor != 3) {
+                        color = (byte)(selectedColor + 1);
                     }
                     this.flagSurfaceEditor.floodFill(xInCanvas, yInCanvas, color);
                 }
             }
-        } else if (!(this.activeTool != 5 && this.activeTool != 6 || this.isDrawing)) { // Rectangle circle
+        } else if (!(this.activeTool != 4 && this.activeTool != 5 || this.isDrawing)) {
             int xInCanvas = (x - this.canvasX) / 4;
             int yInCanvas = (y - this.canvasY) / 4;
             if (xInCanvas >= 0 && xInCanvas < 24 && yInCanvas >= 0 && yInCanvas < 16) {
@@ -152,17 +156,25 @@ public class GuiLegacyFlag extends GuiContainer
     @Override
     protected void buttonPressed(GuiButton guibutton) {
         super.buttonPressed(guibutton);
-        if (guibutton.id >= 0 && guibutton.id < 7) {
+        if (guibutton.id >= 0 && guibutton.id < 6) {
             this.toolBtns[this.activeTool].enabled = true;
             this.activeTool = guibutton.id;
             guibutton.enabled = false;
+        }
+        if (guibutton == eraseButton){
+            eraserButton();
+        }
+        for (int i = 0; i < dyeButtons.length; i++) {
+            if (guibutton == dyeButtons[i]){
+                selectDye(i);
+            }
         }
     }
 
     @Override
     public void mouseMovedOrUp(int x, int y, int mouseButton) {
         super.mouseMovedOrUp(x, y, mouseButton);
-        if (this.activeTool >= 0 && this.activeTool < 4) {
+        if (this.activeTool >= 0 && this.activeTool < 3) {
             if (this.isDrawing && mouseButton != -1) {
                 this.isDrawing = false;
                 this.mouseButton = -1;
@@ -170,45 +182,41 @@ public class GuiLegacyFlag extends GuiContainer
                 int xInCanvas = (x - this.canvasX) / 4;
                 int yInCanvas = (y - this.canvasY) / 4;
                 byte color = 0;
-                int size = activeTool + 1;
-                if (this.mouseButton == 0 && activeTool != 3) {
-                    color = (byte)(this.selectedColor + 1);
-                }
-                if (activeTool == 3){
-                    size = 1;
+                if (this.mouseButton == 0 && selectedColor != 3) {
+                    color = (byte)(selectedColor + 1);
                 }
                 if (MathHelper.abs(this.xLast - xInCanvas) <= 1.0f && MathHelper.abs(this.yLast - yInCanvas) <= 1.0f) {
-                    this.flagSurfaceEditor.drawLine(xInCanvas, yInCanvas, xInCanvas, yInCanvas, color, size);
+                    this.flagSurfaceEditor.drawLine(xInCanvas, yInCanvas, xInCanvas, yInCanvas, color, this.activeTool + 1);
                 } else {
-                    this.flagSurfaceEditor.drawLine(this.xLast, this.yLast, xInCanvas, yInCanvas, color, size);
+                    this.flagSurfaceEditor.drawLine(this.xLast, this.yLast, xInCanvas, yInCanvas, color, this.activeTool + 1);
                 }
                 this.xLast = xInCanvas;
                 this.yLast = yInCanvas;
             }
-        } else if (this.activeTool == 4) { // Bucket
+        } else if (this.activeTool == 3) {
             if (this.isDrawing && mouseButton != -1) {
                 this.isDrawing = false;
                 this.mouseButton = -1;
             }
-        } else if (this.activeTool == 5) { // Rectangle
+        } else if (this.activeTool == 4) {
             if (this.isDrawing && mouseButton != -1) {
                 this.isDrawing = false;
                 int xInCanvas = (x - this.canvasX) / 4;
                 int yInCanvas = (y - this.canvasY) / 4;
                 byte color = 0;
-                if (this.mouseButton == 0) {
-                    color = (byte)(this.selectedColor + 1);
+                if (this.mouseButton == 0 && selectedColor != 3) {
+                    color = (byte)(selectedColor + 1);
                 }
                 this.flagSurfaceEditor.drawRectangle(this.xLast, this.yLast, xInCanvas, yInCanvas, color);
                 this.mouseButton = -1;
             }
-        } else if (this.activeTool == 6 && this.isDrawing && mouseButton != -1) { // Ellipse
+        } else if (this.activeTool == 5 && this.isDrawing && mouseButton != -1) {
             this.isDrawing = false;
             int xInCanvas = (x - this.canvasX) / 4;
             int yInCanvas = (y - this.canvasY) / 4;
             byte color = 0;
-            if (this.mouseButton == 0) {
-                color = (byte)(this.selectedColor + 1);
+            if (this.mouseButton == 0 && selectedColor != 3) {
+                color = (byte)(selectedColor + 1);
             }
             this.flagSurfaceEditor.drawEllipse(this.xLast, this.yLast, xInCanvas, yInCanvas, color);
             this.mouseButton = -1;
@@ -217,69 +225,33 @@ public class GuiLegacyFlag extends GuiContainer
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float f) {
-        UtilGui.bindTexture("/assets/legacyui/gui/legacyflag.png");
-        drawTexturedModalRect(GUIx, GUIy, 0, 0, this.xSize, this.ySize);
-
-        if (selectedDyeSlot > 0){
-            drawTexturedModalRect(GUIx + 7 + (33 * (selectedDyeSlot-1)), GUIy + 39, 0, 237, 90, 18);
-        }
-
-        if (selectedColor == 0) {
-            drawString(fontRenderer, "1", GUIx + 49, GUIy + 59, -1);
-        } else {
-            drawStringNoShadow(fontRenderer, "1", GUIx + 49, GUIy + 59, -8421505);
-        }
-        if (selectedColor == 1) {
-            drawString(fontRenderer, "2", GUIx + 82, GUIy + 59, -1);
-        } else {
-            drawStringNoShadow(fontRenderer, "2", GUIx + 82, GUIy + 59, -8421505);
-        }
-        if (selectedColor == 2) {
-            drawString(fontRenderer, "3", GUIx + 115, GUIy + 59, -1);
-        } else {
-            drawStringNoShadow(fontRenderer, "3", GUIx + 115, GUIy + 59, -8421505);
-        }
-    }
-    protected void drawGuiContainerForegroundLayer() {
-        if (selectedDyeSlot > 0){
-            UtilGui.bindTexture("/assets/legacyui/gui/legacyflag.png");
-            drawTexturedModalRect( - 6  + (33 * (selectedDyeSlot - 1)), 35, 0, 211, 116, 26);
-        }
+        int i = this.mc.renderEngine.getTexture("/assets/legacyui/gui/legacyflag.png");
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        this.mc.renderEngine.bindTexture(i);
+        this.drawTexturedModalRect(GUIx, GUIy, 0, 0, this.xSize, this.ySize);
     }
 
     @Override
     public void drawScreen(int x, int y, float renderPartialTicks) {
-        if (dyeSlotRegion.isHovered(x, y) && selectedColor < 3){
-            setSelectedDye(selectedColor + 1);
-        } else {
-            setSelectedDye(-1);
-        }
-        containerFlag.setSlots();
-
         super.drawScreen(x, y, renderPartialTicks);
-
         this.drawOverlaySurface.clear();
         int xInCanvas = (x - this.canvasX) / 4;
         int yInCanvas = (y - this.canvasY) / 4;
-        byte color = (byte)(this.selectedColor + 1);
-        if (this.mouseButton == 1 || activeTool == 3) {
+        byte color = (byte)(selectedColor + 1);
+        if (this.mouseButton == 1) {
             color = 4;
         }
-        if (this.activeTool >= 0 && this.activeTool < 4) { // Regular Draw
-            int size = activeTool + 1;
-            if (activeTool == 3){
-                size = 1;
-            }
-            this.drawOverlaySurfaceEditor.drawLine(xInCanvas, yInCanvas, xInCanvas, yInCanvas, color, size);
-        } else if (this.activeTool == 4) { // Bucket
+        if (this.activeTool >= 0 && this.activeTool < 3) {
+            this.drawOverlaySurfaceEditor.drawLine(xInCanvas, yInCanvas, xInCanvas, yInCanvas, color, this.activeTool + 1);
+        } else if (this.activeTool == 3) {
             this.drawOverlaySurfaceEditor.drawLine(xInCanvas, yInCanvas, xInCanvas, yInCanvas, color, 1);
-        } else if (this.activeTool == 5) { // Rectangle
+        } else if (this.activeTool == 4) {
             if (this.isDrawing) {
                 this.drawOverlaySurfaceEditor.drawRectangle(this.xLast, this.yLast, xInCanvas, yInCanvas, color);
             } else {
                 this.drawOverlaySurfaceEditor.drawLine(xInCanvas, yInCanvas, xInCanvas, yInCanvas, color, 1);
             }
-        } else if (this.activeTool == 6) { // Ellipses
+        } else if (this.activeTool == 5) {
             if (this.isDrawing) {
                 this.drawOverlaySurfaceEditor.drawEllipse(this.xLast, this.yLast, xInCanvas, yInCanvas, color);
             } else {
@@ -287,6 +259,27 @@ public class GuiLegacyFlag extends GuiContainer
             }
         }
         this.renderCanvas();
+        int textX = 138;
+        if (selectedColor == 0) {
+            this.drawString(this.fontRenderer, "1", GUIx + textX, GUIy + 60, -1);
+        } else {
+            this.drawStringNoShadow(this.fontRenderer, "1", GUIx + textX, GUIy + 60, -8421505);
+        }
+        if (selectedColor == 1) {
+            this.drawString(this.fontRenderer, "2", GUIx + textX, GUIy + 79, -1);
+        } else {
+            this.drawStringNoShadow(this.fontRenderer, "2", GUIx + textX, GUIy + 79, -8421505);
+        }
+        if (selectedColor == 2) {
+            this.drawString(this.fontRenderer, "3", GUIx + textX, GUIy + 98, -1);
+        } else {
+            this.drawStringNoShadow(this.fontRenderer, "3", GUIx + textX, GUIy + 98, -8421505);
+        }
+        if (selectedColor == 3) {
+            this.drawString(this.fontRenderer, "4", GUIx + textX, GUIy + 117, -1);
+        } else {
+            this.drawStringNoShadow(this.fontRenderer, "4", GUIx + textX, GUIy + 117, -8421505);
+        }
     }
 
     @Override
@@ -296,14 +289,27 @@ public class GuiLegacyFlag extends GuiContainer
             this.mc.thePlayer.closeScreen();
         }
         if (keyCode == 2) {
-            this.selectedColor = 0;
+            selectedColor = 0;
+            eraseButton.enabled = true;
         }
         if (keyCode == 3) {
-            this.selectedColor = 1;
+            selectedColor = 1;
+            eraseButton.enabled = true;
         }
         if (keyCode == 4) {
-            this.selectedColor = 2;
+            selectedColor = 2;
+            eraseButton.enabled = true;
         }
+        if (keyCode == 5) {
+            eraserButton();
+        }
+    }
+    private void eraserButton(){
+        selectedColor = 3;
+        eraseButton.enabled = false;
+    }
+    private void selectDye(int index){
+        containerFlag.swapDye(index);
     }
 
     @Override
@@ -344,8 +350,5 @@ public class GuiLegacyFlag extends GuiContainer
         if (this.mc.theWorld.isClientSide) {
             this.mc.getSendQueue().addToSendQueue(new Packet141UpdateFlag(this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord, this.tileEntity.flagColors, this.tileEntity.owner));
         }
-    }
-    public void setSelectedDye(int newDye){
-        selectedDyeSlot = newDye;
     }
 }

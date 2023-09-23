@@ -92,5 +92,13 @@ public class InventoryHelper {
         }
         return null;
     }
+    public static boolean inInventory(ItemStack[] stacks, ItemStack item){
+        for (ItemStack stack: stacks) {
+            if (stack.isItemEqual(item)){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
