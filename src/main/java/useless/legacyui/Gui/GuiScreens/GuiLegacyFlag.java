@@ -3,6 +3,7 @@ package useless.legacyui.Gui.GuiScreens;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.drawing.DrawableEditor;
 import net.minecraft.client.gui.drawing.IDrawableSurface;
+import net.minecraft.client.input.controller.ControllerInput;
 import net.minecraft.client.render.FlagRenderer;
 import net.minecraft.client.render.RenderEngine;
 import net.minecraft.core.block.entity.TileEntityFlag;
@@ -16,15 +17,17 @@ import net.minecraft.core.util.helper.Colors;
 import net.minecraft.core.util.helper.MathHelper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import useless.legacyui.Gui.Containers.LegacyContainerCrafting;
 import useless.legacyui.Gui.Containers.LegacyContainerFlag;
 import useless.legacyui.Gui.GuiElements.Buttons.GuiAuditoryButton;
 import useless.legacyui.Gui.GuiElements.GuiRegion;
+import useless.legacyui.Gui.IGuiController;
 import useless.legacyui.Helper.ArrayHelper;
 import useless.legacyui.Helper.KeyboardHelper;
 import useless.legacyui.LegacySoundManager;
 
 public class GuiLegacyFlag extends GuiContainer
-        implements IDrawableSurface<Byte> {
+        implements IDrawableSurface<Byte>, IGuiController {
     private final TileEntityFlag tileEntity;
     private final int CANVAS_SCALE = 4;
     private final int CANVAS_WIDTH = 24;
@@ -53,6 +56,9 @@ public class GuiLegacyFlag extends GuiContainer
     private int GUIx;
     private int GUIy;
     protected GuiAuditoryButton[] dyeButtons;
+    protected GuiRegion flagRegion;
+    private int pixelX = 0;
+    private int pixelY = 0;
 
     public GuiLegacyFlag(EntityPlayer player, TileEntityFlag flagTileEntity, RenderEngine renderEngine) {
         super(new LegacyContainerFlag(player.inventory, flagTileEntity));
@@ -73,6 +79,8 @@ public class GuiLegacyFlag extends GuiContainer
     public void initGui() {
         GUIx = (width - xSize) / 2;
         GUIy = (height - ySize) / 2;
+        canvasX = GUIx + 20;
+        canvasY = GUIy + 66;
         super.initGui();
         controlList.clear();
         toolBtns = new GuiTexturedButton[6];
@@ -100,12 +108,11 @@ public class GuiLegacyFlag extends GuiContainer
         buttonLeft.setMuted(false);
         buttonLeft.visible = false;
         controlList.add(buttonLeft);
+        flagRegion = new GuiRegion(200, canvasX, canvasY, CANVAS_WIDTH * CANVAS_SCALE, CANVAS_HEIGHT * CANVAS_SCALE);
         setSlots();
     }
 
     private void renderCanvas() {
-        this.canvasX = GUIx + 20;
-        this.canvasY = GUIy + 66;
         int[] colors = new int[5];
         for (int i = 1; i < 4; ++i) {
             ItemStack stack = this.tileEntity.getStackInSlot(35 + i);
@@ -460,5 +467,61 @@ public class GuiLegacyFlag extends GuiContainer
         if (this.mc.theWorld.isClientSide) {
             this.mc.getSendQueue().addToSendQueue(new Packet141UpdateFlag(this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord, this.tileEntity.flagColors, this.tileEntity.owner));
         }
+    }
+
+    @Override
+    public void GuiControls(ControllerInput controllerInput) {
+        if (controllerInput.buttonZL.pressedThisFrame()){
+            setActiveTool(activeTool - 1);
+        }
+        if (controllerInput.buttonZR.pressedThisFrame()){
+            setActiveTool(activeTool + 1);
+        }
+        if (controllerInput.buttonL.pressedThisFrame()){
+            selectColor(selectedColor - 1);
+        }
+        if (controllerInput.buttonR.pressedThisFrame()){
+            selectColor(selectedColor + 1);
+        }
+        if (flagRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
+            if (controllerInput.digitalPad.right.pressedThisFrame()){
+                snapToPixel(pixelX + 1, pixelY);
+            }
+            if (controllerInput.digitalPad.left.pressedThisFrame()){
+                snapToPixel(pixelX - 1, pixelY);
+            }
+            if (controllerInput.digitalPad.up.pressedThisFrame()){
+                snapToPixel(pixelX, pixelY - 1);
+            }
+            if (controllerInput.digitalPad.down.pressedThisFrame()){
+                snapToPixel(pixelX, pixelY + 1);
+            }
+        }
+    }
+    private void snapToPixel(int x, int y){
+        pixelX = x;
+        pixelY = y;
+        if (pixelX > CANVAS_WIDTH){
+            pixelX -= CANVAS_WIDTH;
+        } else if (pixelX < 0){
+            pixelX += CANVAS_WIDTH;
+        }
+        if (pixelY > CANVAS_HEIGHT){
+            pixelY -= CANVAS_HEIGHT;
+        } else if (pixelY < 0){
+            pixelY += CANVAS_HEIGHT;
+        }
+        mc.controllerInput.cursorX = canvasX + pixelX * CANVAS_SCALE + (double) CANVAS_SCALE /2;
+        mc.controllerInput.cursorY = canvasY + pixelY * CANVAS_SCALE + (double) CANVAS_SCALE /2;
+    }
+
+    @Override
+    public boolean playDefaultPressSound() {
+        return false;
+    }
+
+    @Override
+    public boolean enableDefaultSnapping() {
+        return false;
     }
 }
