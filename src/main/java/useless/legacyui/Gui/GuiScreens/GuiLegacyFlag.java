@@ -18,6 +18,7 @@ import org.lwjgl.opengl.GL11;
 import useless.legacyui.Gui.Containers.LegacyContainerFlag;
 import useless.legacyui.Gui.GuiElements.Buttons.GuiAuditoryButton;
 import useless.legacyui.Gui.GuiElements.GuiRegion;
+import useless.legacyui.Helper.ArrayHelper;
 
 public class GuiLegacyFlag extends GuiContainer
         implements IDrawableSurface<Byte> {
@@ -33,15 +34,18 @@ public class GuiLegacyFlag extends GuiContainer
     private int canvasX = 0;
     private int canvasY = 0;
     public static int selectedColor = 0;
+    public static int dyeScroll = 0;
     private FlagRenderer flagRenderer;
-    private DrawableEditor<Byte> flagSurfaceEditor;
-    private DrawableEditor<Byte> drawOverlaySurfaceEditor;
+    private final DrawableEditor<Byte> flagSurfaceEditor;
+    private final DrawableEditor<Byte> drawOverlaySurfaceEditor;
     private GuiTexturedButton[] toolBtns;
     private GuiTexturedButton eraseButton;
+    private GuiAuditoryButton buttonRight;
+    private GuiAuditoryButton buttonLeft;
     private int activeTool = 0;
     GuiSurface flagSurface;
     GuiSurface drawOverlaySurface;
-    private LegacyContainerFlag containerFlag;
+    private final LegacyContainerFlag containerFlag;
     private int GUIx;
     private int GUIy;
     protected GuiAuditoryButton[] dyeButtons;
@@ -84,6 +88,13 @@ public class GuiLegacyFlag extends GuiContainer
             dyeButtons[i].visible = false;
             controlList.add(dyeButtons[i]);
         }
+        buttonRight = new GuiAuditoryButton(30, GUIx + 137, GUIy + 33, 10, 18, "");
+        buttonRight.setMuted(false);
+        controlList.add(buttonRight);
+        buttonLeft = new GuiAuditoryButton(31, GUIx + 1, GUIy + 33, 10, 18, "");
+        buttonLeft.setMuted(false);
+        controlList.add(buttonLeft);
+        setSlots();
     }
 
     private void renderCanvas() {
@@ -168,6 +179,12 @@ public class GuiLegacyFlag extends GuiContainer
             if (guibutton == dyeButtons[i]){
                 selectDye(i);
             }
+        }
+        if (guibutton == buttonRight){
+            selectDyeOffset(dyeScroll + 1);
+        }
+        if (guibutton == buttonLeft){
+            selectDyeOffset(dyeScroll - 1);
         }
     }
 
@@ -309,9 +326,27 @@ public class GuiLegacyFlag extends GuiContainer
         eraseButton.enabled = false;
     }
     private void selectDye(int index){
-        containerFlag.swapDye(index);
+        int dye = ArrayHelper.wrapAroundIndex(index + dyeScroll, LegacyContainerFlag.dyesMetaAtSlot.size());
+        containerFlag.swapDye(dye);
     }
+    private void selectDyeOffset(int newDyeScroll){
+        dyeScroll = newDyeScroll;
+        if (dyeScroll >= LegacyContainerFlag.dyesMetaAtSlot.size()){
+            dyeScroll -= LegacyContainerFlag.dyesMetaAtSlot.size();
+        } else if (dyeScroll < 0){
+            dyeScroll += LegacyContainerFlag.dyesMetaAtSlot.size();
+        }
+        setSlots();
+    }
+    private void setSlots(){
+        containerFlag.setSlots();
+        buttonLeft.enabled = LegacyContainerFlag.dyesMetaAtSlot.size() > 7;
+        buttonRight.enabled = LegacyContainerFlag.dyesMetaAtSlot.size() > 7;
+        for (int i = 0; i < dyeButtons.length; i++) {
+            dyeButtons[i].enabled = i < (LegacyContainerFlag.dyesMetaAtSlot.size());
+        }
 
+    }
     @Override
     public int getWidth() {
         return 24;

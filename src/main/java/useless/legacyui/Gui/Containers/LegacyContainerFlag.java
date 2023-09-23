@@ -12,6 +12,7 @@ import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotDye;
 import useless.legacyui.Gui.GuiScreens.GuiLegacyFlag;
 import useless.legacyui.Gui.Slots.SlotCraftingDisplayLegacy;
+import useless.legacyui.Helper.ArrayHelper;
 import useless.legacyui.Helper.InventoryHelper;
 import useless.legacyui.LegacyUI;
 
@@ -49,15 +50,16 @@ public class LegacyContainerFlag extends ContainerFlag {
         for (int i = 0; i < 7; i++) {
             ItemStack stack = null;
             if (i < displayStacks.size()){
-                stack = displayStacks.get(i);
+                stack = displayStacks.get(ArrayHelper.wrapAroundIndex(i + GuiLegacyFlag.dyeScroll, displayStacks.size()));
             }
             addSlot(new SlotCraftingDisplayLegacy(100 + i, 12 + 18 * i, 34, stack, true, false, -1));
         }
     }
     public void swapDye(int dyeSelected){
+        LegacyUI.LOGGER.info(String.valueOf(dyeSelected));
+        LegacyUI.LOGGER.info(String.valueOf(dyesSlotsInventory.size()));
         if (GuiLegacyFlag.selectedColor < 3 && dyeSelected < dyesSlotsInventory.size()){
             int slotId = dyesSlotsInventory.get(dyeSelected); // Finds Slot index of an inventory Slot with a desired item
-            LegacyUI.LOGGER.info(String.valueOf(slotId));
             if (slotId < 9){
                 slotId += 27;
             } else {
