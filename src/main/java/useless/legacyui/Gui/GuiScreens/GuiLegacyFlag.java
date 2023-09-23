@@ -55,8 +55,8 @@ public class GuiLegacyFlag extends GuiContainer
         containerFlag = (LegacyContainerFlag)inventorySlots;
         this.renderEngineInstance = renderEngine;
         this.tileEntity = flagTileEntity;
-        this.xSize = 158;
-        this.ySize = 145;
+        this.xSize = 159;
+        this.ySize = 148;
         flagTileEntity.owner = player.username;
         this.flagRenderer = new FlagRenderer(renderEngine);
         this.flagSurface = new GuiSurface(24, 16, 4, flagTileEntity.flagColors);
