@@ -21,6 +21,7 @@ import useless.legacyui.Gui.GuiElements.Buttons.GuiAuditoryButton;
 import useless.legacyui.Gui.GuiElements.GuiRegion;
 import useless.legacyui.Helper.ArrayHelper;
 import useless.legacyui.Helper.KeyboardHelper;
+import useless.legacyui.LegacySoundManager;
 
 public class GuiLegacyFlag extends GuiContainer
         implements IDrawableSurface<Byte> {
@@ -176,7 +177,7 @@ public class GuiLegacyFlag extends GuiContainer
             setActiveTool(guibutton.id);
         }
         if (guibutton == eraseButton){
-            eraserButton();
+            selectColor(3);
         }
         for (int i = 0; i < dyeButtons.length; i++) {
             if (guibutton == dyeButtons[i]){
@@ -205,6 +206,12 @@ public class GuiLegacyFlag extends GuiContainer
             } else {
                 setCursorX(cursorX - 1);
             }
+        }
+        if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyForward.keyCode()) || KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyLookUp.keyCode())){
+            selectColor(selectedColor - 1);
+        }
+        if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyBack.keyCode()) || KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyLookDown.keyCode())){
+            selectColor(selectedColor + 1);
         }
         if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyJump.keyCode())){
             selectDye(cursorX);
@@ -294,9 +301,9 @@ public class GuiLegacyFlag extends GuiContainer
             this.drawStringNoShadow(this.fontRenderer, "3", GUIx + textX, GUIy + 104, -8421505);
         }
         if (selectedColor == 3) {
-            this.drawString(this.fontRenderer, "4", GUIx + textX, GUIy + 203, -1);
+            this.drawString(this.fontRenderer, "4", GUIx + textX, GUIy + 123, -1);
         } else {
-            this.drawStringNoShadow(this.fontRenderer, "4", GUIx + textX, GUIy + 203, -8421505);
+            this.drawStringNoShadow(this.fontRenderer, "4", GUIx + textX, GUIy + 123, -8421505);
         }
     }
 
@@ -339,31 +346,28 @@ public class GuiLegacyFlag extends GuiContainer
             this.mc.thePlayer.closeScreen();
         }
         if (keyCode == 2) {
-            selectedColor = 0;
-            eraseButton.enabled = true;
+            selectColor(0);
         }
         if (keyCode == 3) {
-            selectedColor = 1;
-            eraseButton.enabled = true;
+            selectColor(1);
         }
         if (keyCode == 4) {
-            selectedColor = 2;
-            eraseButton.enabled = true;
+            selectColor(2);
         }
         if (keyCode == 5) {
-            eraserButton();
+            selectColor(3);
         }
-    }
-    private void eraserButton(){
-        selectedColor = 3;
-        eraseButton.enabled = false;
     }
     private void selectDye(int index){
         if (index >= LegacyContainerFlag.dyesMetaAtSlot.size()){return;}
         int dye = ArrayHelper.wrapAroundIndex(index + dyeScroll, LegacyContainerFlag.dyesMetaAtSlot.size());
         containerFlag.swapDye(dye);
+        LegacySoundManager.play.craft(false);
     }
     private void selectDyeOffset(int newDyeScroll){
+        if (newDyeScroll != dyeScroll){
+            LegacySoundManager.play.scroll(true);
+        }
         if (LegacyContainerFlag.dyesMetaAtSlot.size() <= 6) {return;}
         dyeScroll = newDyeScroll;
         if (dyeScroll >= LegacyContainerFlag.dyesMetaAtSlot.size()){
@@ -371,6 +375,7 @@ public class GuiLegacyFlag extends GuiContainer
         } else if (dyeScroll < 0){
             dyeScroll += LegacyContainerFlag.dyesMetaAtSlot.size();
         }
+
         setSlots();
     }
     private void setSlots(){
@@ -382,6 +387,7 @@ public class GuiLegacyFlag extends GuiContainer
         }
     }
     private void setActiveTool(int value){
+        LegacySoundManager.play.focus(true);
         this.toolBtns[this.activeTool].enabled = true;
         activeTool = ArrayHelper.wrapAroundIndex(value, 6);
         this.toolBtns[this.activeTool].enabled = false;
@@ -395,6 +401,26 @@ public class GuiLegacyFlag extends GuiContainer
             cursorX = 0;
             selectDyeOffset(dyeScroll - 1);
         }
+        if (value == cursorX){
+            LegacySoundManager.play.scroll(true);
+        }
+    }
+    private void selectColor(int color){
+        if (color != selectedColor){
+            LegacySoundManager.play.focus(true);
+        }
+        selectedColor = color;
+        if (selectedColor > 3){
+            selectedColor -= 4;
+        } else if (selectedColor < 0){
+            selectedColor += 4;
+        }
+        if (selectedColor == 3){
+            eraseButton.enabled = false;
+        } else {
+            eraseButton.enabled = true;
+        }
+
     }
     @Override
     public int getWidth() {
