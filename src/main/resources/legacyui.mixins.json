@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "useless.legacyui.LegacyMixinPlugin",
   "mixins": [
+    "Gui.GuiMainMenuMixin"
   ],
   "client": [
     "ContainerMixin",
