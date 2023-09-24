@@ -3,6 +3,7 @@ package useless.legacyui.Gui.GuiScreens;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.drawing.DrawableEditor;
 import net.minecraft.client.gui.drawing.IDrawableSurface;
+import net.minecraft.client.input.InputType;
 import net.minecraft.client.input.controller.ControllerInput;
 import net.minecraft.client.render.FlagRenderer;
 import net.minecraft.client.render.RenderEngine;
@@ -10,21 +11,24 @@ import net.minecraft.core.block.entity.TileEntityFlag;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
+import net.minecraft.core.lang.I18n;
 import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.core.net.packet.Packet141UpdateFlag;
-import net.minecraft.core.player.inventory.ContainerFlag;
 import net.minecraft.core.util.helper.Colors;
 import net.minecraft.core.util.helper.MathHelper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
-import useless.legacyui.Gui.Containers.LegacyContainerCrafting;
 import useless.legacyui.Gui.Containers.LegacyContainerFlag;
 import useless.legacyui.Gui.GuiElements.Buttons.GuiAuditoryButton;
+import useless.legacyui.Gui.GuiElements.GuiButtonPrompt;
 import useless.legacyui.Gui.GuiElements.GuiRegion;
 import useless.legacyui.Gui.IGuiController;
 import useless.legacyui.Helper.ArrayHelper;
 import useless.legacyui.Helper.KeyboardHelper;
 import useless.legacyui.LegacySoundManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiLegacyFlag extends GuiContainer
         implements IDrawableSurface<Byte>, IGuiController {
@@ -59,7 +63,9 @@ public class GuiLegacyFlag extends GuiContainer
     protected GuiRegion flagRegion;
     private int pixelX = 0;
     private int pixelY = 0;
-
+    public List<GuiButtonPrompt> promptsDraw = new ArrayList<>();
+    public List<GuiButtonPrompt> promptsSelect = new ArrayList<>();
+    public I18n translator = I18n.getInstance();
     public GuiLegacyFlag(EntityPlayer player, TileEntityFlag flagTileEntity, RenderEngine renderEngine) {
         super(new LegacyContainerFlag(player.inventory, flagTileEntity));
         containerFlag = (LegacyContainerFlag)inventorySlots;
@@ -108,7 +114,19 @@ public class GuiLegacyFlag extends GuiContainer
         buttonLeft.setMuted(false);
         buttonLeft.visible = false;
         controlList.add(buttonLeft);
-        flagRegion = new GuiRegion(200, canvasX, canvasY, CANVAS_WIDTH * CANVAS_SCALE, CANVAS_HEIGHT * CANVAS_SCALE);
+        flagRegion = new GuiRegion(200, canvasX - CANVAS_SCALE, canvasY - CANVAS_SCALE, CANVAS_WIDTH * CANVAS_SCALE + 2 * CANVAS_SCALE, CANVAS_HEIGHT * CANVAS_SCALE + 2 * CANVAS_SCALE);
+
+        promptsDraw.add(new GuiButtonPrompt( 101, 50, this.height-30, 3,translator.translateKey("legacyui.prompt.draw"), new int[]{GuiButtonPrompt.A}));
+        promptsDraw.add(new GuiButtonPrompt( 102, promptsDraw.get(0).xPosition + promptsDraw.get(0).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.back"), new int[]{GuiButtonPrompt.B}));
+        promptsDraw.add(new GuiButtonPrompt( 103, promptsDraw.get(1).xPosition + promptsDraw.get(1).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.pickcolor"), new int[]{GuiButtonPrompt.Y}));
+        promptsDraw.add(new GuiButtonPrompt( 104, promptsDraw.get(2).xPosition + promptsDraw.get(2).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.colorselect"), new int[]{GuiButtonPrompt.LEFT_BUMPER,GuiButtonPrompt.RIGHT_BUMPER}));
+        promptsDraw.add(new GuiButtonPrompt( 105, promptsDraw.get(3).xPosition + promptsDraw.get(3).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.toolselect"), new int[]{GuiButtonPrompt.LEFT_TRIGGER,GuiButtonPrompt.RIGHT_TRIGGER}));
+
+        promptsSelect.add(new GuiButtonPrompt( 101, 50, this.height-30, 3,translator.translateKey("legacyui.prompt.select"), new int[]{GuiButtonPrompt.A}));
+        promptsSelect.add(new GuiButtonPrompt( 102, promptsSelect.get(0).xPosition + promptsSelect.get(0).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.back"), new int[]{GuiButtonPrompt.B}));
+        promptsSelect.add(new GuiButtonPrompt( 103, promptsSelect.get(1).xPosition + promptsSelect.get(1).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.pickdraw"), new int[]{GuiButtonPrompt.Y}));
+        promptsSelect.add(new GuiButtonPrompt( 104, promptsSelect.get(2).xPosition + promptsSelect.get(2).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.colorselect"), new int[]{GuiButtonPrompt.LEFT_BUMPER,GuiButtonPrompt.RIGHT_BUMPER}));
+        promptsSelect.add(new GuiButtonPrompt( 105, promptsSelect.get(3).xPosition + promptsSelect.get(3).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.toolselect"), new int[]{GuiButtonPrompt.LEFT_TRIGGER,GuiButtonPrompt.RIGHT_TRIGGER}));
         setSlots();
     }
 
@@ -132,6 +150,9 @@ public class GuiLegacyFlag extends GuiContainer
     @Override
     public void mouseClicked(int x, int y, int mouseButton) {
         super.mouseClicked(x, y, mouseButton);
+        if (mc.inputType == InputType.CONTROLLER && mc.controllerInput.buttonY.isPressed()){
+            return;
+        }
         if (this.tileEntity.getStackInSlot(36 + selectedColor) == null && selectedColor != 3) {
             return;
         }
@@ -228,6 +249,9 @@ public class GuiLegacyFlag extends GuiContainer
     @Override
     public void mouseMovedOrUp(int x, int y, int mouseButton) {
         super.mouseMovedOrUp(x, y, mouseButton);
+        if (mc.inputType == InputType.CONTROLLER && mc.controllerInput.buttonY.isPressed()){
+            return;
+        }
         if (this.activeTool >= 0 && this.activeTool < 3) {
             if (this.isDrawing && mouseButton != -1) {
                 this.isDrawing = false;
@@ -343,7 +367,18 @@ public class GuiLegacyFlag extends GuiContainer
             }
         }
         this.renderCanvas();
-
+        if (mc.inputType == InputType.CONTROLLER){
+            if (flagRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
+                for (GuiButtonPrompt prompt: promptsDraw) {
+                    prompt.drawPrompt(mc, x, y);
+                }
+            }
+            else {
+                for (GuiButtonPrompt prompt: promptsSelect) {
+                    prompt.drawPrompt(mc, x, y);
+                }
+            }
+        }
     }
 
     @Override
@@ -410,6 +445,9 @@ public class GuiLegacyFlag extends GuiContainer
         }
         if (value == cursorX){
             LegacySoundManager.play.scroll(true);
+        }
+        if (mc.inputType == InputType.CONTROLLER){
+            mc.controllerInput.snapToSlot(this, 39 + cursorX);
         }
     }
     private void selectColor(int color){
@@ -484,29 +522,70 @@ public class GuiLegacyFlag extends GuiContainer
             selectColor(selectedColor + 1);
         }
         if (flagRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
+            if (controllerInput.digitalPad.right.pressedThisFrame() || (controllerInput.digitalPad.right.isPressed() && doRepeatedInput())){
+                snapToPixel(1, 0);
+                lastRepeatedInput = System.currentTimeMillis();
+            }
+            if (controllerInput.digitalPad.left.pressedThisFrame() || (controllerInput.digitalPad.left.isPressed() && doRepeatedInput())){
+                snapToPixel(- 1, 0);
+                lastRepeatedInput = System.currentTimeMillis();
+            }
+            if (controllerInput.digitalPad.up.pressedThisFrame() || (controllerInput.digitalPad.up.isPressed() && doRepeatedInput())){
+                snapToPixel(0, -1);
+                lastRepeatedInput = System.currentTimeMillis();
+            }
+            if (controllerInput.digitalPad.down.pressedThisFrame() || (controllerInput.digitalPad.down.isPressed() && doRepeatedInput())){
+                snapToPixel(0, 1);
+                lastRepeatedInput = System.currentTimeMillis();
+            }
+            if (controllerInput.buttonA.isPressed()){
+                mouseMovedOrUp((int) controllerInput.cursorX, (int) controllerInput.cursorY, -1);
+            }
+            if (controllerInput.buttonY.pressedThisFrame()){
+                controllerInput.snapToSlot(this, 39 + cursorX);
+            }
+        } else {
             if (controllerInput.digitalPad.right.pressedThisFrame()){
-                snapToPixel(pixelX + 1, pixelY);
+                setCursorX(cursorX + 1);
             }
             if (controllerInput.digitalPad.left.pressedThisFrame()){
-                snapToPixel(pixelX - 1, pixelY);
+                setCursorX(cursorX - 1);
             }
             if (controllerInput.digitalPad.up.pressedThisFrame()){
-                snapToPixel(pixelX, pixelY - 1);
+                selectColor(selectedColor - 1);
             }
             if (controllerInput.digitalPad.down.pressedThisFrame()){
-                snapToPixel(pixelX, pixelY + 1);
+                selectColor(selectedColor + 1);
+            }
+            if (controllerInput.buttonY.pressedThisFrame()){
+                controllerInput.cursorX = canvasX + pixelX * CANVAS_SCALE + (double) CANVAS_SCALE /2;
+                controllerInput.cursorY = canvasY + pixelY * CANVAS_SCALE + (double) CANVAS_SCALE /2;
+            }
+            if (controllerInput.buttonA.pressedThisFrame()){
+                selectDye(cursorX);
             }
         }
     }
+    private long lastRepeatedInput = 0;
+    private boolean doRepeatedInput(){ // TODO better repeated input system
+        int repeatTime = 1000/15;
+        if (System.currentTimeMillis() - lastRepeatedInput > repeatTime){
+            lastRepeatedInput = System.currentTimeMillis();
+            return true;
+        }
+        return false;
+    }
     private void snapToPixel(int x, int y){
-        pixelX = x;
-        pixelY = y;
-        if (pixelX > CANVAS_WIDTH){
+        pixelX = (int) ((mc.controllerInput.cursorX - canvasX)/CANVAS_SCALE);
+        pixelY = (int) ((mc.controllerInput.cursorY - canvasY)/CANVAS_SCALE);
+        pixelX += x;
+        pixelY += y;
+        if (pixelX > CANVAS_WIDTH-1){
             pixelX -= CANVAS_WIDTH;
         } else if (pixelX < 0){
             pixelX += CANVAS_WIDTH;
         }
-        if (pixelY > CANVAS_HEIGHT){
+        if (pixelY > CANVAS_HEIGHT-1){
             pixelY -= CANVAS_HEIGHT;
         } else if (pixelY < 0){
             pixelY += CANVAS_HEIGHT;

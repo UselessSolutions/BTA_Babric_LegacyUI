@@ -25,6 +25,11 @@ legacyui.prompt.takeone=Take One
 legacyui.prompt.select=Select
 legacyui.prompt.movestack=Quick Move
 legacyui.prompt.halfstack=Take Half
+legacyui.prompt.draw=Draw
+legacyui.prompt.colorselect=Select Color
+legacyui.prompt.toolselect=Select Tool
+legacyui.prompt.pickcolor=Pick Color
+legacyui.prompt.pickdraw=Select Canvas
 
 legacyui.options.title=Better Than Legacy Settings
 legacyui.options.gui=Legacy GUI Settings

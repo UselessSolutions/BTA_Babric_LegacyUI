@@ -12,6 +12,7 @@ import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotDye;
 import useless.legacyui.Gui.GuiScreens.GuiLegacyFlag;
 import useless.legacyui.Gui.Slots.SlotCraftingDisplayLegacy;
+import useless.legacyui.Gui.Slots.SlotNull;
 import useless.legacyui.Helper.ArrayHelper;
 import useless.legacyui.Helper.InventoryHelper;
 import useless.legacyui.LegacyUI;
@@ -40,11 +41,11 @@ public class LegacyContainerFlag extends ContainerFlag {
         this.addSlot(new SlotDye(flag, 38, 129, 100));
         for (int y = 0; y < 3; ++y) {
             for (int x = 0; x < 9; ++x) {
-                this.addSlot(new Slot(inventory, x + y * 9 + 9, 8 + 170 + x * 18, 100 + y * 18));
+                this.addSlot(new SlotNull(inventory, x + y * 9 + 9, 8 + 170 + x * 18, 100 + y * 18));
             }
         }
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(inventory, i, 8 + 170 + i * 18, 158));
+            this.addSlot(new SlotNull(inventory, i, 8 + 170 + i * 18, 158));
         }
         findDyes();
         for (int i = 0; i < 6; i++) {
@@ -56,8 +57,6 @@ public class LegacyContainerFlag extends ContainerFlag {
         }
     }
     public void swapDye(int dyeSelected){
-        LegacyUI.LOGGER.info(String.valueOf(dyeSelected));
-        LegacyUI.LOGGER.info(String.valueOf(dyesSlotsInventory.size()));
         if (GuiLegacyFlag.selectedColor < 3 && dyeSelected < dyesSlotsInventory.size()){
             int slotId = dyesSlotsInventory.get(dyeSelected); // Finds Slot index of an inventory Slot with a desired item
             if (slotId < 9){
