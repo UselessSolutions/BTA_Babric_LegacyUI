@@ -131,7 +131,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
     protected void openCrafting(){
         LegacySoundManager.volume = 0;
         this.onGuiClosed();
-        mc.displayGuiScreen(new GuiLegacyCrafting(player, 4));
+        mc.displayGuiScreen(new GuiLegacyInventory(player));
         LegacySoundManager.volume = 1f;
     }
     public void setContainerSlots(){
