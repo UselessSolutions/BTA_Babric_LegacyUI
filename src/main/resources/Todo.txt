@@ -3,8 +3,8 @@ Needed Things
 - translucent block/item rendering
 - xbox popup style achievements (Config option)
 
-- Guide books tabs for recipe types
-- Guide book recipe groups
+- Guide books tabs for recipe types | Wait until 7.1
+- Guide book recipe groups | Wait until 7.1
 
 - controller action wheel binds
 
@@ -19,7 +19,6 @@ Needed Things
 - Menu Panorama
 
 - Split screen
-- Flag gui
 - Swap xy buttons in menus only
 - Two slot crafting scroll
 - Flag Clear all button
