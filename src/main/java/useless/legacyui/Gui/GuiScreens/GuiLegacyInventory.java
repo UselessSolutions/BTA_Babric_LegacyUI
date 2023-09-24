@@ -7,6 +7,7 @@ import net.minecraft.client.render.EntityRenderDispatcher;
 import net.minecraft.client.render.Lighting;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.lang.I18n;
+import net.minecraft.core.player.gamemode.Gamemode;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.Gui.GuiElements.Buttons.GuiAuditoryButton;
 import useless.legacyui.Gui.GuiElements.GuiButtonPrompt;
@@ -27,6 +28,7 @@ public class GuiLegacyInventory extends GuiInventory {
     public GuiLegacyInventory(EntityPlayer player) {
         super(player);
         this.player = player;
+        inventorySlots = Gamemode.survival.getContainer(player.inventory, !player.world.isClientSide);
     }
     public void initGui() {
         super.initGui();
