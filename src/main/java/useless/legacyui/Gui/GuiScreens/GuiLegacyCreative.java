@@ -109,7 +109,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
             }
         }
         if (guibutton == craftButton){
-            openCrafting();
+            openInventory();
         }
         for (int i = 0; i < tabButtons.length; i++) {
             if (tabButtons[i] == guibutton){
@@ -128,7 +128,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
             mc.playerController.doInventoryAction(container.windowId, InventoryAction.CREATIVE_DELETE, new int[]{i}, player);
         }
     }
-    protected void openCrafting(){
+    protected void openInventory(){
         LegacySoundManager.volume = 0;
         this.onGuiClosed();
         mc.displayGuiScreen(new GuiLegacyInventory(player));
@@ -167,10 +167,11 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         controlList.add(craftButton);
 
         I18n translator = I18n.getInstance();
-        prompts.add(new GuiButtonPrompt( 101, 50, this.height-30, 3,translator.translateKey("legacyui.prompt.select"), new int[]{0}));
-        prompts.add(new GuiButtonPrompt( 102, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.takestack"), new int[]{2}));
-        prompts.add(new GuiButtonPrompt( 102, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.back"), new int[]{1}));
-        prompts.add(new GuiButtonPrompt( 102, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.tabselect"), new int[]{9, 10}));
+        prompts.add(new GuiButtonPrompt( 101, 50, this.height-30, 3,translator.translateKey("legacyui.prompt.select"), new int[]{GuiButtonPrompt.A}));
+        prompts.add(new GuiButtonPrompt( 102, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.takestack"), new int[]{GuiButtonPrompt.X}));
+        prompts.add(new GuiButtonPrompt( 103, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.back"), new int[]{GuiButtonPrompt.B}));
+        prompts.add(new GuiButtonPrompt( 104, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.tabselect"), new int[]{GuiButtonPrompt.LEFT_BUMPER, GuiButtonPrompt.RIGHT_BUMPER}));
+        prompts.add(new GuiButtonPrompt( 105, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.openinventory"), new int[]{GuiButtonPrompt.LEFT_TRIGGER}));
 
         selectTab(0);
         selectRow(0);
@@ -253,6 +254,9 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
             if (mc.controllerInput.digitalPad.up.pressedThisFrame()){
                 selectRow(currentRow - 1);
             }
+        }
+        if (controllerInput.buttonZL.pressedThisFrame()){
+            openInventory();
         }
     }
 

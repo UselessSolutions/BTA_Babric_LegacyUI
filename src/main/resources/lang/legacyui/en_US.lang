@@ -30,6 +30,9 @@ legacyui.prompt.colorselect=Select Color
 legacyui.prompt.toolselect=Select Tool
 legacyui.prompt.pickcolor=Pick Color
 legacyui.prompt.pickdraw=Select Canvas
+legacyui.prompt.openinventory=Open Inventory
+legacyui.prompt.opencreative=Open Creative
+legacyui.prompt.opencrafting=Open Crafting
 
 legacyui.options.title=Better Than Legacy Settings
 legacyui.options.gui=Legacy GUI Settings

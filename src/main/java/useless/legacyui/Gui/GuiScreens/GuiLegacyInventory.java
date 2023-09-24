@@ -3,6 +3,7 @@ package useless.legacyui.Gui.GuiScreens;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiInventory;
 import net.minecraft.client.input.InputType;
+import net.minecraft.client.input.controller.ControllerInput;
 import net.minecraft.client.render.EntityRenderDispatcher;
 import net.minecraft.client.render.Lighting;
 import net.minecraft.core.entity.player.EntityPlayer;
@@ -11,6 +12,7 @@ import net.minecraft.core.player.gamemode.Gamemode;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.Gui.GuiElements.Buttons.GuiAuditoryButton;
 import useless.legacyui.Gui.GuiElements.GuiButtonPrompt;
+import useless.legacyui.Gui.IGuiController;
 import useless.legacyui.LegacySoundManager;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Mixins.Gui.GuiInventoryAccessor;
@@ -19,7 +21,7 @@ import useless.legacyui.Settings.ModSettings;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiLegacyInventory extends GuiInventory {
+public class GuiLegacyInventory extends GuiInventory implements IGuiController {
     private static int GUIx;
     private static int GUIy;
     protected GuiAuditoryButton craftButton;
@@ -44,8 +46,6 @@ public class GuiLegacyInventory extends GuiInventory {
         if (armorButton != null){
             armorButton.xPosition += 44;
             armorButton.yPosition -= 5;
-        } else {
-            LegacyUI.LOGGER.info("Armor Button is null!");
         }
 
         // Create Crafting Button
@@ -55,8 +55,12 @@ public class GuiLegacyInventory extends GuiInventory {
         I18n translator = I18n.getInstance();
         prompts.add(new GuiButtonPrompt( 101, 50, this.height-30,  3,translator.translateKey("legacyui.prompt.select"), new int[]{0}));
         prompts.add(new GuiButtonPrompt( 102, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.back"), new int[]{1}));
-        prompts.add(new GuiButtonPrompt( 102, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.movestack"), new int[]{2}));
-        prompts.add(new GuiButtonPrompt( 102, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.halfstack"), new int[]{3}));
+        prompts.add(new GuiButtonPrompt( 103, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.movestack"), new int[]{2}));
+        prompts.add(new GuiButtonPrompt( 104, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.halfstack"), new int[]{3}));
+        if(player.getGamemode() == Gamemode.creative){
+            prompts.add(new GuiButtonPrompt( 110, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.opencreative"), new int[]{GuiButtonPrompt.LEFT_TRIGGER}));
+        }
+        prompts.add(new GuiButtonPrompt( 105, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.opencrafting"), new int[]{GuiButtonPrompt.RIGHT_TRIGGER}));
     }
     protected void buttonPressed(GuiButton guibutton) {
         super.buttonPressed(guibutton);
@@ -68,6 +72,12 @@ public class GuiLegacyInventory extends GuiInventory {
         LegacySoundManager.volume = 0;
         this.onGuiClosed();
         mc.displayGuiScreen(new GuiLegacyCrafting(player, 4));
+        LegacySoundManager.volume = 1f;
+    }
+    protected void openCreative(){
+        LegacySoundManager.volume = 0;
+        this.onGuiClosed();
+        mc.displayGuiScreen(new GuiLegacyCreative(player));
         LegacySoundManager.volume = 1f;
     }
     public void drawScreen(int x, int y, float renderPartialTicks) {
@@ -121,5 +131,25 @@ public class GuiLegacyInventory extends GuiInventory {
         GL11.glPopMatrix();
         Lighting.disable();
         GL11.glDisable(32826);
+    }
+
+    @Override
+    public void GuiControls(ControllerInput controllerInput) {
+        if (controllerInput.buttonZL.pressedThisFrame() && player.getGamemode() == Gamemode.creative){
+            openCreative();
+        }
+        if (controllerInput.buttonZR.pressedThisFrame()){
+            openCrafting();
+        }
+    }
+
+    @Override
+    public boolean playDefaultPressSound() {
+        return true;
+    }
+
+    @Override
+    public boolean enableDefaultSnapping() {
+        return true;
     }
 }
