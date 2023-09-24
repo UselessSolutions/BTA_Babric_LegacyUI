@@ -41,11 +41,11 @@ public class LegacyContainerFlag extends ContainerFlag {
         this.addSlot(new SlotDye(flag, 38, 129, 100));
         for (int y = 0; y < 3; ++y) {
             for (int x = 0; x < 9; ++x) {
-                this.addSlot(new SlotNull(inventory, x + y * 9 + 9, 8 + 170 + x * 18, 100 + y * 18));
+                this.addSlot(new Slot(inventory, x + y * 9 + 9, 8 + 17000 + x * 18, 100 + y * 18));
             }
         }
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new SlotNull(inventory, i, 8 + 170 + i * 18, 158));
+            this.addSlot(new Slot(inventory, i, 8 + 17000 + i * 18, 158));
         }
         findDyes();
         for (int i = 0; i < 6; i++) {
