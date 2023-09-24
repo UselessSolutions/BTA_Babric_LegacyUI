@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "legacyui",
-  "version": "0.7.3",
+  "version": "0.8.0",
 
   "name": "Better Than Legacy!",
   "description": "A UI overhaul mod for BTA, designed with controllers in mind!",
@@ -36,5 +36,8 @@
   },
   "suggests": {
     "modmenu": ">=2.0.0"
+  },
+  "custom": {
+    "modmenu:clientsideOnly": true
   }
 }

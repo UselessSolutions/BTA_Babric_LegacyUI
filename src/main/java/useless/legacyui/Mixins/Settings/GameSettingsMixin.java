@@ -26,6 +26,8 @@ public class GameSettingsMixin implements ILegacyOptions {
     @Unique
     public BooleanOption enableLegacyInventoryCreative = new BooleanOption(thisAsGameSettings,"legacyui.enableLegacyInventoryCreative", true);
     @Unique
+    public BooleanOption enableLegacyFlag = new BooleanOption(thisAsGameSettings,"legacyui.enableLegacyFlag", true);
+    @Unique
     public BooleanOption showCraftingItemNamePreview = new BooleanOption(thisAsGameSettings,"legacyui.showCraftingItemNamePreview", true);
     @Unique
     public BooleanOption useRandomPitch = new BooleanOption(thisAsGameSettings,"legacyui.useRandomPitch", false);
@@ -61,6 +63,7 @@ public class GameSettingsMixin implements ILegacyOptions {
     public BooleanOption getEnableLegacyInventoryCreative() {
         return enableLegacyInventoryCreative;
     }
+    public BooleanOption getEnableLegacyFlag() {return enableLegacyFlag;}
     public BooleanOption getShowCraftingItemNamePreview() {
         return showCraftingItemNamePreview;
     }

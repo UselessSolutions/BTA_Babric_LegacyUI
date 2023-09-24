@@ -11,6 +11,7 @@ public interface ILegacyOptions {
     BooleanOption getEnableLegacyCrafting();
     BooleanOption getEnableLegacyInventorySurvival();
     BooleanOption getEnableLegacyInventoryCreative();
+    BooleanOption getEnableLegacyFlag();
     BooleanOption getShowCraftingItemNamePreview();
     BooleanOption getUseRandomPitch();
     ColorOption getGuiLabelColor();

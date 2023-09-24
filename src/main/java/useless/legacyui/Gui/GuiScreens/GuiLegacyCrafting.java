@@ -315,7 +315,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         if (ModSettings.legacyOptions.getShowCraftingItemNamePreview().value && showCraftDisplay){ // If crafting display rendered and render item names enabled
             craftingString = currentRecipe.getRecipeOutput().getDisplayName(); // Get Item name
             if (!LegacyContainerCrafting.isDicovered(currentRecipe.getRecipeOutput(), mc.statFileWriter, mc.thePlayer)){ // If undiscovered obscure it
-                craftingString = craftingString.replaceAll("[a-zA-Z]|[0-9]", "?");
+                craftingString = craftingString.replaceAll("[^ ]", "?");
             }
             if (craftingString.length() > 21){ // If too long then cap to 21 characters
                 craftingString = craftingString.substring(0, 18) + "...";

@@ -22,3 +22,4 @@ Needed Things
 - Flag gui
 - Swap xy buttons in menus only
 - Two slot crafting scroll
+- Flag Clear all button
