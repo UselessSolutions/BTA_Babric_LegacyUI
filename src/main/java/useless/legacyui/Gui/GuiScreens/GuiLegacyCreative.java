@@ -102,11 +102,24 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         super.buttonPressed(guibutton);
         boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
         if (guibutton == clearButton){
-            if (shifted){
-                clearInventory();
+            if (mc.inputType == InputType.CONTROLLER){
+                boolean hotbarCleared = true;
+                for (int i = 0; i < 9; ++i) {
+                    hotbarCleared = hotbarCleared && player.inventory.mainInventory[i] == null;
+                }
+                if (hotbarCleared){
+                    clearInventory();
+                } else {
+                    clearHotbar();
+                }
             } else {
-                clearHotbar();
+                if (shifted){
+                    clearInventory();
+                } else {
+                    clearHotbar();
+                }
             }
+
         }
         if (guibutton == craftButton){
             openInventory();
@@ -124,7 +137,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
 
     }
     private void clearHotbar(){
-        for (int i = container.getCreativeSlotsStart()-10; i < container.getCreativeSlotsStart(); ++i) {
+        for (int i = container.getCreativeSlotsStart()-9; i < container.getCreativeSlotsStart(); ++i) {
             mc.playerController.doInventoryAction(container.windowId, InventoryAction.CREATIVE_DELETE, new int[]{i}, player);
         }
     }
