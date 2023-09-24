@@ -19,6 +19,7 @@ import net.minecraft.core.util.helper.MathHelper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.Gui.Containers.LegacyContainerFlag;
+import useless.legacyui.Gui.GuiElements.Buttons.GuiAudioTextureButton;
 import useless.legacyui.Gui.GuiElements.Buttons.GuiAuditoryButton;
 import useless.legacyui.Gui.GuiElements.GuiButtonPrompt;
 import useless.legacyui.Gui.GuiElements.GuiRegion;
@@ -49,8 +50,8 @@ public class GuiLegacyFlag extends GuiContainer
     private FlagRenderer flagRenderer;
     private final DrawableEditor<Byte> flagSurfaceEditor;
     private final DrawableEditor<Byte> drawOverlaySurfaceEditor;
-    private GuiTexturedButton[] toolBtns;
-    private GuiTexturedButton eraseButton;
+    private GuiAudioTextureButton[] toolBtns;
+    private GuiAudioTextureButton eraseButton;
     private GuiAuditoryButton buttonRight;
     private GuiAuditoryButton buttonLeft;
     private int activeTool = 0;
@@ -89,15 +90,17 @@ public class GuiLegacyFlag extends GuiContainer
         canvasY = GUIy + 66;
         super.initGui();
         controlList.clear();
-        toolBtns = new GuiTexturedButton[6];
+        toolBtns = new GuiAudioTextureButton[6];
         for (int i = 0; i < 6; ++i) {
-            toolBtns[i] = new GuiTexturedButton(i, "/assets/legacyui/gui/legacyflag.png", GUIx + 12 + 23 * i, GUIy + 12, 20 * i, 196, 20, 20);
+            toolBtns[i] = new GuiAudioTextureButton(i, "/assets/legacyui/gui/legacyflag.png", GUIx + 12 + 23 * i, GUIy + 12, 20 * i, 196, 20, 20);
+            toolBtns[i].setMuted(true);
             if (i == activeTool) {
                 toolBtns[i].enabled = false;
             }
             controlList.add(toolBtns[i]);
         }
-        eraseButton = new GuiTexturedButton(6, "/assets/legacyui/gui/legacyflag.png", GUIx + 128, GUIy + 118, 120, 196, 18, 18);
+        eraseButton = new GuiAudioTextureButton(6, "/assets/legacyui/gui/legacyflag.png", GUIx + 128, GUIy + 118, 120, 196, 18, 18);
+        eraseButton.setMuted(true);
         controlList.add(eraseButton);
         dyeButtons = new GuiAuditoryButton[6];
         for (int i = 0; i < dyeButtons.length; i++) {
