@@ -53,6 +53,7 @@ public class GuiLegacyInventory extends GuiInventory implements IGuiController {
         craftButton.visible = false;
         controlList.add(craftButton);
         I18n translator = I18n.getInstance();
+        prompts.clear();
         prompts.add(new GuiButtonPrompt( 101, 50, this.height-30,  3,translator.translateKey("legacyui.prompt.select"), new int[]{0}));
         prompts.add(new GuiButtonPrompt( 102, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.back"), new int[]{1}));
         prompts.add(new GuiButtonPrompt( 103, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.movestack"), new int[]{2}));

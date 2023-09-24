@@ -247,7 +247,9 @@ public class LegacyCategoryManager {
         public static RecipeGroupBuilder stoneSlabs = new RecipeGroupBuilder()
                 .addKeyword(".slab.");
         public static RecipeGroupBuilder bricks = new RecipeGroupBuilder()
-                .addKeyword(".brick.");
+                .addKeyword(".brick.")
+                .excludeKeyword(".stairs.")
+                .excludeKeyword(".slab.");
         public static RecipeGroupBuilder polished = new RecipeGroupBuilder()
                 .addKeyword(".polished")
                 .addKeyword(".pillar")
@@ -291,6 +293,7 @@ public class LegacyCategoryManager {
                 .addItem(Item.dustRedstone)
                 .addItem(Item.quartz)
                 .addItem(Item.coal)
+                .addItem(Item.coal.id, 1)
                 .addItem(Item.nethercoal)
                 .addItem(Item.olivine);
         public static RecipeCategoryBuilder category = new RecipeCategoryBuilder(MOD_ID)
@@ -393,7 +396,8 @@ public class LegacyCategoryManager {
         public static RecipeGroupBuilder traps = new RecipeGroupBuilder()
                 .addClass(BlockTNT.class)
                 .addClass(BlockSpikes.class)
-                .addClass(BlockMesh.class);
+                .addClass(BlockMesh.class)
+                .addItem(Item.basket);
 
         public static RecipeCategoryBuilder category = new RecipeCategoryBuilder(MOD_ID)
                 .setIcon("lever.png")

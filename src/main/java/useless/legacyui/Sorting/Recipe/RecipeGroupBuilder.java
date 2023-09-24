@@ -24,6 +24,14 @@ public class RecipeGroupBuilder{
     private final List<ItemStack> exclusiveItemList = new ArrayList<>();
     private final List<String> exclusiveKeywordList = new ArrayList<>();
     private final List<ItemStack> excludeItemList = new ArrayList<>();
+    private final List<String> excludeKeywordList = new ArrayList<>();
+    public RecipeGroupBuilder excludeKeyword(String keyword){
+        if (isDebug){
+            LegacyUI.LOGGER.info(keyword);
+        }
+        excludeKeywordList.add(keyword);
+        return this;
+    }
     public RecipeGroupBuilder excludeItem(Item item){
         return excludeItem(new ItemStack(item));
     }
@@ -151,6 +159,9 @@ public class RecipeGroupBuilder{
                 if (UtilSorting.stackInItemList(excludeItemList,recipeItem)){
                     continue;
                 }
+                if (UtilSorting.stackInKeywordList(excludeKeywordList,recipeItem)){
+                    continue;
+                }
                 if (UtilSorting.stackInClassList(exclusiveClassList,recipeItem) || UtilSorting.stackInItemList(exclusiveItemList, recipeItem) || UtilSorting.stackInKeywordList(exclusiveKeywordList, recipeItem)) {
                     recipeGroupRecipes.add(currentRecipe);
                     unusedRecipes.remove(i - removeOffset);
@@ -164,6 +175,9 @@ public class RecipeGroupBuilder{
             if (currentRecipe instanceof RecipeShaped || currentRecipe instanceof RecipeShapeless){
                 ItemStack recipeItem = currentRecipe.getRecipeOutput();
                 if (UtilSorting.stackInItemList(excludeItemList,recipeItem)){
+                    continue;
+                }
+                if (UtilSorting.stackInKeywordList(excludeKeywordList,recipeItem)){
                     continue;
                 }
                 if (UtilSorting.recipeInRecipeList(recipeGroupRecipes, currentRecipe)){ // Stack already in list

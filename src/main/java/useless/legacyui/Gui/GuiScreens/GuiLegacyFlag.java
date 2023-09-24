@@ -116,12 +116,14 @@ public class GuiLegacyFlag extends GuiContainer
         controlList.add(buttonLeft);
         flagRegion = new GuiRegion(200, canvasX - CANVAS_SCALE, canvasY - CANVAS_SCALE, CANVAS_WIDTH * CANVAS_SCALE + 2 * CANVAS_SCALE, CANVAS_HEIGHT * CANVAS_SCALE + 2 * CANVAS_SCALE);
 
+        promptsDraw.clear();
         promptsDraw.add(new GuiButtonPrompt( 101, 50, this.height-30, 3,translator.translateKey("legacyui.prompt.draw"), new int[]{GuiButtonPrompt.A}));
         promptsDraw.add(new GuiButtonPrompt( 102, promptsDraw.get(0).xPosition + promptsDraw.get(0).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.back"), new int[]{GuiButtonPrompt.B}));
         promptsDraw.add(new GuiButtonPrompt( 103, promptsDraw.get(1).xPosition + promptsDraw.get(1).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.pickcolor"), new int[]{GuiButtonPrompt.Y}));
         promptsDraw.add(new GuiButtonPrompt( 104, promptsDraw.get(2).xPosition + promptsDraw.get(2).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.colorselect"), new int[]{GuiButtonPrompt.LEFT_BUMPER,GuiButtonPrompt.RIGHT_BUMPER}));
         promptsDraw.add(new GuiButtonPrompt( 105, promptsDraw.get(3).xPosition + promptsDraw.get(3).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.toolselect"), new int[]{GuiButtonPrompt.LEFT_TRIGGER,GuiButtonPrompt.RIGHT_TRIGGER}));
 
+        promptsSelect.clear();
         promptsSelect.add(new GuiButtonPrompt( 101, 50, this.height-30, 3,translator.translateKey("legacyui.prompt.select"), new int[]{GuiButtonPrompt.A}));
         promptsSelect.add(new GuiButtonPrompt( 102, promptsSelect.get(0).xPosition + promptsSelect.get(0).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.back"), new int[]{GuiButtonPrompt.B}));
         promptsSelect.add(new GuiButtonPrompt( 103, promptsSelect.get(1).xPosition + promptsSelect.get(1).width + 3, this.height-30,  3,translator.translateKey("legacyui.prompt.pickdraw"), new int[]{GuiButtonPrompt.Y}));
