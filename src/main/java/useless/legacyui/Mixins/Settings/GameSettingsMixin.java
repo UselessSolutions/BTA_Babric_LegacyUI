@@ -1,14 +1,36 @@
 package useless.legacyui.Mixins.Settings;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.option.*;
+import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.core.util.helper.Color;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import useless.legacyui.Gui.GuiScreens.Options.ControllerType;
 import useless.legacyui.Settings.ILegacyOptions;
 
 @Mixin(value = GameSettings.class, remap = false, priority = 2000)
 public class GameSettingsMixin implements ILegacyOptions {
+    @Shadow @Final public Minecraft mc;
+
+    @Inject(method = "optionChanged(Lnet/minecraft/client/option/Option;)V", at = @At("TAIL"))
+    private void onOptionChanged(Option<?> option, CallbackInfo ci){
+        if (option == enableLegacyInventorySurvival){
+            if (mc.thePlayer != null && mc.thePlayer.getGamemode() == Gamemode.survival){
+                mc.thePlayer.inventorySlots = Gamemode.survival.getContainer(mc.thePlayer.inventory, !mc.thePlayer.world.isClientSide);
+            }
+        }
+        if (option == enableLegacyInventoryCreative){
+            if (mc.thePlayer != null && mc.thePlayer.getGamemode() == Gamemode.creative){
+                mc.thePlayer.inventorySlots = Gamemode.creative.getContainer(mc.thePlayer.inventory, !mc.thePlayer.world.isClientSide);
+            }
+        }
+    }
     @Unique
     private final GameSettings thisAsGameSettings = (GameSettings) ((Object)this);
     @Unique
