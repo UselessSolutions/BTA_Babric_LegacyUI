@@ -38,7 +38,7 @@ public class UtilGui {
                 width,
                 (1f/(IconHelper.ICON_RESOLUTION * IconHelper.ICON_ATLAS_WIDTH_TILES)) * (1/scale));
     }
-    public static void drawPanorama(GuiScreen gui){
+    public static void drawPanorama(GuiScreen gui, int panoNum){
         GL11.glDisable(2896);
         GL11.glDisable(2912);
         Tessellator tessellator = Tessellator.instance;
@@ -47,7 +47,7 @@ public class UtilGui {
         float imageAspectRatio = imageWidth / imageHeight;
         float screenAspectRatio = (float)gui.width / (float)gui.height;
         float finalAspectRatio = (float)gui.width / imageWidth / ((float)gui.height / imageHeight);
-        GL11.glBindTexture(3553, mc.renderEngine.getTexture("/assets/legacyui/panoramas/pn_0.png"));
+        GL11.glBindTexture(3553, mc.renderEngine.getTexture("/assets/legacyui/panoramas/pn_"+panoNum+".png"));
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
