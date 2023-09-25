@@ -77,7 +77,7 @@ public class GameSettingsMixin implements ILegacyOptions {
     @Unique
     public BooleanOption replaceStandardBackground = new BooleanOption(thisAsGameSettings, "legacyui.universalPanorama", true);
     @Unique
-    public RangeOption panoramaScrollLength = new RangeOption(thisAsGameSettings, "legacyui.panoramaSpeed", 3, 8);
+    public RangeOption panoramaScrollLength = new RangeOption(thisAsGameSettings, "legacyui.panoramaSpeed", 7, 12);
     @Unique
     public FloatOption mainMenuBrightness = new FloatOption(thisAsGameSettings, "legacyui.mainMenuBrightness", 1f);
 
