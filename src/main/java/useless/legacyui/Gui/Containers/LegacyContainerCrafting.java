@@ -238,6 +238,7 @@ public class LegacyContainerCrafting extends Container {
                 }
             }
             mc.playerController.doInventoryAction(windowId, InventoryAction.MOVE_STACK, new int[]{0}, mc.thePlayer);
+            mc.playerController.doInventoryAction(windowId, InventoryAction.DROP, new int[]{0}, mc.thePlayer);
             return true; // Craft succeeded
         }
         return false; // Craft failed
