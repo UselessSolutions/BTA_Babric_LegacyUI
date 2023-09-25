@@ -2,6 +2,7 @@ package useless.legacyui.Mixins.Settings;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.option.*;
+import net.minecraft.core.lang.I18n;
 import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.core.util.helper.Color;
 import org.spongepowered.asm.mixin.Final;
@@ -11,6 +12,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import useless.legacyui.Gui.GuiScreens.Options.ControllerType;
 import useless.legacyui.Settings.ILegacyOptions;
 
@@ -29,6 +31,13 @@ public class GameSettingsMixin implements ILegacyOptions {
             if (mc.thePlayer != null && mc.thePlayer.getGamemode() == Gamemode.creative){
                 mc.thePlayer.inventorySlots = Gamemode.creative.getContainer(mc.thePlayer.inventory, !mc.thePlayer.world.isClientSide);
             }
+        }
+    }
+    @Inject(method = "getDisplayString(Lnet/minecraft/client/option/Option;)Ljava/lang/String;", at = @At("HEAD"), cancellable = true)
+    private void displayString(Option<?> option, CallbackInfoReturnable<String> cir){
+        I18n translator = I18n.getInstance();
+        if (option == panoramaScrollLength){
+            cir.setReturnValue("" + (panoramaScrollLength.value + 1) * 15 + " " + translator.translateKey("options.legacyui.panoramaSpeed.unit"));
         }
     }
     @Unique
@@ -63,6 +72,14 @@ public class GameSettingsMixin implements ILegacyOptions {
     public ColorOption guiBackgroundColor = new ColorOption(thisAsGameSettings, "legacyui.guiBackgroundColor", new Color().setARGB(0x90101010));
     @Unique
     public EnumOption<ControllerType> guiControllerType = new EnumOption<>(thisAsGameSettings, "legacyui.guiControllerType", ControllerType.class, ControllerType.GENERIC);
+    @Unique
+    public BooleanOption enablePanorama = new BooleanOption(thisAsGameSettings, "legacyui.enablePanorama", true);
+    @Unique
+    public BooleanOption replaceStandardBackground = new BooleanOption(thisAsGameSettings, "legacyui.universalPanorama", true);
+    @Unique
+    public RangeOption panoramaScrollLength = new RangeOption(thisAsGameSettings, "legacyui.panoramaSpeed", 3, 8);
+    @Unique
+    public FloatOption mainMenuBrightness = new FloatOption(thisAsGameSettings, "legacyui.mainMenuBrightness", 1f);
 
     public BooleanOption getCraftingHideUndiscoveredItems() {
         return craftingHideUndiscoveredItems;
@@ -106,5 +123,21 @@ public class GameSettingsMixin implements ILegacyOptions {
     }
     public EnumOption<ControllerType> getGuiControllerType() {
         return guiControllerType;
+    }
+    public BooleanOption getEnablePanorama() {
+        return enablePanorama;
+    }
+
+    @Override
+    public BooleanOption getReplaceStandardBackground() {
+        return replaceStandardBackground;
+    }
+
+    public RangeOption getPanoramaScrollLength() {
+        return panoramaScrollLength;
+    }
+
+    public FloatOption getMainMenuBrightness() {
+        return mainMenuBrightness;
     }
 }

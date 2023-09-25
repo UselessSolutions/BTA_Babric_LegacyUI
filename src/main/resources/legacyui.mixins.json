@@ -28,6 +28,7 @@
     "Gui.GuiOptionsBaseMixin",
     "Gui.GuiScreenMixin",
     "Gui.GuiTrommelMixin",
+    "Gui.GuiMainMenuMixin",
     "Modded.NoNameDyes.GuiBleacherMixin",
     "Modded.PotatoLogistics.GuiFilterMixin",
     "Multiplayer.PlayerControllerMPMixin",

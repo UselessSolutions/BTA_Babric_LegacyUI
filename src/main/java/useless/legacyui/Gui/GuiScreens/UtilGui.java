@@ -2,9 +2,11 @@ package useless.legacyui.Gui.GuiScreens;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.render.Tessellator;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.Helper.IconHelper;
+import useless.legacyui.Settings.ModSettings;
 
 public class UtilGui {
     public static Minecraft mc = Minecraft.getMinecraft(Minecraft.class);
@@ -35,5 +37,36 @@ public class UtilGui {
                 width,
                 width,
                 (1f/(IconHelper.ICON_RESOLUTION * IconHelper.ICON_ATLAS_WIDTH_TILES)) * (1/scale));
+    }
+    public static void drawPanorama(GuiScreen gui, int panoNum){
+        GL11.glDisable(2896);
+        GL11.glDisable(2912);
+        Tessellator tessellator = Tessellator.instance;
+        float imageWidth = 820f;
+        float imageHeight = 144f;
+        float imageAspectRatio = imageWidth / imageHeight;
+        float screenAspectRatio = (float)gui.width / (float)gui.height;
+        float finalAspectRatio = (float)gui.width / imageWidth / ((float)gui.height / imageHeight);
+        GL11.glBindTexture(3553, mc.renderEngine.getTexture("/assets/legacyui/panoramas/pn_"+panoNum+".png"));
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+        tessellator.startDrawingQuads();
+        float brightness = ModSettings.legacyOptions.getMainMenuBrightness().value;
+        tessellator.setColorRGBA_F(brightness, brightness, brightness, 1.0f);
+        int num = (1000 * ((ModSettings.legacyOptions.getPanoramaScrollLength().value + 1) * 15));
+        float offset = (float) (System.currentTimeMillis() % num) /num;
+        if (screenAspectRatio < imageAspectRatio) {
+            tessellator.addVertexWithUV(0.0, gui.height, 0.0, (0.5f + offset) - finalAspectRatio / 2.0f, 1.0);
+            tessellator.addVertexWithUV(gui.width, gui.height, 0.0, (0.5f + offset) + finalAspectRatio / 2.0f, 1.0);
+            tessellator.addVertexWithUV(gui.width, 0.0, 0.0, (0.5f + offset) + finalAspectRatio / 2.0f, 0.0);
+            tessellator.addVertexWithUV(0.0, 0.0, 0.0, (0.5f + offset) - finalAspectRatio / 2.0f, 0.0);
+        } else {
+            tessellator.addVertexWithUV(0.0, gui.height, 0.0, 0.0, 0.5f + 0.5f / finalAspectRatio);
+            tessellator.addVertexWithUV(gui.width, gui.height, 0.0, 1.0, 0.5f + 0.5f / finalAspectRatio);
+            tessellator.addVertexWithUV(gui.width, 0.0, 0.0, 1.0, 0.5f - 0.5f / finalAspectRatio);
+            tessellator.addVertexWithUV(0.0, 0.0, 0.0, 0.0, 0.5f - 0.5f / finalAspectRatio);
+        }
+        tessellator.draw();
     }
 }
