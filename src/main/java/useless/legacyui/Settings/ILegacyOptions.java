@@ -19,4 +19,8 @@ public interface ILegacyOptions {
     ColorOption getHighlightColor();
     ColorOption getGuiBackgroundColor();
     EnumOption<ControllerType> getGuiControllerType();
+    BooleanOption getEnablePanorama();
+    BooleanOption getReplaceStandardBackground();
+    RangeOption getPanoramaScrollLength();
+    FloatOption getMainMenuBrightness();
 }

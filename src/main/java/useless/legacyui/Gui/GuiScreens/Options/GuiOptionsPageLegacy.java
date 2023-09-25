@@ -18,6 +18,10 @@ public class GuiOptionsPageLegacy extends GuiOptionsPageOptionBase {
                 legacyOptions.getGuiControllerType(),
                 legacyOptions.getShowCraftingItemNamePreview(),
                 legacyOptions.getCraftingHideUndiscoveredItems());
+        this.addOptionsCategory("legacyui.options.panorama",
+                legacyOptions.getEnablePanorama(),
+                legacyOptions.getPanoramaScrollLength(),
+                legacyOptions.getMainMenuBrightness());
         this.addOptionsCategory("legacyui.options.sound",
                 legacyOptions.getUseLegacySounds(),
                 legacyOptions.getUseRandomPitch());

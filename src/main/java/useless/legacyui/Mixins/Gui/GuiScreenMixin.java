@@ -9,12 +9,15 @@ import net.minecraft.core.sound.SoundType;
 import net.minecraft.core.util.helper.Color;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import useless.legacyui.Gui.GuiScreens.UtilGui;
 import useless.legacyui.LegacySoundManager;
 import useless.legacyui.Settings.ModSettings;
 import useless.legacyui.Gui.GuiElements.Buttons.IButtonSounds;
 
-@Mixin(value = GuiScreen.class, remap = false)
+@Mixin(value = GuiScreen.class, remap = false, priority = 2000)
 public class GuiScreenMixin extends Gui {
     public GuiButton button;
 
