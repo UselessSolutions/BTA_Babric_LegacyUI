@@ -89,7 +89,7 @@ public class LegacyCategoryManager {
                 .setTranslationKey("food");
         public static ItemCategoryBuilder redstoneTransit = new ItemCategoryBuilder(MOD_ID)
                 .addClass(BlockRail.class)
-                .addClass(BlockRedstone.class)
+                .addClass(BlockRedstone.class,true)
                 .addItem(Item.dustRedstone)
                 .addClass(BlockRedstoneTorch.class)
                 .addClass(BlockTNT.class)
@@ -110,6 +110,7 @@ public class LegacyCategoryManager {
                 .addClass(BlockLever.class)
                 .addClass(BlockButton.class)
                 .addClass(BlockPressurePlate.class)
+                .addClass(BlockSpikes.class)
                 .addItem(Item.basket)
                 .setIcon("redstonerail.png")
                 .setTranslationKey("redstone");
@@ -136,6 +137,7 @@ public class LegacyCategoryManager {
                 .addClass(BlockSponge.class)
                 .addClass(BlockCactus.class)
                 .addClass(BlockCobweb.class)
+                .excludeItem(Block.spikes.asItem())
                 .addItem(Block.marble)
                 .addItem(Block.slate)
                 .addItem(Block.sandstone)
