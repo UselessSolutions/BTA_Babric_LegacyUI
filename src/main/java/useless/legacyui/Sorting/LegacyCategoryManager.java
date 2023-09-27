@@ -234,6 +234,8 @@ public class LegacyCategoryManager {
                 .addItem(Block.bookshelfPlanksOak)
                 .addItem(Item.book)
                 .addItem(Item.paper);
+        public static RecipeGroupBuilder wool = new RecipeGroupBuilder()
+                .addClass(BlockWool.class);
         public static RecipeGroupBuilder display = new RecipeGroupBuilder()
                 .addClass(ItemSign.class)
                 .addClass(ItemPainting.class)
@@ -241,7 +243,7 @@ public class LegacyCategoryManager {
         public static RecipeCategoryBuilder category = new RecipeCategoryBuilder(MOD_ID)
                 .setTranslationKey("basics")
                 .setIcon("planks.png")
-                .addRecipeGroupBuilders(new RecipeGroupBuilder[]{planks, torches, utilityBlocks, chest, bed, fences, fencegates, woodStairs, woodSlabs, ladders, doors, books, display});
+                .addRecipeGroupBuilders(new RecipeGroupBuilder[]{planks, torches, utilityBlocks, chest, bed, fences, fencegates, woodStairs, woodSlabs, ladders, doors, books, wool, display});
     }
     public static class recipeBricks {
         public static RecipeGroupBuilder stoneStairs = new RecipeGroupBuilder()
@@ -256,11 +258,11 @@ public class LegacyCategoryManager {
                 .addKeyword(".polished")
                 .addKeyword(".pillar")
                 .addKeyword(".carved")
+                .excludeKeyword(".stairs.")
+                .excludeKeyword(".slab.")
                 .excludeItem(Block.pumpkin.asItem())
                 .excludeItem(Block.pumpkinCarvedActive.asItem())
                 .excludeItem(Block.pumpkinCarvedIdle.asItem());
-        public static RecipeGroupBuilder wool = new RecipeGroupBuilder()
-                .addClass(BlockWool.class);
         public static RecipeGroupBuilder natural = new RecipeGroupBuilder()
                 .addItem(Block.sandstone)
                 .addItem(Block.gravel)
@@ -301,7 +303,7 @@ public class LegacyCategoryManager {
         public static RecipeCategoryBuilder category = new RecipeCategoryBuilder(MOD_ID)
                 .setTranslationKey("bricks")
                 .setIcon("bricks.png")
-                .addRecipeGroupBuilders(new RecipeGroupBuilder[]{bricks, polished, stoneStairs, stoneSlabs, wool, natural, layers, resourceBlocks, resourceBlocksUncompacts});
+                .addRecipeGroupBuilders(new RecipeGroupBuilder[]{bricks, polished, stoneStairs, stoneSlabs, natural, layers, resourceBlocks, resourceBlocksUncompacts});
     }
     public static class recipeTools {
         public static RecipeGroupBuilder pickaxe = new RecipeGroupBuilder()
