@@ -362,7 +362,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         for (int i = 1; i < ((craftingSize<=4) ? 5:10); i++) {
             isItem = isItem || (inventorySlots.getSlot(i) != null && inventorySlots.getSlot(i).getStack() != null);
         }
-        boolean result = !isItem && !holdingItem && inventoryRegion.isHovered(mouseX, mouseY);
+        boolean result = (!holdingItem || inventoryRegion.isHovered(mouseX, mouseY)) && !isItem;
 
         if (result){
             craftingButton.enabled = true;
