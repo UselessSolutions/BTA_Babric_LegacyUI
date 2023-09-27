@@ -356,17 +356,13 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         }
     }
     public void renderCraftingDisplay(int mouseX, int mouseY) {
-        if (inventoryRegion.isHovered(mouseX, mouseY)){
-            showCraftDisplay = true;
-            return;
-        }
         boolean holdingItem = mc.thePlayer.inventory.getHeldItemStack() != null;
 
         boolean isItem = false;
         for (int i = 1; i < ((craftingSize<=4) ? 5:10); i++) {
             isItem = isItem || (inventorySlots.getSlot(i) != null && inventorySlots.getSlot(i).getStack() != null);
         }
-        boolean result = !isItem && !holdingItem;
+        boolean result = !isItem && !holdingItem && inventoryRegion.isHovered(mouseX, mouseY);
 
         if (result){
             craftingButton.enabled = true;
