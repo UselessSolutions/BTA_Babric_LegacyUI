@@ -47,10 +47,8 @@ public class UtilGui {
         float imageAspectRatio = imageWidth / imageHeight;
         float screenAspectRatio = (float)gui.width / (float)gui.height;
         float finalAspectRatio = (float)gui.width / imageWidth / ((float)gui.height / imageHeight);
-        GL11.glBindTexture(3553, mc.renderEngine.getTexture("/assets/legacyui/panoramas/pn_"+panoNum+".png"));
+        GL11.glBindTexture(3553, mc.renderEngine.getTexture("%blur%/assets/legacyui/panoramas/pn_"+panoNum+".png"));
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
         tessellator.startDrawingQuads();
         float brightness = ModSettings.legacyOptions.getMainMenuBrightness().value;
         tessellator.setColorRGBA_F(brightness, brightness, brightness, 1.0f);
