@@ -5,6 +5,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.render.Tessellator;
 import org.lwjgl.opengl.GL11;
+import turniplabs.halplibe.helper.TextureHelper;
 import useless.legacyui.Helper.IconHelper;
 import useless.legacyui.Settings.ModSettings;
 

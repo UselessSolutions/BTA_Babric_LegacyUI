@@ -14,6 +14,7 @@ import useless.legacyui.Gui.Containers.LegacyContainerCrafting;
 import useless.legacyui.Gui.GuiElements.GuiButtonPrompt;
 import useless.legacyui.Gui.GuiElements.GuiRegion;
 import useless.legacyui.Gui.IGuiController;
+import useless.legacyui.Helper.IconHelper;
 import useless.legacyui.Helper.KeyboardHelper;
 import useless.legacyui.LegacySoundManager;
 import useless.legacyui.Settings.ModSettings;
@@ -331,7 +332,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         UtilGui.bindTexture("/assets/legacyui/gui/legacycrafting.png");
         drawSelectionCursorBackground();
 
-        UtilGui.bindTexture("/assets/legacyui/gui/icons.png");
+        UtilGui.bindTexture(IconHelper.ICON_TEXTURE);
         for (int i = 0; i < Math.min(LegacyCategoryManager.getRecipeCategories().size(), 8); i++) {
             UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getRecipeCategories().get(i).iconCoordinate, 0.75f); // Render Icon
         }

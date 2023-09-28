@@ -9,8 +9,13 @@ import java.util.Map;
 
 public class IconHelper {
     public static Map<String, int[]> registeredIconTextures = new HashMap<>();
+    public static String ICON_TEXTURE = "/assets/legacyui/gui/icons.png";
     public static int ICON_ATLAS_WIDTH_TILES = 16;
     public static int ICON_RESOLUTION = 32;
+    static {
+        TextureHelper.textureDestinationResolutions.put(ICON_TEXTURE, 32);
+        TextureHelper.textureAtlasWidths.put(ICON_TEXTURE, 16);
+    }
     /**
      * Place mod textures in the <i>assets/mod_id/icon/</i> directory for them to be seen.
      */
@@ -26,7 +31,7 @@ public class IconHelper {
         return newCoords;
     }
     public static void addTextureToIcons(String modId, String iconTexture, int x, int y) {
-        TextureHelper.textureHandlers.add(new TextureHandler("/assets/legacyui/gui/icons.png", "/assets/" + modId + "/icon/" + iconTexture, texCoordToIndex(x, y), ICON_RESOLUTION, 1));
+        TextureHelper.textureHandlers.add(new TextureHandler(ICON_TEXTURE, "/assets/" + modId + "/icon/" + iconTexture, texCoordToIndex(x, y), ICON_RESOLUTION, 1));
     }
     public static int texCoordToIndex(int x, int y) {
         return x + y * ICON_ATLAS_WIDTH_TILES;
