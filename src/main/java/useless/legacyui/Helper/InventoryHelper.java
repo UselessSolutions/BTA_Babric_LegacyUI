@@ -94,7 +94,7 @@ public class InventoryHelper {
     }
     public static boolean inInventory(ItemStack[] stacks, ItemStack item){
         for (ItemStack stack: stacks) {
-            if (stack.isItemEqual(item)){
+            if (stack != null && stack.isItemEqual(item)){
                 return true;
             }
         }

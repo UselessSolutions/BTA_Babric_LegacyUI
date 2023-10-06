@@ -41,45 +41,47 @@ public class GameSettingsMixin implements ILegacyOptions {
         }
     }
     @Unique
-    private final GameSettings thisAsGameSettings = (GameSettings) ((Object)this);
+    private final GameSettings thisAs = (GameSettings) ((Object)this);
     @Unique
-    public BooleanOption craftingHideUndiscoveredItems = new BooleanOption(thisAsGameSettings,"legacyui.craftingHideUndiscoveredItems", true);
+    public BooleanOption craftingHideUndiscoveredItems = new BooleanOption(thisAs,"legacyui.craftingHideUndiscoveredItems", true);
     @Unique
-    public BooleanOption overrideLabelModColor = new BooleanOption(thisAsGameSettings,"legacyui.overrideLabelModColor", false);
+    public BooleanOption overrideLabelModColor = new BooleanOption(thisAs,"legacyui.overrideLabelModColor", false);
     @Unique
-    public BooleanOption useLegacySounds = new BooleanOption(thisAsGameSettings,"legacyui.useLegacySounds", true);
+    public BooleanOption useLegacySounds = new BooleanOption(thisAs,"legacyui.useLegacySounds", true);
     @Unique
-    public BooleanOption hideHotbarInGUIs = new BooleanOption(thisAsGameSettings,"legacyui.hideHotbarInGUIs", true);
+    public BooleanOption hideHotbarInGUIs = new BooleanOption(thisAs,"legacyui.hideHotbarInGUIs", true);
     @Unique
-    public BooleanOption enableLegacyCrafting = new BooleanOption(thisAsGameSettings,"legacyui.enableLegacyCrafting", true);
+    public BooleanOption enableLegacyCrafting = new BooleanOption(thisAs,"legacyui.enableLegacyCrafting", true);
     @Unique
-    public BooleanOption enableLegacyInventorySurvival = new BooleanOption(thisAsGameSettings,"legacyui.enableLegacyInventorySurvival", true);
+    public BooleanOption enableLegacyInventorySurvival = new BooleanOption(thisAs,"legacyui.enableLegacyInventorySurvival", true);
     @Unique
-    public BooleanOption enableLegacyInventoryCreative = new BooleanOption(thisAsGameSettings,"legacyui.enableLegacyInventoryCreative", true);
+    public BooleanOption enableLegacyInventoryCreative = new BooleanOption(thisAs,"legacyui.enableLegacyInventoryCreative", true);
     @Unique
-    public BooleanOption enableLegacyFlag = new BooleanOption(thisAsGameSettings,"legacyui.enableLegacyFlag", true);
+    public BooleanOption enableLegacyFlag = new BooleanOption(thisAs,"legacyui.enableLegacyFlag", true);
     @Unique
-    public BooleanOption showCraftingItemNamePreview = new BooleanOption(thisAsGameSettings,"legacyui.showCraftingItemNamePreview", true);
+    public BooleanOption showCraftingItemNamePreview = new BooleanOption(thisAs,"legacyui.showCraftingItemNamePreview", true);
     @Unique
-    public BooleanOption useRandomPitch = new BooleanOption(thisAsGameSettings,"legacyui.useRandomPitch", false);
+    public BooleanOption useRandomPitch = new BooleanOption(thisAs,"legacyui.useRandomPitch", false);
     @Unique
-    public ColorOption guiLabelColor = new ColorOption(thisAsGameSettings, "legacyui.guiLabelColor", new Color().setARGB(0x404040));
+    public ColorOption guiLabelColor = new ColorOption(thisAs, "legacyui.guiLabelColor", new Color().setARGB(0x404040));
     @Unique
-    public ColorOption guiPromptColor = new ColorOption(thisAsGameSettings, "legacyui.guiPromptColor", new Color().setARGB(0xFFFFFF));
+    public ColorOption guiPromptColor = new ColorOption(thisAs, "legacyui.guiPromptColor", new Color().setARGB(0xFFFFFF));
     @Unique
-    public ColorOption highlightColor = new ColorOption(thisAsGameSettings, "legacyui.highlightColor", new Color().setARGB(0xFF0000));
+    public ColorOption highlightColor = new ColorOption(thisAs, "legacyui.highlightColor", new Color().setARGB(0xFF0000));
     @Unique
-    public ColorOption guiBackgroundColor = new ColorOption(thisAsGameSettings, "legacyui.guiBackgroundColor", new Color().setARGB(0x90101010));
+    public ColorOption guiBackgroundColor = new ColorOption(thisAs, "legacyui.guiBackgroundColor", new Color().setARGB(0x90101010));
     @Unique
-    public EnumOption<ControllerType> guiControllerType = new EnumOption<>(thisAsGameSettings, "legacyui.guiControllerType", ControllerType.class, ControllerType.GENERIC);
+    public EnumOption<ControllerType> guiControllerType = new EnumOption<>(thisAs, "legacyui.guiControllerType", ControllerType.class, ControllerType.GENERIC);
     @Unique
-    public BooleanOption enablePanorama = new BooleanOption(thisAsGameSettings, "legacyui.enablePanorama", true);
+    public BooleanOption enablePanorama = new BooleanOption(thisAs, "legacyui.enablePanorama", true);
     @Unique
-    public BooleanOption replaceStandardBackground = new BooleanOption(thisAsGameSettings, "legacyui.universalPanorama", true);
+    public BooleanOption replaceStandardBackground = new BooleanOption(thisAs, "legacyui.universalPanorama", true);
     @Unique
-    public RangeOption panoramaScrollLength = new RangeOption(thisAsGameSettings, "legacyui.panoramaSpeed", 3, 12);
+    public RangeOption panoramaScrollLength = new RangeOption(thisAs, "legacyui.panoramaSpeed", 3, 12);
     @Unique
-    public FloatOption mainMenuBrightness = new FloatOption(thisAsGameSettings, "legacyui.mainMenuBrightness", 1f);
+    public FloatOption mainMenuBrightness = new FloatOption(thisAs, "legacyui.mainMenuBrightness", 1f);
+    @Unique
+    public BooleanOption coordsOnMaps = new BooleanOption(thisAs, "legacyui.coordsOnMaps", true);
 
     public BooleanOption getCraftingHideUndiscoveredItems() {
         return craftingHideUndiscoveredItems;
@@ -127,8 +129,6 @@ public class GameSettingsMixin implements ILegacyOptions {
     public BooleanOption getEnablePanorama() {
         return enablePanorama;
     }
-
-    @Override
     public BooleanOption getReplaceStandardBackground() {
         return replaceStandardBackground;
     }
@@ -139,5 +139,8 @@ public class GameSettingsMixin implements ILegacyOptions {
 
     public FloatOption getMainMenuBrightness() {
         return mainMenuBrightness;
+    }
+    public BooleanOption getCoordsOnMaps() {
+        return coordsOnMaps;
     }
 }

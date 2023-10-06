@@ -58,6 +58,7 @@ options.legacyui.universalPanorama=Replace Regular Backgrounds
 options.legacyui.panoramaSpeed=Panorama Scroll Speed
 options.legacyui.panoramaSpeed.unit=Seconds
 options.legacyui.mainMenuBrightness=Menu Background Brightness
+options.legacyui.coordsOnMaps=Display Position on Map
 
 options.legacyui.guiControllerType.generic=Generic Gamepad
 options.legacyui.guiControllerType.dual_sense=Dual Sense
