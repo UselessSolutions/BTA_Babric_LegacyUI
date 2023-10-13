@@ -23,8 +23,6 @@ public class EntityPlayerSPMixin{
     protected Minecraft mc;
     @Unique
     public InventoryPlayer inventory = ((EntityPlayer)(Object)this).inventory;
-    @Unique
-    public World world = ((EntityPlayer)(Object)this).world;
     @Inject(method = "displayGUIWorkbench(III)V", at = @At("HEAD"), cancellable = true)
     private void displayLegacyCrafting(int x, int y, int z, CallbackInfo ci){
         if (ModSettings.legacyOptions.getEnableLegacyCrafting().value){
