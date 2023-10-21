@@ -63,7 +63,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
             LegacySoundManager.play.focus(true);
         }
         currentTab = value;
-        int tabAmount = Math.min(8, LegacyCategoryManager.getCreativeCategories().size());
+        int tabAmount = LegacyCategoryManager.getCreativeCategories().size();
         if (currentTab > tabAmount-1){
             currentTab -= tabAmount;
         } else if (currentTab < 0){
@@ -233,14 +233,15 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
     protected void drawGuiContainerBackgroundLayer(float renderPartialTick) {
         UtilGui.bindTexture("/assets/legacyui/gui/legacycreative.png");
         UtilGui.drawTexturedModalRect(this, GUIx,GUIy, 0, 0, xSize, ySize,1f/guiTextureWidth); // GUI Background
-        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * currentTab, GUIy - 2, 0,184, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
+        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * (currentTab%8), GUIy - 2, 0,184, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
 
         float scrollProgressLimited = ((float) currentRow) /(LegacyContainerPlayerCreative.getTotalRows()-LegacyContainerPlayerCreative.slotsTall);
         UtilGui.drawTexturedModalRect(this,scrollBar.xPosition, (scrollBar.yPosition + (int) ((scrollBar.height-15)*scrollProgressLimited)),131,184,15,15,1f/guiTextureWidth);
 
         UtilGui.bindTexture(IconHelper.ICON_TEXTURE);
-        for (int i = 0; i < Math.min(LegacyCategoryManager.getCreativeCategories().size(), 8); i++) {
-            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getCreativeCategories().get(i).iconCoordinate, 0.75f); // Render Icon
+        int iconAmountToDraw = Math.min(LegacyCategoryManager.getCreativeCategories().size() - (getPageNumber() * 8), 8);
+        for (int i = 0; i < iconAmountToDraw; i++) {
+            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.75f); // Render Icon
         }
 
         drawStringCenteredNoShadow(fontRenderer, LegacyCategoryManager.getCreativeCategories().get(currentTab).getTranslatedKey(), GUIx + xSize/2, GUIy + 32, ModSettings.legacyOptions.getGuiLabelColor().value.value);
@@ -293,5 +294,8 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
             }
         }
         return true;
+    }
+    public static int getPageNumber(){
+        return currentTab/8;
     }
 }

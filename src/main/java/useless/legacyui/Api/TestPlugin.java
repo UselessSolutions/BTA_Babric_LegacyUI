@@ -16,9 +16,12 @@ public class TestPlugin implements LegacyUIApi{
     public void register() {
         LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory1);
         LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory2);
+        LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory3);
     }
     public static ItemCategoryBuilder testCategory1 = new ItemCategoryBuilder(modId)
             .addItem(Block.brickBasalt, true);
     public static ItemCategoryBuilder testCategory2 = new ItemCategoryBuilder(modId)
             .addItem(Item.ammoArrowGold, true);
+    public static ItemCategoryBuilder testCategory3 = new ItemCategoryBuilder(modId)
+            .addItem(Item.toolSwordDiamond, true);
 }
