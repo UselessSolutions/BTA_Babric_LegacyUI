@@ -21,24 +21,6 @@ public class LegacyCategoryManager {
     public static List<ItemCategoryBuilder> creativeCategoriesBuilders = new ArrayList<>();
     public static List<RecipeCategoryBuilder> recipeCategoryBuilders = new ArrayList<>();
     public static String MOD_ID = LegacyUI.MOD_ID;
-    public static void register(){
-        recipeCategoryBuilders.add(recipeBasics.category);
-        recipeCategoryBuilders.add(recipeBricks.category);
-        recipeCategoryBuilders.add(recipeTools.category);
-        recipeCategoryBuilders.add(recipeFood.category);
-        recipeCategoryBuilders.add(recipeRedstone.category);
-        recipeCategoryBuilders.add(recipeTransit.category);
-        recipeCategoryBuilders.add(recipeMisc.category);
-        //recipeCategoryBuilders.add(new RecipeCategory(MOD_ID, "modded", IconHelper.getOrCreateIconTexture(MOD_ID, "modded.png"), recipeMisc.category.getRecipeGroups(false)));
-
-        creativeCategoriesBuilders.add(creative.natural);
-        creativeCategoriesBuilders.add(creative.otherBlocks);
-        creativeCategoriesBuilders.add(creative.equipment);
-        creativeCategoriesBuilders.add(creative.food);
-        creativeCategoriesBuilders.add(creative.redstoneTransit);
-        creativeCategoriesBuilders.add(creative.misc);
-        creativeCategoriesBuilders.add(creative.modded);
-    }
     public static List<RecipeCategory> getRecipeCategories(){
         return recipeCategories;
     }
