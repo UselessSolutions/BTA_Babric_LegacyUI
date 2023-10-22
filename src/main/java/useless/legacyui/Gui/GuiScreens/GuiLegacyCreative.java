@@ -39,6 +39,8 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
     protected GuiAuditoryButton clearButton;
     protected GuiAuditoryButton craftButton;
     protected GuiAuditoryButton[] tabButtons = new GuiAuditoryButton[8];
+    protected GuiAuditoryButton lastPageButton;
+    protected GuiAuditoryButton nextPageButton;
     public List<GuiButtonPrompt> prompts = new ArrayList<>();
     public GuiLegacyCreative(EntityPlayer player) {
         super(player);
@@ -63,7 +65,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
             LegacySoundManager.play.focus(true);
         }
         currentTab = value;
-        int tabAmount = Math.min(8, LegacyCategoryManager.getCreativeCategories().size());
+        int tabAmount = LegacyCategoryManager.getCreativeCategories().size();
         if (currentTab > tabAmount-1){
             currentTab -= tabAmount;
         } else if (currentTab < 0){
@@ -127,8 +129,14 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         }
         for (int i = 0; i < tabButtons.length; i++) {
             if (tabButtons[i] == guibutton){
-                selectTab(i);
+                selectTab(getPageNumber()*8+i);
             }
+        }
+        if (guibutton == nextPageButton){
+            selectPage(getPageNumber() + 1);
+        }
+        if (guibutton == lastPageButton){
+            selectPage(getPageNumber() - 1);
         }
     }
     private void clearInventory(){
@@ -149,8 +157,8 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         LegacySoundManager.volume = 1f;
     }
     public void setContainerSlots(){
-        for (int i = 0; i < tabButtons.length; i++) { // Only enable buttons if there is a corresponding recipe group
-            tabButtons[i].enabled = i < LegacyCategoryManager.getCreativeCategories().size();
+        for (int i = 0; i < tabButtons.length; i++) { // Only enable buttons if there is a corresponding item group
+            tabButtons[i].enabled = (getPageNumber() * 8 + i) < LegacyCategoryManager.getCreativeCategories().size();
         }
         container.setSlots();
     }
@@ -173,12 +181,18 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         scrollBar = new GuiRegion(100, GUIx + 251, GUIy + 43, 15, 112);
         bottomCreativeSlots = new GuiRegion(101, GUIx + 11, GUIy + 135, 234, 18);
         topCreativeSlots = new GuiRegion(101, GUIx + 11, GUIy + 45, 234, 18);
-        clearButton = new GuiAuditoryButton(controlList.size() + 2, GUIx + 221, GUIy + 158, 20, 20, "X");
+        clearButton = new GuiAuditoryButton(controlList.size() + 1, GUIx + 221, GUIy + 158, 20, 20, "X");
         clearButton.visible = false;
         controlList.add(clearButton);
-        craftButton = new GuiAuditoryButton(controlList.size() + 2, GUIx + 31, GUIy + 158, 20, 20, "");
+        craftButton = new GuiAuditoryButton(controlList.size() + 1, GUIx + 31, GUIy + 158, 20, 20, "");
         craftButton.visible = false;
         controlList.add(craftButton);
+        nextPageButton = new GuiAuditoryButton(controlList.size() + 1, GUIx + xSize + 2, GUIy + 4, 20, 20, ">");
+        nextPageButton.visible = LegacyCategoryManager.getCreativeCategories().size() > 8;
+        controlList.add(nextPageButton);
+        lastPageButton = new GuiAuditoryButton(controlList.size() + 1, GUIx - 22, GUIy + 4, 20, 20, "<");
+        lastPageButton.visible = LegacyCategoryManager.getCreativeCategories().size() > 8;
+        controlList.add(lastPageButton);
 
         I18n translator = I18n.getInstance();
         prompts.clear();
@@ -233,14 +247,15 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
     protected void drawGuiContainerBackgroundLayer(float renderPartialTick) {
         UtilGui.bindTexture("/assets/legacyui/gui/legacycreative.png");
         UtilGui.drawTexturedModalRect(this, GUIx,GUIy, 0, 0, xSize, ySize,1f/guiTextureWidth); // GUI Background
-        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * currentTab, GUIy - 2, 0,184, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
+        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * (currentTab%8), GUIy - 2, 0,184, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
 
         float scrollProgressLimited = ((float) currentRow) /(LegacyContainerPlayerCreative.getTotalRows()-LegacyContainerPlayerCreative.slotsTall);
         UtilGui.drawTexturedModalRect(this,scrollBar.xPosition, (scrollBar.yPosition + (int) ((scrollBar.height-15)*scrollProgressLimited)),131,184,15,15,1f/guiTextureWidth);
 
         UtilGui.bindTexture(IconHelper.ICON_TEXTURE);
-        for (int i = 0; i < Math.min(LegacyCategoryManager.getCreativeCategories().size(), 8); i++) {
-            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getCreativeCategories().get(i).iconCoordinate, 0.75f); // Render Icon
+        int iconAmountToDraw = Math.min(LegacyCategoryManager.getCreativeCategories().size() - (getPageNumber() * 8), 8);
+        for (int i = 0; i < iconAmountToDraw; i++) {
+            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.75f); // Render Icon
         }
 
         drawStringCenteredNoShadow(fontRenderer, LegacyCategoryManager.getCreativeCategories().get(currentTab).getTranslatedKey(), GUIx + xSize/2, GUIy + 32, ModSettings.legacyOptions.getGuiLabelColor().value.value);
@@ -293,5 +308,18 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
             }
         }
         return true;
+    }
+    public static int getPageNumber(){
+        return currentTab/8;
+    }
+    public void selectPage(int pageNumber){
+        int desiredPage = pageNumber;
+        if (desiredPage < 0){
+            desiredPage = LegacyCategoryManager.getCreativeCategories().size()/8;
+        }
+        if (desiredPage > LegacyCategoryManager.getCreativeCategories().size()/8){
+            desiredPage = 0;
+        }
+        selectTab(desiredPage * 8);
     }
 }

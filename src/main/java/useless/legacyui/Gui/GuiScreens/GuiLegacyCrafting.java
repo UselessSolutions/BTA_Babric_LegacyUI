@@ -40,6 +40,8 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
     public GuiAuditoryButton scrollUp;
     public GuiAuditoryButton scrollDown;
     public GuiAuditoryButton craftingButton;
+    protected GuiAuditoryButton lastPageButton;
+    protected GuiAuditoryButton nextPageButton;
     public GuiRegion inventoryRegion;
     public List<GuiButtonPrompt> prompts = new ArrayList<>();
     private static boolean showCraftDisplay = false;
@@ -132,7 +134,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             LegacySoundManager.play.focus(true);
         }
         currentTab = value;
-        int tabAmount = Math.min(8, LegacyCategoryManager.getRecipeCategories().size());
+        int tabAmount = LegacyCategoryManager.getRecipeCategories().size();
         if (currentTab > tabAmount-1){
             currentTab -= tabAmount;
         } else if (currentTab < 0){
@@ -147,8 +149,8 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
     protected void buttonPressed(GuiButton guibutton) {
         super.buttonPressed(guibutton);
         for (int i = 0; i < tabButtons.length; i++) {
-            if (guibutton == tabButtons[i]){
-                selectTab(i);
+            if (tabButtons[i] == guibutton){
+                selectTab(getPageNumber()*8+i);
             }
         }
         for (int i = 0; i < slotButtons.length; i++) {
@@ -164,6 +166,12 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         }
         if (guibutton == craftingButton){
             craft();
+        }
+        if (guibutton == nextPageButton){
+            selectPage(getPageNumber() + 1);
+        }
+        if (guibutton == lastPageButton){
+            selectPage(getPageNumber() - 1);
         }
     }
     public void handleInputs(){
@@ -235,6 +243,14 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         craftingButton.setMuted(true);
         controlList.add(craftingButton);
 
+        nextPageButton = new GuiAuditoryButton(controlList.size() + 1, GUIx + xSize + 2, GUIy + 4, 20, 20, ">");
+        nextPageButton.visible = LegacyCategoryManager.getCreativeCategories().size() > 8;
+        controlList.add(nextPageButton);
+
+        lastPageButton = new GuiAuditoryButton(controlList.size() + 1, GUIx - 22, GUIy + 4, 20, 20, "<");
+        lastPageButton.visible = LegacyCategoryManager.getCreativeCategories().size() > 8;
+        controlList.add(lastPageButton);
+
         inventoryRegion = new GuiRegion(100,GUIx + 147, GUIy + 94, 116, 75);
 
         I18n translator = I18n.getInstance();
@@ -263,6 +279,9 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
 
         for (int i = 0; i < slotButtons.length; i++) { // Only enable buttons if there is a corresponding recipe group
             slotButtons[i].enabled = i < recipeGroups.length;
+        }
+        for (int i = 0; i < tabButtons.length; i++) { // Only enable buttons if there is a corresponding recipe group
+            tabButtons[i].enabled = (getPageNumber() * 8 + i) < LegacyCategoryManager.getRecipeCategories().size();
         }
 
         ((LegacyContainerCrafting)inventorySlots).setRecipes(player, mc.statFileWriter, showCraftDisplay);
@@ -304,7 +323,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         UtilGui.drawTexturedModalRect(this, GUIx, GUIy, 0,0, this.xSize, this.ySize, 1f/guiTextureWidth); // Render Background
 
 
-        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * currentTab, GUIy - 2, 0,175, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
+        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * (currentTab % 8), GUIy - 2, 0,175, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
 
         IRecipe currentRecipe = (IRecipe) currentCategory().getRecipeGroups(isSmall())[currentSlot].getRecipes(isSmall())[currentScroll];
         if ((currentCategory().getRecipeGroups(isSmall())[currentSlot].getContainer(currentScroll, isSmall()).inventorySlots.size() <= 5 && showCraftDisplay) || isSmall()){ // 2x2 Crafting overlay
@@ -333,8 +352,9 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         drawSelectionCursorBackground();
 
         UtilGui.bindTexture(IconHelper.ICON_TEXTURE);
-        for (int i = 0; i < Math.min(LegacyCategoryManager.getRecipeCategories().size(), 8); i++) {
-            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getRecipeCategories().get(i).iconCoordinate, 0.75f); // Render Icon
+        int iconAmountToDraw = Math.min(LegacyCategoryManager.getRecipeCategories().size() - (getPageNumber() * 8), 8);
+        for (int i = 0; i < iconAmountToDraw; i++) {
+            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getRecipeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.75f); // Render Icon
         }
     }
     private void drawSelectionCursorForeground(){
@@ -418,5 +438,18 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             return true;
         }
         return false;
+    }
+    public static int getPageNumber(){
+        return currentTab/8;
+    }
+    public void selectPage(int pageNumber){
+        int desiredPage = pageNumber;
+        if (desiredPage < 0){
+            desiredPage = LegacyCategoryManager.getRecipeCategories().size()/8;
+        }
+        if (desiredPage > LegacyCategoryManager.getRecipeCategories().size()/8){
+            desiredPage = 0;
+        }
+        selectTab(desiredPage * 8);
     }
 }

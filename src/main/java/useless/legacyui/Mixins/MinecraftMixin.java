@@ -1,5 +1,6 @@
 package useless.legacyui.Mixins;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.EntityPlayerSP;
 import net.minecraft.client.gui.GuiGuidebook;
@@ -13,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import useless.legacyui.Api.LegacyUIApi;
+import useless.legacyui.Api.LegacyUIPlugin;
 import useless.legacyui.Gui.GuiScreens.GuiLegacyCrafting;
 import useless.legacyui.Gui.GuiScreens.GuiLegacyCreative;
 import useless.legacyui.Gui.GuiScreens.GuiLegacyInventory;
@@ -52,7 +55,14 @@ public class MinecraftMixin {
     }
     @Inject(method = "run()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;startGame()V", shift = At.Shift.AFTER))
     private void startOfGameInit(CallbackInfo ci){
-        LegacyCategoryManager.register();
+        new LegacyUIPlugin().register();
+        FabricLoader.getInstance().getEntrypoints("legacyui", LegacyUIApi.class).forEach(api -> {
+            try {
+                api.getClass().getDeclaredMethod("register"); // Make sure the method is implemented
+                api.register();
+            } catch (NoSuchMethodException ignored) {
+            }
+        });
         LegacyCategoryManager.build();
     }
 }

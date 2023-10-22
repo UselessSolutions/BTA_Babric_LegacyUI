@@ -23,6 +23,9 @@
     ],
     "modmenu": [
         "useless.legacyui.ModModules.ModMenuModule"
+    ],
+    "legacyui": [
+      "useless.legacyui.Api.LegacyUIPlugin"
     ]
   },
   "mixins": [
