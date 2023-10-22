@@ -17,6 +17,18 @@ public class TestPlugin implements LegacyUIApi{
         LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory1);
         LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory2);
         LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory3);
+        LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory1);
+        LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory2);
+        LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory3);
+        LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory1);
+        LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory2);
+        LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory3);
+        LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory1);
+        LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory2);
+        LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory3);
+        LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory1);
+        LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory2);
+        LegacyCategoryManager.creativeCategoriesBuilders.add(testCategory3);
     }
     public static ItemCategoryBuilder testCategory1 = new ItemCategoryBuilder(modId)
             .addItem(Block.brickBasalt, true);

@@ -39,6 +39,8 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
     protected GuiAuditoryButton clearButton;
     protected GuiAuditoryButton craftButton;
     protected GuiAuditoryButton[] tabButtons = new GuiAuditoryButton[8];
+    protected GuiAuditoryButton lastPageButton;
+    protected GuiAuditoryButton nextPageButton;
     public List<GuiButtonPrompt> prompts = new ArrayList<>();
     public GuiLegacyCreative(EntityPlayer player) {
         super(player);
@@ -127,8 +129,14 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         }
         for (int i = 0; i < tabButtons.length; i++) {
             if (tabButtons[i] == guibutton){
-                selectTab(i);
+                selectTab(getPageNumber()*8+i);
             }
+        }
+        if (guibutton == nextPageButton){
+            selectPage(getPageNumber() + 1);
+        }
+        if (guibutton == lastPageButton){
+            selectPage(getPageNumber() - 1);
         }
     }
     private void clearInventory(){
@@ -150,7 +158,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
     }
     public void setContainerSlots(){
         for (int i = 0; i < tabButtons.length; i++) { // Only enable buttons if there is a corresponding recipe group
-            tabButtons[i].enabled = i < LegacyCategoryManager.getCreativeCategories().size();
+            tabButtons[i].enabled = (getPageNumber() * 8 + i) < LegacyCategoryManager.getCreativeCategories().size();
         }
         container.setSlots();
     }
@@ -173,12 +181,18 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         scrollBar = new GuiRegion(100, GUIx + 251, GUIy + 43, 15, 112);
         bottomCreativeSlots = new GuiRegion(101, GUIx + 11, GUIy + 135, 234, 18);
         topCreativeSlots = new GuiRegion(101, GUIx + 11, GUIy + 45, 234, 18);
-        clearButton = new GuiAuditoryButton(controlList.size() + 2, GUIx + 221, GUIy + 158, 20, 20, "X");
+        clearButton = new GuiAuditoryButton(controlList.size() + 1, GUIx + 221, GUIy + 158, 20, 20, "X");
         clearButton.visible = false;
         controlList.add(clearButton);
-        craftButton = new GuiAuditoryButton(controlList.size() + 2, GUIx + 31, GUIy + 158, 20, 20, "");
+        craftButton = new GuiAuditoryButton(controlList.size() + 1, GUIx + 31, GUIy + 158, 20, 20, "");
         craftButton.visible = false;
         controlList.add(craftButton);
+        nextPageButton = new GuiAuditoryButton(controlList.size() + 1, GUIx + xSize + 2, GUIy + 4, 20, 20, ">");
+        nextPageButton.visible = LegacyCategoryManager.getCreativeCategories().size() > 8;
+        controlList.add(nextPageButton);
+        lastPageButton = new GuiAuditoryButton(controlList.size() + 1, GUIx - 22, GUIy + 4, 20, 20, "<");
+        lastPageButton.visible = LegacyCategoryManager.getCreativeCategories().size() > 8;
+        controlList.add(lastPageButton);
 
         I18n translator = I18n.getInstance();
         prompts.clear();
@@ -297,5 +311,15 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
     }
     public static int getPageNumber(){
         return currentTab/8;
+    }
+    public void selectPage(int pageNumber){
+        int desiredPage = pageNumber;
+        if (desiredPage < 0){
+            desiredPage = LegacyCategoryManager.getCreativeCategories().size()/8;
+        }
+        if (desiredPage > LegacyCategoryManager.getCreativeCategories().size()/8){
+            desiredPage = 0;
+        }
+        selectTab(desiredPage * 8);
     }
 }
