@@ -2,9 +2,10 @@ package useless.legacyui.Gui.GuiElements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiElement;
+import net.minecraft.client.input.InputType;
 import net.minecraft.client.render.FontRenderer;
 import useless.legacyui.Gui.GuiScreens.UtilGui;
-import useless.legacyui.Settings.ModSettings;
+import useless.legacyui.LegacyUI;
 
 public class GuiButtonPrompt extends GuiRegion implements GuiElement {
     public static final int A = 0;
@@ -41,12 +42,13 @@ public class GuiButtonPrompt extends GuiRegion implements GuiElement {
         this.height = 13;
     }
     public void drawPrompt(Minecraft minecraft, int mouseX, int mouseY){
+        if (!LegacyUI.modSettings.getForceButtonPrompts().value && minecraft.inputType != InputType.CONTROLLER) {return;}
         UtilGui.bindTexture("/assets/legacyui/gui/Controller/buttons.png");
-        int v = ModSettings.legacyOptions.getGuiControllerType().value.index()  * 13;
+        int v = LegacyUI.modSettings.getGuiControllerType().value.index()  * 13;
         for (int i = 0; i < buttonCoordinates.length; i++) {
             int u = buttonCoordinates[i] * 13;
             UtilGui.drawTexturedModalRect(this, xPosition + ((13 + spacing) * i), yPosition, u, v, 13, 13, 1f/buttonAtlasWidth);
         }
-        fontRenderer.drawString(prompt, xPosition + ((13 + spacing) * buttonCoordinates.length), yPosition+2, ModSettings.legacyOptions.getGuiPromptColor().value.value);
+        fontRenderer.drawString(prompt, xPosition + ((13 + spacing) * buttonCoordinates.length), yPosition+2, LegacyUI.modSettings.getGuiPromptColor().value.value);
     }
 }

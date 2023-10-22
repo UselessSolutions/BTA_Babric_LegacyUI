@@ -19,7 +19,6 @@ import useless.legacyui.Settings.ILegacyOptions;
 @Mixin(value = GameSettings.class, remap = false, priority = 2000)
 public class GameSettingsMixin implements ILegacyOptions {
     @Shadow @Final public Minecraft mc;
-
     @Inject(method = "optionChanged(Lnet/minecraft/client/option/Option;)V", at = @At("TAIL"))
     private void onOptionChanged(Option<?> option, CallbackInfo ci){
         if (option == enableLegacyInventorySurvival){
@@ -82,7 +81,8 @@ public class GameSettingsMixin implements ILegacyOptions {
     public FloatOption mainMenuBrightness = new FloatOption(thisAs, "legacyui.mainMenuBrightness", 1f);
     @Unique
     public BooleanOption coordsOnMaps = new BooleanOption(thisAs, "legacyui.coordsOnMaps", true);
-
+    @Unique
+    public BooleanOption forceButtonPrompts = new BooleanOption(thisAs, "legacyui.forceButtonPrompts", false);
     public BooleanOption getCraftingHideUndiscoveredItems() {
         return craftingHideUndiscoveredItems;
     }
@@ -132,15 +132,16 @@ public class GameSettingsMixin implements ILegacyOptions {
     public BooleanOption getReplaceStandardBackground() {
         return replaceStandardBackground;
     }
-
     public RangeOption getPanoramaScrollLength() {
         return panoramaScrollLength;
     }
-
     public FloatOption getMainMenuBrightness() {
         return mainMenuBrightness;
     }
     public BooleanOption getCoordsOnMaps() {
         return coordsOnMaps;
+    }
+    public BooleanOption getForceButtonPrompts() {
+        return forceButtonPrompts;
     }
 }

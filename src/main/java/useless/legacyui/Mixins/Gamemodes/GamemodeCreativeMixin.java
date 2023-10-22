@@ -8,13 +8,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import useless.legacyui.Gui.Containers.LegacyContainerPlayerCreative;
-import useless.legacyui.Settings.ModSettings;
+import useless.legacyui.LegacyUI;
 
 @Mixin(value = GamemodeCreative.class, remap = false)
 public class GamemodeCreativeMixin {
     @Inject(method = "getContainer(Lnet/minecraft/core/player/inventory/InventoryPlayer;Z)Lnet/minecraft/core/player/inventory/ContainerPlayer;", at = @At("RETURN"), cancellable = true)
     private void returnModdedContainer(InventoryPlayer inventory, boolean isMultiplayer, CallbackInfoReturnable<ContainerPlayer> cir){
-        if (ModSettings.legacyOptions.getEnableLegacyInventoryCreative().value){
+        if (LegacyUI.modSettings.getEnableLegacyInventoryCreative().value){
             cir.setReturnValue(new LegacyContainerPlayerCreative(inventory, isMultiplayer));
         }
     }

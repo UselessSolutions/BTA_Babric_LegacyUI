@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import useless.legacyui.LegacySoundManager;
-import useless.legacyui.Settings.ModSettings;
+import useless.legacyui.LegacyUI;
 import useless.prismaticlibe.gui.slot.SlotResizable;
 
 @Mixin(value = GuiContainer.class, remap = false)
@@ -36,7 +36,7 @@ public class GuiContainerMixin extends GuiScreen {
     }
     @Inject(method = "onGuiClosed()V", at = @At("HEAD"))
     private void closingSound(CallbackInfo cbi){
-        if (ModSettings.legacyOptions.getUseLegacySounds().value){
+        if (LegacyUI.modSettings.getUseLegacySounds().value){
             LegacySoundManager.play.back(false);
         }
     }

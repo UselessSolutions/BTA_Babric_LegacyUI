@@ -3,7 +3,6 @@ package useless.legacyui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.core.sound.SoundType;
-import useless.legacyui.Settings.ModSettings;
 
 import java.util.Random;
 
@@ -13,18 +12,18 @@ public class LegacySoundManager {
     public static SoundManager sndManager = mc.sndManager;
     public static float volume = 1f;
     public static float getPitch(boolean randomPitch){
-        return (randomPitch && ModSettings.legacyOptions.getUseRandomPitch().value) ? 1f + ((rand.nextFloat()-0.5f)/16f) : 1f;
+        return (randomPitch && LegacyUI.modSettings.getUseRandomPitch().value) ? 1f + ((rand.nextFloat()-0.5f)/16f) : 1f;
     }
     public static class play {
         public static void press(boolean randomPitch){
-            if (ModSettings.legacyOptions.getUseLegacySounds().value){
+            if (LegacyUI.modSettings.getUseLegacySounds().value){
                 sndManager.playSound("legacyui.ui.press", SoundType.GUI_SOUNDS, volume, getPitch(randomPitch));
             } else {
                 sndManager.playSound("random.ui_click", SoundType.GUI_SOUNDS, volume, getPitch(randomPitch));
             }
         }
         public static void back(boolean randomPitch){
-            if (ModSettings.legacyOptions.getUseLegacySounds().value) {
+            if (LegacyUI.modSettings.getUseLegacySounds().value) {
                 sndManager.playSound("legacyui.ui.back", SoundType.GUI_SOUNDS, volume, getPitch(randomPitch));
             } else {
                 sndManager.playSound("random.ui_back", SoundType.GUI_SOUNDS, volume, getPitch(randomPitch));

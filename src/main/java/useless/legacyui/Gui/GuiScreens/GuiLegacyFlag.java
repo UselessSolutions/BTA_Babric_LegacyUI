@@ -372,16 +372,14 @@ public class GuiLegacyFlag extends GuiContainer
             }
         }
         this.renderCanvas();
-        if (mc.inputType == InputType.CONTROLLER){
-            if (flagRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
-                for (GuiButtonPrompt prompt: promptsDraw) {
-                    prompt.drawPrompt(mc, x, y);
-                }
+        if (flagRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
+            for (GuiButtonPrompt prompt: promptsDraw) {
+                prompt.drawPrompt(mc, x, y);
             }
-            else {
-                for (GuiButtonPrompt prompt: promptsSelect) {
-                    prompt.drawPrompt(mc, x, y);
-                }
+        }
+        else {
+            for (GuiButtonPrompt prompt: promptsSelect) {
+                prompt.drawPrompt(mc, x, y);
             }
         }
     }
