@@ -157,7 +157,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         LegacySoundManager.volume = 1f;
     }
     public void setContainerSlots(){
-        for (int i = 0; i < tabButtons.length; i++) { // Only enable buttons if there is a corresponding recipe group
+        for (int i = 0; i < tabButtons.length; i++) { // Only enable buttons if there is a corresponding item group
             tabButtons[i].enabled = (getPageNumber() * 8 + i) < LegacyCategoryManager.getCreativeCategories().size();
         }
         container.setSlots();
