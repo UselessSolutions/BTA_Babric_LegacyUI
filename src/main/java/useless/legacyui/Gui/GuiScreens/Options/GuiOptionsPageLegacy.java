@@ -18,7 +18,8 @@ public class GuiOptionsPageLegacy extends GuiOptionsPageOptionBase {
                 legacyOptions.getGuiControllerType(),
                 legacyOptions.getShowCraftingItemNamePreview(),
                 legacyOptions.getCraftingHideUndiscoveredItems(),
-                legacyOptions.getCoordsOnMaps());
+                legacyOptions.getCoordsOnMaps(),
+                legacyOptions.getForceButtonPrompts());
         this.addOptionsCategory("legacyui.options.panorama",
                 legacyOptions.getEnablePanorama(),
                 legacyOptions.getPanoramaScrollLength(),
