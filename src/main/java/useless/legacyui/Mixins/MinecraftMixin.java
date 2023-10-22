@@ -6,6 +6,7 @@ import net.minecraft.client.entity.player.EntityPlayerSP;
 import net.minecraft.client.gui.GuiGuidebook;
 import net.minecraft.client.gui.GuiInventory;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.option.GameSettings;
 import net.minecraft.core.player.gamemode.Gamemode;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,19 +20,22 @@ import useless.legacyui.Api.LegacyUIPlugin;
 import useless.legacyui.Gui.GuiScreens.GuiLegacyCrafting;
 import useless.legacyui.Gui.GuiScreens.GuiLegacyCreative;
 import useless.legacyui.Gui.GuiScreens.GuiLegacyInventory;
-import useless.legacyui.Settings.ModSettings;
+import useless.legacyui.LegacyUI;
+import useless.legacyui.Settings.ILegacyOptions;
 import useless.legacyui.Sorting.LegacyCategoryManager;
 
 @Mixin(value = Minecraft.class, remap = false)
 public class MinecraftMixin {
     @Shadow
     public EntityPlayerSP thePlayer;
+    @Shadow public GameSettings gameSettings;
+
     @Inject(method = "getGuiInventory()Lnet/minecraft/client/gui/GuiInventory;", at = @At("RETURN"), cancellable = true)
     private void useCustomInventoryGuis(CallbackInfoReturnable<GuiInventory> cir){
-        if (thePlayer.getGamemode() == Gamemode.creative && ModSettings.legacyOptions.getEnableLegacyInventoryCreative().value){
+        if (thePlayer.getGamemode() == Gamemode.creative && LegacyUI.modSettings.getEnableLegacyInventoryCreative().value){
             cir.setReturnValue(new GuiLegacyCreative(thePlayer));
         }
-        if (thePlayer.getGamemode() == Gamemode.survival && ModSettings.legacyOptions.getEnableLegacyInventorySurvival().value){
+        if (thePlayer.getGamemode() == Gamemode.survival && LegacyUI.modSettings.getEnableLegacyInventorySurvival().value){
             cir.setReturnValue(new GuiLegacyInventory(thePlayer));
         }
     }
@@ -64,5 +68,6 @@ public class MinecraftMixin {
             }
         });
         LegacyCategoryManager.build();
+        LegacyUI.modSettings = (ILegacyOptions) gameSettings;
     }
 }

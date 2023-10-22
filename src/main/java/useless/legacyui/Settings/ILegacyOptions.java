@@ -24,4 +24,5 @@ public interface ILegacyOptions {
     RangeOption getPanoramaScrollLength();
     FloatOption getMainMenuBrightness();
     BooleanOption getCoordsOnMaps();
+    BooleanOption getForceButtonPrompts();
 }

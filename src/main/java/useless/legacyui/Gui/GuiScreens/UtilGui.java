@@ -5,9 +5,8 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.render.Tessellator;
 import org.lwjgl.opengl.GL11;
-import turniplabs.halplibe.helper.TextureHelper;
 import useless.legacyui.Helper.IconHelper;
-import useless.legacyui.Settings.ModSettings;
+import useless.legacyui.LegacyUI;
 
 public class UtilGui {
     public static Minecraft mc = Minecraft.getMinecraft(Minecraft.class);
@@ -51,9 +50,9 @@ public class UtilGui {
         GL11.glBindTexture(3553, mc.renderEngine.getTexture("%blur%/assets/legacyui/panoramas/pn_"+panoNum+".png"));
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         tessellator.startDrawingQuads();
-        float brightness = ModSettings.legacyOptions.getMainMenuBrightness().value;
+        float brightness = LegacyUI.modSettings.getMainMenuBrightness().value;
         tessellator.setColorRGBA_F(brightness, brightness, brightness, 1.0f);
-        int num = (1000 * ((ModSettings.legacyOptions.getPanoramaScrollLength().value + 1) * 15));
+        int num = (1000 * ((LegacyUI.modSettings.getPanoramaScrollLength().value + 1) * 15));
         float offset = (float) (System.currentTimeMillis() % num) /num;
         if (screenAspectRatio < imageAspectRatio) {
             tessellator.addVertexWithUV(0.0, gui.height, 0.0, (0.5f + offset) - finalAspectRatio / 2.0f, 1.0);

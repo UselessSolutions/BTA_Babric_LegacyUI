@@ -9,13 +9,10 @@ import net.minecraft.core.sound.SoundType;
 import net.minecraft.core.util.helper.Color;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import useless.legacyui.Gui.GuiScreens.UtilGui;
 import useless.legacyui.LegacySoundManager;
-import useless.legacyui.Settings.ModSettings;
 import useless.legacyui.Gui.GuiElements.Buttons.IButtonSounds;
+import useless.legacyui.LegacyUI;
 
 @Mixin(value = GuiScreen.class, remap = false, priority = 2000)
 public class GuiScreenMixin extends Gui {
@@ -31,7 +28,7 @@ public class GuiScreenMixin extends Gui {
         if (button != null && button instanceof IButtonSounds){
             IButtonSounds soundButton = (IButtonSounds)button;
             if (!soundButton.isMuted()){
-                if (ModSettings.legacyOptions.getUseLegacySounds().value){
+                if (LegacyUI.modSettings.getUseLegacySounds().value){
                     LegacySoundManager.play.press(true);
                 }
                 else {
@@ -40,7 +37,7 @@ public class GuiScreenMixin extends Gui {
             }
         }
         else {
-            if (ModSettings.legacyOptions.getUseLegacySounds().value){
+            if (LegacyUI.modSettings.getUseLegacySounds().value){
                 LegacySoundManager.play.press(true);
             }
             else {
@@ -50,6 +47,6 @@ public class GuiScreenMixin extends Gui {
     }
     @Redirect(method = "drawWorldBackground(I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/util/helper/Color;getARGB()I"))
     private int newBackgroundColor(Color instance){
-        return ModSettings.legacyOptions.getGuiBackgroundColor().value.value;
+        return LegacyUI.modSettings.getGuiBackgroundColor().value.value;
     }
 }

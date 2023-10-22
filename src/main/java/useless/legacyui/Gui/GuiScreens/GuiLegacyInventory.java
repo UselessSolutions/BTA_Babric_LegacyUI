@@ -16,7 +16,6 @@ import useless.legacyui.Gui.IGuiController;
 import useless.legacyui.LegacySoundManager;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Mixins.Gui.GuiInventoryAccessor;
-import useless.legacyui.Settings.ModSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,10 +85,8 @@ public class GuiLegacyInventory extends GuiInventory implements IGuiController {
 
         UtilGui.bindTexture("/assets/legacyui/gui/legacyinventory.png");
         this.drawTexturedModalRect(craftButton.xPosition, craftButton.yPosition, 177, craftButton.isHovered(x,y) ? 77:54, craftButton.width, craftButton.height); // Crafting Button Render
-        if (mc.inputType == InputType.CONTROLLER){
-            for (GuiButtonPrompt prompt: prompts) {
-                prompt.drawPrompt(mc, x, y);
-            }
+        for (GuiButtonPrompt prompt: prompts) {
+            prompt.drawPrompt(mc, x, y);
         }
     }
     protected void drawGuiContainerForegroundLayer() {
@@ -98,7 +95,7 @@ public class GuiLegacyInventory extends GuiInventory implements IGuiController {
         UtilGui.bindTexture("/assets/legacyui/gui/legacyinventory.png");
         this.drawTexturedModalRect(GUIx, GUIy, 0, 0, this.xSize, this.ySize);
         renderPlayerDoll();
-        drawStringNoShadow(fontRenderer, I18n.getInstance().translateKey("legacyui.guilabel.inventory"),GUIx + 8,GUIy +82, ModSettings.legacyOptions.getGuiLabelColor().value.value);
+        drawStringNoShadow(fontRenderer, I18n.getInstance().translateKey("legacyui.guilabel.inventory"),GUIx + 8,GUIy +82, LegacyUI.modSettings.getGuiLabelColor().value.value);
     }
     private void renderPlayerDoll(){
         GL11.glEnable(32826);
