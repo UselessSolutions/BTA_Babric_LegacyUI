@@ -26,4 +26,5 @@ public interface ILegacyOptions {
     BooleanOption getCoordsOnMaps();
     BooleanOption getForceButtonPrompts();
     BooleanOption getEnableAutoBridge();
+    BooleanOption getForceLegacyTooltip();
 }

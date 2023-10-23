@@ -76,7 +76,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
     }
     public void selectSlot(int value){
         if (value == currentSlot){
-            craft(); // Craft if clicking on currently selected slot
+            craft(true); // Craft if clicking on currently selected slot
             return; // Dont reset scroll
         }
         LegacySoundManager.play.focus(true);
@@ -166,7 +166,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             scrollGroup(1);
         }
         if (guibutton == craftingButton){
-            craft();
+            craft(true);
         }
         if (guibutton == nextPageButton){
             selectPage(getPageNumber() + 1);
@@ -198,7 +198,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             }
         }
         if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyJump.keyCode())){
-            craft();
+            craft(true);
         }
     }
     public RecipeCategory currentCategory(){
@@ -287,10 +287,10 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
 
         ((LegacyContainerCrafting)inventorySlots).setRecipes(player, mc.statFileWriter, showCraftDisplay);
     }
-    public void craft(){
+    public void craft(boolean isPressed){
         if(((LegacyContainerCrafting)inventorySlots).craft(mc, inventorySlots.windowId)){
             LegacySoundManager.play.craft(false);
-        } else {
+        } else if (isPressed) {
             LegacySoundManager.play.craftfail(false);
         }
         setContainerRecipes();
@@ -422,7 +422,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
                 scrollGroup(1);
             }
             if ((controllerInput.buttonA.pressedThisFrame() || (controllerInput.buttonA.getHoldTime() >= 10 && RepeatInputHandler.doRepeatInput(-10, 50)))){
-                craft();
+                craft(controllerInput.buttonA.pressedThisFrame());
             }
         }
     }

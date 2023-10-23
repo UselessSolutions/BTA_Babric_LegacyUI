@@ -10,8 +10,8 @@
     "ContainerMixin",
     "ControllerInputMixin",
     "EntityPlayerSPMixin",
-    "MinecraftMixin",
     "MapItemRendererMixin",
+    "MinecraftMixin",
     "Gamemodes.GamemodeCreativeMixin",
     "Gamemodes.GamemodeSurvivalMixin",
     "Gui.GuiAchievementMixin",
@@ -33,7 +33,8 @@
     "Modded.NoNameDyes.GuiBleacherMixin",
     "Modded.PotatoLogistics.GuiFilterMixin",
     "Multiplayer.PlayerControllerMPMixin",
-    "Settings.GameSettingsMixin"
+    "Settings.GameSettingsMixin",
+    "Settings.TooltipStyleMixin"
   ],
   "injectors": {
     "defaultRequire": 1

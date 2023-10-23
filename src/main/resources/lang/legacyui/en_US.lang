@@ -62,6 +62,10 @@ options.legacyui.mainMenuBrightness=Menu Background Brightness
 options.legacyui.coordsOnMaps=Display Position on Map
 options.legacyui.forceButtonPrompts=Force Button Prompts
 options.legacyui.enableAutoBridge=Enable Easy Bridge
+options.legacyui.forceLegacyTooltip=Enable Legacy Tooltip
+
+options.tooltipStyle.legacy=Legacy
+options.legacyui.tooltipStyle.legacy=Legacy
 
 options.legacyui.guiControllerType.generic=Generic Gamepad
 options.legacyui.guiControllerType.dual_sense=Dual Sense
