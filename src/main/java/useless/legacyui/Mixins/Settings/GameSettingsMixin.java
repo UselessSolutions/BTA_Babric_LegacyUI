@@ -83,6 +83,8 @@ public class GameSettingsMixin implements ILegacyOptions {
     public BooleanOption coordsOnMaps = new BooleanOption(thisAs, "legacyui.coordsOnMaps", true);
     @Unique
     public BooleanOption forceButtonPrompts = new BooleanOption(thisAs, "legacyui.forceButtonPrompts", false);
+    @Unique
+    public BooleanOption enableAutoBridge = new BooleanOption(thisAs, "legacyui.enableAutoBridge", true);
     public BooleanOption getCraftingHideUndiscoveredItems() {
         return craftingHideUndiscoveredItems;
     }
@@ -143,5 +145,10 @@ public class GameSettingsMixin implements ILegacyOptions {
     }
     public BooleanOption getForceButtonPrompts() {
         return forceButtonPrompts;
+    }
+
+    @Override
+    public BooleanOption getEnableAutoBridge() {
+        return enableAutoBridge;
     }
 }

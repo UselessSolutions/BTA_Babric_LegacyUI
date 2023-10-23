@@ -9,6 +9,8 @@ public class GuiOptionsPageLegacy extends GuiOptionsPageOptionBase {
     public GuiOptionsPageLegacy(GuiScreen parent, GameSettings settings) {
         super(parent, settings);
         ILegacyOptions legacyOptions = (ILegacyOptions)settings;
+        this.addOptionsCategory("legacyui.options.gameplay",
+                legacyOptions.getEnableAutoBridge());
         this.addOptionsCategory("legacyui.options.gui",
                 legacyOptions.getEnableLegacyInventorySurvival(),
                 legacyOptions.getEnableLegacyCrafting(),

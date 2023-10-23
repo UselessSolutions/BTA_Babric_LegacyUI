@@ -35,6 +35,7 @@ legacyui.prompt.opencreative=Open Creative
 legacyui.prompt.opencrafting=Open Crafting
 
 legacyui.options.title=Better Than Legacy Settings
+legacyui.options.gameplay=Legacy Gameplay Settings
 legacyui.options.gui=Legacy GUI Settings
 legacyui.options.sound=Legacy Sound Settings
 legacyui.options.panorama=Legacy Panorama Settings
@@ -60,6 +61,7 @@ options.legacyui.panoramaSpeed.unit=Seconds
 options.legacyui.mainMenuBrightness=Menu Background Brightness
 options.legacyui.coordsOnMaps=Display Position on Map
 options.legacyui.forceButtonPrompts=Force Button Prompts
+options.legacyui.enableAutoBridge=Enable Easy Bridge
 
 options.legacyui.guiControllerType.generic=Generic Gamepad
 options.legacyui.guiControllerType.dual_sense=Dual Sense

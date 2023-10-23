@@ -25,4 +25,5 @@ public interface ILegacyOptions {
     FloatOption getMainMenuBrightness();
     BooleanOption getCoordsOnMaps();
     BooleanOption getForceButtonPrompts();
+    BooleanOption getEnableAutoBridge();
 }
