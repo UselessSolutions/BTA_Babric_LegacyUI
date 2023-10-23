@@ -26,6 +26,7 @@ import useless.legacyui.Gui.GuiElements.GuiRegion;
 import useless.legacyui.Gui.IGuiController;
 import useless.legacyui.Helper.ArrayHelper;
 import useless.legacyui.Helper.KeyboardHelper;
+import useless.legacyui.Helper.RepeatInputHandler;
 import useless.legacyui.LegacySoundManager;
 
 import java.util.ArrayList;
@@ -372,7 +373,15 @@ public class GuiLegacyFlag extends GuiContainer
             }
         }
         this.renderCanvas();
-        if (flagRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
+        int regionX = x;
+        int regionY = y;
+        if (mc.inputType == InputType.CONTROLLER){
+            regionX = (int)mc.controllerInput.cursorX;
+            regionY = (int) mc.controllerInput.cursorY;
+        }
+
+
+        if (flagRegion.isHovered(regionX, regionY)){
             for (GuiButtonPrompt prompt: promptsDraw) {
                 prompt.drawPrompt(mc, x, y);
             }
@@ -525,21 +534,21 @@ public class GuiLegacyFlag extends GuiContainer
             selectColor(selectedColor + 1);
         }
         if (flagRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
-            if (controllerInput.digitalPad.right.pressedThisFrame() || (controllerInput.digitalPad.right.isPressed() && doRepeatedInput())){
+            if (controllerInput.digitalPad.right.pressedThisFrame() || (controllerInput.digitalPad.right.isPressed() && RepeatInputHandler.doRepeatInput(-1, 1000/15))){
+                RepeatInputHandler.manualSuccess(-1);
                 snapToPixel(1, 0);
-                lastRepeatedInput = System.currentTimeMillis();
             }
-            if (controllerInput.digitalPad.left.pressedThisFrame() || (controllerInput.digitalPad.left.isPressed() && doRepeatedInput())){
+            if (controllerInput.digitalPad.left.pressedThisFrame() || (controllerInput.digitalPad.left.isPressed() && RepeatInputHandler.doRepeatInput(-1, 1000/15))){
+                RepeatInputHandler.manualSuccess(-1);
                 snapToPixel(- 1, 0);
-                lastRepeatedInput = System.currentTimeMillis();
             }
-            if (controllerInput.digitalPad.up.pressedThisFrame() || (controllerInput.digitalPad.up.isPressed() && doRepeatedInput())){
+            if (controllerInput.digitalPad.up.pressedThisFrame() || (controllerInput.digitalPad.up.isPressed() && RepeatInputHandler.doRepeatInput(-1, 1000/15))){
+                RepeatInputHandler.manualSuccess(-1);
                 snapToPixel(0, -1);
-                lastRepeatedInput = System.currentTimeMillis();
             }
-            if (controllerInput.digitalPad.down.pressedThisFrame() || (controllerInput.digitalPad.down.isPressed() && doRepeatedInput())){
+            if (controllerInput.digitalPad.down.pressedThisFrame() || (controllerInput.digitalPad.down.isPressed() && RepeatInputHandler.doRepeatInput(-1, 1000/15))){
+                RepeatInputHandler.manualSuccess(-1);
                 snapToPixel(0, 1);
-                lastRepeatedInput = System.currentTimeMillis();
             }
             if (controllerInput.buttonA.isPressed()){
                 mouseMovedOrUp((int) controllerInput.cursorX, (int) controllerInput.cursorY, -1);
@@ -568,15 +577,6 @@ public class GuiLegacyFlag extends GuiContainer
                 selectDye(cursorX);
             }
         }
-    }
-    private long lastRepeatedInput = 0;
-    private boolean doRepeatedInput(){ // TODO better repeated input system
-        int repeatTime = 1000/15;
-        if (System.currentTimeMillis() - lastRepeatedInput > repeatTime){
-            lastRepeatedInput = System.currentTimeMillis();
-            return true;
-        }
-        return false;
     }
     private void snapToPixel(int x, int y){
         pixelX = (int) ((mc.controllerInput.cursorX - canvasX)/CANVAS_SCALE);

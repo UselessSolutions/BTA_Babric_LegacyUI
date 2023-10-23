@@ -16,6 +16,7 @@ import useless.legacyui.Gui.GuiElements.GuiRegion;
 import useless.legacyui.Gui.IGuiController;
 import useless.legacyui.Helper.IconHelper;
 import useless.legacyui.Helper.KeyboardHelper;
+import useless.legacyui.Helper.RepeatInputHandler;
 import useless.legacyui.LegacySoundManager;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.LegacyCategoryManager;
@@ -299,6 +300,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         this.inventorySlots.onCraftGuiClosed(this.mc.thePlayer);
     }
     public void drawScreen(int x, int y, float renderPartialTicks) {
+        craftingButton.enabled = mc.inputType == InputType.KEYBOARD;
         handleInputs();
         previousShowDisplay = showCraftDisplay;
         renderCraftingDisplay(x, y);
@@ -419,7 +421,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             if (controllerInput.digitalPad.down.pressedThisFrame()){
                 scrollGroup(1);
             }
-            if (controllerInput.buttonA.pressedThisFrame() && !craftingButton.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
+            if ((controllerInput.buttonA.pressedThisFrame() || (controllerInput.buttonA.getHoldTime() >= 10 && RepeatInputHandler.doRepeatInput(-10, 50)))){
                 craft();
             }
         }

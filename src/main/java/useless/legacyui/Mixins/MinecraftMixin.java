@@ -19,6 +19,7 @@ import net.minecraft.core.util.phys.AABB;
 import net.minecraft.core.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -78,7 +79,7 @@ public class MinecraftMixin {
     }
     @Inject(method = "clickMouse(IZZ)V", at = @At("HEAD"))
     private void autoBridge(int clickType, boolean attack, boolean repeat, CallbackInfo ci){
-        if (objectMouseOver == null && LegacyUI.modSettings.getEnableAutoBridge().value) {
+        if (objectMouseOver == null && doAutoBridge()) {
             if (clickType == 1) {
                 if (thePlayer.xRot < 45) {return;}
                 List<AABB> cubes = thePlayer.world.getCubes(thePlayer, thePlayer.bb.getOffsetBoundingBox(thePlayer.xd, -1.0, 0.0));
@@ -137,5 +138,9 @@ public class MinecraftMixin {
         });
         LegacyCategoryManager.build();
         LegacyUI.modSettings = (ILegacyOptions) gameSettings;
+    }
+    @Unique
+    private boolean doAutoBridge(){
+        return LegacyUI.modSettings.getEnableAutoBridge().value;
     }
 }

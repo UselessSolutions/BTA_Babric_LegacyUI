@@ -30,6 +30,6 @@ public class LegacyUIPlugin implements LegacyUIApi{
         LegacyCategoryManager.creativeCategoriesBuilders.add(LegacyCategoryManager.creative.redstoneTransit);
         LegacyCategoryManager.creativeCategoriesBuilders.add(LegacyCategoryManager.creative.misc);
         LegacyCategoryManager.creativeCategoriesBuilders.add(LegacyCategoryManager.creative.modded);
-        new TestPlugin().register();
+        //new TestPlugin().register();
     }
 }
