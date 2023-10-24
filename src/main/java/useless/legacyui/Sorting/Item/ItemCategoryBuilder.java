@@ -3,28 +3,20 @@ package useless.legacyui.Sorting.Item;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.core.block.Block;
-import net.minecraft.core.crafting.CraftingManager;
-import net.minecraft.core.crafting.recipe.IRecipe;
-import net.minecraft.core.crafting.recipe.RecipeShaped;
-import net.minecraft.core.crafting.recipe.RecipeShapeless;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.ContainerPlayerCreative;
 import useless.legacyui.Helper.IconHelper;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.UtilSorting;
-import useless.prismaticlibe.PrismaticLibe;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class ItemCategoryBuilder {
     private static final List<String> modList = new ArrayList<>();
     static {
-        Iterator modITerator = FabricLoader.getInstance().getAllMods().iterator();
-        while(modITerator.hasNext()) {
-            ModContainer mod = (ModContainer)modITerator.next();
+        for (ModContainer mod : FabricLoader.getInstance().getAllMods()) {
             modList.add(mod.getMetadata().getId());
         }
     }
