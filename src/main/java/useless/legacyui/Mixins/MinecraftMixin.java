@@ -36,7 +36,7 @@ import useless.legacyui.Sorting.LegacyCategoryManager;
 
 import java.util.List;
 
-@Mixin(value = Minecraft.class, remap = false)
+@Mixin(value = Minecraft.class, remap = false, priority = 1001)
 public class MinecraftMixin {
     @Shadow
     public EntityPlayerSP thePlayer;
