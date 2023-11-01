@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "legacyui",
-  "version": "1.0.0",
+  "version": "$version",
 
   "name": "Better Than Legacy!",
   "description": "A UI overhaul mod for BTA, designed with controllers in mind!",
