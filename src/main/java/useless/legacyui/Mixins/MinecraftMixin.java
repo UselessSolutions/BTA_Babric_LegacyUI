@@ -126,7 +126,7 @@ public class MinecraftMixin {
             }
         }
     }
-    @Inject(method = "run()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;startGame()V", shift = At.Shift.AFTER))
+    @Inject(method = "startGame", at = @At(value = "TAIL"))
     private void startOfGameInit(CallbackInfo ci){
         new LegacyUIPlugin().register();
         FabricLoader.getInstance().getEntrypoints("legacyui", LegacyUIApi.class).forEach(api -> {
