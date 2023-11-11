@@ -21,7 +21,7 @@ public class GuiIngameMixin {
     @Shadow
     protected Minecraft mc;
     @Redirect(method = "renderGameOverlay(FZII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/ImmersiveModeOption;drawHotbar()Z"))
-    private boolean dontRenderInGui(ImmersiveModeOption instance){
+    private boolean dontRenderInGuiHotbar(ImmersiveModeOption instance){
         if (LegacyUI.modSettings.getHideHotbarInGUIs().value){
             if (mc.currentScreen instanceof GuiContainer){
                 return false;
@@ -29,8 +29,31 @@ public class GuiIngameMixin {
         }
         return instance.drawHotbar();
     }
+    @Redirect(method = "renderGameOverlay(FZII)V", at = @At(value = "INVOKE", target = "Ljava/lang/Boolean;booleanValue()Z", ordinal = 11))
+    private boolean dontRenderInGuiArmor(Boolean instance){
+        if (LegacyUI.modSettings.getHideHotbarInGUIs().value){
+            if (mc.currentScreen instanceof GuiContainer){
+                return false;
+            }
+        }
+        return instance;
+    }
+    @Redirect(method = "renderGameOverlay(FZII)V", at = @At(value = "INVOKE", target = "Ljava/lang/Boolean;booleanValue()Z", ordinal = 12))
+    private boolean dontRenderInGuiHeldItem(Boolean instance){
+        if (LegacyUI.modSettings.getHideHotbarInGUIs().value){
+            if (mc.currentScreen instanceof GuiContainer){
+                return false;
+            }
+        }
+        return instance;
+    }
     @Inject(method = "renderGameOverlay(FZII)V", at = @At(value = "TAIL"))
     private void paperDoll(float partialTicks, boolean flag, int mouseX, int mouseY, CallbackInfo ci){
+        if (LegacyUI.modSettings.getHideHotbarInGUIs().value){
+            if (mc.currentScreen instanceof GuiContainer){
+                return;
+            }
+        }
         if (LegacyUI.modSettings.getEnablePaperDoll().value && !mc.gameSettings.showDebugScreen.value){
             boolean clock = false;
             boolean compass = false;
