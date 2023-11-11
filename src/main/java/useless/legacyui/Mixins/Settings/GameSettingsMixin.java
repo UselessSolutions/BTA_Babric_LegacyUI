@@ -86,7 +86,9 @@ public class GameSettingsMixin implements ILegacyOptions {
     @Unique
     public BooleanOption enableAutoBridge = new BooleanOption(thisAs, "legacyui.enableAutoBridge", true);
     @Unique
-    public BooleanOption forceLegacyTooltip = new BooleanOption(thisAs, "legacyui.forceLegacyTooltip", true);
+    public BooleanOption forceLegacyTooltip = new BooleanOption(thisAs, "legacyui.forceLegacyTooltip", false);
+    @Unique
+    public BooleanOption enablePaperDoll = new BooleanOption(thisAs, "legacyui.enablePaperDoll", false);
     public BooleanOption getCraftingHideUndiscoveredItems() {
         return craftingHideUndiscoveredItems;
     }
@@ -149,13 +151,15 @@ public class GameSettingsMixin implements ILegacyOptions {
         return forceButtonPrompts;
     }
 
-    @Override
     public BooleanOption getEnableAutoBridge() {
         return enableAutoBridge;
     }
 
-    @Override
     public BooleanOption getForceLegacyTooltip() {
         return forceLegacyTooltip;
+    }
+
+    public BooleanOption getEnablePaperDoll() {
+        return enablePaperDoll;
     }
 }

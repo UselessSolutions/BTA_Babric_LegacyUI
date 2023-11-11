@@ -3,6 +3,8 @@ package useless.legacyui.Gui.GuiScreens;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.render.EntityRenderDispatcher;
+import net.minecraft.client.render.Lighting;
 import net.minecraft.client.render.Tessellator;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.Helper.IconHelper;
@@ -66,5 +68,48 @@ public class UtilGui {
             tessellator.addVertexWithUV(0.0, 0.0, 0.0, 0.0, 0.5f - 0.5f / finalAspectRatio);
         }
         tessellator.draw();
+    }
+    private static float prevYRot = -1000;
+    private static float desiredYRot = 0;
+    public static void drawPaperDoll(boolean drawRight){
+        if (prevYRot == -1000){
+            prevYRot = mc.thePlayer.yRot;
+        }
+        desiredYRot += mc.thePlayer.yRot - prevYRot;
+        float lookRange = 30;
+        desiredYRot = Math.max(desiredYRot, -lookRange);
+        desiredYRot = Math.min(desiredYRot, lookRange);
+        GL11.glEnable(32826);
+        GL11.glEnable(2903);
+        GL11.glEnable(2929);
+        GL11.glPushMatrix();
+        int width = mc.resolution.scaledWidth;
+        float xOff = drawRight ? width - 30: 30;
+        float yOff = 75;
+        GL11.glTranslatef(xOff, yOff, 0.0f);
+        float f1 = 30.0f;
+        GL11.glScalef(-f1, f1, f1);
+        GL11.glRotatef(180.0f, 0.0f, 0.0f, 1.0f);
+        float oYawOff = mc.thePlayer.renderYawOffset;
+        float oYRot = mc.thePlayer.yRot;
+        float oXRot = mc.thePlayer.xRot;
+
+        Lighting.enableLight();
+        mc.thePlayer.renderYawOffset = drawRight ? 15: -15;
+        mc.thePlayer.yRot = desiredYRot;
+
+        mc.thePlayer.entityBrightness = 1.0f;
+        GL11.glTranslatef(0.0f, mc.thePlayer.heightOffset, 0.0f);
+        EntityRenderDispatcher.instance.viewLerpYaw = 180.0f;
+        EntityRenderDispatcher.instance.renderEntityWithPosYaw(mc.thePlayer, 0.0, 0.0, 0.0, 0.0f, 1.0f);
+        mc.thePlayer.entityBrightness = 0.0f;
+
+        mc.thePlayer.renderYawOffset = oYawOff;
+        mc.thePlayer.yRot = oYRot;
+        mc.thePlayer.xRot = oXRot;
+        GL11.glPopMatrix();
+        Lighting.disable();
+        GL11.glDisable(32826);
+        prevYRot = mc.thePlayer.yRot;
     }
 }
