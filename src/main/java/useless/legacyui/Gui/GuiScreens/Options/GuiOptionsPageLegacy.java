@@ -22,7 +22,8 @@ public class GuiOptionsPageLegacy extends GuiOptionsPageOptionBase {
                 legacyOptions.getCraftingHideUndiscoveredItems(),
                 legacyOptions.getCoordsOnMaps(),
                 legacyOptions.getForceButtonPrompts(),
-                legacyOptions.getForceLegacyTooltip());
+                legacyOptions.getForceLegacyTooltip(),
+                legacyOptions.getEnablePaperDoll());
         this.addOptionsCategory("legacyui.options.panorama",
                 legacyOptions.getEnablePanorama(),
                 legacyOptions.getPanoramaScrollLength(),
