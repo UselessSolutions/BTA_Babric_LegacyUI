@@ -1,4 +1,6 @@
-# **Better Than Legacy!**
+<p align="center">
+  <img width="561" height="133" src="https://github.com/UselessBullets/BTA_Babric_LegacyUI/assets/80850784/703478be-726f-4d92-b08a-1dfbac2e90f5">
+</p>
 
 A UI overhaul mod for BTA, designed with controllers in mind!
 Brings back that legacy console feel with its own style!
