@@ -30,6 +30,7 @@
     "Gui.GuiOptionsBaseMixin",
     "Gui.GuiScreenMixin",
     "Gui.GuiTrommelMixin",
+    "Gui.GuiContainerAccessor",
     "Modded.NoNameDyes.GuiBleacherMixin",
     "Modded.PotatoLogistics.GuiFilterMixin",
     "Multiplayer.PlayerControllerMPMixin",
