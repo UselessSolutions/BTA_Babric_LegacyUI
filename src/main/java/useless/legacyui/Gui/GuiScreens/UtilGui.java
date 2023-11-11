@@ -75,6 +75,7 @@ public class UtilGui {
         if (prevYRot == -1000){
             prevYRot = mc.thePlayer.yRot;
         }
+        GL11.glColor4d(1,1,1,1);
         desiredYRot += mc.thePlayer.yRot - prevYRot;
         float lookRange = 30;
         desiredYRot = Math.max(desiredYRot, -lookRange);
