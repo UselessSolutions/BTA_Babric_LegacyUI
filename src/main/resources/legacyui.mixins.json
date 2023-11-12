@@ -10,6 +10,7 @@
     "ContainerMixin",
     "ControllerInputMixin",
     "EntityPlayerSPMixin",
+    "ItemEntityRendererMixin",
     "MapItemRendererMixin",
     "MinecraftMixin",
     "Gamemodes.GamemodeCreativeMixin",
@@ -17,11 +18,13 @@
     "Gui.GuiAchievementMixin",
     "Gui.GuiAchievementsMixin",
     "Gui.GuiChestMixin",
+    "Gui.GuiContainerAccessor",
     "Gui.GuiContainerMixin",
     "Gui.GuiCraftingMixin",
     "Gui.GuiDispenserMixin",
     "Gui.GuiFurnaceMixin",
     "Gui.GuiGuidebookMixin",
+    "Gui.GuiIngameAccessor",
     "Gui.GuiIngameMixin",
     "Gui.GuiInventoryAccessor",
     "Gui.GuiInventoryCreativeMixin",
@@ -30,12 +33,12 @@
     "Gui.GuiOptionsBaseMixin",
     "Gui.GuiScreenMixin",
     "Gui.GuiTrommelMixin",
-    "Gui.GuiContainerAccessor",
     "Modded.NoNameDyes.GuiBleacherMixin",
     "Modded.PotatoLogistics.GuiFilterMixin",
     "Multiplayer.PlayerControllerMPMixin",
     "Settings.GameSettingsMixin",
-    "Settings.TooltipStyleMixin"
+    "Settings.TooltipStyleMixin",
+    "RenderBlocksMixin"
   ],
   "injectors": {
     "defaultRequire": 1

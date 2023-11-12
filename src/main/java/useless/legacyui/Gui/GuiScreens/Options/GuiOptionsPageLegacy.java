@@ -23,7 +23,9 @@ public class GuiOptionsPageLegacy extends GuiOptionsPageOptionBase {
                 legacyOptions.getCoordsOnMaps(),
                 legacyOptions.getForceButtonPrompts(),
                 legacyOptions.getForceLegacyTooltip(),
-                legacyOptions.getEnablePaperDoll());
+                legacyOptions.getEnablePaperDoll(),
+                legacyOptions.getEnableHUDFadeout(),
+                legacyOptions.getHUDFadeoutDelay());
         this.addOptionsCategory("legacyui.options.panorama",
                 legacyOptions.getEnablePanorama(),
                 legacyOptions.getPanoramaScrollLength(),

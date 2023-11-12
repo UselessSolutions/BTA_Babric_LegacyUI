@@ -2,13 +2,17 @@ package useless.legacyui.Gui.GuiScreens;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.render.EntityRenderDispatcher;
 import net.minecraft.client.render.Lighting;
 import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.entity.ItemEntityRenderer;
+import net.minecraft.core.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import useless.legacyui.Helper.IconHelper;
 import useless.legacyui.LegacyUI;
+import useless.legacyui.Mixins.Gui.GuiIngameAccessor;
 
 public class UtilGui {
     public static Minecraft mc = Minecraft.getMinecraft(Minecraft.class);
@@ -39,6 +43,29 @@ public class UtilGui {
                 width,
                 width,
                 (1f/(IconHelper.ICON_RESOLUTION * IconHelper.ICON_ATLAS_WIDTH_TILES)) * (1/scale));
+    }
+    public static float blockAlpha = 1f;
+    public static void renderInventorySlot(GuiIngame gui, int itemIndex, int x, int y, float delta, float alpha) {
+        blockAlpha = alpha;
+        ItemEntityRenderer itemRenderer = ((GuiIngameAccessor)gui).getItemRenderer();
+        ItemStack itemstack = mc.thePlayer.inventory.mainInventory[itemIndex];
+        if (itemstack == null) {
+            return;
+        }
+        float animProgress = (float)itemstack.animationsToGo - delta;
+        if (animProgress > 0.0f) {
+            GL11.glPushMatrix();
+            float f2 = 1.0f + animProgress / 5.0f;
+            GL11.glTranslatef(x + 8, y + 12, 0.0f);
+            GL11.glScalef(1.0f / f2, (f2 + 1.0f) / 2.0f, 1.0f);
+            GL11.glTranslatef(-(x + 8), -(y + 12), 0.0f);
+        }
+        itemRenderer.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, itemstack, x, y, alpha);
+        if (animProgress > 0.0f) {
+            GL11.glPopMatrix();
+        }
+        itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, itemstack, x, y, alpha);
+        blockAlpha = 1f;
     }
     public static void drawPanorama(GuiScreen gui, int panoNum){
         GL11.glDisable(2896);
@@ -112,5 +139,19 @@ public class UtilGui {
         Lighting.disable();
         GL11.glDisable(32826);
         prevYRot = mc.thePlayer.yRot;
+    }
+    private static int prevItem = -1;
+    private static long timeHotbarLastActive = 0;
+    public static float getHotbarAlpha(){
+        if (!LegacyUI.modSettings.getEnableHUDFadeout().value) return 1;
+        if (mc.thePlayer.inventory.currentItem != prevItem) {
+            timeHotbarLastActive = System.currentTimeMillis();
+        }
+        prevItem = mc.thePlayer.inventory.currentItem;
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - timeHotbarLastActive <= (LegacyUI.modSettings.getHUDFadeoutDelay().value * 10000)){
+            return 1f;
+        }
+        return (float) Math.max(1f - ((currentTime - timeHotbarLastActive) - (LegacyUI.modSettings.getHUDFadeoutDelay().value * 10000))/1000f, 0.2);
     }
 }
