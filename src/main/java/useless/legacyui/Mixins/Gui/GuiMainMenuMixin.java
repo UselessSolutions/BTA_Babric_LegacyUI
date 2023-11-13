@@ -31,7 +31,7 @@ public class GuiMainMenuMixin extends GuiScreen {
     }
     @Inject(method = "drawBackground(I)V", at = @At("HEAD"), cancellable = true)
     private void panorama(int i, CallbackInfo ci){
-        if (LegacyUI.modSettings.getEnablePanorama().value && panoCount != -1){
+        if (LegacyUI.modSettings.getEnablePanorama().value && panoCount != -1 && !mc.gameSettings.alphaMenu.value){
             UtilGui.drawPanorama(this, currentPano);
             ci.cancel();
         }
