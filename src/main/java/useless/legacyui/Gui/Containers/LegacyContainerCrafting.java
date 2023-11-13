@@ -62,7 +62,7 @@ public class LegacyContainerCrafting extends Container {
         this.craftingSize = craftingSize;
         this.inventoryPlayer = inventoryplayer;
     }
-    public void craftingSlots() {
+    public void craftingSlots(boolean showCraftingPreview) {
         this.addSlot(new SlotCrafting(this.inventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 107, 127));
         int baseIterator;
         int subIterator;
@@ -82,7 +82,9 @@ public class LegacyContainerCrafting extends Container {
             // 3x3 Crafting
             for (baseIterator = 0; baseIterator < 3; ++baseIterator) {
                 for (subIterator = 0; subIterator < 3; ++subIterator) {
-                    this.addSlot(new Slot(this.craftMatrix, subIterator + baseIterator * 3, 20 + subIterator * 18, 109 + baseIterator * 18));
+                    int x = showCraftingPreview ? -5000 : 20 + subIterator * 18;
+                    int y = showCraftingPreview ? -5000 : 109 + baseIterator * 18;
+                    this.addSlot(new Slot(this.craftMatrix, subIterator + baseIterator * 3, x, y));
                 }
             }
         }
@@ -114,7 +116,7 @@ public class LegacyContainerCrafting extends Container {
         }
         LegacyUI.LOGGER.debug("Category: " + category + " | slotId: " + currentSlotId + " | currentScroll: " + currentScrollAmount + " | craftPreview: " + showCraftingPreview);
         this.inventorySlots.clear();
-        craftingSlots();
+        craftingSlots(showCraftingPreview);
 
         RecipeGroup[] craftingGroups = category.getRecipeGroups(isInInventory);
         boolean discovered;
