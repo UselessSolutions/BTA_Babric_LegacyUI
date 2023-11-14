@@ -63,7 +63,7 @@ public class LegacyContainerCrafting extends Container {
         this.inventoryPlayer = inventoryplayer;
     }
     public void craftingSlots(boolean showCraftingPreview) {
-        this.addSlot(new SlotCrafting(this.inventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 107, 127));
+        this.addSlot(new SlotCrafting(this.inventoryPlayer.player, this.craftMatrix, this.craftResult, 0, showCraftingPreview ? -5000 : 107, showCraftingPreview ? -5000 : 127));
         int baseIterator;
         int subIterator;
 
