@@ -189,6 +189,7 @@ public class UtilGui {
     private static int prevItem = -1;
     private static long timeHotbarLastActive = 0;
     public static float getHotbarAlpha(){
+        if (mc.currentScreen != null) return 1f;
         if (!LegacyUI.modSettings.getEnableHUDFadeout().value) return 1;
         if (mc.thePlayer.inventory.currentItem != prevItem) {
             timeHotbarLastActive = System.currentTimeMillis();
