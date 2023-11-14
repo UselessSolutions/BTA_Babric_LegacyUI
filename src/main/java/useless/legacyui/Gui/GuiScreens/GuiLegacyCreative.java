@@ -254,7 +254,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         int iconAmountToDraw = Math.min(LegacyCategoryManager.getCreativeCategories().size() - (getPageNumber() * 8), 8);
         for (int i = 0; i < iconAmountToDraw; i++) {
             int vertoffset = (currentTab % 8) == i? -2 : 0;
-            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2 + vertoffset, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.75f); // Render Icon
+            UtilGui.drawIconTexture(this, GUIx + 1 + (tabWidth - 1) * i, GUIy + -2 + vertoffset, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate, 1f); // Render Icon
         }
 
         drawStringCenteredNoShadow(fontRenderer, LegacyCategoryManager.getCreativeCategories().get(currentTab).getTranslatedKey(), GUIx + xSize/2, GUIy + 32, LegacyUI.modSettings.getGuiLabelColor().value.value);
