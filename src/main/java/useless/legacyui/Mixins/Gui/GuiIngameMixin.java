@@ -80,6 +80,12 @@ public class GuiIngameMixin {
         }
         return instance;
     }
+    @Inject(method = "renderGameOverlay(FZII)V", at = @At(value = "HEAD"))
+    private void resetAlpha(float partialTicks, boolean flag, int mouseX, int mouseY, CallbackInfo ci){
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glColor4f(1,1,1, 1);
+        UtilGui.blockAlpha = 1f;
+    }
     @Inject(method = "renderGameOverlay(FZII)V", at = @At(value = "TAIL"))
     private void paperDoll(float partialTicks, boolean flag, int mouseX, int mouseY, CallbackInfo ci){
         if (LegacyUI.modSettings.getHideHotbarInGUIs().value){
@@ -115,5 +121,8 @@ public class GuiIngameMixin {
             drawRight = drawRight || (rotaryCalendar && (mc.gameSettings.overlayShowSeason.value || mc.gameSettings.overlayShowWeather.value));
             UtilGui.drawPaperDoll(drawRight);
         }
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glColor4f(1,1,1, 1);
+        UtilGui.blockAlpha = 1f;
     }
 }
