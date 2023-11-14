@@ -14,6 +14,8 @@ import useless.legacyui.Helper.IconHelper;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Mixins.Gui.GuiIngameAccessor;
 
+import java.util.Random;
+
 public class UtilGui {
     public static Minecraft mc = Minecraft.getMinecraft(Minecraft.class);
     public static void bindTexture(String texture){
@@ -67,7 +69,21 @@ public class UtilGui {
         itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, itemstack, x, y, alpha);
         blockAlpha = 1f;
     }
-    public static void drawPanorama(GuiScreen gui, int panoNum){
+    private static float lastOffset = -1;
+    private static int scrollsCompleted = 0;
+    private static long fadeTime = 0;
+    private static long prevTime = -1;
+    private static boolean changedPano = false;
+    public static int panoCount = -1;
+    public static int currentPano = -1;
+    private static Random random = new Random();
+    public static void drawPanorama(GuiScreen gui){
+        if (prevTime == -1){
+            prevTime = System.currentTimeMillis();
+        }
+        long deltaTime = System.currentTimeMillis() - prevTime;
+        prevTime = System.currentTimeMillis();
+
         GL11.glDisable(2896);
         GL11.glDisable(2912);
         Tessellator tessellator = Tessellator.instance;
@@ -76,13 +92,42 @@ public class UtilGui {
         float imageAspectRatio = imageWidth / imageHeight;
         float screenAspectRatio = (float)gui.width / (float)gui.height;
         float finalAspectRatio = (float)gui.width / imageWidth / ((float)gui.height / imageHeight);
-        GL11.glBindTexture(3553, mc.renderEngine.getTexture("%blur%/assets/legacyui/panoramas/pn_"+panoNum+".png"));
+        GL11.glBindTexture(3553, mc.renderEngine.getTexture("%blur%/assets/legacyui/panoramas/pn_"+currentPano+".png"));
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         tessellator.startDrawingQuads();
         float brightness = LegacyUI.modSettings.getMainMenuBrightness().value;
-        tessellator.setColorRGBA_F(brightness, brightness, brightness, 1.0f);
-        int num = (1000 * ((LegacyUI.modSettings.getPanoramaScrollLength().value + 1) * 15));
-        float offset = (float) (System.currentTimeMillis() % num) /num;
+
+
+        int scrollLength = (1000 * ((LegacyUI.modSettings.getPanoramaScrollLength().value + 1) * 15));
+
+        float offset = (float) (System.currentTimeMillis() % scrollLength) /scrollLength;
+
+        if (lastOffset == -1){
+            lastOffset = offset;
+        }
+
+        if (offset < lastOffset){
+            scrollsCompleted++;
+        }
+        if (scrollsCompleted > 0){
+            fadeTime += deltaTime;
+            float fadeFactor = Math.abs((500f - fadeTime)/500f);
+            tessellator.setColorRGBA_F(brightness * fadeFactor, brightness * fadeFactor, brightness * fadeFactor, 1.0f);
+            if (500 <= fadeTime && fadeTime < 1000){
+                if (!changedPano){
+                    changedPano = true;
+                    currentPano = random.nextInt(panoCount);
+                }
+
+            } else if (fadeTime >= 1000) {
+                changedPano = false;
+                scrollsCompleted = 0;
+                fadeTime = 0;
+            }
+        } else {
+            tessellator.setColorRGBA_F(brightness, brightness, brightness, 1.0f);
+        }
+        lastOffset = offset;
         if (screenAspectRatio < imageAspectRatio) {
             tessellator.addVertexWithUV(0.0, gui.height, 0.0, (0.5f + offset) - finalAspectRatio / 2.0f, 1.0);
             tessellator.addVertexWithUV(gui.width, gui.height, 0.0, (0.5f + offset) + finalAspectRatio / 2.0f, 1.0);
@@ -95,6 +140,7 @@ public class UtilGui {
             tessellator.addVertexWithUV(0.0, 0.0, 0.0, 0.0, 0.5f - 0.5f / finalAspectRatio);
         }
         tessellator.draw();
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
     private static float prevYRot = -1000;
     private static float desiredYRot = 0;
