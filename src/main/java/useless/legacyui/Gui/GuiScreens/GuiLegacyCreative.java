@@ -16,6 +16,7 @@ import useless.legacyui.Gui.GuiElements.GuiRegion;
 import useless.legacyui.Gui.IGuiController;
 import useless.legacyui.Helper.IconHelper;
 import useless.legacyui.Helper.KeyboardHelper;
+import useless.legacyui.Helper.RepeatInputHandler;
 import useless.legacyui.LegacySoundManager;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.LegacyCategoryManager;
@@ -90,12 +91,13 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
     public void handleInputs(){
         selectRow(currentRow + (Mouse.getDWheel()/-120));
         boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-        if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyRight.keyCode()) || KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyLookRight.keyCode())){
+
+        if (KeyboardHelper.repeatInput(mc.gameSettings.keyRight.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || KeyboardHelper.repeatInput(mc.gameSettings.keyLookRight.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 scrollTab(1);
             }
         }
-        if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyLeft.keyCode()) || KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyLookLeft.keyCode())){
+        if (KeyboardHelper.repeatInput(mc.gameSettings.keyLeft.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || KeyboardHelper.repeatInput(mc.gameSettings.keyLookLeft.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 scrollTab(-1);
             }
@@ -245,7 +247,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
     protected void drawGuiContainerBackgroundLayer(float renderPartialTick) {
         UtilGui.bindTexture("/assets/legacyui/gui/legacycreative.png");
         UtilGui.drawTexturedModalRect(this, GUIx,GUIy, 0, 0, xSize, ySize,1f/guiTextureWidth); // GUI Background
-        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * (currentTab%8), GUIy - 2, 0,184, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
+        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * (currentTab % 8), GUIy - 2, (tabWidth-1) * (currentTab % 8),215, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
 
         float scrollProgressLimited = ((float) currentRow) /(LegacyContainerPlayerCreative.getTotalRows()-LegacyContainerPlayerCreative.slotsTall);
         UtilGui.drawTexturedModalRect(this,scrollBar.xPosition, (scrollBar.yPosition + (int) ((scrollBar.height-15)*scrollProgressLimited)),131,184,15,15,1f/guiTextureWidth);
@@ -253,7 +255,12 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         UtilGui.bindTexture(IconHelper.ICON_TEXTURE);
         int iconAmountToDraw = Math.min(LegacyCategoryManager.getCreativeCategories().size() - (getPageNumber() * 8), 8);
         for (int i = 0; i < iconAmountToDraw; i++) {
-            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.75f); // Render Icon
+            boolean isSelected = (currentTab % 8) == i;
+            if (isSelected){
+                UtilGui.drawIconTexture(this, GUIx + 3 + (tabWidth - 1) * i, GUIy - 1, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.9f); // Render Icon
+            } else {
+                UtilGui.drawIconTexture(this, GUIx + 5.5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.75f); // Render Icon
+            }
         }
 
         drawStringCenteredNoShadow(fontRenderer, LegacyCategoryManager.getCreativeCategories().get(currentTab).getTranslatedKey(), GUIx + xSize/2, GUIy + 32, LegacyUI.modSettings.getGuiLabelColor().value.value);
@@ -261,10 +268,12 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
 
     @Override
     public void GuiControls(ControllerInput controllerInput) {
-        if (controllerInput.buttonR.pressedThisFrame()){
+        if (controllerInput.buttonR.pressedThisFrame() || controllerInput.buttonR.isPressed() && RepeatInputHandler.doRepeatInput(-2, UtilGui.tabScrollRepeatDelay) && controllerInput.buttonR.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             scrollTab(1);
         }
-        if (controllerInput.buttonL.pressedThisFrame()){
+        if (controllerInput.buttonL.pressedThisFrame() || controllerInput.buttonL.isPressed() && RepeatInputHandler.doRepeatInput(-2, UtilGui.tabScrollRepeatDelay) && controllerInput.buttonL.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             scrollTab(-1);
         }
         if (controllerInput.joyRight.getY() >= 0.8f){

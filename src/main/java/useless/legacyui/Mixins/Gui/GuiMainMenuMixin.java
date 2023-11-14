@@ -20,19 +20,15 @@ import java.util.Random;
 @Mixin(value = GuiMainMenu.class, remap = false)
 public class GuiMainMenuMixin extends GuiScreen {
     @Shadow @Final private static Random rand;
-    @Unique
-    private int panoCount = -1;
-    @Unique
-    private int currentPano = -1;
     @Inject(method = "<init>()V", at = @At("TAIL"))
     private void init(CallbackInfo ci){
-        panoCount = Math.max(1, Minecraft.getMinecraft(this).texturePackList.selectedTexturePack.getFilesInDirectory("/assets/legacyui/panoramas/").length);
-        currentPano = rand.nextInt(panoCount);
+        UtilGui.panoCount = Math.max(1, Minecraft.getMinecraft(this).texturePackList.selectedTexturePack.getFilesInDirectory("/assets/legacyui/panoramas/").length);
+        UtilGui.currentPano = rand.nextInt(UtilGui.panoCount);
     }
     @Inject(method = "drawBackground(I)V", at = @At("HEAD"), cancellable = true)
     private void panorama(int i, CallbackInfo ci){
-        if (LegacyUI.modSettings.getEnablePanorama().value && panoCount != -1){
-            UtilGui.drawPanorama(this, currentPano);
+        if (LegacyUI.modSettings.getEnablePanorama().value && UtilGui.panoCount != -1 && !mc.gameSettings.alphaMenu.value){
+            UtilGui.drawPanorama(this);
             ci.cancel();
         }
     }

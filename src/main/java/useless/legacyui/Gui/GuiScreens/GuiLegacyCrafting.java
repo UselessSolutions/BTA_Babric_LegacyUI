@@ -4,13 +4,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiContainer;
 import net.minecraft.client.input.InputType;
+import net.minecraft.client.input.controller.Button;
 import net.minecraft.client.input.controller.ControllerInput;
 import net.minecraft.core.crafting.recipe.IRecipe;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.lang.I18n;
 import org.lwjgl.input.Keyboard;
-import useless.legacyui.Gui.GuiElements.Buttons.GuiAuditoryButton;
 import useless.legacyui.Gui.Containers.LegacyContainerCrafting;
+import useless.legacyui.Gui.GuiElements.Buttons.GuiAuditoryButton;
 import useless.legacyui.Gui.GuiElements.GuiButtonPrompt;
 import useless.legacyui.Gui.GuiElements.GuiRegion;
 import useless.legacyui.Gui.IGuiController;
@@ -44,6 +45,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
     protected GuiAuditoryButton lastPageButton;
     protected GuiAuditoryButton nextPageButton;
     public GuiRegion inventoryRegion;
+    public GuiRegion craftingRegion;
     public List<GuiButtonPrompt> prompts = new ArrayList<>();
     private static boolean showCraftDisplay = false;
     private static boolean previousShowDisplay = false;
@@ -166,7 +168,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             scrollGroup(1);
         }
         if (guibutton == craftingButton){
-            craft(true);
+            craft(showCraftDisplay);
         }
         if (guibutton == nextPageButton){
             selectPage(getPageNumber() + 1);
@@ -175,31 +177,42 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             selectPage(getPageNumber() - 1);
         }
     }
+    private static boolean shiftedPrev = false;
     public void handleInputs(){
         boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-        if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyForward.keyCode()) || KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyLookUp.keyCode())){
+        if (KeyboardHelper.repeatInput(mc.gameSettings.keyForward.keyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || KeyboardHelper.repeatInput(mc.gameSettings.keyLookUp.keyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
             scrollGroup(-1);
         }
-        if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyBack.keyCode()) || KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyLookDown.keyCode())){
+        if (KeyboardHelper.repeatInput(mc.gameSettings.keyBack.keyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || KeyboardHelper.repeatInput(mc.gameSettings.keyLookDown.keyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
             scrollGroup(1);
         }
-        if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyRight.keyCode()) || KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyLookRight.keyCode())){
+        if (KeyboardHelper.repeatInput(mc.gameSettings.keyRight.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || KeyboardHelper.repeatInput(mc.gameSettings.keyLookRight.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 scrollTab(1);
             } else {
                 scrollSlot(1);
             }
         }
-        if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyLeft.keyCode()) || KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyLookLeft.keyCode())){
+        if (KeyboardHelper.repeatInput(mc.gameSettings.keyLeft.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || KeyboardHelper.repeatInput(mc.gameSettings.keyLookLeft.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 scrollTab(-1);
             } else {
                 scrollSlot(-1);
             }
         }
-        if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyJump.keyCode())){
-            craft(true);
+        if (shiftedPrev != shifted){
+            KeyboardHelper.resetKey(mc.gameSettings.keyJump.keyCode());
         }
+        if (shifted){
+            if (KeyboardHelper.repeatInput(mc.gameSettings.keyJump.keyCode(), (int) (UtilGui.repeatCraftDelay * 0.5f), (int) (UtilGui.initialCraftDelay * 0.5f))){
+                craft(KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyJump.keyCode()));
+            }
+        } else {
+            if (KeyboardHelper.repeatInput(mc.gameSettings.keyJump.keyCode(), UtilGui.repeatCraftDelay, UtilGui.initialCraftDelay)){
+                craft(KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyJump.keyCode()));
+            }
+        }
+        shiftedPrev = shifted;
     }
     public RecipeCategory currentCategory(){
         return LegacyCategoryManager.getRecipeCategories().get(currentTab);
@@ -252,7 +265,8 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         lastPageButton.visible = LegacyCategoryManager.getCreativeCategories().size() > 8;
         controlList.add(lastPageButton);
 
-        inventoryRegion = new GuiRegion(100,GUIx + 147, GUIy + 94, 116, 75);
+        inventoryRegion = new GuiRegion(100,GUIx + 147, GUIy + 93, 116, 75);
+        craftingRegion = new GuiRegion(100,GUIx + 16, GUIy + 105, 60, 60);
 
         I18n translator = I18n.getInstance();
         prompts.clear();
@@ -323,7 +337,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         UtilGui.drawTexturedModalRect(this, GUIx, GUIy, 0,0, this.xSize, this.ySize, 1f/guiTextureWidth); // Render Background
 
 
-        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * (currentTab % 8), GUIy - 2, 0,175, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
+        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * (currentTab % 8), GUIy - 2, (tabWidth-1) * (currentTab % 8),229, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
 
         IRecipe currentRecipe = (IRecipe) currentCategory().getRecipeGroups(isSmall())[currentSlot].getRecipes(isSmall())[currentScroll];
         if ((currentCategory().getRecipeGroups(isSmall())[currentSlot].getContainer(currentScroll, isSmall()).inventorySlots.size() <= 5 && showCraftDisplay) || isSmall()){ // 2x2 Crafting overlay
@@ -354,7 +368,12 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         UtilGui.bindTexture(IconHelper.ICON_TEXTURE);
         int iconAmountToDraw = Math.min(LegacyCategoryManager.getRecipeCategories().size() - (getPageNumber() * 8), 8);
         for (int i = 0; i < iconAmountToDraw; i++) {
-            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getRecipeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.75f); // Render Icon
+            boolean isSelected = (currentTab % 8) == i;
+            if (isSelected){
+                UtilGui.drawIconTexture(this, GUIx + 3 + (tabWidth - 1) * i, GUIy - 1, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.9f); // Render Icon
+            } else {
+                UtilGui.drawIconTexture(this, GUIx + 5.5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.75f); // Render Icon
+            }
         }
     }
     private void drawSelectionCursorForeground(){
@@ -396,10 +415,12 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
 
     @Override
     public void GuiControls(ControllerInput controllerInput) {
-        if (controllerInput.buttonR.pressedThisFrame()){
+        if (controllerInput.buttonR.pressedThisFrame() || controllerInput.buttonR.isPressed() && RepeatInputHandler.doRepeatInput(-2, UtilGui.tabScrollRepeatDelay) && controllerInput.buttonR.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             scrollTab(1);
         }
-        if (controllerInput.buttonL.pressedThisFrame()){
+        if (controllerInput.buttonL.pressedThisFrame() || controllerInput.buttonL.isPressed() && RepeatInputHandler.doRepeatInput(-2, UtilGui.tabScrollRepeatDelay) && controllerInput.buttonL.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             scrollTab(-1);
         }
         if (controllerInput.buttonZL.pressedThisFrame()){
@@ -408,21 +429,25 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         if (controllerInput.buttonZR.pressedThisFrame()){
             controllerInput.snapToSlot(this, LegacyContainerCrafting.inventorySlotsStart);
         }
-        if (!inventoryRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
-            if (controllerInput.digitalPad.right.pressedThisFrame()){
+        if (!inventoryRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY) && !(craftingRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY) && !showCraftDisplay)){
+            if (controllerInput.digitalPad.right.pressedThisFrame() || controllerInput.digitalPad.right.isPressed() && RepeatInputHandler.doRepeatInput(-1, UtilGui.tabScrollRepeatDelay) && ((Button)controllerInput.digitalPad.right).getHoldTime() > 3){
+                RepeatInputHandler.manualSuccess(-1);
                 scrollSlot(1);
             }
-            if (controllerInput.digitalPad.left.pressedThisFrame()){
+            if (controllerInput.digitalPad.left.pressedThisFrame() || controllerInput.digitalPad.left.isPressed() && RepeatInputHandler.doRepeatInput(-1, UtilGui.tabScrollRepeatDelay) && ((Button)controllerInput.digitalPad.left).getHoldTime() > 3){
+                RepeatInputHandler.manualSuccess(-1);
                 scrollSlot(-1);
             }
-            if (controllerInput.digitalPad.up.pressedThisFrame()){
+            if (controllerInput.digitalPad.up.pressedThisFrame() || controllerInput.digitalPad.up.isPressed() && RepeatInputHandler.doRepeatInput(-1, UtilGui.verticalScrollRepeatDelay) && ((Button)controllerInput.digitalPad.up).getHoldTime() > 3){
+                RepeatInputHandler.manualSuccess(-1);
                 scrollGroup(-1);
             }
-            if (controllerInput.digitalPad.down.pressedThisFrame()){
+            if (controllerInput.digitalPad.down.pressedThisFrame() || controllerInput.digitalPad.down.isPressed() && RepeatInputHandler.doRepeatInput(-1, UtilGui.verticalScrollRepeatDelay) && ((Button)controllerInput.digitalPad.down).getHoldTime() > 3){
+                RepeatInputHandler.manualSuccess(-1);
                 scrollGroup(1);
             }
             if ((controllerInput.buttonA.pressedThisFrame() || (controllerInput.buttonA.getHoldTime() >= 10 && RepeatInputHandler.doRepeatInput(-10, 50)))){
-                craft(controllerInput.buttonA.pressedThisFrame());
+                craft(controllerInput.buttonA.pressedThisFrame() && showCraftDisplay);
             }
         }
     }
@@ -434,10 +459,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
 
     @Override
     public boolean enableDefaultSnapping() {
-        if (inventoryRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
-            return true;
-        }
-        return false;
+        return inventoryRegion.isHovered((int) mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY) || (craftingRegion.isHovered((int) mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY) && !showCraftDisplay);
     }
     public static int getPageNumber(){
         return currentTab/8;

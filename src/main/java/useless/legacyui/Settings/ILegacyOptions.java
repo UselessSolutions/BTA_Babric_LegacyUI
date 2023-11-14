@@ -27,4 +27,7 @@ public interface ILegacyOptions {
     BooleanOption getForceButtonPrompts();
     BooleanOption getEnableAutoBridge();
     BooleanOption getForceLegacyTooltip();
+    BooleanOption getEnablePaperDoll();
+    BooleanOption getEnableHUDFadeout();
+    FloatOption getHUDFadeoutDelay();
 }

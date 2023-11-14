@@ -36,7 +36,10 @@ public class GameSettingsMixin implements ILegacyOptions {
     private void displayString(Option<?> option, CallbackInfoReturnable<String> cir){
         I18n translator = I18n.getInstance();
         if (option == panoramaScrollLength){
-            cir.setReturnValue("" + (panoramaScrollLength.value + 1) * 15 + " " + translator.translateKey("options.legacyui.panoramaSpeed.unit"));
+            cir.setReturnValue((panoramaScrollLength.value + 1) * 15 + " " + translator.translateKey("options.legacyui.panoramaSpeed.unit"));
+        }
+        if (option == HUDFadeoutDelay){
+            cir.setReturnValue(String.format("%.1f", HUDFadeoutDelay.value * 10) + " " + translator.translateKey("options.legacyui.hudFadeout.unit"));
         }
     }
     @Unique
@@ -86,7 +89,13 @@ public class GameSettingsMixin implements ILegacyOptions {
     @Unique
     public BooleanOption enableAutoBridge = new BooleanOption(thisAs, "legacyui.enableAutoBridge", true);
     @Unique
-    public BooleanOption forceLegacyTooltip = new BooleanOption(thisAs, "legacyui.forceLegacyTooltip", true);
+    public BooleanOption forceLegacyTooltip = new BooleanOption(thisAs, "legacyui.forceLegacyTooltip", false);
+    @Unique
+    public BooleanOption enablePaperDoll = new BooleanOption(thisAs, "legacyui.enablePaperDoll", false);
+    @Unique
+    public BooleanOption enableHUDFadeout = new BooleanOption(thisAs, "legacyui.enableHUDFadeout", true);
+    @Unique
+    public FloatOption HUDFadeoutDelay = new FloatOption(thisAs, "legacyui.hudFadeoutDelay", 0.5f);
     public BooleanOption getCraftingHideUndiscoveredItems() {
         return craftingHideUndiscoveredItems;
     }
@@ -149,13 +158,19 @@ public class GameSettingsMixin implements ILegacyOptions {
         return forceButtonPrompts;
     }
 
-    @Override
     public BooleanOption getEnableAutoBridge() {
         return enableAutoBridge;
     }
-
-    @Override
     public BooleanOption getForceLegacyTooltip() {
         return forceLegacyTooltip;
+    }
+    public BooleanOption getEnablePaperDoll() {
+        return enablePaperDoll;
+    }
+    public BooleanOption getEnableHUDFadeout() {
+        return enableHUDFadeout;
+    }
+    public FloatOption getHUDFadeoutDelay() {
+        return HUDFadeoutDelay;
     }
 }

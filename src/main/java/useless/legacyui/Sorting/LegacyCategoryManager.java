@@ -134,6 +134,7 @@ public class LegacyCategoryManager {
                 .setTranslationKey("natural");
         public static ItemCategoryBuilder otherBlocks = new ItemCategoryBuilder(MOD_ID)
                 .excludeItem(Block.torchRedstoneIdle.asItem())
+                .excludeItem(Block.torchRedstoneActive.asItem())
                 .excludeItem(Block.leverCobbleStone.asItem())
                 .excludeItem(Block.pressureplateStone.asItem())
                 .excludeItem(Block.pressureplateCobbleStone.asItem())
@@ -260,6 +261,8 @@ public class LegacyCategoryManager {
                 .addItem(Block.blockClay)
                 .addKeyword(".cobble.")
                 .excludeItem(Block.dispenserCobbleStone.asItem())
+                .excludeItem(Block.pressureplateCobbleStone.asItem())
+                .excludeItem(Block.leverCobbleStone.asItem())
                 .addClass(BlockIce.class)
                 .addItem(Block.permaice)
                 .addClass(BlockPumpkin.class)
@@ -388,15 +391,16 @@ public class LegacyCategoryManager {
         public static RecipeGroupBuilder dispensers = new RecipeGroupBuilder()
                 .addClass(BlockDispenser.class);
         public static RecipeGroupBuilder traps = new RecipeGroupBuilder()
-                .addClass(BlockTNT.class)
                 .addClass(BlockSpikes.class)
                 .addClass(BlockMesh.class)
                 .addItem(Item.basket);
+        public static RecipeGroupBuilder tnt = new RecipeGroupBuilder()
+                .addClass(BlockTNT.class);
 
         public static RecipeCategoryBuilder category = new RecipeCategoryBuilder(MOD_ID)
                 .setIcon("lever.png")
                 .setTranslationKey("redstone")
-                .addRecipeGroupBuilders(new RecipeGroupBuilder[]{basicRedstone, redstoneBlock, buttonLever, pressureplates,pistons,lamps,noteBlock,dispensers,traps});
+                .addRecipeGroupBuilders(new RecipeGroupBuilder[]{basicRedstone, redstoneBlock, buttonLever, pressureplates,pistons,lamps,noteBlock,dispensers,traps, tnt});
     }
     public static class recipeTransit {
         public static RecipeGroupBuilder baseRail = new RecipeGroupBuilder()

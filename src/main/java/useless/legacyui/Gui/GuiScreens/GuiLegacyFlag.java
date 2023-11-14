@@ -1,6 +1,8 @@
 package useless.legacyui.Gui.GuiScreens;
 
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiContainer;
+import net.minecraft.client.gui.GuiSurface;
 import net.minecraft.client.gui.drawing.DrawableEditor;
 import net.minecraft.client.gui.drawing.IDrawableSurface;
 import net.minecraft.client.input.InputType;
@@ -38,7 +40,6 @@ public class GuiLegacyFlag extends GuiContainer
     private final int CANVAS_SCALE = 4;
     private final int CANVAS_WIDTH = 24;
     private final int CANVAS_HEIGHT = 16;
-    private final RenderEngine renderEngineInstance;
     private int xLast = 0;
     private int yLast = 0;
     private int mouseButton;
@@ -48,7 +49,6 @@ public class GuiLegacyFlag extends GuiContainer
     public static int selectedColor = 0;
     public static int dyeScroll = 0;
     public static int cursorX = 0;
-    private FlagRenderer flagRenderer;
     private final DrawableEditor<Byte> flagSurfaceEditor;
     private final DrawableEditor<Byte> drawOverlaySurfaceEditor;
     private GuiAudioTextureButton[] toolBtns;
@@ -71,16 +71,15 @@ public class GuiLegacyFlag extends GuiContainer
     public GuiLegacyFlag(EntityPlayer player, TileEntityFlag flagTileEntity, RenderEngine renderEngine) {
         super(new LegacyContainerFlag(player.inventory, flagTileEntity));
         containerFlag = (LegacyContainerFlag)inventorySlots;
-        this.renderEngineInstance = renderEngine;
         this.tileEntity = flagTileEntity;
         this.xSize = 159;
         this.ySize = 148;
         flagTileEntity.owner = player.username;
-        this.flagRenderer = new FlagRenderer(renderEngine);
+        FlagRenderer flagRenderer = new FlagRenderer(renderEngine);
         this.flagSurface = new GuiSurface(24, 16, 4, flagTileEntity.flagColors);
-        this.flagSurfaceEditor = new DrawableEditor<Byte>(this.flagSurface);
+        this.flagSurfaceEditor = new DrawableEditor<>(this.flagSurface);
         this.drawOverlaySurface = new GuiSurface(24, 16, 4);
-        this.drawOverlaySurfaceEditor = new DrawableEditor<Byte>(this.drawOverlaySurface);
+        this.drawOverlaySurfaceEditor = new DrawableEditor<>(this.drawOverlaySurface);
     }
 
     @Override
@@ -141,7 +140,7 @@ public class GuiLegacyFlag extends GuiContainer
         for (int i = 1; i < 4; ++i) {
             ItemStack stack = this.tileEntity.getStackInSlot(35 + i);
             if (stack == null || stack.getItem() != Item.dye) continue;
-            colors[i] = Colors.allFlagColors[TextFormatting.get((int)(15 - stack.getMetadata())).id].getARGB();
+            colors[i] = Colors.allFlagColors[TextFormatting.get(15 - stack.getMetadata()).id].getARGB();
         }
         colors[4] = -1;
         this.flagSurface.colors = colors;
@@ -227,24 +226,24 @@ public class GuiLegacyFlag extends GuiContainer
     }
     public void handleInputs(){
         boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-        if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyRight.keyCode()) || KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyLookRight.keyCode())){
+        if (KeyboardHelper.repeatInput(mc.gameSettings.keyRight.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || KeyboardHelper.repeatInput(mc.gameSettings.keyLookRight.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 setActiveTool(activeTool + 1);
             } else {
                 setCursorX(cursorX + 1);
             }
         }
-        if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyLeft.keyCode()) || KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyLookLeft.keyCode())){
+        if (KeyboardHelper.repeatInput(mc.gameSettings.keyLeft.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || KeyboardHelper.repeatInput(mc.gameSettings.keyLookLeft.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 setActiveTool(activeTool - 1);
             } else {
                 setCursorX(cursorX - 1);
             }
         }
-        if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyForward.keyCode()) || KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyLookUp.keyCode())){
+        if (KeyboardHelper.repeatInput(mc.gameSettings.keyForward.keyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || KeyboardHelper.repeatInput(mc.gameSettings.keyLookUp.keyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
             selectColor(selectedColor - 1);
         }
-        if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyBack.keyCode()) || KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyLookDown.keyCode())){
+        if (KeyboardHelper.repeatInput(mc.gameSettings.keyBack.keyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || KeyboardHelper.repeatInput(mc.gameSettings.keyLookDown.keyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
             selectColor(selectedColor + 1);
         }
         if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyJump.keyCode())){
@@ -472,11 +471,7 @@ public class GuiLegacyFlag extends GuiContainer
         } else if (selectedColor < 0){
             selectedColor += 4;
         }
-        if (selectedColor == 3){
-            eraseButton.enabled = false;
-        } else {
-            eraseButton.enabled = true;
-        }
+        eraseButton.enabled = selectedColor != 3;
 
     }
     @Override
@@ -521,32 +516,39 @@ public class GuiLegacyFlag extends GuiContainer
 
     @Override
     public void GuiControls(ControllerInput controllerInput) {
-        if (controllerInput.buttonZL.pressedThisFrame()){
+        int dpadDelay = 1000/15;
+        int dyeSelectDelay = 1000/7;
+        int toolDelay = UtilGui.tabScrollRepeatDelay;
+        if (controllerInput.buttonZL.pressedThisFrame() || controllerInput.buttonZL.isPressed() && RepeatInputHandler.doRepeatInput(-2, toolDelay) && controllerInput.buttonZL.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             setActiveTool(activeTool - 1);
         }
-        if (controllerInput.buttonZR.pressedThisFrame()){
+        if (controllerInput.buttonZR.pressedThisFrame() || controllerInput.buttonZR.isPressed() && RepeatInputHandler.doRepeatInput(-2, toolDelay) && controllerInput.buttonZR.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             setActiveTool(activeTool + 1);
         }
-        if (controllerInput.buttonL.pressedThisFrame()){
+        if (controllerInput.buttonL.pressedThisFrame() || controllerInput.buttonL.isPressed() && RepeatInputHandler.doRepeatInput(-2, toolDelay) && controllerInput.buttonL.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             selectColor(selectedColor - 1);
         }
-        if (controllerInput.buttonR.pressedThisFrame()){
+        if (controllerInput.buttonR.pressedThisFrame() || controllerInput.buttonR.isPressed() && RepeatInputHandler.doRepeatInput(-2, toolDelay) && controllerInput.buttonR.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             selectColor(selectedColor + 1);
         }
         if (flagRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
-            if (controllerInput.digitalPad.right.pressedThisFrame() || (controllerInput.digitalPad.right.isPressed() && RepeatInputHandler.doRepeatInput(-1, 1000/15))){
+            if (controllerInput.digitalPad.right.pressedThisFrame() || (controllerInput.digitalPad.right.isPressed() && RepeatInputHandler.doRepeatInput(-1, dpadDelay))){
                 RepeatInputHandler.manualSuccess(-1);
                 snapToPixel(1, 0);
             }
-            if (controllerInput.digitalPad.left.pressedThisFrame() || (controllerInput.digitalPad.left.isPressed() && RepeatInputHandler.doRepeatInput(-1, 1000/15))){
+            if (controllerInput.digitalPad.left.pressedThisFrame() || (controllerInput.digitalPad.left.isPressed() && RepeatInputHandler.doRepeatInput(-1, dpadDelay))){
                 RepeatInputHandler.manualSuccess(-1);
                 snapToPixel(- 1, 0);
             }
-            if (controllerInput.digitalPad.up.pressedThisFrame() || (controllerInput.digitalPad.up.isPressed() && RepeatInputHandler.doRepeatInput(-1, 1000/15))){
+            if (controllerInput.digitalPad.up.pressedThisFrame() || (controllerInput.digitalPad.up.isPressed() && RepeatInputHandler.doRepeatInput(-1, dpadDelay))){
                 RepeatInputHandler.manualSuccess(-1);
                 snapToPixel(0, -1);
             }
-            if (controllerInput.digitalPad.down.pressedThisFrame() || (controllerInput.digitalPad.down.isPressed() && RepeatInputHandler.doRepeatInput(-1, 1000/15))){
+            if (controllerInput.digitalPad.down.pressedThisFrame() || (controllerInput.digitalPad.down.isPressed() && RepeatInputHandler.doRepeatInput(-1, dpadDelay))){
                 RepeatInputHandler.manualSuccess(-1);
                 snapToPixel(0, 1);
             }
@@ -557,16 +559,20 @@ public class GuiLegacyFlag extends GuiContainer
                 controllerInput.snapToSlot(this, 39 + cursorX);
             }
         } else {
-            if (controllerInput.digitalPad.right.pressedThisFrame()){
+            if (controllerInput.digitalPad.right.pressedThisFrame() || (controllerInput.digitalPad.right.isPressed() && RepeatInputHandler.doRepeatInput(-1, dyeSelectDelay))){
+                RepeatInputHandler.manualSuccess(-1);
                 setCursorX(cursorX + 1);
             }
-            if (controllerInput.digitalPad.left.pressedThisFrame()){
+            if (controllerInput.digitalPad.left.pressedThisFrame() || (controllerInput.digitalPad.left.isPressed() && RepeatInputHandler.doRepeatInput(-1, dyeSelectDelay))){
+                RepeatInputHandler.manualSuccess(-1);
                 setCursorX(cursorX - 1);
             }
-            if (controllerInput.digitalPad.up.pressedThisFrame()){
+            if (controllerInput.digitalPad.up.pressedThisFrame() || (controllerInput.digitalPad.up.isPressed() && RepeatInputHandler.doRepeatInput(-1, toolDelay))){
+                RepeatInputHandler.manualSuccess(-1);
                 selectColor(selectedColor - 1);
             }
-            if (controllerInput.digitalPad.down.pressedThisFrame()){
+            if (controllerInput.digitalPad.down.pressedThisFrame() || (controllerInput.digitalPad.down.isPressed() && RepeatInputHandler.doRepeatInput(-1, toolDelay))){
+                RepeatInputHandler.manualSuccess(-1);
                 selectColor(selectedColor + 1);
             }
             if (controllerInput.buttonY.pressedThisFrame()){

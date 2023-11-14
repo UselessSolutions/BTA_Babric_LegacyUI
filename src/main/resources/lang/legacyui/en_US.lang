@@ -63,6 +63,10 @@ options.legacyui.coordsOnMaps=Display Position on Map
 options.legacyui.forceButtonPrompts=Force Button Prompts
 options.legacyui.enableAutoBridge=Enable Easy Bridge
 options.legacyui.forceLegacyTooltip=Enable Legacy Tooltip
+options.legacyui.enablePaperDoll=Enable Paper Doll
+options.legacyui.enableHUDFadeout=Enable HUD Fadeout
+options.legacyui.hudFadeoutDelay=HUD Fadeout Delay
+options.legacyui.hudFadeout.unit=Seconds
 
 options.tooltipStyle.legacy=Legacy
 options.legacyui.tooltipStyle.legacy=Legacy

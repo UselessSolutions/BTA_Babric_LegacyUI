@@ -2,6 +2,7 @@ package useless.legacyui.Gui.GuiScreens;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiInventory;
+import net.minecraft.client.gui.ListLayout;
 import net.minecraft.client.input.InputType;
 import net.minecraft.client.input.controller.ControllerInput;
 import net.minecraft.client.render.EntityRenderDispatcher;
@@ -39,6 +40,9 @@ public class GuiLegacyInventory extends GuiInventory implements IGuiController {
         ySize = 176;
         GUIx = (this.width - this.xSize) / 2;
         GUIy = (this.height - this.ySize) / 2;
+
+        overlayButtonsLayout = new ListLayout(this).setAlign(0.5, 0.5).setVertical(false).setElementSize(11, 11).setOffset(-(this.xSize / 2), -(this.ySize / 2) - 10).setMargin(1);
+        updateOverlayButtons();
 
         // Offset Armor Button
         GuiButton armorButton = ((GuiInventoryAccessor)this).getArmorButton();
