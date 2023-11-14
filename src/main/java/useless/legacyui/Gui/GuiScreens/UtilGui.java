@@ -76,7 +76,7 @@ public class UtilGui {
     private static boolean changedPano = false;
     public static int panoCount = -1;
     public static int currentPano = -1;
-    private static Random random = new Random();
+    private static final Random random = new Random();
     public static void drawPanorama(GuiScreen gui){
         if (prevTime == -1){
             prevTime = System.currentTimeMillis();

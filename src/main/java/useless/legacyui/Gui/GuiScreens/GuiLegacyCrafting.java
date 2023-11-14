@@ -44,6 +44,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
     protected GuiAuditoryButton lastPageButton;
     protected GuiAuditoryButton nextPageButton;
     public GuiRegion inventoryRegion;
+    public GuiRegion craftingRegion;
     public List<GuiButtonPrompt> prompts = new ArrayList<>();
     private static boolean showCraftDisplay = false;
     private static boolean previousShowDisplay = false;
@@ -252,7 +253,8 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         lastPageButton.visible = LegacyCategoryManager.getCreativeCategories().size() > 8;
         controlList.add(lastPageButton);
 
-        inventoryRegion = new GuiRegion(100,GUIx + 147, GUIy + 94, 116, 75);
+        inventoryRegion = new GuiRegion(100,GUIx + 147, GUIy + 93, 116, 75);
+        craftingRegion = new GuiRegion(100,GUIx + 16, GUIy + 105, 60, 60);
 
         I18n translator = I18n.getInstance();
         prompts.clear();
@@ -421,7 +423,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             if (controllerInput.digitalPad.down.pressedThisFrame()){
                 scrollGroup(1);
             }
-            if ((controllerInput.buttonA.pressedThisFrame() || (controllerInput.buttonA.getHoldTime() >= 10 && RepeatInputHandler.doRepeatInput(-10, 50)))){
+            if (!craftingRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY) && (controllerInput.buttonA.pressedThisFrame() || (controllerInput.buttonA.getHoldTime() >= 10 && RepeatInputHandler.doRepeatInput(-10, 50)))){
                 craft(controllerInput.buttonA.pressedThisFrame());
             }
         }
