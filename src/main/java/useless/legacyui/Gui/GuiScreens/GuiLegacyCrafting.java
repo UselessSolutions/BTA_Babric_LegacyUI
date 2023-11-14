@@ -9,9 +9,8 @@ import net.minecraft.core.crafting.recipe.IRecipe;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.lang.I18n;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-import useless.legacyui.Gui.GuiElements.Buttons.GuiAuditoryButton;
 import useless.legacyui.Gui.Containers.LegacyContainerCrafting;
+import useless.legacyui.Gui.GuiElements.Buttons.GuiAuditoryButton;
 import useless.legacyui.Gui.GuiElements.GuiButtonPrompt;
 import useless.legacyui.Gui.GuiElements.GuiRegion;
 import useless.legacyui.Gui.IGuiController;
@@ -168,7 +167,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             scrollGroup(1);
         }
         if (guibutton == craftingButton){
-            craft(true);
+            craft(showCraftDisplay);
         }
         if (guibutton == nextPageButton){
             selectPage(getPageNumber() + 1);
@@ -427,7 +426,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         if (controllerInput.buttonZR.pressedThisFrame()){
             controllerInput.snapToSlot(this, LegacyContainerCrafting.inventorySlotsStart);
         }
-        if (!inventoryRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
+        if (!inventoryRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY) && !(craftingRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY) && !showCraftDisplay)){
             if (controllerInput.digitalPad.right.pressedThisFrame()){
                 scrollSlot(1);
             }
@@ -440,8 +439,8 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             if (controllerInput.digitalPad.down.pressedThisFrame()){
                 scrollGroup(1);
             }
-            if (!craftingRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY) && (controllerInput.buttonA.pressedThisFrame() || (controllerInput.buttonA.getHoldTime() >= 10 && RepeatInputHandler.doRepeatInput(-10, 50)))){
-                craft(controllerInput.buttonA.pressedThisFrame());
+            if ((controllerInput.buttonA.pressedThisFrame() || (controllerInput.buttonA.getHoldTime() >= 10 && RepeatInputHandler.doRepeatInput(-10, 50)))){
+                craft(controllerInput.buttonA.pressedThisFrame() && showCraftDisplay);
             }
         }
     }
@@ -453,10 +452,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
 
     @Override
     public boolean enableDefaultSnapping() {
-        if (inventoryRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
-            return true;
-        }
-        return false;
+        return inventoryRegion.isHovered((int) mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY) || (craftingRegion.isHovered((int) mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY) && !showCraftDisplay);
     }
     public static int getPageNumber(){
         return currentTab/8;
