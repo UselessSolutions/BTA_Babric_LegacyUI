@@ -18,6 +18,7 @@ import net.minecraft.core.util.helper.Colors;
 import net.minecraft.core.util.helper.MathHelper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.Util;
 import useless.legacyui.Gui.Containers.LegacyContainerFlag;
 import useless.legacyui.Gui.GuiElements.Buttons.GuiAudioTextureButton;
 import useless.legacyui.Gui.GuiElements.Buttons.GuiAuditoryButton;
@@ -472,11 +473,7 @@ public class GuiLegacyFlag extends GuiContainer
         } else if (selectedColor < 0){
             selectedColor += 4;
         }
-        if (selectedColor == 3){
-            eraseButton.enabled = false;
-        } else {
-            eraseButton.enabled = true;
-        }
+        eraseButton.enabled = selectedColor != 3;
 
     }
     @Override
@@ -521,32 +518,39 @@ public class GuiLegacyFlag extends GuiContainer
 
     @Override
     public void GuiControls(ControllerInput controllerInput) {
-        if (controllerInput.buttonZL.pressedThisFrame()){
+        int dpadDelay = 1000/15;
+        int dyeSelectDelay = 1000/7;
+        int toolDelay = UtilGui.tabScrollRepeatDelay;
+        if (controllerInput.buttonZL.pressedThisFrame() || controllerInput.buttonZL.isPressed() && RepeatInputHandler.doRepeatInput(-2, toolDelay) && controllerInput.buttonZL.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             setActiveTool(activeTool - 1);
         }
-        if (controllerInput.buttonZR.pressedThisFrame()){
+        if (controllerInput.buttonZR.pressedThisFrame() || controllerInput.buttonZR.isPressed() && RepeatInputHandler.doRepeatInput(-2, toolDelay) && controllerInput.buttonZR.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             setActiveTool(activeTool + 1);
         }
-        if (controllerInput.buttonL.pressedThisFrame()){
+        if (controllerInput.buttonL.pressedThisFrame() || controllerInput.buttonL.isPressed() && RepeatInputHandler.doRepeatInput(-2, toolDelay) && controllerInput.buttonL.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             selectColor(selectedColor - 1);
         }
-        if (controllerInput.buttonR.pressedThisFrame()){
+        if (controllerInput.buttonR.pressedThisFrame() || controllerInput.buttonR.isPressed() && RepeatInputHandler.doRepeatInput(-2, toolDelay) && controllerInput.buttonR.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             selectColor(selectedColor + 1);
         }
         if (flagRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
-            if (controllerInput.digitalPad.right.pressedThisFrame() || (controllerInput.digitalPad.right.isPressed() && RepeatInputHandler.doRepeatInput(-1, 1000/15))){
+            if (controllerInput.digitalPad.right.pressedThisFrame() || (controllerInput.digitalPad.right.isPressed() && RepeatInputHandler.doRepeatInput(-1, dpadDelay))){
                 RepeatInputHandler.manualSuccess(-1);
                 snapToPixel(1, 0);
             }
-            if (controllerInput.digitalPad.left.pressedThisFrame() || (controllerInput.digitalPad.left.isPressed() && RepeatInputHandler.doRepeatInput(-1, 1000/15))){
+            if (controllerInput.digitalPad.left.pressedThisFrame() || (controllerInput.digitalPad.left.isPressed() && RepeatInputHandler.doRepeatInput(-1, dpadDelay))){
                 RepeatInputHandler.manualSuccess(-1);
                 snapToPixel(- 1, 0);
             }
-            if (controllerInput.digitalPad.up.pressedThisFrame() || (controllerInput.digitalPad.up.isPressed() && RepeatInputHandler.doRepeatInput(-1, 1000/15))){
+            if (controllerInput.digitalPad.up.pressedThisFrame() || (controllerInput.digitalPad.up.isPressed() && RepeatInputHandler.doRepeatInput(-1, dpadDelay))){
                 RepeatInputHandler.manualSuccess(-1);
                 snapToPixel(0, -1);
             }
-            if (controllerInput.digitalPad.down.pressedThisFrame() || (controllerInput.digitalPad.down.isPressed() && RepeatInputHandler.doRepeatInput(-1, 1000/15))){
+            if (controllerInput.digitalPad.down.pressedThisFrame() || (controllerInput.digitalPad.down.isPressed() && RepeatInputHandler.doRepeatInput(-1, dpadDelay))){
                 RepeatInputHandler.manualSuccess(-1);
                 snapToPixel(0, 1);
             }
@@ -557,16 +561,20 @@ public class GuiLegacyFlag extends GuiContainer
                 controllerInput.snapToSlot(this, 39 + cursorX);
             }
         } else {
-            if (controllerInput.digitalPad.right.pressedThisFrame()){
+            if (controllerInput.digitalPad.right.pressedThisFrame() || (controllerInput.digitalPad.right.isPressed() && RepeatInputHandler.doRepeatInput(-1, dyeSelectDelay))){
+                RepeatInputHandler.manualSuccess(-1);
                 setCursorX(cursorX + 1);
             }
-            if (controllerInput.digitalPad.left.pressedThisFrame()){
+            if (controllerInput.digitalPad.left.pressedThisFrame() || (controllerInput.digitalPad.left.isPressed() && RepeatInputHandler.doRepeatInput(-1, dyeSelectDelay))){
+                RepeatInputHandler.manualSuccess(-1);
                 setCursorX(cursorX - 1);
             }
-            if (controllerInput.digitalPad.up.pressedThisFrame()){
+            if (controllerInput.digitalPad.up.pressedThisFrame() || (controllerInput.digitalPad.up.isPressed() && RepeatInputHandler.doRepeatInput(-1, toolDelay))){
+                RepeatInputHandler.manualSuccess(-1);
                 selectColor(selectedColor - 1);
             }
-            if (controllerInput.digitalPad.down.pressedThisFrame()){
+            if (controllerInput.digitalPad.down.pressedThisFrame() || (controllerInput.digitalPad.down.isPressed() && RepeatInputHandler.doRepeatInput(-1, toolDelay))){
+                RepeatInputHandler.manualSuccess(-1);
                 selectColor(selectedColor + 1);
             }
             if (controllerInput.buttonY.pressedThisFrame()){
