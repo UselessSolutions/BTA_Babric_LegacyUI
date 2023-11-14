@@ -13,6 +13,7 @@
     "ItemEntityRendererMixin",
     "MapItemRendererMixin",
     "MinecraftMixin",
+    "RenderBlocksMixin",
     "Gamemodes.GamemodeCreativeMixin",
     "Gamemodes.GamemodeSurvivalMixin",
     "Gui.GuiAchievementMixin",
@@ -38,7 +39,7 @@
     "Multiplayer.PlayerControllerMPMixin",
     "Settings.GameSettingsMixin",
     "Settings.TooltipStyleMixin",
-    "RenderBlocksMixin"
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

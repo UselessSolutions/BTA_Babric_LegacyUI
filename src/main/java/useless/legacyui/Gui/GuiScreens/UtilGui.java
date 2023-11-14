@@ -18,6 +18,12 @@ import java.util.Random;
 
 public class UtilGui {
     public static Minecraft mc = Minecraft.getMinecraft(Minecraft.class);
+    public static final int tabScrollRepeatDelay = 1000/6;
+    public static final int tabScrollInitialDelay = 150;
+    public static final int verticalScrollRepeatDelay = 1000/6;
+    public static final int verticalScrollInitialDelay = 150;
+    public static final int repeatCraftDelay = 1000/10;
+    public static final int initialCraftDelay = 300;
     public static void bindTexture(String texture){
         int inventoryTex = mc.renderEngine.getTexture(texture);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
