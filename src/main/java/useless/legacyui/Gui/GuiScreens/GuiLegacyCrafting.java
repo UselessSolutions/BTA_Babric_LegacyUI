@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiContainer;
 import net.minecraft.client.input.InputType;
+import net.minecraft.client.input.controller.Button;
 import net.minecraft.client.input.controller.ControllerInput;
 import net.minecraft.core.crafting.recipe.IRecipe;
 import net.minecraft.core.entity.player.EntityPlayer;
@@ -414,10 +415,12 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
 
     @Override
     public void GuiControls(ControllerInput controllerInput) {
-        if (controllerInput.buttonR.pressedThisFrame()){
+        if (controllerInput.buttonR.pressedThisFrame() || controllerInput.buttonR.isPressed() && RepeatInputHandler.doRepeatInput(-2, UtilGui.tabScrollRepeatDelay) && controllerInput.buttonR.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             scrollTab(1);
         }
-        if (controllerInput.buttonL.pressedThisFrame()){
+        if (controllerInput.buttonL.pressedThisFrame() || controllerInput.buttonL.isPressed() && RepeatInputHandler.doRepeatInput(-2, UtilGui.tabScrollRepeatDelay) && controllerInput.buttonL.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             scrollTab(-1);
         }
         if (controllerInput.buttonZL.pressedThisFrame()){
@@ -427,16 +430,20 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             controllerInput.snapToSlot(this, LegacyContainerCrafting.inventorySlotsStart);
         }
         if (!inventoryRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY) && !(craftingRegion.isHovered((int)mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY) && !showCraftDisplay)){
-            if (controllerInput.digitalPad.right.pressedThisFrame()){
+            if (controllerInput.digitalPad.right.pressedThisFrame() || controllerInput.digitalPad.right.isPressed() && RepeatInputHandler.doRepeatInput(-1, UtilGui.tabScrollRepeatDelay) && ((Button)controllerInput.digitalPad.right).getHoldTime() > 3){
+                RepeatInputHandler.manualSuccess(-1);
                 scrollSlot(1);
             }
-            if (controllerInput.digitalPad.left.pressedThisFrame()){
+            if (controllerInput.digitalPad.left.pressedThisFrame() || controllerInput.digitalPad.left.isPressed() && RepeatInputHandler.doRepeatInput(-1, UtilGui.tabScrollRepeatDelay) && ((Button)controllerInput.digitalPad.left).getHoldTime() > 3){
+                RepeatInputHandler.manualSuccess(-1);
                 scrollSlot(-1);
             }
-            if (controllerInput.digitalPad.up.pressedThisFrame()){
+            if (controllerInput.digitalPad.up.pressedThisFrame() || controllerInput.digitalPad.up.isPressed() && RepeatInputHandler.doRepeatInput(-1, UtilGui.verticalScrollRepeatDelay) && ((Button)controllerInput.digitalPad.up).getHoldTime() > 3){
+                RepeatInputHandler.manualSuccess(-1);
                 scrollGroup(-1);
             }
-            if (controllerInput.digitalPad.down.pressedThisFrame()){
+            if (controllerInput.digitalPad.down.pressedThisFrame() || controllerInput.digitalPad.down.isPressed() && RepeatInputHandler.doRepeatInput(-1, UtilGui.verticalScrollRepeatDelay) && ((Button)controllerInput.digitalPad.down).getHoldTime() > 3){
+                RepeatInputHandler.manualSuccess(-1);
                 scrollGroup(1);
             }
             if ((controllerInput.buttonA.pressedThisFrame() || (controllerInput.buttonA.getHoldTime() >= 10 && RepeatInputHandler.doRepeatInput(-10, 50)))){

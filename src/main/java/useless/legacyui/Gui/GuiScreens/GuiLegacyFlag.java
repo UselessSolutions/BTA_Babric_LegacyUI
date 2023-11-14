@@ -1,6 +1,8 @@
 package useless.legacyui.Gui.GuiScreens;
 
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiContainer;
+import net.minecraft.client.gui.GuiSurface;
 import net.minecraft.client.gui.drawing.DrawableEditor;
 import net.minecraft.client.gui.drawing.IDrawableSurface;
 import net.minecraft.client.input.InputType;
@@ -18,7 +20,6 @@ import net.minecraft.core.util.helper.Colors;
 import net.minecraft.core.util.helper.MathHelper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.Util;
 import useless.legacyui.Gui.Containers.LegacyContainerFlag;
 import useless.legacyui.Gui.GuiElements.Buttons.GuiAudioTextureButton;
 import useless.legacyui.Gui.GuiElements.Buttons.GuiAuditoryButton;
@@ -39,7 +40,6 @@ public class GuiLegacyFlag extends GuiContainer
     private final int CANVAS_SCALE = 4;
     private final int CANVAS_WIDTH = 24;
     private final int CANVAS_HEIGHT = 16;
-    private final RenderEngine renderEngineInstance;
     private int xLast = 0;
     private int yLast = 0;
     private int mouseButton;
@@ -49,7 +49,6 @@ public class GuiLegacyFlag extends GuiContainer
     public static int selectedColor = 0;
     public static int dyeScroll = 0;
     public static int cursorX = 0;
-    private FlagRenderer flagRenderer;
     private final DrawableEditor<Byte> flagSurfaceEditor;
     private final DrawableEditor<Byte> drawOverlaySurfaceEditor;
     private GuiAudioTextureButton[] toolBtns;
@@ -72,16 +71,15 @@ public class GuiLegacyFlag extends GuiContainer
     public GuiLegacyFlag(EntityPlayer player, TileEntityFlag flagTileEntity, RenderEngine renderEngine) {
         super(new LegacyContainerFlag(player.inventory, flagTileEntity));
         containerFlag = (LegacyContainerFlag)inventorySlots;
-        this.renderEngineInstance = renderEngine;
         this.tileEntity = flagTileEntity;
         this.xSize = 159;
         this.ySize = 148;
         flagTileEntity.owner = player.username;
-        this.flagRenderer = new FlagRenderer(renderEngine);
+        FlagRenderer flagRenderer = new FlagRenderer(renderEngine);
         this.flagSurface = new GuiSurface(24, 16, 4, flagTileEntity.flagColors);
-        this.flagSurfaceEditor = new DrawableEditor<Byte>(this.flagSurface);
+        this.flagSurfaceEditor = new DrawableEditor<>(this.flagSurface);
         this.drawOverlaySurface = new GuiSurface(24, 16, 4);
-        this.drawOverlaySurfaceEditor = new DrawableEditor<Byte>(this.drawOverlaySurface);
+        this.drawOverlaySurfaceEditor = new DrawableEditor<>(this.drawOverlaySurface);
     }
 
     @Override
@@ -142,7 +140,7 @@ public class GuiLegacyFlag extends GuiContainer
         for (int i = 1; i < 4; ++i) {
             ItemStack stack = this.tileEntity.getStackInSlot(35 + i);
             if (stack == null || stack.getItem() != Item.dye) continue;
-            colors[i] = Colors.allFlagColors[TextFormatting.get((int)(15 - stack.getMetadata())).id].getARGB();
+            colors[i] = Colors.allFlagColors[TextFormatting.get(15 - stack.getMetadata()).id].getARGB();
         }
         colors[4] = -1;
         this.flagSurface.colors = colors;
