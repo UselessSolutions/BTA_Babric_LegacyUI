@@ -9,6 +9,7 @@ import net.minecraft.core.crafting.recipe.IRecipe;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.lang.I18n;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 import useless.legacyui.Gui.GuiElements.Buttons.GuiAuditoryButton;
 import useless.legacyui.Gui.Containers.LegacyContainerCrafting;
 import useless.legacyui.Gui.GuiElements.GuiButtonPrompt;
@@ -325,7 +326,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         UtilGui.drawTexturedModalRect(this, GUIx, GUIy, 0,0, this.xSize, this.ySize, 1f/guiTextureWidth); // Render Background
 
 
-        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * (currentTab % 8), GUIy - 2, 0,175, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
+        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * (currentTab % 8), GUIy - 2, (tabWidth-1) * (currentTab % 8),229, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
 
         IRecipe currentRecipe = (IRecipe) currentCategory().getRecipeGroups(isSmall())[currentSlot].getRecipes(isSmall())[currentScroll];
         if ((currentCategory().getRecipeGroups(isSmall())[currentSlot].getContainer(currentScroll, isSmall()).inventorySlots.size() <= 5 && showCraftDisplay) || isSmall()){ // 2x2 Crafting overlay
@@ -356,7 +357,8 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         UtilGui.bindTexture(IconHelper.ICON_TEXTURE);
         int iconAmountToDraw = Math.min(LegacyCategoryManager.getRecipeCategories().size() - (getPageNumber() * 8), 8);
         for (int i = 0; i < iconAmountToDraw; i++) {
-            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getRecipeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.75f); // Render Icon
+            int vertoffset = (currentTab % 8) == i? -2 : 0;
+            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2 + vertoffset, LegacyCategoryManager.getRecipeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.75f); // Render Icon
         }
     }
     private void drawSelectionCursorForeground(){

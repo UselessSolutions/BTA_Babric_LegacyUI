@@ -245,7 +245,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
     protected void drawGuiContainerBackgroundLayer(float renderPartialTick) {
         UtilGui.bindTexture("/assets/legacyui/gui/legacycreative.png");
         UtilGui.drawTexturedModalRect(this, GUIx,GUIy, 0, 0, xSize, ySize,1f/guiTextureWidth); // GUI Background
-        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * (currentTab%8), GUIy - 2, 0,184, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
+        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * (currentTab % 8), GUIy - 2, (tabWidth-1) * (currentTab % 8),215, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
 
         float scrollProgressLimited = ((float) currentRow) /(LegacyContainerPlayerCreative.getTotalRows()-LegacyContainerPlayerCreative.slotsTall);
         UtilGui.drawTexturedModalRect(this,scrollBar.xPosition, (scrollBar.yPosition + (int) ((scrollBar.height-15)*scrollProgressLimited)),131,184,15,15,1f/guiTextureWidth);
@@ -253,7 +253,8 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         UtilGui.bindTexture(IconHelper.ICON_TEXTURE);
         int iconAmountToDraw = Math.min(LegacyCategoryManager.getCreativeCategories().size() - (getPageNumber() * 8), 8);
         for (int i = 0; i < iconAmountToDraw; i++) {
-            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.75f); // Render Icon
+            int vertoffset = (currentTab % 8) == i? -2 : 0;
+            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2 + vertoffset, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.75f); // Render Icon
         }
 
         drawStringCenteredNoShadow(fontRenderer, LegacyCategoryManager.getCreativeCategories().get(currentTab).getTranslatedKey(), GUIx + xSize/2, GUIy + 32, LegacyUI.modSettings.getGuiLabelColor().value.value);
