@@ -5,6 +5,8 @@
 A UI overhaul mod for BTA, designed with controllers in mind!
 Brings back that legacy console feel with its own style!
 
+Thanks to PedroThePanda64 for creating the Better than Legacy Logo!
+
 ## Installation
 
 ### Add the BTA Babric instance: https://github.com/Turnip-Labs/babric-instance-repo/releases/tag/v1.7.7.0_02
