@@ -23,20 +23,20 @@ public class UtilGui {
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         mc.renderEngine.bindTexture(inventoryTex);
     }
-    public static void drawTexturedModalRect(Gui gui, int x, int y, int u, int v, int width, int height, float scale) {
-        float uScale = scale;
-        float vScale = scale;
+    public static void drawTexturedModalRect(Gui gui, double x, double y, double u, double v, double width, double height, double scale) {
+        double uScale = scale;
+        double vScale = scale;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(x + 0, y + height, gui.zLevel, (float)(u + 0) * uScale, (float)(v + height) * vScale);
-        tessellator.addVertexWithUV(x + width, y + height, gui.zLevel, (float)(u + width) * uScale, (float)(v + height) * vScale);
-        tessellator.addVertexWithUV(x + width, y + 0, gui.zLevel, (float)(u + width) * uScale, (float)(v + 0) * vScale);
-        tessellator.addVertexWithUV(x + 0, y + 0, gui.zLevel, (float)(u + 0) * uScale, (float)(v + 0) * vScale);
+        tessellator.addVertexWithUV(x + 0, y + height, gui.zLevel, (u + 0) * uScale, (v + height) * vScale);
+        tessellator.addVertexWithUV(x + width, y + height, gui.zLevel, (u + width) * uScale, (v + height) * vScale);
+        tessellator.addVertexWithUV(x + width, y + 0, gui.zLevel, (u + width) * uScale, (v + 0) * vScale);
+        tessellator.addVertexWithUV(x + 0, y + 0, gui.zLevel, (u + 0) * uScale, (v + 0) * vScale);
         tessellator.draw();
     }
 
-    public static void drawIconTexture(Gui gui, int x, int y, int[] iconCoord, float scale){
-        int width = (int) (IconHelper.ICON_RESOLUTION * scale);
+    public static void drawIconTexture(Gui gui, double x, double y, int[] iconCoord, double scale){
+        double width = IconHelper.ICON_RESOLUTION * scale;
         drawTexturedModalRect(gui,
                 x,
                 y,

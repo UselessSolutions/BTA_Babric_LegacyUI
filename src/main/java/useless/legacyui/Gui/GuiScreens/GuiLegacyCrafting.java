@@ -357,8 +357,12 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         UtilGui.bindTexture(IconHelper.ICON_TEXTURE);
         int iconAmountToDraw = Math.min(LegacyCategoryManager.getRecipeCategories().size() - (getPageNumber() * 8), 8);
         for (int i = 0; i < iconAmountToDraw; i++) {
-            int vertoffset = (currentTab % 8) == i? -2 : 0;
-            UtilGui.drawIconTexture(this, GUIx + 5 + (tabWidth - 1) * i, GUIy + 2 + vertoffset, LegacyCategoryManager.getRecipeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.75f); // Render Icon
+            boolean isSelected = (currentTab % 8) == i;
+            if (isSelected){
+                UtilGui.drawIconTexture(this, GUIx + 3 + (tabWidth - 1) * i, GUIy - 1, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.9f); // Render Icon
+            } else {
+                UtilGui.drawIconTexture(this, GUIx + 5.5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.75f); // Render Icon
+            }
         }
     }
     private void drawSelectionCursorForeground(){
