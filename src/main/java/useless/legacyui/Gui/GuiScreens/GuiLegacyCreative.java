@@ -16,6 +16,7 @@ import useless.legacyui.Gui.GuiElements.GuiRegion;
 import useless.legacyui.Gui.IGuiController;
 import useless.legacyui.Helper.IconHelper;
 import useless.legacyui.Helper.KeyboardHelper;
+import useless.legacyui.Helper.RepeatInputHandler;
 import useless.legacyui.LegacySoundManager;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.LegacyCategoryManager;
@@ -267,10 +268,12 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
 
     @Override
     public void GuiControls(ControllerInput controllerInput) {
-        if (controllerInput.buttonR.pressedThisFrame()){
+        if (controllerInput.buttonR.pressedThisFrame() || controllerInput.buttonR.isPressed() && RepeatInputHandler.doRepeatInput(-2, UtilGui.tabScrollRepeatDelay) && controllerInput.buttonR.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             scrollTab(1);
         }
-        if (controllerInput.buttonL.pressedThisFrame()){
+        if (controllerInput.buttonL.pressedThisFrame() || controllerInput.buttonL.isPressed() && RepeatInputHandler.doRepeatInput(-2, UtilGui.tabScrollRepeatDelay) && controllerInput.buttonL.getHoldTime() > 3){
+            RepeatInputHandler.manualSuccess(-2);
             scrollTab(-1);
         }
         if (controllerInput.joyRight.getY() >= 0.8f){
