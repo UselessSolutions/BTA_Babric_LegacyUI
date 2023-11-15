@@ -51,7 +51,7 @@ public class GuiIngameMixin {
         }
         return instance;
     }
-    @Redirect(method = "renderGameOverlay(FZII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/ItemEntityRenderer;renderItemIntoGUI(Lnet/minecraft/client/render/FontRenderer;Lnet/minecraft/client/render/RenderEngine;Lnet/minecraft/core/item/ItemStack;IIF)V", ordinal = 1))
+    @Redirect(method = "renderGameOverlay(FZII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/ItemEntityRenderer;renderItemIntoGUI(Lnet/minecraft/client/render/FontRenderer;Lnet/minecraft/client/render/RenderEngine;Lnet/minecraft/core/item/ItemStack;IIF)V"))
     private void alphaHeldItem(ItemEntityRenderer instance, FontRenderer fontrenderer, RenderEngine renderengine, ItemStack itemstack, int i, int j, float alpha){
         UtilGui.blockAlpha = UtilGui.getHotbarAlpha();
         instance.renderItemIntoGUI(fontrenderer, renderengine, itemstack, i, j, UtilGui.getHotbarAlpha());

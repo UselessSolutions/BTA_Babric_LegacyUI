@@ -10,22 +10,24 @@ public class GuiOptionsPageLegacy extends GuiOptionsPageOptionBase {
         super(parent, settings);
         ILegacyOptions legacyOptions = (ILegacyOptions)settings;
         this.addOptionsCategory("legacyui.options.gameplay",
+                legacyOptions.getCoordsOnMaps(),
                 legacyOptions.getEnableAutoBridge());
+        this.addOptionsCategory("legacyui.options.hud",
+                legacyOptions.getHideHotbarInGUIs(),
+                legacyOptions.getEnablePaperDoll(),
+                legacyOptions.getEnableHUDFadeout(),
+                legacyOptions.getHUDFadeoutDelay(),
+                legacyOptions.getHUDFadeoutAlpha());
         this.addOptionsCategory("legacyui.options.gui",
                 legacyOptions.getEnableLegacyInventorySurvival(),
                 legacyOptions.getEnableLegacyCrafting(),
                 legacyOptions.getEnableLegacyInventoryCreative(),
                 legacyOptions.getEnableLegacyFlag(),
-                legacyOptions.getHideHotbarInGUIs(),
                 legacyOptions.getGuiControllerType(),
                 legacyOptions.getShowCraftingItemNamePreview(),
                 legacyOptions.getCraftingHideUndiscoveredItems(),
-                legacyOptions.getCoordsOnMaps(),
                 legacyOptions.getForceButtonPrompts(),
-                legacyOptions.getForceLegacyTooltip(),
-                legacyOptions.getEnablePaperDoll(),
-                legacyOptions.getEnableHUDFadeout(),
-                legacyOptions.getHUDFadeoutDelay());
+                legacyOptions.getForceLegacyTooltip());
         this.addOptionsCategory("legacyui.options.panorama",
                 legacyOptions.getEnablePanorama(),
                 legacyOptions.getPanoramaScrollLength(),
