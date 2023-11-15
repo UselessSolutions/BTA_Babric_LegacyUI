@@ -247,7 +247,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
     protected void drawGuiContainerBackgroundLayer(float renderPartialTick) {
         UtilGui.bindTexture("/assets/legacyui/gui/legacycreative.png");
         UtilGui.drawTexturedModalRect(this, GUIx,GUIy, 0, 0, xSize, ySize,1f/guiTextureWidth); // GUI Background
-        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * (currentTab % 8), GUIy - 2, (tabWidth-1) * (currentTab % 8),215, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
+        UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * (currentTab % 8), GUIy - 2, (tabWidth) * (currentTab % 8),215, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
 
         float scrollProgressLimited = ((float) currentRow) /(LegacyContainerPlayerCreative.getTotalRows()-LegacyContainerPlayerCreative.slotsTall);
         UtilGui.drawTexturedModalRect(this,scrollBar.xPosition, (scrollBar.yPosition + (int) ((scrollBar.height-15)*scrollProgressLimited)),131,184,15,15,1f/guiTextureWidth);
