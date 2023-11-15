@@ -30,4 +30,5 @@ public interface ILegacyOptions {
     BooleanOption getEnablePaperDoll();
     BooleanOption getEnableHUDFadeout();
     FloatOption getHUDFadeoutDelay();
+    FloatOption getHUDFadeoutAlpha();
 }

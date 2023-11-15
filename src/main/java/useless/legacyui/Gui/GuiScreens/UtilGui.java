@@ -205,6 +205,6 @@ public class UtilGui {
         if (currentTime - timeHotbarLastActive <= (LegacyUI.modSettings.getHUDFadeoutDelay().value * 10000)){
             return 1f;
         }
-        return (float) Math.max(1f - ((currentTime - timeHotbarLastActive) - (LegacyUI.modSettings.getHUDFadeoutDelay().value * 10000))/1000f, 0.2);
+        return (float) Math.max(1f - ((currentTime - timeHotbarLastActive) - (LegacyUI.modSettings.getHUDFadeoutDelay().value * 10000))/1000f, LegacyUI.modSettings.getHUDFadeoutAlpha().value);
     }
 }

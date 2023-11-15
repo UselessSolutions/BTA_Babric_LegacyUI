@@ -96,6 +96,8 @@ public class GameSettingsMixin implements ILegacyOptions {
     public BooleanOption enableHUDFadeout = new BooleanOption(thisAs, "legacyui.enableHUDFadeout", true);
     @Unique
     public FloatOption HUDFadeoutDelay = new FloatOption(thisAs, "legacyui.hudFadeoutDelay", 0.5f);
+    @Unique
+    public FloatOption HUDFadeoutAlpha = new FloatOption(thisAs, "legacyui.hudFadeoutAlpha", 0.20f);
     public BooleanOption getCraftingHideUndiscoveredItems() {
         return craftingHideUndiscoveredItems;
     }
@@ -172,5 +174,8 @@ public class GameSettingsMixin implements ILegacyOptions {
     }
     public FloatOption getHUDFadeoutDelay() {
         return HUDFadeoutDelay;
+    }
+    public FloatOption getHUDFadeoutAlpha() {
+        return HUDFadeoutAlpha;
     }
 }
