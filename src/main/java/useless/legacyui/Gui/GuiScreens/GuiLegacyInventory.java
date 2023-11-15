@@ -24,11 +24,15 @@ import java.util.List;
 public class GuiLegacyInventory extends GuiInventory implements IGuiController {
     private static int GUIx;
     private static int GUIy;
+
     protected GuiAuditoryButton craftButton;
     protected EntityPlayer player;
     public List<GuiButtonPrompt> prompts = new ArrayList<>();
     public GuiLegacyInventory(EntityPlayer player) {
         super(player);
+        this.xSize = 176;
+        this.ySize = 176;
+        this.overlayButtonsLayout = new ListLayout(this).setAlign(0.5, 0.5).setVertical(false).setElementSize(11, 11).setOffset(-(this.xSize / 2), -(this.ySize / 2) - 10).setMargin(1);
         this.player = player;
         inventorySlots = Gamemode.survival.getContainer(player.inventory, !player.world.isClientSide);
     }
@@ -36,13 +40,8 @@ public class GuiLegacyInventory extends GuiInventory implements IGuiController {
         super.initGui();
 
         // Setup size variables
-        xSize = 176;
-        ySize = 176;
         GUIx = (this.width - this.xSize) / 2;
         GUIy = (this.height - this.ySize) / 2;
-
-        overlayButtonsLayout = new ListLayout(this).setAlign(0.5, 0.5).setVertical(false).setElementSize(11, 11).setOffset(-(this.xSize / 2), -(this.ySize / 2) - 10).setMargin(1);
-        updateOverlayButtons();
 
         // Offset Armor Button
         GuiButton armorButton = ((GuiInventoryAccessor)this).getArmorButton();
