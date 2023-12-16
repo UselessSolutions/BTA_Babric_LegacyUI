@@ -12,50 +12,43 @@ public class SlotNull extends Slot {
         return null;
     }
 
-    public int getBackgroundIconIndex() {
-        return -1;
-    }
-
+    @Override
     public boolean hasStack() {
         return false;
     }
 
+    @Override
     public int getSlotStackLimit() {
         return 0;
     }
 
+    @Override
     public ItemStack getStack() {
         return null;
     }
-
-    public boolean isHere(IInventory iinventory, int i) {
-        return iinventory == this.inventory && i == this.slotIndex;
-    }
-
+    @Override
     public boolean canPutStackInSlot(ItemStack itemstack) {
         return false;
     }
 
+    @Override
     public void onPickupFromSlot(ItemStack itemstack) {
-        return;
     }
-
+    @Override
     public void onSlotChanged() {
-        return;
     }
-
+    @Override
     public IInventory getInventory() {
         return null;
     }
-
+    @Override
     public void putStack(ItemStack itemstack) {
-        return;
     }
-
+    @Override
     public boolean enableDragAndPickup() {
         return false;
     }
-
+    @Override
     public boolean allowItemInteraction() {
         return false;
     }
