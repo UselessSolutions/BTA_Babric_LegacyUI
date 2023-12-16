@@ -23,7 +23,7 @@ public class GuiInventoryCreativeMixin extends GuiInventory{
     public void changeColor(GuiInventoryCreative instance, FontRenderer fontRenderer, String s, int x, int y, int color) {
         instance.drawStringCenteredNoShadow(fontRenderer, s, x, y, LegacyUI.modSettings.getGuiLabelColor().value.value);
     }
-    @Redirect(method = "initGui()V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/GuiInventoryCreative;searchField:Lnet/minecraft/client/gui/GuiTextField;", opcode = Opcodes.PUTFIELD))
+    @Redirect(method = "init()V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/GuiInventoryCreative;searchField:Lnet/minecraft/client/gui/GuiTextField;", opcode = Opcodes.PUTFIELD))
     public void changeColorSearch(GuiInventoryCreative instance, GuiTextField value) {
         this.searchField = new GuiTextField(this, this.fontRenderer, value.xPosition, value.yPosition, value.width, value.height, container.searchText, "§8Search...");
     }

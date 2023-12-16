@@ -110,16 +110,16 @@ dependencies {
 	// Libraries
 	modImplementation "com.github.Turnip-Labs:bta-halplibe:${project.halplibe_version}"
 	modImplementation "BTA_Babric_PrismaticLibe:prismaticlibe:${project.prismatic_version}"
-	modImplementation "sunsetutils:sunsetutils:${project.sunsetutils_version}"
+	//modImplementation "sunsetutils:sunsetutils:${project.sunsetutils_version}"
 
 	// APIs
-	modImplementation "energyapi:energyapi:${project.energyapi_version}"
+	//modImplementation "energyapi:energyapi:${project.energyapi_version}"
 
 	// Mods
-	modImplementation "ModMenu:ModMenu:2.0.0"
-	modImplementation "BTA_Babric_SpawnEggs:spawneggs:1.3.0"
-	modImplementation "BTANoNameDyes:noname_dyes:${project.dyes_version}"
-	modImplementation "potato-logistics:PotatoLogistics:${project.potato_logistics_version}"
+	modImplementation "ModMenu:ModMenu:2.0.3"
+	//modImplementation "BTA_Babric_SpawnEggs:spawneggs:1.3.0"
+	// modImplementation "BTANoNameDyes:noname_dyes:${project.dyes_version}"
+	// modImplementation "potato-logistics:PotatoLogistics:${project.potato_logistics_version}"
 
 
 

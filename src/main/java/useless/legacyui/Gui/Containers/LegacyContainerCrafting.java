@@ -2,10 +2,10 @@ package useless.legacyui.Gui.Containers;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.InventoryAction;
-import net.minecraft.core.achievement.stat.StatFileWriter;
 import net.minecraft.core.achievement.stat.StatList;
+import net.minecraft.core.achievement.stat.StatsCounter;
 import net.minecraft.core.block.Block;
-import net.minecraft.core.crafting.CraftingManager;
+import net.minecraft.core.crafting.legacy.CraftingManager;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.gamemode.Gamemode;
@@ -16,13 +16,13 @@ import net.minecraft.core.world.World;
 import useless.legacyui.Gui.GuiScreens.GuiLegacyCrafting;
 import useless.legacyui.Gui.Slots.SlotCraftingDisplayLegacy;
 import useless.legacyui.Gui.Slots.SlotNull;
+import useless.legacyui.Gui.Slots.SlotResizable;
 import useless.legacyui.Helper.InventoryHelper;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.LegacyCategoryManager;
 import useless.legacyui.Sorting.Recipe.RecipeCategory;
 import useless.legacyui.Sorting.Recipe.RecipeCost;
 import useless.legacyui.Sorting.Recipe.RecipeGroup;
-import useless.prismaticlibe.gui.slot.SlotResizable;
 
 import java.util.List;
 
@@ -102,7 +102,7 @@ public class LegacyContainerCrafting extends Container {
 
         this.onCraftMatrixChanged(this.craftMatrix);
     }
-    public void setRecipes(EntityPlayer player, StatFileWriter statWriter, boolean showCraftingPreview){
+    public void setRecipes(EntityPlayer player, StatsCounter statCounter, boolean showCraftingPreview){
         boolean isInInventory = craftingSize <= 4;
 
         int currentSlotId = GuiLegacyCrafting.currentSlot;
@@ -133,7 +133,7 @@ public class LegacyContainerCrafting extends Container {
 
                 // Recipebar preview
                 item = currentContainer.inventorySlots.get(0).getStack();
-                discovered = isDicovered(item, statWriter, player);
+                discovered = isDicovered(item, statCounter, player);
                 this.addSlot(new SlotCraftingDisplayLegacy(this.inventorySlots.size(), 12 + 18 * index, 56, currentContainer.inventorySlots.get(0).getStack(), discovered, !craftable, LegacyUI.modSettings.getHighlightColor().value.value));
 
                 if (group.getRecipes(isInInventory).length > 1) { // If multiple Items in recipe group
@@ -142,13 +142,13 @@ public class LegacyContainerCrafting extends Container {
 
                     // Next item preview
                     item = group.getContainer(idUpper, isInInventory).inventorySlots.get(0).getStack();
-                    discovered = isDicovered(item, statWriter, player);
+                    discovered = isDicovered(item, statCounter, player);
                     craftable = canCraft(player, new RecipeCost(group.getContainer(idUpper, isInInventory)));
                     this.addSlot(new SlotCraftingDisplayLegacy(this.inventorySlots.size(), 12 + 18 * index, 56 + 21, item, discovered, !craftable, LegacyUI.modSettings.getHighlightColor().value.value));
 
                     // Previous item preview
                     item = group.getContainer(idLower, isInInventory).inventorySlots.get(0).getStack();
-                    discovered = isDicovered(item, statWriter, player);
+                    discovered = isDicovered(item, statCounter, player);
                     craftable = canCraft(player, new RecipeCost(group.getContainer(idLower, isInInventory)));
                     this.addSlot(new SlotCraftingDisplayLegacy(this.inventorySlots.size(), 12 + 18 * index, 56 - 21, item, discovered, !craftable, LegacyUI.modSettings.getHighlightColor().value.value));
 
@@ -159,12 +159,12 @@ public class LegacyContainerCrafting extends Container {
                 RecipeCost cost = new RecipeCost(currentContainer);
                 craftable = canCraft(player, cost);
                 item = currentContainer.inventorySlots.get(0).getStack();
-                discovered = isDicovered(item, statWriter, player);
+                discovered = isDicovered(item, statCounter, player);
                 this.addSlot(new SlotCraftingDisplayLegacy(this.inventorySlots.size(), 103, 123+offset, item, discovered, !craftable, LegacyUI.modSettings.getHighlightColor().value.value, 26));
 
                 for (int j = 1; j < currentContainer.inventorySlots.size(); j++) {
                     item = currentContainer.inventorySlots.get(j).getStack();
-                    discovered = isDicovered(item, statWriter, player);
+                    discovered = isDicovered(item, statCounter, player);
 
                     int k = 0;
                     if (item != null){
@@ -191,7 +191,7 @@ public class LegacyContainerCrafting extends Container {
             }
             else { // Renders first Slot of none selected groups
                 item = group.getContainer(0, isInInventory).inventorySlots.get(0).getStack();
-                discovered = isDicovered(item, statWriter, player);
+                discovered = isDicovered(item, statCounter, player);
                 craftable = canCraft(player, new RecipeCost(group.getContainer(0, isInInventory)));
                 this.addSlot(new SlotCraftingDisplayLegacy(this.inventorySlots.size(), 12 + 18 * index, 56, item, discovered, !craftable, LegacyUI.modSettings.getHighlightColor().value.value));
             }
@@ -221,25 +221,25 @@ public class LegacyContainerCrafting extends Container {
 
 
                     if (isInInventory){
-                        mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId}, mc.thePlayer); // Picks up stack
-                        mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_RIGHT, new int[]{i}, mc.thePlayer); // Places one item
-                        mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId}, mc.thePlayer); // Puts down stack
+                        mc.playerController.handleInventoryMouseClick(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId}, mc.thePlayer); // Picks up stack
+                        mc.playerController.handleInventoryMouseClick(windowId, InventoryAction.CLICK_RIGHT, new int[]{i}, mc.thePlayer); // Places one item
+                        mc.playerController.handleInventoryMouseClick(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId}, mc.thePlayer); // Puts down stack
                     }
                     else if (recipe.inventorySlots.size() > 5){// 3x3 crafting
                         int offset = 1;
-                        mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId + offset}, mc.thePlayer); // Picks up stack
-                        mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_RIGHT, new int[]{i}, mc.thePlayer); // Places one item
-                        mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId + offset}, mc.thePlayer); // Puts down stack
+                        mc.playerController.handleInventoryMouseClick(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId + offset}, mc.thePlayer); // Picks up stack
+                        mc.playerController.handleInventoryMouseClick(windowId, InventoryAction.CLICK_RIGHT, new int[]{i}, mc.thePlayer); // Places one item
+                        mc.playerController.handleInventoryMouseClick(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId + offset}, mc.thePlayer); // Puts down stack
                     }
                     else {// 2x2 crafting
-                        mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId + 1}, mc.thePlayer); // Picks up stack
-                        mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_RIGHT, new int[]{i + (i/3)}, mc.thePlayer); // Places one item
-                        mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId + 1}, mc.thePlayer); // Puts down stack
+                        mc.playerController.handleInventoryMouseClick(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId + 1}, mc.thePlayer); // Picks up stack
+                        mc.playerController.handleInventoryMouseClick(windowId, InventoryAction.CLICK_RIGHT, new int[]{i + (i/3)}, mc.thePlayer); // Places one item
+                        mc.playerController.handleInventoryMouseClick(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId + 1}, mc.thePlayer); // Puts down stack
                     }
                 }
             }
-            mc.playerController.doInventoryAction(windowId, InventoryAction.MOVE_STACK, new int[]{0}, mc.thePlayer);
-            mc.playerController.doInventoryAction(windowId, InventoryAction.DROP, new int[]{0}, mc.thePlayer);
+            mc.playerController.handleInventoryMouseClick(windowId, InventoryAction.MOVE_STACK, new int[]{0}, mc.thePlayer);
+            mc.playerController.handleInventoryMouseClick(windowId, InventoryAction.DROP, new int[]{0}, mc.thePlayer);
             return true; // Craft succeeded
         }
         return false; // Craft failed
@@ -251,7 +251,7 @@ public class LegacyContainerCrafting extends Container {
         }
         return canCraft;
     }
-    public static boolean isDicovered(ItemStack item, StatFileWriter statWriter, EntityPlayer player){
+    public static boolean isDicovered(ItemStack item, StatsCounter statWriter, EntityPlayer player){
         if (!LegacyUI.modSettings.getCraftingHideUndiscoveredItems().value){
             return true;
         }

@@ -1,7 +1,7 @@
 package useless.legacyui.Sorting;
 
 import net.minecraft.core.block.Block;
-import net.minecraft.core.crafting.recipe.IRecipe;
+import net.minecraft.core.crafting.legacy.recipe.IRecipe;
 import net.minecraft.core.item.ItemStack;
 import useless.legacyui.LegacyUI;
 

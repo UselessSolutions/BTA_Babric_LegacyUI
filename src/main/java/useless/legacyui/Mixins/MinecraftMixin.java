@@ -3,16 +3,15 @@ package useless.legacyui.Mixins;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.EntityPlayerSP;
-import net.minecraft.client.gui.GuiGuidebook;
 import net.minecraft.client.gui.GuiInventory;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.guidebook.GuiGuidebook;
 import net.minecraft.client.option.GameSettings;
 import net.minecraft.client.player.controller.PlayerController;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.core.HitResult;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.gamemode.Gamemode;
-import net.minecraft.core.util.helper.Axis;
 import net.minecraft.core.util.helper.Direction;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.util.phys.AABB;
@@ -73,7 +72,7 @@ public class MinecraftMixin {
         Minecraft mc = Minecraft.getMinecraft(this);
         if (mc.currentScreen == null){
             if (mc.controllerInput.digitalPad.right.pressedThisFrame()){
-                mc.displayGuiScreen(new GuiGuidebook(thePlayer));
+                mc.displayGuiScreen(new GuiGuidebook());
             }
         }
     }
@@ -83,7 +82,7 @@ public class MinecraftMixin {
             if (clickType == 1) {
                 if (thePlayer.xRot < 45) {return;}
                 List<AABB> cubes = thePlayer.world.getCubes(thePlayer, thePlayer.bb.getOffsetBoundingBox(thePlayer.xd, -1.0, 0.0));
-                if (cubes.size() < 1){return;}
+                if (cubes.isEmpty()){return;}
                 AABB cube = cubes.get(0);
                 if (cube == null){return;}
                 int blockX = (int) cube.minX;
@@ -112,7 +111,7 @@ public class MinecraftMixin {
                 double xPlaced = 0.5d;
                 ItemStack stack = this.thePlayer.inventory.getCurrentItem();
                 int numItemsInStack = stack == null ? 0 : stack.stackSize;
-                if (this.playerController.activateBlockOrUseItem(thePlayer, theWorld, stack, blockX, blockY, blockZ, side, xPlaced, yPlaced)) {
+                if (this.playerController.useItemOn(thePlayer, theWorld, stack, blockX, blockY, blockZ, side, xPlaced, yPlaced)) {
                     this.playerController.swingItem(true);
                 }
                 if (stack == null) {

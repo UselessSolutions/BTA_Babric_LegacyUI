@@ -1,15 +1,14 @@
 package useless.legacyui.Sorting;
 
 import net.minecraft.core.block.*;
+import net.minecraft.core.block.piston.BlockPistonBase;
 import net.minecraft.core.item.*;
 import net.minecraft.core.item.tool.*;
-import useless.legacyui.Helper.IconHelper;
 import useless.legacyui.LegacyUI;
 import useless.legacyui.Sorting.Item.ItemCategory;
 import useless.legacyui.Sorting.Item.ItemCategoryBuilder;
 import useless.legacyui.Sorting.Recipe.RecipeCategory;
 import useless.legacyui.Sorting.Recipe.RecipeCategoryBuilder;
-import useless.legacyui.Sorting.Recipe.RecipeGroup;
 import useless.legacyui.Sorting.Recipe.RecipeGroupBuilder;
 
 import java.util.ArrayList;

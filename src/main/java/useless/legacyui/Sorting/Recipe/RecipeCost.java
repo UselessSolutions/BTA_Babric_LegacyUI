@@ -1,7 +1,7 @@
 package useless.legacyui.Sorting.Recipe;
 
-import net.minecraft.core.crafting.CraftingManager;
-import net.minecraft.core.crafting.recipe.RecipeShaped;
+import net.minecraft.core.crafting.legacy.CraftingManager;
+import net.minecraft.core.crafting.legacy.type.RecipeShaped;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.ContainerGuidebookRecipeCrafting;
 import useless.legacyui.Helper.InventoryHelper;

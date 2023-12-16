@@ -10,9 +10,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import useless.legacyui.Gui.Slots.SlotCraftingDisplayLegacy;
 import useless.legacyui.Gui.Slots.SlotNull;
-import useless.legacyui.LegacyUI;
-import useless.prismaticlibe.gui.slot.SlotCraftingDisplay;
 
 @Mixin(value = Container.class, remap = false)
 public class ContainerMixin {
@@ -21,7 +20,7 @@ public class ContainerMixin {
         if (action != InventoryAction.PICKUP_SIMILAR){
             if (args == null){
                 cir.setReturnValue(null);
-            } else if (getSlot(args[0]) instanceof SlotCraftingDisplay || getSlot(args[0]) instanceof SlotNull){
+            } else if (getSlot(args[0]) instanceof SlotCraftingDisplayLegacy || getSlot(args[0]) instanceof SlotNull){
                 cir.setReturnValue(null);
             }
         }

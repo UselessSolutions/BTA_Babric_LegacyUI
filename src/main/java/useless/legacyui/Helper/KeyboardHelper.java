@@ -1,7 +1,9 @@
 package useless.legacyui.Helper;
 
+import net.minecraft.client.option.KeyBinding;
 import org.lwjgl.input.Keyboard;
 import useless.legacyui.LegacyUI;
+import useless.legacyui.Mixins.KeybindingAccessor;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -54,5 +56,8 @@ public class KeyboardHelper {
             }
             keysPressed.set(i, Keyboard.isKeyDown(i));
         }
+    }
+    public static int getKeyCode(KeyBinding keybind){
+        return ((KeybindingAccessor)keybind).getKeyCode();
     }
 }

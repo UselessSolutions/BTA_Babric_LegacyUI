@@ -67,11 +67,11 @@ public class LegacyContainerFlag extends ContainerFlag {
             slotId += 3; // Accounts for the first three slots being the dye slots
             //slotId -= 4;
 
-            mc.playerController.doInventoryAction(windowId, InventoryAction.MOVE_STACK, new int[]{GuiLegacyFlag.selectedColor}, mc.thePlayer);
+            mc.playerController.handleInventoryMouseClick(windowId, InventoryAction.MOVE_STACK, new int[]{GuiLegacyFlag.selectedColor}, mc.thePlayer);
 
-            mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId}, mc.thePlayer);
-            mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{GuiLegacyFlag.selectedColor}, mc.thePlayer);
-            mc.playerController.doInventoryAction(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId}, mc.thePlayer);
+            mc.playerController.handleInventoryMouseClick(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId}, mc.thePlayer);
+            mc.playerController.handleInventoryMouseClick(windowId, InventoryAction.CLICK_LEFT, new int[]{GuiLegacyFlag.selectedColor}, mc.thePlayer);
+            mc.playerController.handleInventoryMouseClick(windowId, InventoryAction.CLICK_LEFT, new int[]{slotId}, mc.thePlayer);
         }
         setSlots();
     }

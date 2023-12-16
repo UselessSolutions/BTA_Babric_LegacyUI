@@ -18,10 +18,10 @@ import useless.legacyui.LegacyUI;
 public class GuiScreenMixin extends Gui {
     public GuiButton button;
 
-    @Redirect(method = "mouseClicked(III)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiButton;mousePressed(Lnet/minecraft/client/Minecraft;II)Z"))
+    @Redirect(method = "mouseClicked(III)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiButton;mouseClicked(Lnet/minecraft/client/Minecraft;II)Z"))
     private boolean buttonStealer(GuiButton button, Minecraft minecraft, int i, int j){
         this.button = button;
-        return button.mousePressed(minecraft, i, j);
+        return button.mouseClicked(minecraft, i, j);
     }
     @Redirect(method = "mouseClicked(III)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/SoundManager;playSound(Ljava/lang/String;Lnet/minecraft/core/sound/SoundType;FF)V"))
     private void legacySound(SoundManager soundManager, String soundPath, SoundType soundType, float volume, float pitch){
@@ -45,7 +45,7 @@ public class GuiScreenMixin extends Gui {
             }
         }
     }
-    @Redirect(method = "drawWorldBackground(I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/util/helper/Color;getARGB()I"))
+    @Redirect(method = "drawWorldBackground()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/util/helper/Color;getARGB()I"))
     private int newBackgroundColor(Color instance){
         return LegacyUI.modSettings.getGuiBackgroundColor().value.value;
     }

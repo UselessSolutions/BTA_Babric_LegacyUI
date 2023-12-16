@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiContainer;
 import net.minecraft.client.input.InputType;
 import net.minecraft.client.input.controller.Button;
 import net.minecraft.client.input.controller.ControllerInput;
-import net.minecraft.core.crafting.recipe.IRecipe;
+import net.minecraft.core.crafting.legacy.recipe.IRecipe;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.lang.I18n;
 import org.lwjgl.input.Keyboard;
@@ -20,12 +20,16 @@ import useless.legacyui.Helper.KeyboardHelper;
 import useless.legacyui.Helper.RepeatInputHandler;
 import useless.legacyui.LegacySoundManager;
 import useless.legacyui.LegacyUI;
+import useless.legacyui.Mixins.KeybindingAccessor;
 import useless.legacyui.Sorting.LegacyCategoryManager;
 import useless.legacyui.Sorting.Recipe.RecipeCategory;
 import useless.legacyui.Sorting.Recipe.RecipeGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static useless.legacyui.Helper.KeyboardHelper.*;
+
 
 public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
     protected int craftingSize;
@@ -54,14 +58,14 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         this.craftingSize = craftingSize;
         this.player = player;
         this.mc = Minecraft.getMinecraft(this);
-        initGui();
+        init();
     }
     public GuiLegacyCrafting(EntityPlayer player, int x, int y, int z, int craftingSize) {
         super(new LegacyContainerCrafting(player.inventory, player.world, x, y, z, craftingSize));
         this.craftingSize = craftingSize;
         this.player = player;
         this.mc = Minecraft.getMinecraft(this);
-        initGui();
+        init();
     }
     public void scrollSlot(int direction){
         if (direction > 0){
@@ -180,20 +184,20 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
     private static boolean shiftedPrev = false;
     public void handleInputs(){
         boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-        if (KeyboardHelper.repeatInput(mc.gameSettings.keyForward.keyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || KeyboardHelper.repeatInput(mc.gameSettings.keyLookUp.keyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
+        if (repeatInput(getKeyCode(mc.gameSettings.keyForward), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || repeatInput(getKeyCode(mc.gameSettings.keyLookUp), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
             scrollGroup(-1);
         }
-        if (KeyboardHelper.repeatInput(mc.gameSettings.keyBack.keyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || KeyboardHelper.repeatInput(mc.gameSettings.keyLookDown.keyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
+        if (repeatInput(getKeyCode(mc.gameSettings.keyBack), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || repeatInput(getKeyCode(mc.gameSettings.keyLookDown), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
             scrollGroup(1);
         }
-        if (KeyboardHelper.repeatInput(mc.gameSettings.keyRight.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || KeyboardHelper.repeatInput(mc.gameSettings.keyLookRight.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
+        if (repeatInput(getKeyCode(mc.gameSettings.keyRight), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(getKeyCode(mc.gameSettings.keyLookRight), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 scrollTab(1);
             } else {
                 scrollSlot(1);
             }
         }
-        if (KeyboardHelper.repeatInput(mc.gameSettings.keyLeft.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || KeyboardHelper.repeatInput(mc.gameSettings.keyLookLeft.keyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
+        if (repeatInput(getKeyCode(mc.gameSettings.keyLeft), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(getKeyCode(mc.gameSettings.keyLookLeft), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 scrollTab(-1);
             } else {
@@ -201,15 +205,15 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             }
         }
         if (shiftedPrev != shifted){
-            KeyboardHelper.resetKey(mc.gameSettings.keyJump.keyCode());
+            resetKey(((KeybindingAccessor)mc.gameSettings.keyJump).getKeyCode());
         }
         if (shifted){
-            if (KeyboardHelper.repeatInput(mc.gameSettings.keyJump.keyCode(), (int) (UtilGui.repeatCraftDelay * 0.5f), (int) (UtilGui.initialCraftDelay * 0.5f))){
-                craft(KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyJump.keyCode()));
+            if (repeatInput(((KeybindingAccessor)mc.gameSettings.keyJump).getKeyCode(), (int) (UtilGui.repeatCraftDelay * 0.5f), (int) (UtilGui.initialCraftDelay * 0.5f))){
+                craft(isKeyPressedThisFrame(((KeybindingAccessor)mc.gameSettings.keyJump).getKeyCode()));
             }
         } else {
-            if (KeyboardHelper.repeatInput(mc.gameSettings.keyJump.keyCode(), UtilGui.repeatCraftDelay, UtilGui.initialCraftDelay)){
-                craft(KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyJump.keyCode()));
+            if (repeatInput(((KeybindingAccessor)mc.gameSettings.keyJump).getKeyCode(), UtilGui.repeatCraftDelay, UtilGui.initialCraftDelay)){
+                craft(isKeyPressedThisFrame(((KeybindingAccessor)mc.gameSettings.keyJump).getKeyCode()));
             }
         }
         shiftedPrev = shifted;
@@ -220,8 +224,8 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
     public boolean isSmall(){
         return craftingSize <= 4;
     }
-    public void initGui() {
-        super.initGui();
+    public void init() {
+        super.init();
 
         // Setup size variables
         this.xSize = 273; // width of Gui window
@@ -299,7 +303,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             tabButtons[i].enabled = (getPageNumber() * 8 + i) < LegacyCategoryManager.getRecipeCategories().size();
         }
 
-        ((LegacyContainerCrafting)inventorySlots).setRecipes(player, mc.statFileWriter, showCraftDisplay);
+        ((LegacyContainerCrafting)inventorySlots).setRecipes(player, mc.statsCounter, showCraftDisplay);
     }
     public void craft(boolean isPressed){
         if(((LegacyContainerCrafting)inventorySlots).craft(mc, inventorySlots.windowId)){
@@ -309,8 +313,8 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         }
         setContainerRecipes();
     }
-    public void onGuiClosed() {
-        super.onGuiClosed();
+    public void onClosed() {
+        super.onClosed();
         this.inventorySlots.onCraftGuiClosed(this.mc.thePlayer);
     }
     public void drawScreen(int x, int y, float renderPartialTicks) {
@@ -349,7 +353,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
         String craftingString; // Text above crafting table
         if (LegacyUI.modSettings.getShowCraftingItemNamePreview().value && showCraftDisplay){ // If crafting display rendered and render item names enabled
             craftingString = currentRecipe.getRecipeOutput().getDisplayName(); // Get Item name
-            if (!LegacyContainerCrafting.isDicovered(currentRecipe.getRecipeOutput(), mc.statFileWriter, mc.thePlayer)){ // If undiscovered obscure it
+            if (!LegacyContainerCrafting.isDicovered(currentRecipe.getRecipeOutput(), mc.statsCounter, mc.thePlayer)){ // If undiscovered obscure it
                 craftingString = craftingString.replaceAll("[^ ]", "?");
             }
             if (craftingString.length() > 21){ // If too long then cap to 21 characters

@@ -53,28 +53,6 @@ public class UtilGui {
                 (1f/(IconHelper.ICON_RESOLUTION * IconHelper.ICON_ATLAS_WIDTH_TILES)) * (1/scale));
     }
     public static float blockAlpha = 1f;
-    public static void renderInventorySlot(GuiIngame gui, int itemIndex, int x, int y, float delta, float alpha) {
-        blockAlpha = alpha;
-        ItemEntityRenderer itemRenderer = ((GuiIngameAccessor)gui).getItemRenderer();
-        ItemStack itemstack = mc.thePlayer.inventory.mainInventory[itemIndex];
-        if (itemstack == null) {
-            return;
-        }
-        float animProgress = (float)itemstack.animationsToGo - delta;
-        if (animProgress > 0.0f) {
-            GL11.glPushMatrix();
-            float f2 = 1.0f + animProgress / 5.0f;
-            GL11.glTranslatef(x + 8, y + 12, 0.0f);
-            GL11.glScalef(1.0f / f2, (f2 + 1.0f) / 2.0f, 1.0f);
-            GL11.glTranslatef(-(x + 8), -(y + 12), 0.0f);
-        }
-        itemRenderer.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, itemstack, x, y, alpha);
-        if (animProgress > 0.0f) {
-            GL11.glPopMatrix();
-        }
-        itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, itemstack, x, y, alpha);
-        blockAlpha = 1f;
-    }
     private static float lastOffset = -1;
     private static int scrollsCompleted = 0;
     private static long fadeTime = 0;

@@ -36,8 +36,8 @@ public class GuiLegacyInventory extends GuiInventory implements IGuiController {
         this.player = player;
         inventorySlots = Gamemode.survival.getContainer(player.inventory, !player.world.isClientSide);
     }
-    public void initGui() {
-        super.initGui();
+    public void init() {
+        super.init();
 
         // Setup size variables
         GUIx = (this.width - this.xSize) / 2;
@@ -73,13 +73,13 @@ public class GuiLegacyInventory extends GuiInventory implements IGuiController {
     }
     protected void openCrafting(){
         LegacySoundManager.volume = 0;
-        this.onGuiClosed();
+        this.onClosed();
         mc.displayGuiScreen(new GuiLegacyCrafting(player, 4));
         LegacySoundManager.volume = 1f;
     }
     protected void openCreative(){
         LegacySoundManager.volume = 0;
-        this.onGuiClosed();
+        this.onClosed();
         mc.displayGuiScreen(new GuiLegacyCreative(player));
         LegacySoundManager.volume = 1f;
     }

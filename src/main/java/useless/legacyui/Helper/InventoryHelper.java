@@ -1,7 +1,7 @@
 package useless.legacyui.Helper;
 
 import net.minecraft.core.block.Block;
-import net.minecraft.core.crafting.CraftingManager;
+import net.minecraft.core.crafting.legacy.CraftingManager;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.IInventory;
 import net.minecraft.core.player.inventory.slot.Slot;

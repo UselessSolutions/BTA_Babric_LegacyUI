@@ -5,6 +5,8 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "useless.legacyui.LegacyMixinPlugin",
   "mixins": [
+    "KeybindingAccessor",
+    "Gui.MainMenuBackgroundMixin"
   ],
   "client": [
     "ContainerMixin",
@@ -13,7 +15,7 @@
     "ItemEntityRendererMixin",
     "MapItemRendererMixin",
     "MinecraftMixin",
-    "RenderBlocksMixin",
+    "WorldRendererMixin",
     "Gamemodes.GamemodeCreativeMixin",
     "Gamemodes.GamemodeSurvivalMixin",
     "Gui.GuiAchievementMixin",
@@ -24,22 +26,17 @@
     "Gui.GuiCraftingMixin",
     "Gui.GuiDispenserMixin",
     "Gui.GuiFurnaceMixin",
-    "Gui.GuiGuidebookMixin",
     "Gui.GuiIngameAccessor",
     "Gui.GuiIngameMixin",
     "Gui.GuiInventoryAccessor",
     "Gui.GuiInventoryCreativeMixin",
     "Gui.GuiInventoryMixin",
     "Gui.GuiMainMenuMixin",
-    "Gui.GuiOptionsBaseMixin",
     "Gui.GuiScreenMixin",
     "Gui.GuiTrommelMixin",
-    "Modded.NoNameDyes.GuiBleacherMixin",
-    "Modded.PotatoLogistics.GuiFilterMixin",
     "Multiplayer.PlayerControllerMPMixin",
     "Settings.GameSettingsMixin",
-    "Settings.TooltipStyleMixin",
-    "WorldRendererMixin"
+    "Settings.TooltipStyleMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -96,15 +96,15 @@ public class ControllerInputMixin {
                     inventoryCreative.scroll(-1);
                 }
             }
-            if (guiContainer instanceof GuiGuidebook) {
-                GuiGuidebook guidebook = (GuiGuidebook) guiContainer;
-                if (this.buttonL.pressedThisFrame()) {
-                    guidebook.scroll(1);
-                }
-                if (this.buttonR.pressedThisFrame()) {
-                    guidebook.scroll(-1);
-                }
-            }
+//            if (guiContainer instanceof GuiGuidebook) { TODO add controller support to new guidebook
+//                GuiGuidebook guidebook = (GuiGuidebook) guiContainer;
+//                if (this.buttonL.pressedThisFrame()) {
+//                    guidebook.scroll(1);
+//                }
+//                if (this.buttonR.pressedThisFrame()) {
+//                    guidebook.scroll(-1);
+//                }
+//            }
             if (guiContainer instanceof GuiCrafting) {
                 this.craftingGuiHandler.handleCrafting((GuiCrafting) guiContainer);
             }

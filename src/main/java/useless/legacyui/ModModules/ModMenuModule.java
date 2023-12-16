@@ -17,6 +17,6 @@ public class ModMenuModule implements ModMenuApi {
 
     @Override
     public Function<GuiScreen, ? extends GuiScreen> getConfigScreenFactory() {
-        return (screenBase -> new GuiOptionsPageLegacy(screenBase, ((Minecraft) FabricLoader.getInstance().getGameInstance()).gameSettings));
+        return (screenBase -> GuiOptionsPageLegacy.legacyOptionsScreen(screenBase));
     }
 }
