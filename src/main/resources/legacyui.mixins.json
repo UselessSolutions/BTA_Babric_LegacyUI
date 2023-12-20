@@ -5,8 +5,6 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "useless.legacyui.LegacyMixinPlugin",
   "mixins": [
-    "KeybindingAccessor",
-    "Gui.MainMenuBackgroundMixin"
   ],
   "client": [
     "ContainerMixin",
@@ -34,6 +32,7 @@
     "Gui.GuiMainMenuMixin",
     "Gui.GuiScreenMixin",
     "Gui.GuiTrommelMixin",
+    "Gui.MainMenuBackgroundMixin",
     "Multiplayer.PlayerControllerMPMixin",
     "Settings.GameSettingsMixin",
     "Settings.TooltipStyleMixin"

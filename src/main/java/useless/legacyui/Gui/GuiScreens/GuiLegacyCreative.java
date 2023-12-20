@@ -23,7 +23,6 @@ import useless.legacyui.Sorting.LegacyCategoryManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import static useless.legacyui.Helper.KeyboardHelper.getKeyCode;
 import static useless.legacyui.Helper.KeyboardHelper.repeatInput;
 
 public class GuiLegacyCreative extends GuiInventory implements IGuiController {
@@ -94,12 +93,12 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         selectRow(currentRow + (Mouse.getDWheel()/-120));
         boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 
-        if (repeatInput(getKeyCode(mc.gameSettings.keyRight), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(getKeyCode(mc.gameSettings.keyLookRight), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
+        if (repeatInput(mc.gameSettings.keyRight.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(mc.gameSettings.keyLookRight.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 scrollTab(1);
             }
         }
-        if (repeatInput(getKeyCode(mc.gameSettings.keyLeft), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(getKeyCode(mc.gameSettings.keyLookLeft), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
+        if (repeatInput(mc.gameSettings.keyLeft.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(mc.gameSettings.keyLookLeft.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 scrollTab(-1);
             }

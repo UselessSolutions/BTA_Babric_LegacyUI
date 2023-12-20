@@ -228,27 +228,27 @@ public class GuiLegacyFlag extends GuiContainer
     }
     public void handleInputs(){
         boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-        if (repeatInput(getKeyCode(mc.gameSettings.keyRight), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(getKeyCode(mc.gameSettings.keyLookRight), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
+        if (repeatInput(mc.gameSettings.keyRight.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(mc.gameSettings.keyLookRight.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 setActiveTool(activeTool + 1);
             } else {
                 setCursorX(cursorX + 1);
             }
         }
-        if (repeatInput(getKeyCode(mc.gameSettings.keyLeft), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(getKeyCode(mc.gameSettings.keyLookLeft), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
+        if (repeatInput(mc.gameSettings.keyLeft.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(mc.gameSettings.keyLookLeft.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 setActiveTool(activeTool - 1);
             } else {
                 setCursorX(cursorX - 1);
             }
         }
-        if (repeatInput(getKeyCode(mc.gameSettings.keyForward), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || repeatInput(getKeyCode(mc.gameSettings.keyLookUp), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
+        if (repeatInput(mc.gameSettings.keyForward.getKeyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || repeatInput(mc.gameSettings.keyLookUp.getKeyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
             selectColor(selectedColor - 1);
         }
-        if (repeatInput(getKeyCode(mc.gameSettings.keyBack), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || repeatInput(getKeyCode(mc.gameSettings.keyLookDown), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
+        if (repeatInput(mc.gameSettings.keyBack.getKeyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || repeatInput(mc.gameSettings.keyLookDown.getKeyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
             selectColor(selectedColor + 1);
         }
-        if (KeyboardHelper.isKeyPressedThisFrame(getKeyCode(mc.gameSettings.keyJump))){
+        if (KeyboardHelper.isKeyPressedThisFrame(mc.gameSettings.keyJump.getKeyCode())){
             selectDye(cursorX);
         }
     }

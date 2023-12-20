@@ -16,11 +16,9 @@ import useless.legacyui.Gui.GuiElements.GuiButtonPrompt;
 import useless.legacyui.Gui.GuiElements.GuiRegion;
 import useless.legacyui.Gui.IGuiController;
 import useless.legacyui.Helper.IconHelper;
-import useless.legacyui.Helper.KeyboardHelper;
 import useless.legacyui.Helper.RepeatInputHandler;
 import useless.legacyui.LegacySoundManager;
 import useless.legacyui.LegacyUI;
-import useless.legacyui.Mixins.KeybindingAccessor;
 import useless.legacyui.Sorting.LegacyCategoryManager;
 import useless.legacyui.Sorting.Recipe.RecipeCategory;
 import useless.legacyui.Sorting.Recipe.RecipeGroup;
@@ -184,20 +182,20 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
     private static boolean shiftedPrev = false;
     public void handleInputs(){
         boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-        if (repeatInput(getKeyCode(mc.gameSettings.keyForward), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || repeatInput(getKeyCode(mc.gameSettings.keyLookUp), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
+        if (repeatInput(mc.gameSettings.keyForward.getKeyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || repeatInput(mc.gameSettings.keyLookUp.getKeyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
             scrollGroup(-1);
         }
-        if (repeatInput(getKeyCode(mc.gameSettings.keyBack), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || repeatInput(getKeyCode(mc.gameSettings.keyLookDown), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
+        if (repeatInput(mc.gameSettings.keyBack.getKeyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay) || repeatInput(mc.gameSettings.keyLookDown.getKeyCode(), UtilGui.verticalScrollRepeatDelay, UtilGui.verticalScrollInitialDelay)){
             scrollGroup(1);
         }
-        if (repeatInput(getKeyCode(mc.gameSettings.keyRight), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(getKeyCode(mc.gameSettings.keyLookRight), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
+        if (repeatInput(mc.gameSettings.keyRight.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(mc.gameSettings.keyLookRight.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 scrollTab(1);
             } else {
                 scrollSlot(1);
             }
         }
-        if (repeatInput(getKeyCode(mc.gameSettings.keyLeft), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(getKeyCode(mc.gameSettings.keyLookLeft), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
+        if (repeatInput(mc.gameSettings.keyLeft.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(mc.gameSettings.keyLookLeft.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 scrollTab(-1);
             } else {
@@ -205,15 +203,15 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
             }
         }
         if (shiftedPrev != shifted){
-            resetKey(((KeybindingAccessor)mc.gameSettings.keyJump).getKeyCode());
+            resetKey(mc.gameSettings.keyJump.getKeyCode());
         }
         if (shifted){
-            if (repeatInput(((KeybindingAccessor)mc.gameSettings.keyJump).getKeyCode(), (int) (UtilGui.repeatCraftDelay * 0.5f), (int) (UtilGui.initialCraftDelay * 0.5f))){
-                craft(isKeyPressedThisFrame(((KeybindingAccessor)mc.gameSettings.keyJump).getKeyCode()));
+            if (repeatInput(mc.gameSettings.keyJump.getKeyCode(), (int) (UtilGui.repeatCraftDelay * 0.5f), (int) (UtilGui.initialCraftDelay * 0.5f))){
+                craft(isKeyPressedThisFrame(mc.gameSettings.keyJump.getKeyCode()));
             }
         } else {
-            if (repeatInput(((KeybindingAccessor)mc.gameSettings.keyJump).getKeyCode(), UtilGui.repeatCraftDelay, UtilGui.initialCraftDelay)){
-                craft(isKeyPressedThisFrame(((KeybindingAccessor)mc.gameSettings.keyJump).getKeyCode()));
+            if (repeatInput(mc.gameSettings.keyJump.getKeyCode(), UtilGui.repeatCraftDelay, UtilGui.initialCraftDelay)){
+                craft(isKeyPressedThisFrame(mc.gameSettings.keyJump.getKeyCode()));
             }
         }
         shiftedPrev = shifted;
