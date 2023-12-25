@@ -18,6 +18,7 @@ import useless.legacyui.Gui.GuiElements.GuiButtonPrompt;
 import useless.legacyui.Gui.GuiElements.GuiRegion;
 import useless.legacyui.Gui.IGuiController;
 import useless.legacyui.Helper.IconHelper;
+import useless.legacyui.Helper.InventoryHelper;
 import useless.legacyui.Helper.RepeatInputHandler;
 import useless.legacyui.LegacySoundManager;
 import useless.legacyui.LegacyUI;
@@ -345,7 +346,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
 
 
         RecipeEntryCrafting<?, ?> currentRecipe = currentCategory().getRecipeGroups(isSmall())[currentSlot].getRecipes(isSmall()).get(currentScroll);
-        if ((currentCategory().getRecipeGroups(isSmall())[currentSlot].getRecipe(currentScroll, isSmall()).getRecipeSize() <= 5 && showCraftDisplay) || isSmall()){ // 2x2 Crafting overlay
+        if ((InventoryHelper.getRecipeInput(currentRecipe).length <= 5 && showCraftDisplay) || isSmall()){ // 2x2 Crafting overlay
             UtilGui.drawTexturedModalRect(this, GUIx + 19, GUIy + 108, 61, 175, 54, 54, 1f/guiTextureWidth);
         }
 
