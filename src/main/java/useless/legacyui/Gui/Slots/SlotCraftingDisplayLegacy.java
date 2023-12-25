@@ -2,6 +2,7 @@ package useless.legacyui.Gui.Slots;
 
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.slot.Slot;
+import useless.prismaticlibe.gui.slot.IAlpha;
 import useless.prismaticlibe.gui.slot.IHighlighting;
 import useless.prismaticlibe.gui.slot.IResizable;
 
@@ -87,5 +88,4 @@ public class SlotCraftingDisplayLegacy extends Slot implements IHighlighting, IR
     public int getWidth() {
         return slotWidth;
     }
-
 }

@@ -1,14 +1,10 @@
 package useless.legacyui.Gui.Containers;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.guidebook.GuidebookPage;
-import net.minecraft.client.gui.guidebook.GuidebookSections;
-import net.minecraft.client.gui.guidebook.crafting.CraftingPage;
 import net.minecraft.core.InventoryAction;
 import net.minecraft.core.achievement.stat.StatList;
 import net.minecraft.core.achievement.stat.StatsCounter;
 import net.minecraft.core.block.Block;
-import net.minecraft.core.crafting.legacy.CraftingManager;
 import net.minecraft.core.data.registry.Registries;
 import net.minecraft.core.data.registry.recipe.RecipeSymbol;
 import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCrafting;
@@ -22,7 +18,6 @@ import net.minecraft.core.player.inventory.InventoryCrafting;
 import net.minecraft.core.player.inventory.InventoryPlayer;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotCrafting;
-import net.minecraft.core.player.inventory.slot.SlotGuidebook;
 import net.minecraft.core.world.World;
 import useless.legacyui.Gui.GuiScreens.GuiLegacyCrafting;
 import useless.legacyui.Gui.Slots.SlotCraftingDisplayLegacy;
@@ -36,9 +31,9 @@ import useless.legacyui.Sorting.Recipe.RecipeCost;
 import useless.legacyui.Sorting.Recipe.RecipeGroup;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class LegacyContainerCrafting extends Container {
     public InventoryCrafting craftMatrix;
@@ -107,6 +102,7 @@ public class LegacyContainerCrafting extends Container {
         this.onCraftMatrixChanged(this.craftMatrix);
     }
     public void setRecipes(EntityPlayer player, StatsCounter statCounter, boolean showCraftingPreview){
+//        Random random = new Random();
         boolean isInInventory = craftingSize <= 4;
 
         int currentSlotId = GuiLegacyCrafting.currentSlot;
@@ -124,7 +120,6 @@ public class LegacyContainerCrafting extends Container {
 
         RecipeGroup[] craftingGroups = category.getRecipeGroups(isInInventory);
         boolean discovered;
-        boolean highlighted;
         ItemStack item;
 
         int index = 0;
@@ -169,9 +164,13 @@ public class LegacyContainerCrafting extends Container {
                 RecipeSymbol[] inputSymbols = InventoryHelper.getRecipeInput(recipe);
                 for (int j = 0; j < inputSymbols.length; j++) {
 
+                    RecipeSymbol itemSymbol;
                     if (inputSymbols[j] != null){
-                        item = inputSymbols[j].resolve().get(0);
+                        itemSymbol = inputSymbols[j];
+                        List<ItemStack> resolved = itemSymbol.resolve();
+                        item = resolved.get(0/*random.nextInt(resolved.size())*/);
                     } else {
+                        itemSymbol = null;
                         item = null;
                     }
 
@@ -179,9 +178,9 @@ public class LegacyContainerCrafting extends Container {
 
                     RecipeSymbol[] costSymbols = cost.costMap.keySet().toArray(new RecipeSymbol[0]);
                     int k = 0;
-                    if (item != null){
+                    if (itemSymbol != null){
                         for (int i = 0; i < costSymbols.length; i++){
-                            if (costSymbols[i].matches(item)){
+                            if (costSymbols[i].equals(itemSymbol)){
                                 cost.costMap.put(costSymbols[i], cost.costMap.get(costSymbols[i]) - 1);
                                 k = i;
                                 break;
@@ -191,11 +190,11 @@ public class LegacyContainerCrafting extends Container {
                     int num = cost.costMap.get(costSymbols[k]);
                     if (inputSymbols.length > 5){
                         // Render 3x3 crafting grid
-                        this.addSlot(new SlotCraftingDisplayLegacy(this.inventorySlots.size(), 20 + 18 * (j % 3), 109 + offset + 18 * (j / 3), item, discovered, InventoryHelper.itemsInInventory(inventoryPlayer, item) <= num && item != null, LegacyUI.modSettings.getHighlightColor().value.value));
+                        this.addSlot(new SlotCraftingDisplayLegacy(this.inventorySlots.size(), 20 + 18 * (j % 3), 109 + offset + 18 * (j / 3), item, discovered, InventoryHelper.itemsInInventory(inventoryPlayer, itemSymbol) <= num && item != null, LegacyUI.modSettings.getHighlightColor().value.value));
                     }
                     else {
                         // Render 2x2 crafting gird
-                        this.addSlot(new SlotCraftingDisplayLegacy(this.inventorySlots.size(), 29 + 18 * (j % 2), 118 + offset + 18 * (j / 2), item, discovered, InventoryHelper.itemsInInventory(inventoryPlayer, item) <= num && item != null, LegacyUI.modSettings.getHighlightColor().value.value));
+                        this.addSlot(new SlotCraftingDisplayLegacy(this.inventorySlots.size(), 29 + 18 * (j % 2), 118 + offset + 18 * (j / 2), item, discovered, InventoryHelper.itemsInInventory(inventoryPlayer, itemSymbol) <= num && item != null, LegacyUI.modSettings.getHighlightColor().value.value));
                     }
 
 
@@ -224,7 +223,6 @@ public class LegacyContainerCrafting extends Container {
         RecipeCost recipeCost = new RecipeCost(recipe);
 
         RecipeSymbol[] recipeInput = InventoryHelper.getRecipeInput(recipe);
-        System.out.println(Arrays.toString(recipeInput));
         if (canCraft(mc.thePlayer, recipeCost)){
             for (int i = 0; i < recipeInput.length; i++){
                 int slotId = InventoryHelper.findStackIndex(mc.thePlayer.inventory.mainInventory, recipeInput[i]); // Finds Slot index of an inventory Slot with a desired item
