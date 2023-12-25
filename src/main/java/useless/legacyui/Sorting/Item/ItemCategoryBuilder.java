@@ -28,10 +28,10 @@ public class ItemCategoryBuilder {
     private Boolean isDebug = false;
     private Boolean forModded = false;
     private Boolean excludeModdedItems = false;
-    private final List<Class> inclusiveClassList = new ArrayList<>();
+    private final List<Class<?>> inclusiveClassList = new ArrayList<>();
     private final List<ItemStack> inclusiveItemList = new ArrayList<>();
     private final List<String> inclusiveKeywordList = new ArrayList<>();
-    private final List<Class> exclusiveClassList = new ArrayList<>();
+    private final List<Class<?>> exclusiveClassList = new ArrayList<>();
     private final List<ItemStack> exclusiveItemList = new ArrayList<>();
     private final List<String> exclusiveKeywordList = new ArrayList<>();
     private final List<ItemStack> excludeItemList = new ArrayList<>();

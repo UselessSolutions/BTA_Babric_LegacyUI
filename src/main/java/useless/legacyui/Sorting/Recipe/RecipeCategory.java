@@ -19,7 +19,7 @@ public class RecipeCategory {
         List<RecipeGroup> _groups = new ArrayList<RecipeGroup>();
         int numberSmallGroups = 0;
         for (RecipeGroup group : recipeGroups){
-            if(group.getRecipes(false).length > 0){ // Discard empty groups
+            if(!group.getRecipes(false).isEmpty()){ // Discard empty groups
                 _groups.add(group);
             }
             else {

@@ -5,6 +5,10 @@ import net.minecraft.core.crafting.legacy.CraftingManager;
 import net.minecraft.core.crafting.legacy.recipe.IRecipe;
 import net.minecraft.core.crafting.legacy.type.RecipeShaped;
 import net.minecraft.core.crafting.legacy.type.RecipeShapeless;
+import net.minecraft.core.data.registry.Registries;
+import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCrafting;
+import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCraftingShaped;
+import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCraftingShapeless;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
 import useless.legacyui.LegacyUI;
@@ -14,13 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeGroupBuilder{
-    private static final List<IRecipe> allRecipes = CraftingManager.getInstance().getRecipeList();
-    private static final List<IRecipe> unusedRecipes = new ArrayList<>(allRecipes);
+    private static final List<RecipeEntryCrafting<?,?>> allRecipes = new ArrayList<>(Registries.RECIPES.getAllCraftingRecipes());
+    private static final List<RecipeEntryCrafting<?,?>> unusedRecipes = new ArrayList<>(allRecipes);
     private Boolean isDebug = false;
-    private final List<Class> inclusiveClassList = new ArrayList<>();
+    private final List<Class<?>> inclusiveClassList = new ArrayList<>();
     private final List<ItemStack> inclusiveItemList = new ArrayList<>();
     private final List<String> inclusiveKeywordList = new ArrayList<>();
-    private final List<Class> exclusiveClassList = new ArrayList<>();
+    private final List<Class<?>> exclusiveClassList = new ArrayList<>();
     private final List<ItemStack> exclusiveItemList = new ArrayList<>();
     private final List<String> exclusiveKeywordList = new ArrayList<>();
     private final List<ItemStack> excludeItemList = new ArrayList<>();
@@ -126,7 +130,7 @@ public class RecipeGroupBuilder{
     }
     public RecipeGroupBuilder printCurrentConfig(){
         LegacyUI.LOGGER.info("isDebug:" + isDebug);
-        for (Class clazz : inclusiveClassList){
+        for (Class<?> clazz : inclusiveClassList){
             LegacyUI.LOGGER.info("inclusiveClass:"+clazz.getName());
         }
         for (ItemStack stack : inclusiveItemList){
@@ -135,7 +139,7 @@ public class RecipeGroupBuilder{
         for (String keyword : inclusiveKeywordList){
             LegacyUI.LOGGER.info("inclusiveKeyword:"+keyword);
         }
-        for (Class clazz : exclusiveClassList){
+        for (Class<?> clazz : exclusiveClassList){
             LegacyUI.LOGGER.info("exclusiveClass:"+clazz.getName());
         }
         for (ItemStack stack : exclusiveItemList){
@@ -149,13 +153,13 @@ public class RecipeGroupBuilder{
 
 
     public RecipeGroup build(){
-        List<IRecipe> unused_copy = new ArrayList<>(unusedRecipes);
-        List<IRecipe> recipeGroupRecipes = new ArrayList<>();
+        List<RecipeEntryCrafting<?,?>> unused_copy = new ArrayList<>(unusedRecipes);
+        List<RecipeEntryCrafting<?,?>> recipeGroupRecipes = new ArrayList<>();
         int removeOffset = 0;
         for (int i = 0; i < unused_copy.size(); i++) { // Add exclusive Recipes
-            IRecipe currentRecipe = unused_copy.get(i);
-            if (currentRecipe instanceof RecipeShaped || currentRecipe instanceof RecipeShapeless){
-                ItemStack recipeItem = currentRecipe.getRecipeOutput();
+            RecipeEntryCrafting<?,?> currentRecipe = unused_copy.get(i);
+            if (currentRecipe instanceof RecipeEntryCraftingShaped || currentRecipe instanceof RecipeEntryCraftingShapeless){
+                ItemStack recipeItem = (ItemStack) currentRecipe.getOutput();
                 if (UtilSorting.stackInItemList(excludeItemList,recipeItem)){
                     continue;
                 }
@@ -170,20 +174,19 @@ public class RecipeGroupBuilder{
                 }
             }
         }
-        for (int i = 0; i < allRecipes.size(); i++) { // Add inclusive recipes
-            IRecipe currentRecipe = allRecipes.get(i);
-            if (currentRecipe instanceof RecipeShaped || currentRecipe instanceof RecipeShapeless){
-                ItemStack recipeItem = currentRecipe.getRecipeOutput();
-                if (UtilSorting.stackInItemList(excludeItemList,recipeItem)){
+        for (RecipeEntryCrafting<?,?> currentRecipe : allRecipes) { // Add inclusive recipes
+            if (currentRecipe instanceof RecipeEntryCraftingShaped || currentRecipe instanceof RecipeEntryCraftingShapeless) {
+                ItemStack recipeItem = (ItemStack) currentRecipe.getOutput();
+                if (UtilSorting.stackInItemList(excludeItemList, recipeItem)) {
                     continue;
                 }
-                if (UtilSorting.stackInKeywordList(excludeKeywordList,recipeItem)){
+                if (UtilSorting.stackInKeywordList(excludeKeywordList, recipeItem)) {
                     continue;
                 }
-                if (UtilSorting.recipeInRecipeList(recipeGroupRecipes, currentRecipe)){ // Stack already in list
+                if (UtilSorting.recipeInRecipeList(recipeGroupRecipes, currentRecipe)) { // Stack already in list
                     continue;
                 }
-                if (UtilSorting.stackInClassList(inclusiveClassList, recipeItem) || UtilSorting.stackInItemList(inclusiveItemList, recipeItem) || UtilSorting.stackInKeywordList(inclusiveKeywordList, recipeItem)){
+                if (UtilSorting.stackInClassList(inclusiveClassList, recipeItem) || UtilSorting.stackInItemList(inclusiveItemList, recipeItem) || UtilSorting.stackInKeywordList(inclusiveKeywordList, recipeItem)) {
                     recipeGroupRecipes.add(currentRecipe);
                     continue;
                 }
@@ -193,7 +196,7 @@ public class RecipeGroupBuilder{
             LegacyUI.LOGGER.info("Group");
             UtilSorting.printRecipeList(recipeGroupRecipes);
         }
-        return new RecipeGroup(recipeGroupRecipes.toArray());
+        return new RecipeGroup(recipeGroupRecipes);
     }
 
 

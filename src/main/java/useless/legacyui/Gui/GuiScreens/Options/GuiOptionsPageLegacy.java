@@ -11,9 +11,10 @@ import net.minecraft.client.gui.options.components.ToggleableOptionComponent;
 import net.minecraft.client.gui.options.data.OptionsPage;
 import net.minecraft.client.gui.options.data.OptionsPages;
 import net.minecraft.client.option.GameSettings;
+import turniplabs.halplibe.util.GameStartEntrypoint;
 import useless.legacyui.Settings.ILegacyOptions;
 
-public class GuiOptionsPageLegacy {
+public class GuiOptionsPageLegacy implements GameStartEntrypoint {
     public static GameSettings gameSettings = ((Minecraft) FabricLoader.getInstance().getGameInstance()).gameSettings;
     public static ILegacyOptions legacyOptions = (ILegacyOptions) gameSettings;
     public static final OptionsPage LegacyUIPage = OptionsPages.register(new OptionsPage("legacyui.options.title")
@@ -46,5 +47,15 @@ public class GuiOptionsPageLegacy {
                     .withComponent(new BooleanOptionComponent(legacyOptions.getUseRandomPitch()))));
     public static GuiOptions legacyOptionsScreen(GuiScreen parent){
         return new GuiOptions(parent, gameSettings, LegacyUIPage);
+    }
+
+    @Override
+    public void beforeGameStart() {
+
+    }
+
+    @Override
+    public void afterGameStart() {
+
     }
 }

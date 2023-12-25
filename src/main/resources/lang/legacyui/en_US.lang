@@ -34,7 +34,7 @@ legacyui.prompt.openinventory=Open Inventory
 legacyui.prompt.opencreative=Open Creative
 legacyui.prompt.opencrafting=Open Crafting
 
-legacyui.options.title=Better Than Legacy Settings
+legacyui.options.title=Better Than Legacy
 legacyui.options.gameplay=Legacy Gameplay Settings
 legacyui.options.hud=Legacy HUD Settings
 legacyui.options.gui=Legacy GUI Settings

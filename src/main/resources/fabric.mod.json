@@ -26,6 +26,9 @@
     ],
     "legacyui": [
       "useless.legacyui.Api.LegacyUIPlugin"
+    ],
+    "afterGameStart": [
+      "useless.legacyui.Gui.GuiScreens.Options.GuiOptionsPageLegacy"
     ]
   },
   "mixins": [
