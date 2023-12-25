@@ -11,7 +11,7 @@ public class SlotCraftingDisplayLegacy extends Slot implements IHighlighting, IR
     private final int highlightColor;
     private final int slotWidth;
     public SlotCraftingDisplayLegacy(int id, int x, int y, ItemStack item, boolean discovered, boolean highlight, int color) {
-        this(id, x, y, item, discovered, highlight, color, 16);
+        this(id, x, y, item, discovered, highlight, color, 18);
     }
     public SlotCraftingDisplayLegacy(int id, int x, int y, ItemStack item, boolean discovered, boolean highlight, int color, int width) {
         super(null, id, x, y);

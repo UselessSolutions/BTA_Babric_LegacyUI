@@ -2,6 +2,10 @@ package useless.legacyui.Helper;
 
 import net.minecraft.core.block.Block;
 import net.minecraft.core.crafting.legacy.CraftingManager;
+import net.minecraft.core.data.registry.recipe.RecipeSymbol;
+import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCrafting;
+import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCraftingShaped;
+import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCraftingShapeless;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.IInventory;
 import net.minecraft.core.player.inventory.slot.Slot;
@@ -47,39 +51,38 @@ public class InventoryHelper {
         if (itemToFind == null) {return -1;}
         int itemCount = 0;
         int stackCount = 0;
-        for (int i = 0; i < slots.size(); ++i) {
-            ItemStack itemStack = slots.get(i).getStack();
-            if (itemStack == null || itemStack.itemID != itemToFind.itemID || itemStack.getMetadata() != itemToFind.getMetadata()) continue;
+        for (Slot slot : slots) {
+            ItemStack itemStack = slot.getStack();
+            if (itemStack == null || itemStack.itemID != itemToFind.itemID || itemStack.getMetadata() != itemToFind.getMetadata())
+                continue;
             itemCount += itemStack.stackSize;
             ++stackCount;
         }
         return Math.max(itemCount, stackCount);
     }
-    public static int findStackIndex(ItemStack[] inventory, ItemStack itemToFind){
-        return findStackIndex(inventory,itemToFind,false);
+    public static int itemsInInventory(IInventory inventory, RecipeSymbol matchingSymbol){
+        if (inventory == null) {return -1;}
+        if (matchingSymbol == null) {return -1;}
+        int itemCount = 0;
+        int stackCount = 0;
+        int size = inventory.getSizeInventory();
+        for (int i = 0; i < size; i++) {
+            ItemStack itemStack = inventory.getStackInSlot(i);
+            if (!matchingSymbol.matches(itemStack))
+                continue;
+            itemCount += itemStack.stackSize;
+            ++stackCount;
+        }
+        return Math.max(itemCount, stackCount);
     }
 
-    public static int findStackIndex(ItemStack[] inventory, ItemStack itemToFind, boolean useAlts){
-        Block[] altGroup = getAltGroup(itemToFind);
-        if (useAlts && altGroup != null){
-            for (int i = 0; i < inventory.length; i++){
-                if (inventory[i] != null){
-                    for (Block block : altGroup){
-                        if (inventory[i].itemID == block.id){
-                            return  i;
-                        }
-                    }
-                }
-            }
-        }
-        else {
-            for (int i = 0; i < inventory.length; i++){
-                if (inventory[i] != null && inventory[i].getItem() == itemToFind.getItem() && inventory[i].getMetadata() == itemToFind.getMetadata()){
-                    return i;
-                }
-            }
-        }
 
+    public static int findStackIndex(ItemStack[] inventory, RecipeSymbol matchingSymbol){
+        for (int i = 0; i < inventory.length; i++){
+            if (matchingSymbol.matches(inventory[i])){
+                return i;
+            }
+        }
         return -1;
     }
     public static Block[] getAltGroup(ItemStack itemStack){
@@ -100,5 +103,14 @@ public class InventoryHelper {
         }
         return false;
     }
-
+    public static RecipeSymbol[] getRecipeInput(RecipeEntryCrafting<?, ?> recipe){
+        RecipeSymbol[] recipeInput;
+        if (recipe instanceof RecipeEntryCraftingShaped){
+            return ((RecipeEntryCraftingShaped)recipe).getInput();
+        }
+        if (recipe instanceof RecipeEntryCraftingShapeless){
+            return ((RecipeEntryCraftingShapeless) recipe).getInput().toArray(new RecipeSymbol[0]);
+        }
+        throw new IllegalArgumentException("Recipe not of valid type! " + recipe.getClass().getSimpleName());
+    }
 }

@@ -2,14 +2,15 @@ package useless.legacyui.Sorting;
 
 import net.minecraft.core.block.Block;
 import net.minecraft.core.crafting.legacy.recipe.IRecipe;
+import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCrafting;
 import net.minecraft.core.item.ItemStack;
 import useless.legacyui.LegacyUI;
 
 import java.util.List;
 
 public class UtilSorting {
-    public static boolean stackInClassList(List<Class> classList, ItemStack itemStack){
-        for (Class clazz : classList){
+    public static boolean stackInClassList(List<Class<?>> classList, ItemStack itemStack){
+        for (Class<?> clazz : classList){
             try {
                 if (itemStack.itemID < Block.blocksList.length){
                     clazz.cast(Block.getBlock(itemStack.itemID));
@@ -17,7 +18,7 @@ public class UtilSorting {
                     clazz.cast(itemStack.getItem());
                 }
                 return true;
-            } catch (ClassCastException e){
+            } catch (ClassCastException ignored){
             }
         }
         return false;
@@ -38,17 +39,17 @@ public class UtilSorting {
         }
         return false;
     }
-    public static boolean recipeInRecipeList(List<IRecipe> recipeList, IRecipe recipe){
-        for (IRecipe groupRecipe : recipeList){
+    public static boolean recipeInRecipeList(List<RecipeEntryCrafting<?,?>> recipeList, RecipeEntryCrafting<?,?> recipe){
+        for (RecipeEntryCrafting<?,?> groupRecipe : recipeList){
             if (groupRecipe.equals(recipe)){
                 return true;
             }
         }
         return false;
     }
-    public static void printRecipeList(List<IRecipe> recipes){
-        for (IRecipe recipe : recipes){
-            LegacyUI.LOGGER.info("Output:" + recipe.getRecipeOutput());
+    public static void printRecipeList(List<RecipeEntryCrafting<?,?>> recipes){
+        for (RecipeEntryCrafting<?,?> recipe : recipes){
+            LegacyUI.LOGGER.info("Output:" + recipe.getOutput());
         }
     }
 }

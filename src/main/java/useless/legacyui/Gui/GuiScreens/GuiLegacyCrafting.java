@@ -7,7 +7,9 @@ import net.minecraft.client.input.InputType;
 import net.minecraft.client.input.controller.Button;
 import net.minecraft.client.input.controller.ControllerInput;
 import net.minecraft.core.crafting.legacy.recipe.IRecipe;
+import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCrafting;
 import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.lang.I18n;
 import org.lwjgl.input.Keyboard;
 import useless.legacyui.Gui.Containers.LegacyContainerCrafting;
@@ -110,7 +112,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
     public void selectScrollGroup(int value){
         int initialScroll = currentScroll;
         currentScroll = value;
-        int groupSize = currentCategory().getRecipeGroups(isSmall())[currentSlot].getRecipes(isSmall()).length;
+        int groupSize = currentCategory().getRecipeGroups(isSmall())[currentSlot].getRecipes(isSmall()).size();
         if (currentScroll > groupSize-1){
             currentScroll -= groupSize;
         } else if (currentScroll < 0){
@@ -284,7 +286,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
     }
     public void setContainerRecipes(){
         RecipeGroup[] recipeGroups = currentCategory().getRecipeGroups(isSmall());
-        if (recipeGroups[currentSlot].getRecipes(isSmall()).length > 1){ // If scroll bar active
+        if (recipeGroups[currentSlot].getRecipes(isSmall()).size() > 1){ // If scroll bar active
             scrollUp.enabled = true;
             scrollDown.enabled = true;
         } else {
@@ -341,8 +343,9 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
 
         UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth-1) * (currentTab % 8), GUIy - 2, (tabWidth) * (currentTab % 8),229, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
 
-        IRecipe currentRecipe = (IRecipe) currentCategory().getRecipeGroups(isSmall())[currentSlot].getRecipes(isSmall())[currentScroll];
-        if ((currentCategory().getRecipeGroups(isSmall())[currentSlot].getContainer(currentScroll, isSmall()).inventorySlots.size() <= 5 && showCraftDisplay) || isSmall()){ // 2x2 Crafting overlay
+
+        RecipeEntryCrafting<?, ?> currentRecipe = currentCategory().getRecipeGroups(isSmall())[currentSlot].getRecipes(isSmall()).get(currentScroll);
+        if ((currentCategory().getRecipeGroups(isSmall())[currentSlot].getRecipe(currentScroll, isSmall()).getRecipeSize() <= 5 && showCraftDisplay) || isSmall()){ // 2x2 Crafting overlay
             UtilGui.drawTexturedModalRect(this, GUIx + 19, GUIy + 108, 61, 175, 54, 54, 1f/guiTextureWidth);
         }
 
@@ -350,8 +353,8 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
 
         String craftingString; // Text above crafting table
         if (LegacyUI.modSettings.getShowCraftingItemNamePreview().value && showCraftDisplay){ // If crafting display rendered and render item names enabled
-            craftingString = currentRecipe.getRecipeOutput().getDisplayName(); // Get Item name
-            if (!LegacyContainerCrafting.isDicovered(currentRecipe.getRecipeOutput(), mc.statsCounter, mc.thePlayer)){ // If undiscovered obscure it
+            craftingString = ((ItemStack)currentRecipe.getOutput()).getDisplayName(); // Get Item name
+            if (!LegacyContainerCrafting.isDicovered((ItemStack) currentRecipe.getOutput(), mc.statsCounter, mc.thePlayer)){ // If undiscovered obscure it
                 craftingString = craftingString.replaceAll("[^ ]", "?");
             }
             if (craftingString.length() > 21){ // If too long then cap to 21 characters
@@ -381,7 +384,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
     private void drawSelectionCursorForeground(){
         int x = 8 + 18*currentSlot;
         int y = 52;
-        if (currentCategory().getRecipeGroups(isSmall())[currentSlot].getRecipes(isSmall()).length > 1){
+        if (currentCategory().getRecipeGroups(isSmall())[currentSlot].getRecipes(isSmall()).size() > 1){
             UtilGui.drawTexturedModalRect(this, x - 1,y,35, 175, 26, 24, 1f/guiTextureWidth);
             UtilGui.drawTexturedModalRect(this, x - 1,y - 31, 115, 175, 26,31, 1f/guiTextureWidth);
             UtilGui.drawTexturedModalRect(this, x - 1,y + 24, 141, 175, 26,31, 1f/guiTextureWidth);
@@ -392,7 +395,7 @@ public class GuiLegacyCrafting extends GuiContainer implements IGuiController {
     private void drawSelectionCursorBackground(){
         int x = 12 + 18*currentSlot;
         int y = 51;
-        if (currentCategory().getRecipeGroups(isSmall())[currentSlot].getRecipes(isSmall()).length > 1){
+        if (currentCategory().getRecipeGroups(isSmall())[currentSlot].getRecipes(isSmall()).size() > 1){
             UtilGui.drawTexturedModalRect(this,GUIx + x - 1,GUIy + y - 17,167, 175, 18, 18, 1f/guiTextureWidth);
             UtilGui.drawTexturedModalRect(this,GUIx + x - 1,GUIy + y + 25, 167, 175, 18,18, 1f/guiTextureWidth);
         }

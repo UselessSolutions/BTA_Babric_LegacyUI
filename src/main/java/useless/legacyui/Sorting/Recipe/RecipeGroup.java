@@ -1,55 +1,47 @@
 package useless.legacyui.Sorting.Recipe;
 
-import net.minecraft.core.crafting.legacy.recipe.IRecipe;
-import net.minecraft.core.player.inventory.ContainerGuidebookRecipeCrafting;
+import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCrafting;
+import net.minecraft.core.item.ItemStack;
 import useless.legacyui.Helper.ArrayHelper;
 
-public class RecipeGroup {
-    private final Object[] recipes;
-    private final Object[] smallRecipes;
+import java.util.ArrayList;
+import java.util.List;
 
-    public RecipeGroup(Object[] recipes){
-        // Number of 2x2 recipes in the group
-        short fourSlotRecipes = 0;
-        this.recipes = recipes;
-        for (int i = 0; i < recipes.length; i++){
-            ContainerGuidebookRecipeCrafting currentContainer = getContainer(i, false);
-            if (currentContainer.inventorySlots.size() < 6){
-                fourSlotRecipes++;
-            }
-        }
-        smallRecipes = new Object[fourSlotRecipes];
-        int mapIndex = 0;
-        for (int i = 0; i < recipes.length; i++){
-            ContainerGuidebookRecipeCrafting currentContainer = getContainer(i, false);
-            if (currentContainer.inventorySlots.size() < 6){
-                smallRecipes[mapIndex++] = recipes[i];
+public class RecipeGroup {
+    private final List<RecipeEntryCrafting<?, ?>> recipes = new ArrayList<>();
+    private final List<RecipeEntryCrafting<?, ?>> smallRecipes = new ArrayList<>();
+
+    public RecipeGroup(List<RecipeEntryCrafting<?,?>> recipes){
+        this.recipes.addAll(recipes);
+        for (RecipeEntryCrafting<?, ?> recipe : recipes){
+            if (recipe.getRecipeSize() <= 4){
+                smallRecipes.add(recipe);
             }
         }
 
     }
 
-    public ContainerGuidebookRecipeCrafting getContainer(int index, boolean isSmall){
-        if (!isSmall){
-            index = ArrayHelper.wrapAroundIndex(index, recipes.length);
-            return new ContainerGuidebookRecipeCrafting(((IRecipe)recipes[index]));
+    public RecipeEntryCrafting<?, ?> getRecipe(int index, boolean isSmall){
+        if (isSmall){
+            return smallRecipes.get(ArrayHelper.wrapAroundIndex(index, smallRecipes.size()));
         }
         else {
-            index = ArrayHelper.wrapAroundIndex(index, smallRecipes.length);
-            return new ContainerGuidebookRecipeCrafting(((IRecipe)smallRecipes[index]));
+           return recipes.get(ArrayHelper.wrapAroundIndex(index, recipes.size()));
         }
-
+    }
+    public ItemStack getOutputStack(int index, boolean isSmall){
+        return (ItemStack) getRecipe(index, isSmall).getOutput();
     }
 
     public int getSmallRecipesAmount(){
-        return smallRecipes.length;
+        return smallRecipes.size();
     }
 
-    public Object[] getRecipes(boolean isSmall) {
-        if (!isSmall){
-            return recipes;
+    public List<RecipeEntryCrafting<?, ?>> getRecipes(boolean isSmall) {
+        if (isSmall){
+            return smallRecipes;
         }
-        return smallRecipes;
+        return recipes;
     }
 }
 
