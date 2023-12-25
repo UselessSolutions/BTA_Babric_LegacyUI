@@ -6,14 +6,17 @@ import net.minecraft.core.achievement.stat.StatList;
 import net.minecraft.core.achievement.stat.StatsCounter;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.crafting.legacy.CraftingManager;
+import net.minecraft.core.data.registry.Registries;
 import net.minecraft.core.data.registry.recipe.RecipeSymbol;
 import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCrafting;
-import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCraftingShaped;
-import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCraftingShapeless;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.gamemode.Gamemode;
-import net.minecraft.core.player.inventory.*;
+import net.minecraft.core.player.inventory.Container;
+import net.minecraft.core.player.inventory.IInventory;
+import net.minecraft.core.player.inventory.InventoryCraftResult;
+import net.minecraft.core.player.inventory.InventoryCrafting;
+import net.minecraft.core.player.inventory.InventoryPlayer;
 import net.minecraft.core.player.inventory.slot.Slot;
 import net.minecraft.core.player.inventory.slot.SlotCrafting;
 import net.minecraft.core.world.World;
@@ -28,7 +31,6 @@ import useless.legacyui.Sorting.Recipe.RecipeCategory;
 import useless.legacyui.Sorting.Recipe.RecipeCost;
 import useless.legacyui.Sorting.Recipe.RecipeGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,17 +45,7 @@ public class LegacyContainerCrafting extends Container {
     private final InventoryPlayer inventoryPlayer;
     public static int inventorySlotsStart = 10;
     public LegacyContainerCrafting(InventoryPlayer inventoryplayer, int craftingSize) {
-        if (craftingSize <= 4){
-            craftMatrix = new InventoryCrafting(this, 2, 2);
-        } else {
-            craftMatrix = new InventoryCrafting(this, 3, 3);
-        }
-        this.world = null;
-        this.x = 0;
-        this.y = 0;
-        this.z = 0;
-        this.craftingSize = craftingSize;
-        this.inventoryPlayer = inventoryplayer;
+        this(inventoryplayer, null, 0, 0, 0, craftingSize);
     }
     public LegacyContainerCrafting(InventoryPlayer inventoryplayer, World world, int x, int y, int z, int craftingSize) {
         if (craftingSize <= 4){
@@ -270,7 +262,7 @@ public class LegacyContainerCrafting extends Container {
         }
     }
     public void onCraftMatrixChanged(IInventory iinventory) {
-        this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix));
+        this.craftResult.setInventorySlotContents(0, Registries.RECIPES.findMatchingRecipe(this.craftMatrix));
     }
     public void onCraftGuiClosed(EntityPlayer player) {
         super.onCraftGuiClosed(player);

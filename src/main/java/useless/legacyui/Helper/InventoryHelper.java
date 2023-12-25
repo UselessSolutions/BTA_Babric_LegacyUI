@@ -14,35 +14,18 @@ import java.util.List;
 
 public class InventoryHelper {
     public static int itemsInInventory(IInventory inventory, ItemStack itemToFind){
-        return itemsInInventory(inventory, itemToFind, false);
-    }
-    public static int itemsInInventory(IInventory inventory, ItemStack itemToFind, boolean useAlts){
         if (inventory == null) {return -1;}
         if (itemToFind == null) {return -1;}
         int itemCount = 0;
         int stackCount = 0;
-        Block[] altGroup = getAltGroup(itemToFind);
-        if (useAlts && altGroup != null){
-            for (int i = 0; i < inventory.getSizeInventory(); ++i) {
-                ItemStack itemStack = inventory.getStackInSlot(i);
-                if (itemStack == null) continue;
-                for (Block block : altGroup){
-                    if (itemStack.getItem() == block.asItem()){
-                        itemCount += itemStack.stackSize;
-                        ++stackCount;
-                    }
-                }
-            }
-        }
-        else {
-            for (int i = 0; i < inventory.getSizeInventory(); ++i) {
-                ItemStack itemStack = inventory.getStackInSlot(i);
-                if (itemStack == null || itemStack.itemID != itemToFind.itemID || itemStack.getMetadata() != itemToFind.getMetadata()) continue;
+        for (int i = 0; i < inventory.getSizeInventory(); ++i) {
+            ItemStack itemStack = inventory.getStackInSlot(i);
+            if (itemStack == null) continue;
+            if (itemStack.isItemEqual(itemToFind)){
                 itemCount += itemStack.stackSize;
                 ++stackCount;
             }
         }
-
         return Math.max(itemCount, stackCount);
     }
 
@@ -78,22 +61,14 @@ public class InventoryHelper {
 
 
     public static int findStackIndex(ItemStack[] inventory, RecipeSymbol matchingSymbol){
-        for (int i = 0; i < inventory.length; i++){
-            if (matchingSymbol.matches(inventory[i])){
-                return i;
-            }
-        }
-        return -1;
-    }
-    public static Block[] getAltGroup(ItemStack itemStack){
-        for (int i = 0; i < CraftingManager.blockAlternatives.length; i++){
-            for (int j = 0; j < CraftingManager.blockAlternatives[i].length; j++){
-                if(CraftingManager.blockAlternatives[i][j].id == itemStack.itemID){
-                    return CraftingManager.blockAlternatives[i];
+        if (matchingSymbol != null){
+            for (int i = 0; i < inventory.length; i++){
+                if (matchingSymbol.matches(inventory[i])){
+                    return i;
                 }
             }
         }
-        return null;
+        return -1;
     }
     public static boolean inInventory(ItemStack[] stacks, ItemStack item){
         for (ItemStack stack: stacks) {
