@@ -31,6 +31,7 @@ import useless.legacyui.Sorting.Recipe.RecipeCategory;
 import useless.legacyui.Sorting.Recipe.RecipeCost;
 import useless.legacyui.Sorting.Recipe.RecipeGroup;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -211,6 +212,7 @@ public class LegacyContainerCrafting extends Container {
         RecipeCost recipeCost = new RecipeCost(recipe);
 
         RecipeSymbol[] recipeInput = InventoryHelper.getRecipeInput(recipe);
+        System.out.println(Arrays.toString(recipeInput));
         if (canCraft(mc.thePlayer, recipeCost)){
             for (int i = 0; i < recipeInput.length; i++){
                 int slotId = InventoryHelper.findStackIndex(mc.thePlayer.inventory.mainInventory, recipeInput[i]); // Finds Slot index of an inventory Slot with a desired item

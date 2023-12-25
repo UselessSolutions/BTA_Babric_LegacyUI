@@ -79,7 +79,6 @@ public class InventoryHelper {
         return false;
     }
     public static RecipeSymbol[] getRecipeInput(RecipeEntryCrafting<?, ?> recipe){
-        RecipeSymbol[] recipeInput;
         if (recipe instanceof RecipeEntryCraftingShaped){
             return ((RecipeEntryCraftingShaped)recipe).getInput();
         }
