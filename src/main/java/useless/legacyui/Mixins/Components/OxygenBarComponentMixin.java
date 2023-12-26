@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import useless.legacyui.Gui.GuiScreens.UtilGui;
 
-@Mixin(OxygenBarComponent.class)
+@Mixin(value = OxygenBarComponent.class, remap = false)
 public class OxygenBarComponentMixin {
     @Redirect(method = "render(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/gui/GuiIngame;IIF)V", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glColor4f(FFFF)V"))
     private void hotbarFadeout(float red, float green, float blue, float alpha){
