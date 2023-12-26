@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-        "useless.legacyui.LegacyUI"
+      "useless.legacyui.LegacyUI"
     ],
     "modmenu": [
         "useless.legacyui.ModModules.ModMenuModule"

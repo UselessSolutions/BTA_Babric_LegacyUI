@@ -3,6 +3,7 @@ package useless.legacyui.Sorting.Recipe;
 import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCrafting;
 import net.minecraft.core.item.ItemStack;
 import useless.legacyui.Helper.ArrayHelper;
+import useless.legacyui.Helper.InventoryHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class RecipeGroup {
     public RecipeGroup(List<RecipeEntryCrafting<?,?>> recipes){
         this.recipes.addAll(recipes);
         for (RecipeEntryCrafting<?, ?> recipe : recipes){
-            if (recipe.getRecipeSize() <= 4){
+            if (InventoryHelper.getRecipeInput(recipe).length <= 4){
                 smallRecipes.add(recipe);
             }
         }
