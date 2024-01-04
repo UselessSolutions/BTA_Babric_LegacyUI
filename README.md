@@ -12,6 +12,8 @@ Thanks to PedroThePanda64 for creating the Better than Legacy Logo!
 ### Add the BTA Babric instance: https://github.com/Turnip-Labs/babric-instance-repo/releases/tag/v1.7.7.0_02
 
 ![image](https://github.com/UselessBullets/BTA_Babric_LegacyUI/assets/80850784/c08eec73-4215-4387-9d45-29b1c0099a90)
+![image](https://github.com/UselessBullets/BTA_Babric_LegacyUI/assets/80850784/02814afd-a58d-4781-a44e-1221e45c4bea)
+
 
 ### Add the required mods:
 Dependencies:
