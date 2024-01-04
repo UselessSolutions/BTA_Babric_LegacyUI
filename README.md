@@ -15,8 +15,8 @@ Thanks to PedroThePanda64 for creating the Better than Legacy Logo!
 
 ### Add the required mods:
 Dependencies:
-- PrismaticLibe >=2.1.1 (only needed for BTL versions >= 0.5.0): https://github.com/UselessBullets/BTA_Babric_PrismaticLibe/releases
-- HalpLibe >= 2.1.1: https://github.com/Turnip-Labs/bta-halplibe/releases
+- PrismaticLibe >=2.2.0 (only needed for BTL versions >= 0.5.0): https://github.com/UselessBullets/BTA_Babric_PrismaticLibe/releases
+- HalpLibe >= 2.7.0: https://github.com/Turnip-Labs/bta-halplibe/releases
 - Better than Legacy!: https://github.com/UselessBullets/BTA_Babric_LegacyUI/releases
 
 ### Click `View Mods` and then add the required mods
