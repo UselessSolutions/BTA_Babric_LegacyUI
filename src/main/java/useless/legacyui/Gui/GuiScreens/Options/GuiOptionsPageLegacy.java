@@ -11,13 +11,15 @@ import net.minecraft.client.gui.options.components.ToggleableOptionComponent;
 import net.minecraft.client.gui.options.data.OptionsPage;
 import net.minecraft.client.gui.options.data.OptionsPages;
 import net.minecraft.client.option.GameSettings;
+import net.minecraft.core.item.Item;
+import turniplabs.halplibe.util.ClientStartEntrypoint;
 import turniplabs.halplibe.util.GameStartEntrypoint;
 import useless.legacyui.Settings.ILegacyOptions;
 
-public class GuiOptionsPageLegacy implements GameStartEntrypoint {
+public class GuiOptionsPageLegacy implements ClientStartEntrypoint {
     public static GameSettings gameSettings = ((Minecraft) FabricLoader.getInstance().getGameInstance()).gameSettings;
     public static ILegacyOptions legacyOptions = (ILegacyOptions) gameSettings;
-    public static final OptionsPage LegacyUIPage = OptionsPages.register(new OptionsPage("legacyui.options.title")
+    public static final OptionsPage LegacyUIPage = OptionsPages.register(new OptionsPage("legacyui.options.title", Item.map.getDefaultStack())
             .withComponent(
                     new OptionsCategory("legacyui.options.gameplay")
                             .withComponent(new BooleanOptionComponent(legacyOptions.getCoordsOnMaps()))
@@ -46,16 +48,16 @@ public class GuiOptionsPageLegacy implements GameStartEntrypoint {
                     .withComponent(new BooleanOptionComponent(legacyOptions.getUseLegacySounds()))
                     .withComponent(new BooleanOptionComponent(legacyOptions.getUseRandomPitch()))));
     public static GuiOptions legacyOptionsScreen(GuiScreen parent){
-        return new GuiOptions(parent, gameSettings, LegacyUIPage);
+        return new GuiOptions(parent, LegacyUIPage);
     }
 
     @Override
-    public void beforeGameStart() {
+    public void beforeClientStart() {
 
     }
 
     @Override
-    public void afterGameStart() {
+    public void afterClientStart() {
 
     }
 }

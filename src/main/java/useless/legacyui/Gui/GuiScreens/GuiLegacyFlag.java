@@ -16,7 +16,7 @@ import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.lang.I18n;
 import net.minecraft.core.net.command.TextFormatting;
-import net.minecraft.core.net.packet.Packet141UpdateFlag;
+import net.minecraft.core.net.packet.Packet250CustomPayload;
 import net.minecraft.core.util.helper.MathHelper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -512,7 +512,7 @@ public class GuiLegacyFlag extends GuiContainer
     @Override
     public void onClosed() {
         if (this.mc.theWorld.isClientSide) {
-            this.mc.getSendQueue().addToSendQueue(new Packet141UpdateFlag(this.tileEntity.x, this.tileEntity.y, this.tileEntity.z, this.tileEntity.flagColors, this.tileEntity.owner));
+            this.mc.getSendQueue().addToSendQueue(new Packet250CustomPayload("BTA|Flag", this.tileEntity.flagColors));
         }
     }
 

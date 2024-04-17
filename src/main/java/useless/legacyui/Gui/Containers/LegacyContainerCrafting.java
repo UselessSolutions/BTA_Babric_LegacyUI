@@ -30,10 +30,8 @@ import useless.legacyui.Sorting.Recipe.RecipeCategory;
 import useless.legacyui.Sorting.Recipe.RecipeCost;
 import useless.legacyui.Sorting.Recipe.RecipeGroup;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class LegacyContainerCrafting extends Container {
     public InventoryCrafting craftMatrix;
@@ -286,7 +284,7 @@ public class LegacyContainerCrafting extends Container {
             insert = true;
         }
         if (insert) {
-            player.world.playSoundAtEntity(player, "random.insert", 0.1f, 1.0f);
+            player.world.playSoundAtEntity(player, player, "random.insert", 0.1f, 1.0f);
         }
     }
     public boolean isUsableByPlayer(EntityPlayer entityplayer) {

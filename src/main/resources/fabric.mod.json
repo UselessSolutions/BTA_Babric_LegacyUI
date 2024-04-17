@@ -18,7 +18,7 @@
 
   "environment": "*",
   "entrypoints": {
-    "main": [
+    "beforeClientStart": [
       "useless.legacyui.LegacyUI"
     ],
     "modmenu": [
@@ -27,7 +27,7 @@
     "legacyui": [
       "useless.legacyui.Api.LegacyUIPlugin"
     ],
-    "afterGameStart": [
+    "afterClientStart": [
       "useless.legacyui.Gui.GuiScreens.Options.GuiOptionsPageLegacy"
     ]
   },
@@ -37,7 +37,7 @@
 
   "depends": {
     "fabricloader": ">=0.13.3",
-    "halplibe": ">=3.0.1",
+    "halplibe": ">=3.1.0",
     "prismaticlibe": ">=3.0.0"
   },
   "suggests": {

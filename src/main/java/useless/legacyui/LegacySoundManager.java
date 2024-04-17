@@ -2,8 +2,7 @@ package useless.legacyui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sound.SoundManager;
-import net.minecraft.core.sound.SoundType;
-
+import net.minecraft.core.sound.SoundCategory;
 import java.util.Random;
 
 public class LegacySoundManager {
@@ -17,32 +16,32 @@ public class LegacySoundManager {
     public static class play {
         public static void press(boolean randomPitch){
             if (LegacyUI.modSettings.getUseLegacySounds().value){
-                sndManager.playSound("legacyui.ui.press", SoundType.GUI_SOUNDS, volume, getPitch(randomPitch));
+                sndManager.playSound("legacyui.ui.press", SoundCategory.GUI_SOUNDS, volume, getPitch(randomPitch));
             } else {
-                sndManager.playSound("random.ui_click", SoundType.GUI_SOUNDS, volume, getPitch(randomPitch));
+                sndManager.playSound("random.ui_click", SoundCategory.GUI_SOUNDS, volume, getPitch(randomPitch));
             }
         }
         public static void back(boolean randomPitch){
             if (LegacyUI.modSettings.getUseLegacySounds().value) {
-                sndManager.playSound("legacyui.ui.back", SoundType.GUI_SOUNDS, volume, getPitch(randomPitch));
+                sndManager.playSound("legacyui.ui.back", SoundCategory.GUI_SOUNDS, volume, getPitch(randomPitch));
             } else {
-                sndManager.playSound("random.ui_back", SoundType.GUI_SOUNDS, volume, getPitch(randomPitch));
+                sndManager.playSound("random.ui_back", SoundCategory.GUI_SOUNDS, volume, getPitch(randomPitch));
             }
         }
         public static void craft(boolean randomPitch){
-            sndManager.playSound("legacyui.ui.craft", SoundType.GUI_SOUNDS, volume, getPitch(randomPitch));
+            sndManager.playSound("legacyui.ui.craft", SoundCategory.GUI_SOUNDS, volume, getPitch(randomPitch));
         }
         public static void craftfail(boolean randomPitch){
-            sndManager.playSound("legacyui.ui.craftfail", SoundType.GUI_SOUNDS, volume, getPitch(randomPitch));
+            sndManager.playSound("legacyui.ui.craftfail", SoundCategory.GUI_SOUNDS, volume, getPitch(randomPitch));
         }
         public static void focus(boolean randomPitch){
-            sndManager.playSound("legacyui.ui.focus", SoundType.GUI_SOUNDS, volume, getPitch(randomPitch));
+            sndManager.playSound("legacyui.ui.focus", SoundCategory.GUI_SOUNDS, volume, getPitch(randomPitch));
         }
         public static void scroll(boolean randomPitch){
-            sndManager.playSound("legacyui.ui.scroll", SoundType.GUI_SOUNDS, volume, getPitch(randomPitch));
+            sndManager.playSound("legacyui.ui.scroll", SoundCategory.GUI_SOUNDS, volume, getPitch(randomPitch));
         }
         public static void achievement(boolean randomPitch){
-            sndManager.playSound("legacyui.ui.achievement", SoundType.GUI_SOUNDS, volume, getPitch(randomPitch));
+            sndManager.playSound("legacyui.ui.achievement", SoundCategory.GUI_SOUNDS, volume, getPitch(randomPitch));
         }
     }
 }

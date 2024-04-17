@@ -167,6 +167,11 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
     }
     @Override
     public void init() {
+        super.init();
+        for (GuiButton button : controlList){
+            button.visible = false;
+            button.enabled = false;
+        }
         this.controlList.clear();
         // Setup size variables
         this.xSize = 273;
@@ -330,4 +335,8 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
         }
         selectTab(desiredPage * 8);
     }
+    @Override
+    public void updateOverlayButtons() {}
+    @Override
+    protected void checkForArmor() {}
 }

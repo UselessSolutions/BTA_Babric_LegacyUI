@@ -5,7 +5,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.sound.SoundManager;
-import net.minecraft.core.sound.SoundType;
+import net.minecraft.core.sound.SoundCategory;
 import net.minecraft.core.util.helper.Color;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,8 +23,8 @@ public class GuiScreenMixin extends Gui {
         this.button = button;
         return button.mouseClicked(minecraft, i, j);
     }
-    @Redirect(method = "mouseClicked(III)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/SoundManager;playSound(Ljava/lang/String;Lnet/minecraft/core/sound/SoundType;FF)V"))
-    private void legacySound(SoundManager soundManager, String soundPath, SoundType soundType, float volume, float pitch){
+    @Redirect(method = "mouseClicked(III)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/SoundManager;playSound(Ljava/lang/String;Lnet/minecraft/core/sound/SoundCategory;FF)V"))
+    private void legacySound(SoundManager soundManager, String soundPath, SoundCategory soundType, float volume, float pitch){
         if (button != null && button instanceof IButtonSounds){
             IButtonSounds soundButton = (IButtonSounds)button;
             if (!soundButton.isMuted()){

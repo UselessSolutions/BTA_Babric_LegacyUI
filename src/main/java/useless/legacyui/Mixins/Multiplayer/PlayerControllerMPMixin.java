@@ -13,7 +13,7 @@ import useless.legacyui.LegacyUI;
 
 @Mixin(value = PlayerControllerMP.class, remap = false)
 public class PlayerControllerMPMixin {
-    @Redirect(method = "doInventoryAction(ILnet/minecraft/core/InventoryAction;[ILnet/minecraft/core/entity/player/EntityPlayer;)Lnet/minecraft/core/item/ItemStack;", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/net/handler/NetClientHandler;addToSendQueue(Lnet/minecraft/core/net/packet/Packet;)V"))
+    @Redirect(method = "handleInventoryMouseClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/net/handler/NetClientHandler;addToSendQueue(Lnet/minecraft/core/net/packet/Packet;)V"))
     private void getCorrectCreativeItem(NetClientHandler instance, Packet packet){
         if (LegacyUI.modSettings.getEnableLegacyInventoryCreative().value) {
             Packet102WindowClick packet102 = (Packet102WindowClick)packet;
