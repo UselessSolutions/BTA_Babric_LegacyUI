@@ -135,7 +135,7 @@ public class GuiLegacyInventory extends GuiInventory implements IGuiController {
     }
 
     @Override
-    public void GuiControls(ControllerInput controllerInput) {
+    public void guiSpecificControllerInput(ControllerInput controllerInput) {
         if (controllerInput.buttonZL.pressedThisFrame() && player.getGamemode() == Gamemode.creative){
             openCreative();
         }

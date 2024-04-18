@@ -517,7 +517,7 @@ public class GuiLegacyFlag extends GuiContainer
     }
 
     @Override
-    public void GuiControls(ControllerInput controllerInput) {
+    public void guiSpecificControllerInput(ControllerInput controllerInput) {
         int dpadDelay = 1000/15;
         int dyeSelectDelay = 1000/7;
         int toolDelay = UtilGui.tabScrollRepeatDelay;

@@ -273,7 +273,7 @@ public class GuiLegacyCreative extends GuiInventory implements IGuiController {
     }
 
     @Override
-    public void GuiControls(ControllerInput controllerInput) {
+    public void guiSpecificControllerInput(ControllerInput controllerInput) {
         if (controllerInput.buttonR.pressedThisFrame() || controllerInput.buttonR.isPressed() && RepeatInputHandler.doRepeatInput(-2, UtilGui.tabScrollRepeatDelay) && controllerInput.buttonR.getHoldTime() > 3){
             RepeatInputHandler.manualSuccess(-2);
             scrollTab(1);
