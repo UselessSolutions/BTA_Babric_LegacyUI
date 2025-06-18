@@ -8,50 +8,32 @@ import net.minecraft.client.gui.Screen;
 import net.minecraft.client.sound.SoundEngine;
 import net.minecraft.core.sound.SoundCategory;
 import net.minecraft.core.util.helper.Color;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import useless.legacyui.LegacySoundManager;
 import useless.legacyui.LegacyUI;
 
-import java.util.List;
-
 @Mixin(value = Screen.class, remap = false, priority = 2000)
 public abstract class ScreenMixin extends Gui {
 
     @Shadow protected Minecraft mc;
 
-    @Shadow protected abstract void buttonClicked(ButtonElement button);
+    @Redirect(method = "mouseClicked", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/ButtonElement;playSound:Z", opcode = Opcodes.GETFIELD))
+    private boolean ignorePlaysoundBool(ButtonElement instance) {
+        return true;
+    }
 
-    @Shadow public List<ButtonElement> buttons;
-
-    /**
-     * @author Useless
-     * @reason Need to fix a bug with muted buttons not being clickable
-     */
-    @Overwrite
-    public void mouseClicked(final int mx, final int my, final int buttonNum) {
-        if (buttonNum == 0) {
-            for(final ButtonElement button : this.buttons) {
-                if (button.mouseClicked(this.mc, mx, my)) {
-                    if (button.playSound) {
-                        if (LegacyUI.modSettings.legacyui$getUseLegacySounds().value){
-                            LegacySoundManager.play.press(true);
-                        }
-                        else {
-                            this.mc.sndManager.playSound("random.click", SoundCategory.GUI_SOUNDS, 1.0F, 1.0F);
-                        }
-                    }
-                    if (button.listener != null) {
-                        button.listener.listen(button);
-                    } else {
-                        this.buttonClicked(button);
-                    }
-
-                    return;
-                }
+    @Redirect(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/SoundEngine;playSound(Ljava/lang/String;Lnet/minecraft/core/sound/SoundCategory;FF)V"))
+    private void reimplPlaySoundBool(SoundEngine instance, String name, SoundCategory category, float volume, float pitch, @Local(name = "button") ButtonElement button) {
+        if (button.playSound) {
+            if (LegacyUI.modSettings.legacyui$getUseLegacySounds().value){
+                LegacySoundManager.play.press(true);
+            }
+            else {
+                this.mc.sndManager.playSound("random.click", SoundCategory.GUI_SOUNDS, 1.0F, 1.0F);
             }
         }
     }
