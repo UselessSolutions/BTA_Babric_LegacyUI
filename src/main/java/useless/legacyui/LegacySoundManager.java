@@ -27,10 +27,10 @@ public class LegacySoundManager {
             sndManager.playSound("ui.craftfail", SoundCategory.GUI_SOUNDS, volume, getPitch(randomPitch));
         }
         public static void focus(boolean randomPitch){
-            sndManager.playSound("ui.focus", SoundCategory.GUI_SOUNDS, volume, getPitch(randomPitch));
+            sndManager.playSound("ui.ui_focus", SoundCategory.GUI_SOUNDS, volume, getPitch(randomPitch));
         }
         public static void scroll(boolean randomPitch){
-            sndManager.playSound("ui.scroll", SoundCategory.GUI_SOUNDS, volume, getPitch(randomPitch));
+            sndManager.playSound("ui.ui_scroll", SoundCategory.GUI_SOUNDS, volume, getPitch(randomPitch));
         }
 
     }

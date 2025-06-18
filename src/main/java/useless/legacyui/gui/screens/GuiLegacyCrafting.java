@@ -5,11 +5,13 @@ import net.minecraft.client.gui.ButtonElement;
 import net.minecraft.client.gui.container.ScreenContainerAbstract;
 import net.minecraft.client.input.InputType;
 import net.minecraft.client.input.controller.ControllerInput;
+import net.minecraft.client.render.texture.stitcher.IconCoordinate;
 import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCrafting;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.lang.I18n;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 import useless.legacyui.gui.containers.LegacyContainerCrafting;
 import useless.legacyui.gui.elements.GuiButtonPrompt;
 import useless.legacyui.gui.elements.GuiRegion;
@@ -30,8 +32,8 @@ import static useless.legacyui.helper.KeyboardHelper.*;
 
 public class GuiLegacyCrafting extends ScreenContainerAbstract implements IGuiController {
     protected int craftingSize;
-    private static int GUIx;
-    private static int GUIy;
+    private int GUIx;
+    private int GUIy;
     private final Player player;
     public static int currentTab = 0;
     public static int currentScroll = 0;
@@ -221,8 +223,11 @@ public class GuiLegacyCrafting extends ScreenContainerAbstract implements IGuiCo
     public boolean isSmall(){
         return this.craftingSize <= 4;
     }
+
+    @Override
     public void init() {
         super.init();
+        this.buttons.clear();
 
         // Setup size variables
         this.xSize = 273; // width of Gui window
@@ -332,12 +337,14 @@ public class GuiLegacyCrafting extends ScreenContainerAbstract implements IGuiCo
         }
     }
     protected void drawGuiContainerForegroundLayer(){
-        mc.textureManager.loadTexture("/assets/legacyui/gui/legacycrafting.png").bind();
+        GL11.glColor4f(1, 1, 1, 1);
+        mc.textureManager.loadTexture("/assets/legacyui/textures/gui/legacycrafting.png").bind();
         drawSelectionCursorForeground();
     }
     @Override
     protected void drawGuiContainerBackgroundLayer(final float partialTick) {
-        mc.textureManager.loadTexture("/assets/legacyui/gui/legacycrafting.png").bind();
+        GL11.glColor4f(1, 1, 1, 1);
+        mc.textureManager.loadTexture("/assets/legacyui/textures/gui/legacycrafting.png").bind();
         UtilGui.drawTexturedModalRect(this, GUIx, GUIy, 0,0, this.xSize, this.ySize, 1f/guiTextureWidth); // Render Background
 
 
@@ -349,7 +356,7 @@ public class GuiLegacyCrafting extends ScreenContainerAbstract implements IGuiCo
             UtilGui.drawTexturedModalRect(this, GUIx + 19, GUIy + 108, 61, 175, 54, 54, 1f/guiTextureWidth);
         }
 
-        drawStringCenteredNoShadow(font, I18n.getInstance().translateKey("legacyui.guilabel.inventory"),GUIx + 204, GUIy + 97, 0xA0A0A0);
+        drawStringCenteredNoShadow(font, I18n.getInstance().translateKey("legacyui.guilabel.inventory"),GUIx + 204, GUIy + 97, 0x404040);
 
         String craftingString; // Text above crafting table
         if (LegacyUI.modSettings.legacyui$getShowCraftingItemNamePreview().value && showCraftDisplay){ // If crafting display rendered and render item names enabled
@@ -364,23 +371,26 @@ public class GuiLegacyCrafting extends ScreenContainerAbstract implements IGuiCo
             craftingString = I18n.getInstance().translateKey("legacyui.guilabel.crafting");
         }
 
-        drawStringCenteredNoShadow(font, craftingString,GUIx + 73, GUIy + 97, 0xA0A0A0);
-        drawStringCenteredNoShadow(font, LegacyCategoryManager.getRecipeCategories().get(currentTab).getTranslatedKey(),GUIx + (this.xSize /2), GUIy + 36, 0xA0A0A0);
+        drawStringCenteredNoShadow(font, craftingString,GUIx + 73, GUIy + 97, 0x404040);
+        drawStringCenteredNoShadow(font, LegacyCategoryManager.getRecipeCategories().get(currentTab).getTranslatedKey(),GUIx + (this.xSize /2), GUIy + 36, 0x404040);
 
-        mc.textureManager.loadTexture("/assets/legacyui/gui/legacycrafting.png").bind();
+        GL11.glColor4f(1, 1, 1, 1);
+        mc.textureManager.loadTexture("/assets/legacyui/textures/gui/legacycrafting.png").bind();
         drawSelectionCursorBackground();
 
         final int iconAmountToDraw = Math.min(LegacyCategoryManager.getRecipeCategories().size() - (getPageNumber() * 8), 8);
         for (int i = 0; i < iconAmountToDraw; i++) {
             final boolean isSelected = (currentTab % 8) == i;
             if (isSelected){
-                double x0 = GUIx + 3 + (tabWidth - 1) * i;
-                double y0 = GUIy - 1;
-                drawIconTextureDouble(x0, y0, x0 + 32 * 0.9f, y0 + 32 * 0.9f, 0, 0, 1, 1, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate);
+                final double x0 = GUIx + 3 + (tabWidth - 1) * i;
+                final double y0 = GUIy - 1;
+                final IconCoordinate coordinate = LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate;
+                drawIconTextureDouble(x0, y0, x0 + 32 * 0.9f, y0 + 32 * 0.9f, 0, 0, coordinate.width, coordinate.height, coordinate);
             } else {
-                double x0 = GUIx + 5.5 + (tabWidth - 1) * i;
-                double y0 = GUIy + 2;
-                drawIconTextureDouble(x0, y0, x0 + 32 * 0.75f, y0 + 32 * 0.75f, 0, 0, 1, 1, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate);
+                final double x0 = GUIx + 5.5 + (tabWidth - 1) * i;
+                final double y0 = GUIy + 2;
+                final IconCoordinate coordinate = LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate;
+                drawIconTextureDouble(x0, y0, x0 + 32 * 0.75f, y0 + 32 * 0.75f, 0, 0, coordinate.width, coordinate.height, coordinate);
             }
         }
     }

@@ -12,7 +12,7 @@ public class TooltipStyleMixin {
     @Inject(method = "getFilePath()Ljava/lang/String;", at = @At("HEAD"), cancellable = true)
     private void legacyTooltipImage(CallbackInfoReturnable<String> cir){
         if (LegacyUI.modSettings != null && LegacyUI.modSettings.legacyui$getForceLegacyTooltip().value){
-            cir.setReturnValue("assets/legacyui/gui/tooltip/legacy.png");
+            cir.setReturnValue("/assets/legacyui/textures/gui/tooltip/legacy.png");
         }
     }
     @Inject(method = "getTranslationKey()Ljava/lang/String;", at = @At("HEAD"), cancellable = true)

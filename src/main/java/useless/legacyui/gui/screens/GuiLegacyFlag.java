@@ -91,14 +91,14 @@ public class GuiLegacyFlag extends ScreenContainerAbstract
         buttons.clear();
         this.toolBtns = new TexturedButtonElement[6];
         for (int i = 0; i < 6; ++i) {
-            this.toolBtns[i] = new TexturedButtonElement(i, "/assets/legacyui/gui/legacyflag.png", this.GUIx + 12 + 23 * i, this.GUIy + 12, 20 * i, 196, 20, 20);
+            this.toolBtns[i] = new TexturedButtonElement(i, "/assets/legacyui/textures/gui/legacyflag.png", this.GUIx + 12 + 23 * i, this.GUIy + 12, 20 * i, 196, 20, 20);
             this.toolBtns[i].mute();
             if (i == this.activeTool) {
                 this.toolBtns[i].enabled = false;
             }
             buttons.add(this.toolBtns[i]);
         }
-        this.eraseButton = new TexturedButtonElement(6, "/assets/legacyui/gui/legacyflag.png", this.GUIx + 128, this.GUIy + 118, 120, 196, 18, 18);
+        this.eraseButton = new TexturedButtonElement(6, "/assets/legacyui/textures/gui/legacyflag.png", this.GUIx + 128, this.GUIy + 118, 120, 196, 18, 18);
         this.eraseButton.mute();
         buttons.add(this.eraseButton);
         this.dyeButtons = new ButtonElement[6];
@@ -303,14 +303,14 @@ public class GuiLegacyFlag extends ScreenContainerAbstract
         }
     }
     protected void drawGuiContainerForegroundLayer(){
-        mc.textureManager.loadTexture("/assets/legacyui/gui/legacyflag.png").bind();
+        mc.textureManager.loadTexture("/assets/legacyui/textures/gui/legacyflag.png").bind();
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         drawTexturedModalRect(11 + 18 * cursorX, 34, 138, 232, 24,24);
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(final float f) {
-        this.mc.textureManager.loadTexture("/assets/legacyui/gui/legacyflag.png").bind();
+        this.mc.textureManager.loadTexture("/assets/legacyui/textures/gui/legacyflag.png").bind();
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         this.drawTexturedModalRect(this.GUIx, this.GUIy, 0, 0, this.xSize, this.ySize);
         if (LegacyContainerFlag.dyesMetaAtSlot.size() > 6){

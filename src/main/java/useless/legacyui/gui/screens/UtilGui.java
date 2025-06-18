@@ -107,6 +107,7 @@ public class UtilGui {
     private static float prevYRot = -1000;
     private static float desiredYRot = 0;
     public static void drawPaperDoll(final boolean drawRight){
+        if (EntityRenderDispatcher.instance.textureManager == null) return;
         if (prevYRot == -1000){
             prevYRot = mc.thePlayer.yRot;
         }

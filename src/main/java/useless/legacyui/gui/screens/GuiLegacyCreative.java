@@ -4,11 +4,13 @@ import net.minecraft.client.gui.ButtonElement;
 import net.minecraft.client.gui.container.ScreenInventory;
 import net.minecraft.client.input.InputType;
 import net.minecraft.client.input.controller.ControllerInput;
+import net.minecraft.client.render.texture.stitcher.IconCoordinate;
 import net.minecraft.core.InventoryAction;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.lang.I18n;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 import useless.legacyui.gui.containers.LegacyContainerPlayerCreative;
 import useless.legacyui.gui.elements.GuiButtonPrompt;
 import useless.legacyui.gui.elements.GuiRegion;
@@ -25,8 +27,8 @@ import static useless.legacyui.helper.KeyboardHelper.repeatInput;
 
 public class GuiLegacyCreative extends ScreenInventory implements IGuiController {
     private final Player player;
-    private static int GUIx;
-    private static int GUIy;
+    private int GUIx;
+    private int GUIy;
     private static final int guiTextureWidth = 512;
     private static final int tabWidth = 35;
     public static int currentTab = 0;
@@ -239,9 +241,10 @@ public class GuiLegacyCreative extends ScreenInventory implements IGuiController
         }
 
         super.render(mx,my, partialTick);
-        this.mc.textureManager.loadTexture("/assets/legacyui/gui/legacycreative.png").bind();
-        UtilGui.drawTexturedModalRect(this, this.craftButton.xPosition, this.craftButton.yPosition, this.craftButton.isHovered(mx, my) ? 186+ this.craftButton.width:186, 184, this.craftButton.width, this.craftButton.height, 1f/guiTextureWidth); // draw craftButton
-        UtilGui.drawTexturedModalRect(this, this.clearButton.xPosition, this.clearButton.yPosition, this.clearButton.isHovered(mx, my) ? 146+ this.clearButton.width:146, 184, this.clearButton.width, this.clearButton.height, 1f/guiTextureWidth); // draw clearbutton
+        GL11.glColor4f(1, 1, 1, 1);
+        this.mc.textureManager.loadTexture("/assets/legacyui/textures/gui/legacycreative.png").bind();
+        UtilGui.drawTexturedModalRect(this, this.craftButton.xPosition, this.craftButton.yPosition, this.craftButton.isHovered(mx, my) ? 186 + this.craftButton.width : 186, 184, this.craftButton.width, this.craftButton.height, 1f/guiTextureWidth); // draw craftButton
+        UtilGui.drawTexturedModalRect(this, this.clearButton.xPosition, this.clearButton.yPosition, this.clearButton.isHovered(mx, my) ? 146 + this.clearButton.width : 146, 184, this.clearButton.width, this.clearButton.height, 1f/guiTextureWidth); // draw clearbutton
         drawStringCentered(this.font, this.clearButton.displayString, this.clearButton.xPosition + (this.clearButton.width/2), this.clearButton.yPosition + 6, LegacyUI.modSettings.legacyui$getGuiPromptColor().value.value);
         for (final GuiButtonPrompt prompt: this.prompts) {
             prompt.drawPrompt(this.mc, mx, my);
@@ -250,7 +253,8 @@ public class GuiLegacyCreative extends ScreenInventory implements IGuiController
     protected void drawGuiContainerForegroundLayer(){
     }
     protected void drawGuiContainerBackgroundLayer(final float renderPartialTick) {
-        this.mc.textureManager.loadTexture("/assets/legacyui/gui/legacycreative.png").bind();
+        GL11.glColor4f(1, 1, 1, 1);
+        this.mc.textureManager.loadTexture("/assets/legacyui/textures/gui/legacycreative.png").bind();
         UtilGui.drawTexturedModalRect(this, GUIx,GUIy, 0, 0, this.xSize, this.ySize,1f/guiTextureWidth); // GUI Background
         UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * (currentTab % 8), GUIy - 2, (tabWidth) * (currentTab % 8),215, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
 
@@ -263,15 +267,17 @@ public class GuiLegacyCreative extends ScreenInventory implements IGuiController
             if (isSelected){
                 final double x0 = GUIx + 3 + (tabWidth - 1) * i;
                 final double y0 = GUIy - 1;
-                drawIconTextureDouble(x0, y0, x0 + 32 * 0.9f, y0 + 32 * 0.9f, 0, 0, 1, 1, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate);
+                final IconCoordinate coordinate = LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate;
+                drawIconTextureDouble(x0, y0, x0 + 32 * 0.9f, y0 + 32 * 0.9f, 0, 0, coordinate.width, coordinate.height, coordinate);
             } else {
                 final double x0 = GUIx + 5.5 + (tabWidth - 1) * i;
                 final double y0 = GUIy + 2;
-                drawIconTextureDouble(x0, y0, x0 + 32 * 0.75f, y0 + 32 * 0.75f, 0, 0, 1, 1, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate);
+                final IconCoordinate coordinate = LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate;
+                drawIconTextureDouble(x0, y0, x0 + 32 * 0.75f, y0 + 32 * 0.75f, 0, 0, coordinate.width, coordinate.height, coordinate);
             }
         }
 
-        drawStringCenteredNoShadow(this.font, LegacyCategoryManager.getCreativeCategories().get(currentTab).getTranslatedKey(), GUIx + this.xSize /2, GUIy + 32, 0xA0A0A0);
+        drawStringCenteredNoShadow(this.font, LegacyCategoryManager.getCreativeCategories().get(currentTab).getTranslatedKey(), GUIx + this.xSize /2, GUIy + 32, 0x404040);
     }
 
     @Override

@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiElement;
 import net.minecraft.client.input.InputType;
 import net.minecraft.client.render.Font;
+import org.lwjgl.opengl.GL11;
 import useless.legacyui.gui.screens.UtilGui;
 import useless.legacyui.LegacyUI;
 
@@ -43,7 +44,8 @@ public class GuiButtonPrompt extends GuiRegion implements GuiElement {
     }
     public void drawPrompt(Minecraft minecraft, int mouseX, int mouseY){
         if (!LegacyUI.modSettings.legacyui$getForceButtonPrompts().value && minecraft.inputType != InputType.CONTROLLER) {return;}
-        minecraft.textureManager.loadTexture("/assets/legacyui/gui/Controller/buttons.png").bind();
+        GL11.glColor4f(1, 1, 1, 1);
+        minecraft.textureManager.loadTexture("/assets/legacyui/textures/gui/Controller/buttons.png").bind();
         int v = LegacyUI.modSettings.legacyui$getGuiControllerType().value.index()  * 13;
         for (int i = 0; i < buttonCoordinates.length; i++) {
             int u = buttonCoordinates[i] * 13;
