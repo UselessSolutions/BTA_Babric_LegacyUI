@@ -10,25 +10,25 @@
   ],
   "icon": "icon.png",
   "contact": {
-    "homepage": "https://github.com/UselessBullets/BTA_Babric_LegacyUI",
+    "homepage": "https://github.com/UselessSolutions/BTA_Babric_LegacyUI",
     "sources": ""
   },
 
   "license": "CC0-1.0",
 
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "beforeClientStart": [
       "useless.legacyui.LegacyUI"
     ],
     "modmenu": [
-        "useless.legacyui.ModModules.ModMenuModule"
+      "useless.legacyui.modmodules.ModMenuModule"
     ],
     "legacyui": [
-      "useless.legacyui.Api.LegacyUIPlugin"
+      "useless.legacyui.api.LegacyUIPlugin"
     ],
     "afterClientStart": [
-      "useless.legacyui.Gui.GuiScreens.Options.GuiOptionsPageLegacy"
+      "useless.legacyui.gui.screens.options.GuiOptionsPageLegacy"
     ]
   },
   "mixins": [
@@ -36,12 +36,11 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.13.3",
-    "halplibe": ">=3.1.0",
-    "prismaticlibe": ">=3.0.0"
+    "minecraft": "~7.3",
+    "fabricloader": ">=0.15.5"
   },
   "suggests": {
-    "modmenu": ">=2.0.0"
+    "modmenu": ">=3.0.0"
   },
   "custom": {
     "modmenu:clientsideOnly": true
