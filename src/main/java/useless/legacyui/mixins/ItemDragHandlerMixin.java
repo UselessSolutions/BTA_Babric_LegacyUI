@@ -33,12 +33,14 @@ public class ItemDragHandlerMixin extends Gui {
             final int slotSize = ((IResizable) slot).getWidth();
             renderScale = (slotSize)/18f;
         }
+        double newX = slot.x * (1d/renderScale);
+        double newY = slot.y * (1d/renderScale);
 
+        GL11.glPushMatrix();
         GL11.glScaled(renderScale, renderScale, renderScale);
-        int newX = (int)(slot.x*(1d/renderScale));
-        int newY = (int)(slot.y* (1d/renderScale));
-        instance.render(this.renderItemStack, newX, newY);
-        GL11.glScaled(1/renderScale, 1/renderScale, 1/renderScale);
+        GL11.glTranslated(newX, newY,0);
+        instance.render(this.renderItemStack, 0, 0);
+        GL11.glPopMatrix();
     }
 
     @Redirect(method = "drawSlotOverlayWhileDragging(Lnet/minecraft/core/player/inventory/slot/Slot;)V",

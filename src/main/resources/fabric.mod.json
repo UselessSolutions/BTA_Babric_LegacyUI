@@ -42,6 +42,9 @@
   "suggests": {
     "modmenu": ">=3.0.0"
   },
+  "conflicts": {
+    "guiadditions": "*"
+  },
   "custom": {
     "modmenu:clientsideOnly": true
   }
