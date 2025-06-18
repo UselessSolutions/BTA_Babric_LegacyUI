@@ -19,10 +19,7 @@ public class UtilGui {
     public static final int verticalScrollInitialDelay = 150;
     public static final int repeatCraftDelay = 1000/10;
     public static final int initialCraftDelay = 300;
-    public static void bindTexture(final String texture){
-        mc.textureManager.loadTexture(texture).bind();
-        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    }
+
     public static void drawTexturedModalRect(final Gui gui, final double x, final double y, final double u, final double v, final double width, final double height, final double scale) {
         final Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();

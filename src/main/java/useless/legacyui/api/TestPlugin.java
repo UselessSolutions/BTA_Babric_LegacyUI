@@ -1,8 +1,10 @@
 package useless.legacyui.api;
 
 import net.minecraft.core.block.Block;
+import net.minecraft.core.block.Blocks;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemDye;
+import net.minecraft.core.item.Items;
 import useless.legacyui.sorting.item.ItemCategoryBuilder;
 import useless.legacyui.sorting.LegacyCategoryManager;
 import useless.legacyui.sorting.recipe.RecipeCategoryBuilder;
@@ -46,11 +48,11 @@ public class TestPlugin implements LegacyUIApi{
         LegacyCategoryManager.recipeCategoryBuilders.add(category);
     }
     public static ItemCategoryBuilder testCategory1 = new ItemCategoryBuilder(modId)
-            .addItem(Block.brickBasalt, true);
+            .addItem(Blocks.BRICK_BASALT, true);
     public static ItemCategoryBuilder testCategory2 = new ItemCategoryBuilder(modId)
-            .addItem(Item.ammoArrowGold, true);
+            .addItem(Items.AMMO_ARROW_GOLD, true);
     public static ItemCategoryBuilder testCategory3 = new ItemCategoryBuilder(modId)
-            .addItem(Item.toolSwordDiamond, true);
+            .addItem(Items.TOOL_SWORD_DIAMOND, true);
     public static RecipeGroupBuilder dyes = new RecipeGroupBuilder()
             .addClass(ItemDye.class, true);
     public static RecipeGroupBuilder allBlocks = new RecipeGroupBuilder()

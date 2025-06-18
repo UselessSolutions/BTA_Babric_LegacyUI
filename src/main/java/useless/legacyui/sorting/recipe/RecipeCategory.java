@@ -1,17 +1,19 @@
 package useless.legacyui.sorting.recipe;
 
+import net.minecraft.client.render.texture.stitcher.IconCoordinate;
 import net.minecraft.core.lang.I18n;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeCategory {
     private String key;
-    public int[] iconCoordinate;
+    public IconCoordinate iconCoordinate;
 
     private RecipeGroup[] recipeGroups;
     private RecipeGroup[] smallGroups;
-    public RecipeCategory(String modid, String translationKey , int[] iconCoordinate, RecipeGroup[]recipes){
+    public RecipeCategory(String modid, String translationKey , IconCoordinate iconCoordinate, RecipeGroup[]recipes){
         assert recipes.length > 0;
         this.key = (modid + ".categories.recipe." + translationKey).replace("..", ".");
         this.iconCoordinate = iconCoordinate;

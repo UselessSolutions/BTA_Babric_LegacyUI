@@ -2,60 +2,57 @@ package useless.legacyui.gui.slots;
 
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.slot.Slot;
-import useless.prismaticlibe.gui.slot.IAlpha;
-import useless.prismaticlibe.gui.slot.IHighlighting;
-import useless.prismaticlibe.gui.slot.IResizable;
 
-public class SlotCraftingDisplayLegacy extends Slot implements IHighlighting, IResizable {
+public class SlotCraftingDisplayLegacy extends Slot implements IResizable, IHighlightable {
     public ItemStack item;
     private final boolean highlighted;
     private final int highlightColor;
     private final int slotWidth;
-    public SlotCraftingDisplayLegacy(int id, int x, int y, ItemStack item, boolean discovered, boolean highlight, int color) {
+    public SlotCraftingDisplayLegacy(final int id, final int x, final int y, final ItemStack item, final boolean discovered, final boolean highlight, final int color) {
         this(id, x, y, item, discovered, highlight, color, 18);
     }
-    public SlotCraftingDisplayLegacy(int id, int x, int y, ItemStack item, boolean discovered, boolean highlight, int color, int width) {
+    public SlotCraftingDisplayLegacy(final int id, final int x, final int y, final ItemStack item, final boolean discovered, final boolean highlight, final int color, final int width) {
         super(null, id, x, y);
         this.item = item;
         this.discovered = discovered;
-        highlighted = highlight;
-        highlightColor = color;
-        slotWidth = width;
+        this.highlighted = highlight;
+        this.highlightColor = color;
+        this.slotWidth = width;
     }
     @Override
-    public ItemStack decrStackSize(int i) {
+    public ItemStack remove(final int i) {
         return null;
     }
 
     @Override
-    public boolean hasStack() {
+    public boolean hasItem() {
         return this.item != null;
     }
 
     @Override
-    public int getSlotStackLimit() {
+    public int getMaxStackSize() {
         return this.item.getMaxStackSize();
     }
 
     @Override
-    public ItemStack getStack() {
+    public ItemStack getItemStack() {
         return this.item;
     }
 
     @Override
-    public void onPickupFromSlot(ItemStack itemstack) {
+    public void onTake(final ItemStack itemstack) {
     }
 
     @Override
-    public void onSlotChanged() {
+    public void setChanged() {
     }
 
     @Override
-    public void putStack(ItemStack itemstack) {
+    public void set(final ItemStack itemstack) {
     }
 
     @Override
-    public boolean canPutStackInSlot(ItemStack itemstack) {
+    public boolean mayPlace(final ItemStack itemstack) {
         return false;
     }
 
@@ -71,12 +68,12 @@ public class SlotCraftingDisplayLegacy extends Slot implements IHighlighting, IR
 
     @Override
     public boolean isHighlighted() {
-        return highlighted;
+        return this.highlighted;
     }
 
     @Override
     public int getHighlightColor() {
-        return highlightColor;
+        return this.highlightColor;
     }
 
     @Override
@@ -86,6 +83,6 @@ public class SlotCraftingDisplayLegacy extends Slot implements IHighlighting, IR
 
     @Override
     public int getWidth() {
-        return slotWidth;
+        return this.slotWidth;
     }
 }

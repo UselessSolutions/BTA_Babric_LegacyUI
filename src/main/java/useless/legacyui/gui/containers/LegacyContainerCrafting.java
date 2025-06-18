@@ -4,13 +4,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.InventoryAction;
 import net.minecraft.core.achievement.stat.StatList;
 import net.minecraft.core.achievement.stat.StatsCounter;
-import net.minecraft.core.block.Block;
 import net.minecraft.core.block.Blocks;
 import net.minecraft.core.data.registry.Registries;
 import net.minecraft.core.data.registry.recipe.RecipeSymbol;
 import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCrafting;
 import net.minecraft.core.entity.player.Player;
+import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
+import net.minecraft.core.item.Items;
 import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.core.player.inventory.container.Container;
 import net.minecraft.core.player.inventory.container.ContainerCrafting;
@@ -18,6 +19,7 @@ import net.minecraft.core.player.inventory.container.ContainerInventory;
 import net.minecraft.core.player.inventory.container.ContainerResult;
 import net.minecraft.core.player.inventory.menu.MenuAbstract;
 import net.minecraft.core.player.inventory.slot.Slot;
+import net.minecraft.core.player.inventory.slot.SlotResult;
 import net.minecraft.core.world.World;
 import useless.legacyui.gui.screens.GuiLegacyCrafting;
 import useless.legacyui.gui.slots.SlotCraftingDisplayLegacy;
@@ -60,7 +62,7 @@ public class LegacyContainerCrafting extends MenuAbstract {
         this.inventoryPlayer = inventoryplayer;
     }
     public void craftingSlots(final boolean showCraftingPreview) {
-        this.addSlot(new SlotCrafting(this.inventoryPlayer.player, this.craftMatrix, this.craftResult, 0, showCraftingPreview ? -5000 : 107, showCraftingPreview ? -5000 : 127));
+        this.addSlot(new SlotResult(this.inventoryPlayer.player, this.craftMatrix, this.craftResult, 0, showCraftingPreview ? -5000 : 107, showCraftingPreview ? -5000 : 127));
         int baseIterator;
         int subIterator;
 
@@ -72,7 +74,7 @@ public class LegacyContainerCrafting extends MenuAbstract {
                 }
             }
             for (baseIterator = 0; baseIterator < 4; ++baseIterator) {
-                this.addSlot(new SlotNull(this.inventoryPlayer, this.inventoryPlayer.getSizeInventory() - 1 - baseIterator, -5000, -5000));
+                this.addSlot(new SlotNull(this.inventoryPlayer, this.inventoryPlayer.getContainerSize() - 1 - baseIterator, -5000, -5000));
             }
         }
         else {
@@ -110,7 +112,7 @@ public class LegacyContainerCrafting extends MenuAbstract {
         final RecipeCategory category = LegacyCategoryManager.getRecipeCategories().get(categoryIndex);
 
         for (final RecipeGroup group : category.getRecipeGroups(isInInventory)){
-            LegacyUI.LOGGER.debug("CategoryGroup: " + group.getOutputStack(0, isInInventory).getItemName());
+            LegacyUI.LOGGER.debug("CategoryGroup: " + group.getOutputStack(0, isInInventory).getItem().namespaceID);
         }
         LegacyUI.LOGGER.debug("Category: " + category + " | slotId: " + currentSlotId + " | currentScroll: " + currentScrollAmount + " | craftPreview: " + showCraftingPreview);
         this.slots.clear();
@@ -268,7 +270,7 @@ public class LegacyContainerCrafting extends MenuAbstract {
         if (item == null) {
             return false;
         } else {
-            return statWriter.readStat(StatList.pickUpItemStats[item.itemID]) > 0;
+            return statWriter.readStat(item.getItem().getStat(StatList.STAT_PICKED_UP)) > 0;
         }
     }
 

@@ -332,12 +332,12 @@ public class GuiLegacyCrafting extends ScreenContainerAbstract implements IGuiCo
         }
     }
     protected void drawGuiContainerForegroundLayer(){
-        UtilGui.bindTexture("/assets/legacyui/gui/legacycrafting.png");
+        mc.textureManager.loadTexture("/assets/legacyui/gui/legacycrafting.png").bind();
         drawSelectionCursorForeground();
     }
     @Override
     protected void drawGuiContainerBackgroundLayer(final float partialTick) {
-        UtilGui.bindTexture("/assets/legacyui/gui/legacycrafting.png");
+        mc.textureManager.loadTexture("/assets/legacyui/gui/legacycrafting.png").bind();
         UtilGui.drawTexturedModalRect(this, GUIx, GUIy, 0,0, this.xSize, this.ySize, 1f/guiTextureWidth); // Render Background
 
 
@@ -367,7 +367,7 @@ public class GuiLegacyCrafting extends ScreenContainerAbstract implements IGuiCo
         drawStringCenteredNoShadow(font, craftingString,GUIx + 73, GUIy + 97, 0xA0A0A0);
         drawStringCenteredNoShadow(font, LegacyCategoryManager.getRecipeCategories().get(currentTab).getTranslatedKey(),GUIx + (this.xSize /2), GUIy + 36, 0xA0A0A0);
 
-        UtilGui.bindTexture("/assets/legacyui/gui/legacycrafting.png");
+        mc.textureManager.loadTexture("/assets/legacyui/gui/legacycrafting.png").bind();
         drawSelectionCursorBackground();
 
         final int iconAmountToDraw = Math.min(LegacyCategoryManager.getRecipeCategories().size() - (getPageNumber() * 8), 8);

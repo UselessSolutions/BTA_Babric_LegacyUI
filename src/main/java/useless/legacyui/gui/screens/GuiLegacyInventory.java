@@ -82,19 +82,25 @@ public class GuiLegacyInventory extends ScreenInventory implements IGuiControlle
         this.mc.displayScreen(new GuiLegacyCreative(this.player));
         LegacySoundManager.volume = 1f;
     }
+
+    @Override
     public void render(final int mx, final int my, final float partialTick) {
         super.render(mx,my,partialTick);
 
-        UtilGui.bindTexture("/assets/legacyui/gui/legacyinventory.png");
+        mc.textureManager.loadTexture("/assets/legacyui/gui/legacyinventory.png").bind();
         this.drawTexturedModalRect(this.craftButton.xPosition, this.craftButton.yPosition, 177, this.craftButton.isHovered(mx,my) ? 77:54, this.craftButton.width, this.craftButton.height); // Crafting Button Render
         for (final GuiButtonPrompt prompt: this.prompts) {
             prompt.drawPrompt(this.mc, mx, my);
         }
     }
+
+    @Override
     protected void drawGuiContainerForegroundLayer() {
     }
+
+    @Override
     protected void drawGuiContainerBackgroundLayer(final float renderPartialTick) {
-        UtilGui.bindTexture("/assets/legacyui/gui/legacyinventory.png");
+        mc.textureManager.loadTexture("/assets/legacyui/gui/legacyinventory.png").bind();
         this.drawTexturedModalRect(GUIx, GUIy, 0, 0, this.xSize, this.ySize);
         renderPlayerDoll();
         drawStringNoShadow(this.font, I18n.getInstance().translateKey("legacyui.guilabel.inventory"),GUIx + 8,GUIy +82, 0x404040);

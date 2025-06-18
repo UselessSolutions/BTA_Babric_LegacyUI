@@ -3,7 +3,7 @@ package useless.legacyui.gui.elements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiElement;
 import net.minecraft.client.input.InputType;
-import net.minecraft.client.render.FontRenderer;
+import net.minecraft.client.render.Font;
 import useless.legacyui.gui.screens.UtilGui;
 import useless.legacyui.LegacyUI;
 
@@ -28,13 +28,13 @@ public class GuiButtonPrompt extends GuiRegion implements GuiElement {
     public static final int TOUCHPAD = 17;
 
     private static final int buttonAtlasWidth = 256;
-    private final FontRenderer fontRenderer;
+    private final Font fontRenderer;
     public String prompt;
     public int[] buttonCoordinates;
     public int spacing;
     public GuiButtonPrompt(int id, int xPosition, int yPosition, int spacing, String prompt, int[] buttonCoordinates) {
         super(id, xPosition, yPosition, 0, 0);
-        this.fontRenderer = Minecraft.getMinecraft(this).fontRenderer;
+        this.fontRenderer = Minecraft.getMinecraft().font;
         this.prompt = prompt;
         this.buttonCoordinates = buttonCoordinates;
         this.spacing = spacing;
@@ -43,7 +43,7 @@ public class GuiButtonPrompt extends GuiRegion implements GuiElement {
     }
     public void drawPrompt(Minecraft minecraft, int mouseX, int mouseY){
         if (!LegacyUI.modSettings.legacyui$getForceButtonPrompts().value && minecraft.inputType != InputType.CONTROLLER) {return;}
-        UtilGui.bindTexture("/assets/legacyui/gui/Controller/buttons.png");
+        minecraft.textureManager.loadTexture("/assets/legacyui/gui/Controller/buttons.png").bind();
         int v = LegacyUI.modSettings.legacyui$getGuiControllerType().value.index()  * 13;
         for (int i = 0; i < buttonCoordinates.length; i++) {
             int u = buttonCoordinates[i] * 13;

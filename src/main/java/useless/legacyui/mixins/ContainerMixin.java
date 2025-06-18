@@ -1,9 +1,9 @@
 package useless.legacyui.mixins;
 
 import net.minecraft.core.InventoryAction;
-import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.item.ItemStack;
-import net.minecraft.core.player.inventory.Container;
+import net.minecraft.core.player.inventory.menu.MenuAbstract;
 import net.minecraft.core.player.inventory.slot.Slot;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -13,10 +13,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import useless.legacyui.gui.slots.SlotCraftingDisplayLegacy;
 import useless.legacyui.gui.slots.SlotNull;
 
-@Mixin(value = Container.class, remap = false)
+@Mixin(value = MenuAbstract.class, remap = false)
 public class ContainerMixin {
-    @Inject(method = "clickInventorySlot(Lnet/minecraft/core/InventoryAction;[ILnet/minecraft/core/entity/player/EntityPlayer;)Lnet/minecraft/core/item/ItemStack;", at = @At("HEAD"), cancellable = true)
-    private void dontInteractWithProtectedSlots(InventoryAction action, int[] args, EntityPlayer player, CallbackInfoReturnable<ItemStack> cir){
+    @Inject(method = "clicked", at = @At("HEAD"), cancellable = true)
+    private void dontInteractWithProtectedSlots(final InventoryAction action, final int[] args, final Player player, final CallbackInfoReturnable<ItemStack> cir){
         if (action != InventoryAction.PICKUP_SIMILAR){
             if (args == null){
                 cir.setReturnValue(null);
@@ -27,7 +27,7 @@ public class ContainerMixin {
 
     }
     @Shadow
-    public Slot getSlot(int arg) {
+    public Slot getSlot(final int arg) {
         return null;
     }
 }

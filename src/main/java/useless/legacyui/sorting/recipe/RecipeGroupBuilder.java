@@ -1,10 +1,6 @@
 package useless.legacyui.sorting.recipe;
 
 import net.minecraft.core.block.Block;
-import net.minecraft.core.crafting.legacy.CraftingManager;
-import net.minecraft.core.crafting.legacy.recipe.IRecipe;
-import net.minecraft.core.crafting.legacy.type.RecipeShaped;
-import net.minecraft.core.crafting.legacy.type.RecipeShapeless;
 import net.minecraft.core.data.registry.Registries;
 import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCrafting;
 import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCraftingShaped;

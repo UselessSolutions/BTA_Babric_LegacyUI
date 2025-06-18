@@ -19,7 +19,7 @@ public class ScreenMainMenuMixin extends Screen {
     @Shadow @Final private static Random rand;
     @Inject(method = "<init>()V", at = @At("TAIL"))
     private void init(CallbackInfo ci){
-        UtilGui.panoCount = Math.max(1, Minecraft.getMinecraft(this).texturePackList.selectedTexturePack.getFilesInDirectory("/assets/legacyui/panoramas/").length);
+        UtilGui.panoCount = Math.max(1, 11/*Minecraft.getMinecraft().texturePackList.selectedTexturePack.getFilesInDirectory("/assets/legacyui/panoramas/").length*/); // TODO make not hardcoded
         UtilGui.currentPano = rand.nextInt(UtilGui.panoCount);
     }
     @Inject(method = "renderTexturedBackground", at = @At("HEAD"), cancellable = true)

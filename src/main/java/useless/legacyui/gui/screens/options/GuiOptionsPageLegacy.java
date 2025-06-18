@@ -1,9 +1,8 @@
 package useless.legacyui.gui.screens.options;
 
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.options.GuiOptions;
+import net.minecraft.client.gui.Screen;
+import net.minecraft.client.gui.options.ScreenOptions;
 import net.minecraft.client.gui.options.components.BooleanOptionComponent;
 import net.minecraft.client.gui.options.components.FloatOptionComponent;
 import net.minecraft.client.gui.options.components.OptionsCategory;
@@ -11,14 +10,14 @@ import net.minecraft.client.gui.options.components.ToggleableOptionComponent;
 import net.minecraft.client.gui.options.data.OptionsPage;
 import net.minecraft.client.gui.options.data.OptionsPages;
 import net.minecraft.client.option.GameSettings;
-import net.minecraft.core.item.Item;
+import net.minecraft.core.item.Items;
 import turniplabs.halplibe.util.ClientStartEntrypoint;
 import useless.legacyui.settings.ILegacyOptions;
 
 public class GuiOptionsPageLegacy implements ClientStartEntrypoint {
-    public static GameSettings gameSettings = ((Minecraft) FabricLoader.getInstance().getGameInstance()).gameSettings;
-    public static ILegacyOptions legacyOptions = (ILegacyOptions) gameSettings;
-    public static final OptionsPage LegacyUIPage = OptionsPages.register(new OptionsPage("legacyui.options.title", Item.map.getDefaultStack())
+    public static final GameSettings gameSettings = Minecraft.getMinecraft().gameSettings;
+    public static final ILegacyOptions legacyOptions = (ILegacyOptions) gameSettings;
+    public static final OptionsPage LegacyUIPage = OptionsPages.register(new OptionsPage("legacyui.options.title", Items.MAP.getDefaultStack())
             .withComponent(
                     new OptionsCategory("legacyui.options.gameplay")
                             .withComponent(new BooleanOptionComponent(legacyOptions.legacyui$getCoordsOnMaps()))
@@ -46,8 +45,8 @@ public class GuiOptionsPageLegacy implements ClientStartEntrypoint {
             .withComponent(new OptionsCategory("legacyui.options.sound")
                     .withComponent(new BooleanOptionComponent(legacyOptions.legacyui$getUseLegacySounds()))
                     .withComponent(new BooleanOptionComponent(legacyOptions.legacyui$getUseRandomPitch()))));
-    public static GuiOptions legacyOptionsScreen(GuiScreen parent){
-        return new GuiOptions(parent, LegacyUIPage);
+    public static ScreenOptions legacyOptionsScreen(final Screen parent){
+        return new ScreenOptions(parent, LegacyUIPage);
     }
 
     @Override

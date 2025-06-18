@@ -8,41 +8,42 @@ public class SlotNull extends Slot {
     public SlotNull(Container inventory, int id, int x, int y) {
         super(null, id, x, y);
     }
-    public ItemStack decrStackSize(int i) {
+    @Override
+    public ItemStack remove(int i) {
         return null;
     }
 
     @Override
-    public boolean hasStack() {
+    public boolean hasItem() {
         return false;
     }
 
     @Override
-    public int getSlotStackLimit() {
+    public int getMaxStackSize() {
         return 0;
     }
 
     @Override
-    public ItemStack getStack() {
+    public ItemStack getItemStack() {
         return null;
     }
     @Override
-    public boolean canPutStackInSlot(ItemStack itemstack) {
+    public boolean mayPlace(ItemStack itemstack) {
         return false;
     }
 
     @Override
-    public void onPickupFromSlot(ItemStack itemstack) {
+    public void onTake(ItemStack itemstack) {
     }
     @Override
-    public void onSlotChanged() {
+    public void setChanged() {
     }
     @Override
-    public Container getInventory() {
+    public Container getContainer() {
         return null;
     }
     @Override
-    public void putStack(ItemStack itemstack) {
+    public void set(ItemStack itemstack) {
     }
     @Override
     public boolean enableDragAndPickup() {

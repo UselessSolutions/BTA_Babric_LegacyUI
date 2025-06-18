@@ -9,8 +9,7 @@
   "client": [
     "ContainerMixin",
     "ControllerInputMixin",
-    "EntityPlayerSPMixin",
-    "ItemEntityRendererMixin",
+    "PlayerLocalMixin",
     "MapItemRendererMixin",
     "MinecraftMixin",
     "WorldRendererMixin",
@@ -25,7 +24,7 @@
     "gui.HudIngameMixin",
     "gui.GuiInventoryAccessor",
     "gui.ScreenMainMenuMixin",
-    "gui.GuiScreenMixin",
+    "gui.ScreenMixin",
     "gui.MainMenuBackgroundMixin",
     "multiplayer.PlayerControllerMPMixin",
     "settings.GameSettingsMixin",

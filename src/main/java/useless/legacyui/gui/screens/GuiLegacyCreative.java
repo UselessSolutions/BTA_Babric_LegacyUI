@@ -1,5 +1,6 @@
 package useless.legacyui.gui.screens;
 
+import net.minecraft.client.gui.ButtonElement;
 import net.minecraft.client.gui.container.ScreenInventory;
 import net.minecraft.client.input.InputType;
 import net.minecraft.client.input.controller.ControllerInput;
@@ -23,7 +24,7 @@ import java.util.List;
 import static useless.legacyui.helper.KeyboardHelper.repeatInput;
 
 public class GuiLegacyCreative extends ScreenInventory implements IGuiController {
-    private Player player;
+    private final Player player;
     private static int GUIx;
     private static int GUIy;
     private static final int guiTextureWidth = 512;
@@ -35,13 +36,13 @@ public class GuiLegacyCreative extends ScreenInventory implements IGuiController
     protected GuiRegion scrollBar;
     protected GuiRegion bottomCreativeSlots;
     protected GuiRegion topCreativeSlots;
-    protected GuiAuditoryButton clearButton;
-    protected GuiAuditoryButton craftButton;
-    protected GuiAuditoryButton[] tabButtons = new GuiAuditoryButton[8];
-    protected GuiAuditoryButton lastPageButton;
-    protected GuiAuditoryButton nextPageButton;
+    protected ButtonElement clearButton;
+    protected ButtonElement craftButton;
+    protected ButtonElement[] tabButtons = new ButtonElement[8];
+    protected ButtonElement lastPageButton;
+    protected ButtonElement nextPageButton;
     public List<GuiButtonPrompt> prompts = new ArrayList<>();
-    public GuiLegacyCreative(Player player) {
+    public GuiLegacyCreative(final Player player) {
         super(player);
         this.player = player;
         container = (LegacyContainerPlayerCreative)player.inventorySlots;
@@ -59,12 +60,12 @@ public class GuiLegacyCreative extends ScreenInventory implements IGuiController
             }
         }
     }
-    public void selectTab(int value){
+    public void selectTab(final int value){
         if (currentTab != value){
             LegacySoundManager.play.focus(true);
         }
         currentTab = value;
-        int tabAmount = LegacyCategoryManager.getCreativeCategories().size();
+        final int tabAmount = LegacyCategoryManager.getCreativeCategories().size();
         if (currentTab > tabAmount-1){
             currentTab -= tabAmount;
         } else if (currentTab < 0){
@@ -74,11 +75,8 @@ public class GuiLegacyCreative extends ScreenInventory implements IGuiController
         selectRow(0);
         setContainerSlots();
     }
-    public void selectRow(int value){
-        boolean doContainer = false;
-        if (value != currentRow){
-            doContainer = true;
-        }
+    public void selectRow(final int value){
+        final boolean doContainer = value != currentRow;
         currentRow = value;
         currentRow = Math.min(currentRow, (LegacyContainerPlayerCreative.getTotalRows()-6));
         currentRow = Math.max(currentRow,0);
@@ -88,27 +86,29 @@ public class GuiLegacyCreative extends ScreenInventory implements IGuiController
     }
     public void handleInputs(){
         selectRow(currentRow + (Mouse.getDWheel()/-120));
-        boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+        final boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 
-        if (repeatInput(mc.gameSettings.keyRight.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(mc.gameSettings.keyLookRight.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
+        if (repeatInput(this.mc.gameSettings.keyRight.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(this.mc.gameSettings.keyLookRight.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 scrollTab(1);
             }
         }
-        if (repeatInput(mc.gameSettings.keyLeft.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(mc.gameSettings.keyLookLeft.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
+        if (repeatInput(this.mc.gameSettings.keyLeft.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(this.mc.gameSettings.keyLookLeft.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){
             if (shifted){
                 scrollTab(-1);
             }
         }
     }
-    protected void buttonPressed(GuiButton guibutton) {
-        super.buttonPressed(guibutton);
-        boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-        if (guibutton == clearButton){
-            if (mc.inputType == InputType.CONTROLLER){
+
+    @Override
+    protected void buttonClicked(final ButtonElement guibutton) {
+        super.buttonClicked(guibutton);
+        final boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+        if (guibutton == this.clearButton){
+            if (this.mc.inputType == InputType.CONTROLLER){
                 boolean hotbarCleared = true;
                 for (int i = 0; i < 9; ++i) {
-                    hotbarCleared = hotbarCleared && player.inventory.mainInventory[i] == null;
+                    hotbarCleared = hotbarCleared && this.player.inventory.mainInventory[i] == null;
                 }
                 if (hotbarCleared){
                     clearInventory();
@@ -124,98 +124,100 @@ public class GuiLegacyCreative extends ScreenInventory implements IGuiController
             }
 
         }
-        if (guibutton == craftButton){
+        if (guibutton == this.craftButton){
             openInventory();
         }
-        for (int i = 0; i < tabButtons.length; i++) {
-            if (tabButtons[i] == guibutton){
+        for (int i = 0; i < this.tabButtons.length; i++) {
+            if (this.tabButtons[i] == guibutton){
                 selectTab(getPageNumber()*8+i);
             }
         }
-        if (guibutton == nextPageButton){
+        if (guibutton == this.nextPageButton){
             selectPage(getPageNumber() + 1);
         }
-        if (guibutton == lastPageButton){
+        if (guibutton == this.lastPageButton){
             selectPage(getPageNumber() - 1);
         }
     }
     private void clearInventory(){
         for (int i = 0; i < container.getCreativeSlotsStart(); ++i) {
-            mc.playerController.handleInventoryMouseClick(container.windowId, InventoryAction.CREATIVE_DELETE, new int[]{i}, player);
+            this.mc.playerController.handleInventoryMouseClick(container.containerId, InventoryAction.CREATIVE_DELETE, new int[]{i}, this.player);
         }
 
     }
     private void clearHotbar(){
         for (int i = container.getCreativeSlotsStart()-9; i < container.getCreativeSlotsStart(); ++i) {
-            mc.playerController.handleInventoryMouseClick(container.windowId, InventoryAction.CREATIVE_DELETE, new int[]{i}, player);
+            this.mc.playerController.handleInventoryMouseClick(container.containerId, InventoryAction.CREATIVE_DELETE, new int[]{i}, this.player);
         }
     }
     protected void openInventory(){
         LegacySoundManager.volume = 0;
-        this.onClosed();
-        mc.displayGuiScreen(new GuiLegacyInventory(player));
+        this.removed();
+        this.mc.displayScreen(new GuiLegacyInventory(this.player));
         LegacySoundManager.volume = 1f;
     }
     public void setContainerSlots(){
-        for (int i = 0; i < tabButtons.length; i++) { // Only enable buttons if there is a corresponding item group
-            tabButtons[i].enabled = (getPageNumber() * 8 + i) < LegacyCategoryManager.getCreativeCategories().size();
+        for (int i = 0; i < this.tabButtons.length; i++) { // Only enable buttons if there is a corresponding item group
+            this.tabButtons[i].enabled = (getPageNumber() * 8 + i) < LegacyCategoryManager.getCreativeCategories().size();
         }
         container.setSlots();
     }
     @Override
     public void init() {
         super.init();
-        for (GuiButton button : controlList){
+        for (final ButtonElement button : this.buttons){
             button.visible = false;
             button.enabled = false;
         }
-        this.controlList.clear();
+        this.buttons.clear();
         // Setup size variables
         this.xSize = 273;
         this.ySize = 184;
         GUIx = (this.width - this.xSize) / 2;
         GUIy = (this.height - this.ySize) / 2;
 
-        for (int i = 0; i < tabButtons.length; i++) {
-            tabButtons[i] = new GuiAuditoryButton(controlList.size() + 2, GUIx + (tabWidth-1)*i, GUIy, tabWidth-1, 24, "");
-            tabButtons[i].mute();
-            tabButtons[i].visible = false;
-            controlList.add(tabButtons[i]);
+        for (int i = 0; i < this.tabButtons.length; i++) {
+            this.tabButtons[i] = new ButtonElement(this.buttons.size() + 2, GUIx + (tabWidth-1)*i, GUIy, tabWidth-1, 24, "");
+            this.tabButtons[i].mute();
+            this.tabButtons[i].visible = false;
+            this.buttons.add(this.tabButtons[i]);
         }
 
-        scrollBar = new GuiRegion(100, GUIx + 251, GUIy + 43, 15, 112);
-        bottomCreativeSlots = new GuiRegion(101, GUIx + 11, GUIy + 135, 234, 18);
-        topCreativeSlots = new GuiRegion(101, GUIx + 11, GUIy + 45, 234, 18);
-        clearButton = new GuiAuditoryButton(controlList.size() + 1, GUIx + 221, GUIy + 158, 20, 20, "X");
-        clearButton.visible = false;
-        controlList.add(clearButton);
-        craftButton = new GuiAuditoryButton(controlList.size() + 1, GUIx + 31, GUIy + 158, 20, 20, "");
-        craftButton.visible = false;
-        controlList.add(craftButton);
-        nextPageButton = new GuiAuditoryButton(controlList.size() + 1, GUIx + xSize + 2, GUIy + 4, 20, 20, ">");
-        nextPageButton.visible = LegacyCategoryManager.getCreativeCategories().size() > 8;
-        controlList.add(nextPageButton);
-        lastPageButton = new GuiAuditoryButton(controlList.size() + 1, GUIx - 22, GUIy + 4, 20, 20, "<");
-        lastPageButton.visible = LegacyCategoryManager.getCreativeCategories().size() > 8;
-        controlList.add(lastPageButton);
+        this.scrollBar = new GuiRegion(100, GUIx + 251, GUIy + 43, 15, 112);
+        this.bottomCreativeSlots = new GuiRegion(101, GUIx + 11, GUIy + 135, 234, 18);
+        this.topCreativeSlots = new GuiRegion(101, GUIx + 11, GUIy + 45, 234, 18);
+        this.clearButton = new ButtonElement(this.buttons.size() + 1, GUIx + 221, GUIy + 158, 20, 20, "X");
+        this.clearButton.visible = false;
+        this.buttons.add(this.clearButton);
+        this.craftButton = new ButtonElement(this.buttons.size() + 1, GUIx + 31, GUIy + 158, 20, 20, "");
+        this.craftButton.visible = false;
+        this.buttons.add(this.craftButton);
+        this.nextPageButton = new ButtonElement(this.buttons.size() + 1, GUIx + this.xSize + 2, GUIy + 4, 20, 20, ">");
+        this.nextPageButton.visible = LegacyCategoryManager.getCreativeCategories().size() > 8;
+        this.buttons.add(this.nextPageButton);
+        this.lastPageButton = new ButtonElement(this.buttons.size() + 1, GUIx - 22, GUIy + 4, 20, 20, "<");
+        this.lastPageButton.visible = LegacyCategoryManager.getCreativeCategories().size() > 8;
+        this.buttons.add(this.lastPageButton);
 
-        I18n translator = I18n.getInstance();
-        prompts.clear();
-        prompts.add(new GuiButtonPrompt( 101, 50, this.height-30, 3,translator.translateKey("legacyui.prompt.select"), new int[]{GuiButtonPrompt.A}));
-        prompts.add(new GuiButtonPrompt( 102, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.takestack"), new int[]{GuiButtonPrompt.X}));
-        prompts.add(new GuiButtonPrompt( 103, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.back"), new int[]{GuiButtonPrompt.B}));
-        prompts.add(new GuiButtonPrompt( 104, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.tabselect"), new int[]{GuiButtonPrompt.LEFT_BUMPER, GuiButtonPrompt.RIGHT_BUMPER}));
-        prompts.add(new GuiButtonPrompt( 105, prompts.get(prompts.size()-1).xPosition + prompts.get(prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.openinventory"), new int[]{GuiButtonPrompt.LEFT_TRIGGER}));
+        final I18n translator = I18n.getInstance();
+        this.prompts.clear();
+        this.prompts.add(new GuiButtonPrompt( 101, 50, this.height-30, 3,translator.translateKey("legacyui.prompt.select"), new int[]{GuiButtonPrompt.A}));
+        this.prompts.add(new GuiButtonPrompt( 102, this.prompts.get(this.prompts.size()-1).xPosition + this.prompts.get(this.prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.takestack"), new int[]{GuiButtonPrompt.X}));
+        this.prompts.add(new GuiButtonPrompt( 103, this.prompts.get(this.prompts.size()-1).xPosition + this.prompts.get(this.prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.back"), new int[]{GuiButtonPrompt.B}));
+        this.prompts.add(new GuiButtonPrompt( 104, this.prompts.get(this.prompts.size()-1).xPosition + this.prompts.get(this.prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.tabselect"), new int[]{GuiButtonPrompt.LEFT_BUMPER, GuiButtonPrompt.RIGHT_BUMPER}));
+        this.prompts.add(new GuiButtonPrompt( 105, this.prompts.get(this.prompts.size()-1).xPosition + this.prompts.get(this.prompts.size()-1).width + 3, this.height-30,3,translator.translateKey("legacyui.prompt.openinventory"), new int[]{GuiButtonPrompt.LEFT_TRIGGER}));
 
         selectTab(0);
         selectRow(0);
         setContainerSlots();
     }
-    public void drawScreen(int x, int y, float renderPartialTicks) {
+
+    @Override
+    public void render(final int mx, final int my, final float partialTick) {
         handleInputs();
-        if (scrollBar.isHovered(x,y)){
+        if (this.scrollBar.isHovered(mx,my)){
             if (Mouse.isButtonDown(0)){
-                scrollProgress = (y-scrollBar.getY())/ (float)scrollBar.getHeight();
+                scrollProgress = (my- this.scrollBar.getY())/ (float) this.scrollBar.getHeight();
                 selectRow(Math.round((LegacyContainerPlayerCreative.getTotalRows() - LegacyContainerPlayerCreative.slotsTall) * scrollProgress));
                 if (LegacyContainerPlayerCreative.getTotalRows() <= LegacyContainerPlayerCreative.slotsTall){
                     scrollProgress = 0f;
@@ -223,10 +225,10 @@ public class GuiLegacyCreative extends ScreenInventory implements IGuiController
                 setContainerSlots();
             }
         }
-        if (mc.inputType == InputType.CONTROLLER){
-            if (scrollBar.isHovered((int) mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
-                if (mc.controllerInput.buttonA.isPressed()){
-                    scrollProgress = (float) ((mc.controllerInput.cursorY-scrollBar.getY())/scrollBar.getHeight());
+        if (this.mc.inputType == InputType.CONTROLLER){
+            if (this.scrollBar.isHovered((int) this.mc.controllerInput.cursorX, (int) this.mc.controllerInput.cursorY)){
+                if (this.mc.controllerInput.buttonA.isPressed()){
+                    scrollProgress = (float) ((this.mc.controllerInput.cursorY- this.scrollBar.getY())/ this.scrollBar.getHeight());
                     selectRow(Math.round((LegacyContainerPlayerCreative.getTotalRows() - LegacyContainerPlayerCreative.slotsTall) * scrollProgress));
                     if (LegacyContainerPlayerCreative.getTotalRows() <= LegacyContainerPlayerCreative.slotsTall){
                         scrollProgress = 0f;
@@ -236,46 +238,49 @@ public class GuiLegacyCreative extends ScreenInventory implements IGuiController
             }
         }
 
-        super.drawScreen(x,y, renderPartialTicks);
-        UtilGui.bindTexture("/assets/legacyui/gui/legacycreative.png");
-        UtilGui.drawTexturedModalRect(this, craftButton.xPosition, craftButton.yPosition, craftButton.isHovered(x, y) ? 186+craftButton.width:186, 184, craftButton.width, craftButton.height, 1f/guiTextureWidth); // draw craftButton
-        UtilGui.drawTexturedModalRect(this, clearButton.xPosition, clearButton.yPosition, clearButton.isHovered(x, y) ? 146+clearButton.width:146, 184, clearButton.width, clearButton.height, 1f/guiTextureWidth); // draw clearbutton
-        drawStringCentered(fontRenderer, clearButton.displayString, clearButton.xPosition + (clearButton.width/2), clearButton.yPosition + 6, LegacyUI.modSettings.legacyui$getGuiPromptColor().value.value);
-        for (GuiButtonPrompt prompt: prompts) {
-            prompt.drawPrompt(mc, x, y);
+        super.render(mx,my, partialTick);
+        this.mc.textureManager.loadTexture("/assets/legacyui/gui/legacycreative.png").bind();
+        UtilGui.drawTexturedModalRect(this, this.craftButton.xPosition, this.craftButton.yPosition, this.craftButton.isHovered(mx, my) ? 186+ this.craftButton.width:186, 184, this.craftButton.width, this.craftButton.height, 1f/guiTextureWidth); // draw craftButton
+        UtilGui.drawTexturedModalRect(this, this.clearButton.xPosition, this.clearButton.yPosition, this.clearButton.isHovered(mx, my) ? 146+ this.clearButton.width:146, 184, this.clearButton.width, this.clearButton.height, 1f/guiTextureWidth); // draw clearbutton
+        drawStringCentered(this.font, this.clearButton.displayString, this.clearButton.xPosition + (this.clearButton.width/2), this.clearButton.yPosition + 6, LegacyUI.modSettings.legacyui$getGuiPromptColor().value.value);
+        for (final GuiButtonPrompt prompt: this.prompts) {
+            prompt.drawPrompt(this.mc, mx, my);
         }
     }
     protected void drawGuiContainerForegroundLayer(){
     }
-    protected void drawGuiContainerBackgroundLayer(float renderPartialTick) {
-        UtilGui.bindTexture("/assets/legacyui/gui/legacycreative.png");
-        UtilGui.drawTexturedModalRect(this, GUIx,GUIy, 0, 0, xSize, ySize,1f/guiTextureWidth); // GUI Background
+    protected void drawGuiContainerBackgroundLayer(final float renderPartialTick) {
+        this.mc.textureManager.loadTexture("/assets/legacyui/gui/legacycreative.png").bind();
+        UtilGui.drawTexturedModalRect(this, GUIx,GUIy, 0, 0, this.xSize, this.ySize,1f/guiTextureWidth); // GUI Background
         UtilGui.drawTexturedModalRect(this, GUIx + (tabWidth - 1) * (currentTab % 8), GUIy - 2, (tabWidth) * (currentTab % 8),215, tabWidth, 30, 1f/guiTextureWidth); // Render Selected Tab
 
-        float scrollProgressLimited = ((float) currentRow) /(LegacyContainerPlayerCreative.getTotalRows()-LegacyContainerPlayerCreative.slotsTall);
-        UtilGui.drawTexturedModalRect(this,scrollBar.xPosition, (scrollBar.yPosition + (int) ((scrollBar.height-15)*scrollProgressLimited)),131,184,15,15,1f/guiTextureWidth);
+        final float scrollProgressLimited = ((float) currentRow) /(LegacyContainerPlayerCreative.getTotalRows()-LegacyContainerPlayerCreative.slotsTall);
+        UtilGui.drawTexturedModalRect(this, this.scrollBar.xPosition, (this.scrollBar.yPosition + (int) ((this.scrollBar.height-15)*scrollProgressLimited)),131,184,15,15,1f/guiTextureWidth);
 
-        UtilGui.bindTexture(IconHelper.ICON_TEXTURE);
-        int iconAmountToDraw = Math.min(LegacyCategoryManager.getCreativeCategories().size() - (getPageNumber() * 8), 8);
+        final int iconAmountToDraw = Math.min(LegacyCategoryManager.getCreativeCategories().size() - (getPageNumber() * 8), 8);
         for (int i = 0; i < iconAmountToDraw; i++) {
-            boolean isSelected = (currentTab % 8) == i;
+            final boolean isSelected = (currentTab % 8) == i;
             if (isSelected){
-                UtilGui.drawIconTexture(this, GUIx + 3 + (tabWidth - 1) * i, GUIy - 1, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.9f); // Render Icon
+                final double x0 = GUIx + 3 + (tabWidth - 1) * i;
+                final double y0 = GUIy - 1;
+                drawIconTextureDouble(x0, y0, x0 + 32 * 0.9f, y0 + 32 * 0.9f, 0, 0, 1, 1, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate);
             } else {
-                UtilGui.drawIconTexture(this, GUIx + 5.5 + (tabWidth - 1) * i, GUIy + 2, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate, 0.75f); // Render Icon
+                final double x0 = GUIx + 5.5 + (tabWidth - 1) * i;
+                final double y0 = GUIy + 2;
+                drawIconTextureDouble(x0, y0, x0 + 32 * 0.75f, y0 + 32 * 0.75f, 0, 0, 1, 1, LegacyCategoryManager.getCreativeCategories().get(getPageNumber()*8 + i).iconCoordinate);
             }
         }
 
-        drawStringCenteredNoShadow(fontRenderer, LegacyCategoryManager.getCreativeCategories().get(currentTab).getTranslatedKey(), GUIx + xSize/2, GUIy + 32, 0xA0A0A0);
+        drawStringCenteredNoShadow(this.font, LegacyCategoryManager.getCreativeCategories().get(currentTab).getTranslatedKey(), GUIx + this.xSize /2, GUIy + 32, 0xA0A0A0);
     }
 
     @Override
-    public void guiSpecificControllerInput(ControllerInput controllerInput) {
-        if (controllerInput.buttonR.pressedThisFrame() || controllerInput.buttonR.isPressed() && RepeatInputHandler.doRepeatInput(-2, UtilGui.tabScrollRepeatDelay) && controllerInput.buttonR.getHoldTime() > 3){
+    public void guiSpecificControllerInput(final ControllerInput controllerInput) {
+        if (controllerInput.buttonRightShoulder.pressedThisFrame() || controllerInput.buttonRightShoulder.isPressed() && RepeatInputHandler.doRepeatInput(-2, UtilGui.tabScrollRepeatDelay) && controllerInput.buttonRightShoulder.getHoldTime() > 3){
             RepeatInputHandler.manualSuccess(-2);
             scrollTab(1);
         }
-        if (controllerInput.buttonL.pressedThisFrame() || controllerInput.buttonL.isPressed() && RepeatInputHandler.doRepeatInput(-2, UtilGui.tabScrollRepeatDelay) && controllerInput.buttonL.getHoldTime() > 3){
+        if (controllerInput.buttonLeftShoulder.pressedThisFrame() || controllerInput.buttonLeftShoulder.isPressed() && RepeatInputHandler.doRepeatInput(-2, UtilGui.tabScrollRepeatDelay) && controllerInput.buttonLeftShoulder.getHoldTime() > 3){
             RepeatInputHandler.manualSuccess(-2);
             scrollTab(-1);
         }
@@ -285,17 +290,17 @@ public class GuiLegacyCreative extends ScreenInventory implements IGuiController
         if (controllerInput.joyRight.getY() <= -0.8f){
             selectRow(currentRow - 1);
         }
-        if (bottomCreativeSlots.isHovered((int) mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
-            if (mc.controllerInput.digitalPad.down.pressedThisFrame()){
+        if (this.bottomCreativeSlots.isHovered((int) this.mc.controllerInput.cursorX, (int) this.mc.controllerInput.cursorY)){
+            if (this.mc.controllerInput.digitalPad.down.pressedThisFrame()){
                 selectRow(currentRow + 1);
             }
         }
-        if (topCreativeSlots.isHovered((int) mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
-            if (mc.controllerInput.digitalPad.up.pressedThisFrame()){
+        if (this.topCreativeSlots.isHovered((int) this.mc.controllerInput.cursorX, (int) this.mc.controllerInput.cursorY)){
+            if (this.mc.controllerInput.digitalPad.up.pressedThisFrame()){
                 selectRow(currentRow - 1);
             }
         }
-        if (controllerInput.buttonZL.pressedThisFrame()){
+        if (controllerInput.buttonLeftTrigger.pressedThisFrame()){
             openInventory();
         }
     }
@@ -307,22 +312,20 @@ public class GuiLegacyCreative extends ScreenInventory implements IGuiController
 
     @Override
     public boolean enableDefaultSnapping() {
-        if (bottomCreativeSlots.isHovered((int) mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
-            if (mc.controllerInput.digitalPad.down.pressedThisFrame()){
+        if (this.bottomCreativeSlots.isHovered((int) this.mc.controllerInput.cursorX, (int) this.mc.controllerInput.cursorY)){
+            if (this.mc.controllerInput.digitalPad.down.pressedThisFrame()){
                 return false;
             }
         }
-        if (topCreativeSlots.isHovered((int) mc.controllerInput.cursorX, (int) mc.controllerInput.cursorY)){
-            if (mc.controllerInput.digitalPad.up.pressedThisFrame()){
-                return false;
-            }
+        if (this.topCreativeSlots.isHovered((int) this.mc.controllerInput.cursorX, (int) this.mc.controllerInput.cursorY)){
+            return !this.mc.controllerInput.digitalPad.up.pressedThisFrame();
         }
         return true;
     }
     public static int getPageNumber(){
         return currentTab/8;
     }
-    public void selectPage(int pageNumber){
+    public void selectPage(final int pageNumber){
         int desiredPage = pageNumber;
         if (desiredPage < 0){
             desiredPage = LegacyCategoryManager.getCreativeCategories().size()/8;

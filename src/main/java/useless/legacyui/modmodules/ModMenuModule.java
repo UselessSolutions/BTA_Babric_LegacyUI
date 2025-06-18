@@ -1,7 +1,7 @@
 package useless.legacyui.modmodules;
 
 import io.github.prospector.modmenu.api.ModMenuApi;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.Screen;
 import useless.legacyui.gui.screens.options.GuiOptionsPageLegacy;
 import useless.legacyui.LegacyUI;
 
@@ -14,7 +14,7 @@ public class ModMenuModule implements ModMenuApi {
     }
 
     @Override
-    public Function<GuiScreen, ? extends GuiScreen> getConfigScreenFactory() {
-        return (screenBase -> GuiOptionsPageLegacy.legacyOptionsScreen(screenBase));
+    public Function<Screen, ? extends Screen> getConfigScreenFactory() {
+        return GuiOptionsPageLegacy::legacyOptionsScreen;
     }
 }
