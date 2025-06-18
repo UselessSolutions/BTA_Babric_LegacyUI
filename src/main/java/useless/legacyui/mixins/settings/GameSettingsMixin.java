@@ -81,8 +81,6 @@ public class GameSettingsMixin implements ILegacyOptions {
     @Unique
     public OptionBoolean forceButtonPrompts = new OptionBoolean(this.thisAs, "legacyui.forceButtonPrompts", false);
     @Unique
-    public OptionBoolean enableAutoBridge = new OptionBoolean(this.thisAs, "legacyui.enableAutoBridge", true);
-    @Unique
     public OptionBoolean forceLegacyTooltip = new OptionBoolean(this.thisAs, "legacyui.forceLegacyTooltip", false);
     @Unique
     public OptionBoolean enablePaperDoll = new OptionBoolean(this.thisAs, "legacyui.enablePaperDoll", false);
@@ -145,9 +143,6 @@ public class GameSettingsMixin implements ILegacyOptions {
         return this.forceButtonPrompts;
     }
 
-    public OptionBoolean legacyui$getEnableAutoBridge() {
-        return this.enableAutoBridge;
-    }
     public OptionBoolean legacyui$getForceLegacyTooltip() {
         return this.forceLegacyTooltip;
     }

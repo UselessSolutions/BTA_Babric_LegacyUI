@@ -27,7 +27,7 @@ public class LegacyContainerPlayerCreative extends MenuInventoryCreative {
             this.addSlot(new SlotNull(inventory,index, -5000, -5000));
         }
         for (int index = 0; index < 4; ++index) { // Create Armor Slots
-            this.addSlot(new SlotArmor(this, inventory, inventory.getContainerSize() - 1 - index, -5000, -5000, index));
+            this.addSlot(new SlotArmor(this, inventory, inventory.getContainerSize() - 1 - index, -5000, -5000, 3 - index));
         }
         for (int row = 0; row < 3; ++row) { // Create Main Inventory Slots
             for (int column = 0; column < 9; ++column) {

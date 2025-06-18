@@ -19,7 +19,7 @@ public class LegacyContainerPlayerSurvival extends MenuInventory {
             this.addSlot(new SlotNull(this.inventory,index, -5000, -5000));
         }
         for (int index = 0; index < 4; ++index) { // Create Armor Slots
-            this.addSlot(new SlotArmor(this, inventory, inventory.getContainerSize() - 1 - index, 49, 8 + index * 18, index));
+            this.addSlot(new SlotArmor(this, inventory, inventory.getContainerSize() - 1 - index, 49, 8 + index * 18, 3 - index));
         }
         for (int row = 0; row < 3; ++row) { // Create Main Inventory Slots
             for (int column = 0; column < 9; ++column) {

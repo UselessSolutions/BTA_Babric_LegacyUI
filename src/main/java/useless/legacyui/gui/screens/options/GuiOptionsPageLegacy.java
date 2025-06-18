@@ -20,8 +20,7 @@ public class GuiOptionsPageLegacy implements ClientStartEntrypoint {
     public static final OptionsPage LegacyUIPage = OptionsPages.register(new OptionsPage("legacyui.options.title", Items.MAP.getDefaultStack())
             .withComponent(
                     new OptionsCategory("legacyui.options.gameplay")
-                            .withComponent(new BooleanOptionComponent(legacyOptions.legacyui$getCoordsOnMaps()))
-                            .withComponent(new BooleanOptionComponent(legacyOptions.legacyui$getEnableAutoBridge())))
+                            .withComponent(new BooleanOptionComponent(legacyOptions.legacyui$getCoordsOnMaps())))
             .withComponent(new OptionsCategory("legacyui.options.hud")
                     .withComponent(new BooleanOptionComponent(legacyOptions.legacyui$getHideHotbarInGUIs()))
                     .withComponent(new BooleanOptionComponent(legacyOptions.legacyui$getEnablePaperDoll()))

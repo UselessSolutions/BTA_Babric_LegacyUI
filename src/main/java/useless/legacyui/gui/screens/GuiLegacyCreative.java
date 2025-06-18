@@ -87,7 +87,7 @@ public class GuiLegacyCreative extends ScreenInventory implements IGuiController
         }
     }
     public void handleInputs(){
-        selectRow(currentRow + (Mouse.getDWheel()/-120));
+        selectRow(currentRow + (-Mouse.getDWheel()));
         final boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 
         if (repeatInput(this.mc.gameSettings.keyRight.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay) || repeatInput(this.mc.gameSettings.keyLookRight.getKeyCode(), UtilGui.tabScrollRepeatDelay, UtilGui.tabScrollInitialDelay)){

@@ -22,7 +22,6 @@ public interface ILegacyOptions {
     OptionFloat legacyui$getMainMenuBrightness();
     OptionBoolean legacyui$getCoordsOnMaps();
     OptionBoolean legacyui$getForceButtonPrompts();
-    OptionBoolean legacyui$getEnableAutoBridge();
     OptionBoolean legacyui$getForceLegacyTooltip();
     OptionBoolean legacyui$getEnablePaperDoll();
     OptionBoolean legacyui$getEnableHUDFadeout();
