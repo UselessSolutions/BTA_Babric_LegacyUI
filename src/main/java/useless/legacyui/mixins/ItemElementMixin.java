@@ -52,19 +52,17 @@ public class ItemElementMixin extends Gui {
                     target = "Lnet/minecraft/client/gui/ItemElement;drawRect(IIIII)V"))
     private void drawRectRedirect(final ItemElement guiRenderItem, final int minX, final int minY, final int maxX, final int maxY, final int argb,
                                   @Local(name = "slot") final Slot slot, @Local(name = "isSelected") final boolean isSelected){
-        if ((slot instanceof IHighlightable && ((IHighlightable) slot).isHighlighted()) || (!(slot instanceof  IHighlightable) && isSelected)){
-            final int slotSize;
-            if (slot instanceof IResizable){
-                slotSize = ((IResizable) slot).getWidth();
-            } else {
-                slotSize = 18;
-            }
-
-            this.drawRect(minX, minY,minX + slotSize - 2,minY + slotSize - 2, 0x80ffffff);
+        final int slotSize;
+        if (slot instanceof IResizable){
+            slotSize = ((IResizable) slot).getWidth();
+        } else {
+            slotSize = 18;
         }
+
+        this.drawRect(minX, minY,minX + slotSize - 2,minY + slotSize - 2, 0x80ffffff);
     }
 
-    @Inject(method = "render(Lnet/minecraft/core/item/ItemStack;IIZLnet/minecraft/core/player/inventory/slot/Slot;)V", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glDisable(I)V", ordinal = 4, shift = At.Shift.BEFORE))
+    @Inject(method = "render(Lnet/minecraft/core/item/ItemStack;IIZLnet/minecraft/core/player/inventory/slot/Slot;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Lighting;disable()V", shift = At.Shift.BEFORE))
     private void drawHighlight(final ItemStack itemStack, final int x, final int y, final boolean isSelected, final Slot slot, final CallbackInfo ci){
         if(slot instanceof IHighlightable && ((IHighlightable)slot).isHighlighted()){
             final int slotSize;
@@ -74,11 +72,13 @@ public class ItemElementMixin extends Gui {
                 slotSize = 18;
             }
 
+            GL11.glEnable(32826);
             GL11.glDisable(2896);
             GL11.glDisable(2929);
-            this.drawRect(x, y, x + slotSize - 2, y + slotSize - 2, 0x80000000 + ((IHighlightable)slot).getHighlightColor());
+            this.drawRect(x, y, x + slotSize - 2, y + slotSize - 2, 0x80000000 | ((IHighlightable)slot).getHighlightColor());
             GL11.glEnable(2896);
             GL11.glEnable(2929);
+            GL11.glDisable(32826);
         }
     }
 }
